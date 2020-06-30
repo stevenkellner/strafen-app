@@ -69,4 +69,7 @@ extension Color {
     
     /// Contains colors used in plain desing
     static let plain = PlainColors()
+    
+    /// Custom text color
+    static let textColor = Color.custom.gray
 }
