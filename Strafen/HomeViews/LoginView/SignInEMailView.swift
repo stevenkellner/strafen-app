@@ -103,204 +103,216 @@ struct SignInEMailView: View {
     @ObservedObject var settings = Settings.shared
     
     var body: some View {
-        NavigationView {
-            ZStack {
+        ZStack {
+            
+            // Navigation Link
+            NavigationLink(destination: SignInEMailValidationView(email: $email), isActive: $confirmButtonClicked) {
+                    EmptyView()
+            }.frame(width: 0, height: 0)
+            
                 
-                // Navigation Link
-                NavigationLink(destination: Text("Destination"), isActive: $confirmButtonClicked) {
-                        EmptyView()
-                }.frame(width: 0, height: 0)
-                
-                
-                // Content
-                VStack(spacing: 0) {
-                    
-                    // Bar to wipe sheet down
-                    SheetBar()
-                    
-                    // Header
-                    Header("Registrieren")
-                        .padding(.top, 30)
-                    
+            // Back Button
+            VStack(spacing: 0) {
+                HStack(spacing: 0) {
+                    Text("Zurück")
+                        .font(.text(25))
+                        .foregroundColor(.textColor)
+                        .padding(.leading, 15)
+                        .onTapGesture {
+                            presentationMode.wrappedValue.dismiss()
+                        }
                     Spacer()
-                    
-                    ScrollView(showsIndicators: false) {
-                        VStack(spacing: 10) {
-                            
-                            // First Name
-                            VStack(spacing: 0) {
-                                
-                                // Title
-                                HStack(spacing: 0) {
-                                    Text("Name:")
-                                        .foregroundColor(Color.textColor)
-                                        .font(.text(20))
-                                        .padding(.leading, 10)
-                                    Spacer()
-                                }
-                                
-                                // Text Field
-                                CustomTextField("Vorname", text: $firstName, keyboardOnScreen: .constant(false)) {
-                                    if firstName == "" {
-                                        isFirstNameError = true
-                                    } else {
-                                        isFirstNameError = false
-                                    }
-                                }.frame(width: 345, height: 50)
-                                    .padding(.top, 5)
-                                
-                                // Error Text
-                                if isFirstNameError {
-                                    Text("Dieses Feld darf nicht leer sein!")
-                                        .foregroundColor(Color.custom.red)
-                                        .font(.text(20))
-                                        .lineLimit(1)
-                                        .padding(.horizontal, 15)
-                                        .padding(.top, 5)
-                                }
-                                
-                            }
-                            
-                            // Last Name
-                            VStack(spacing: 0) {
-                                
-                                // Text Field
-                                CustomTextField("Nachname", text: $lastName, keyboardOnScreen: .constant(false)) {
-                                    if lastName == "" {
-                                        isLastNameError = true
-                                    } else {
-                                        isLastNameError = false
-                                    }
-                                }.frame(width: 345, height: 50)
-                                    .padding(.top, 5)
-                                
-                                // Error Text
-                                if isLastNameError {
-                                    Text("Dieses Feld darf nicht leer sein!")
-                                        .foregroundColor(Color.custom.red)
-                                        .font(.text(20))
-                                        .lineLimit(1)
-                                        .padding(.horizontal, 15)
-                                        .padding(.top, 5)
-                                }
-                                
-                            }
-                            
-                            // Email
-                            VStack(spacing: 0) {
-                                
-                                // Title
-                                HStack(spacing: 0) {
-                                    Text("Email:")
-                                        .foregroundColor(Color.textColor)
-                                        .font(.text(20))
-                                        .padding(.leading, 10)
-                                    Spacer()
-                                }
-                                
-                                // Text Field
-                                CustomTextField("Email", text: $email, keyboardOnScreen: .constant(false)) {
-                                    emailError.evaluate(email)
-                                }.frame(width: 345, height: 50)
-                                    .padding(.top, 5)
-                                
-                                // Error Text
-                                if let emailError = emailError {
-                                    Text(emailError.rawValue)
-                                        .foregroundColor(Color.custom.red)
-                                        .font(.text(20))
-                                        .lineLimit(1)
-                                        .padding(.horizontal, 15)
-                                        .padding(.top, 5)
-                                }
-                                
-                            }.padding(.top, 10)
-                            
-                            // Password
-                            VStack(spacing: 0) {
-                                
-                                // Title
-                                HStack(spacing: 0) {
-                                    Text("Passwort:")
-                                        .foregroundColor(Color.textColor)
-                                        .font(.text(20))
-                                        .padding(.leading, 10)
-                                    Spacer()
-                                }
-                                
-                                // Text Field
-                                CustomSecureField(text: $password, placeholder: "Passwort", keyboardOnScreen: $isPasswordKeyboardShown) {
-                                    passwordError.evaluate(password)
-                                }.frame(width: 345, height: 50)
-                                    .padding(.top, 5)
-                                
-                                
-                                // Error Text
-                                if let passwordError = passwordError {
-                                    Text(passwordError.rawValue)
-                                        .foregroundColor(Color.custom.red)
-                                        .font(.text(20))
-                                        .lineLimit(1)
-                                        .padding(.horizontal, 15)
-                                        .padding(.top, 5)
-                                }
-                                
-                            }.padding(.top, 10)
-                            
-                            // Repeat Password
-                            VStack(spacing: 0) {
-                            
-                                // Text Field
-                                CustomSecureField(text: $repeatPassword, placeholder: "Passwort Wiederholen", keyboardOnScreen: $isRepeatPasswordKeyboardShown) {
-                                    repeatPasswordError.evaluate(password, repeatPassword: repeatPassword)
-                                }.frame(width: 345, height: 50)
-                                    .padding(.top, 5)
-                                
-                                // Error Text
-                                if let repeatPasswordError = repeatPasswordError {
-                                    Text(repeatPasswordError.rawValue)
-                                        .foregroundColor(Color.custom.red)
-                                        .font(.text(20))
-                                        .lineLimit(1)
-                                        .padding(.horizontal, 15)
-                                        .padding(.top, 5)
-                                }
-                                
-                            }.padding(.bottom, isPasswordKeyboardShown ? 50 : isRepeatPasswordKeyboardShown ? 150 : 0)
+                }.padding(.top, 30)
+                Spacer()
+            }
+            
+            // Content
+            VStack(spacing: 0) {
+                
+                // Bar to wipe sheet down
+                SheetBar()
+                
+                // Header
+                Header("Registrieren")
+                    .padding(.top, 30)
+                
+                Spacer()
+                
+                ScrollView(showsIndicators: false) {
+                    VStack(spacing: 10) {
                         
-                        }.padding(.vertical, 10)
+                        // First Name
+                        VStack(spacing: 0) {
+                            
+                            // Title
+                            HStack(spacing: 0) {
+                                Text("Name:")
+                                    .foregroundColor(Color.textColor)
+                                    .font(.text(20))
+                                    .padding(.leading, 10)
+                                Spacer()
+                            }
+                            
+                            // Text Field
+                            CustomTextField("Vorname", text: $firstName) {
+                                if firstName == "" {
+                                    isFirstNameError = true
+                                } else {
+                                    isFirstNameError = false
+                                }
+                            }.frame(width: 345, height: 50)
+                                .padding(.top, 5)
+                            
+                            // Error Text
+                            if isFirstNameError {
+                                Text("Dieses Feld darf nicht leer sein!")
+                                    .foregroundColor(Color.custom.red)
+                                    .font(.text(20))
+                                    .lineLimit(1)
+                                    .padding(.horizontal, 15)
+                                    .padding(.top, 5)
+                            }
+                            
+                        }
+                        
+                        // Last Name
+                        VStack(spacing: 0) {
+                            
+                            // Text Field
+                            CustomTextField("Nachname", text: $lastName) {
+                                if lastName == "" {
+                                    isLastNameError = true
+                                } else {
+                                    isLastNameError = false
+                                }
+                            }.frame(width: 345, height: 50)
+                                .padding(.top, 5)
+                            
+                            // Error Text
+                            if isLastNameError {
+                                Text("Dieses Feld darf nicht leer sein!")
+                                    .foregroundColor(Color.custom.red)
+                                    .font(.text(20))
+                                    .lineLimit(1)
+                                    .padding(.horizontal, 15)
+                                    .padding(.top, 5)
+                            }
+                            
+                        }
+                        
+                        // Email
+                        VStack(spacing: 0) {
+                            
+                            // Title
+                            HStack(spacing: 0) {
+                                Text("Email:")
+                                    .foregroundColor(Color.textColor)
+                                    .font(.text(20))
+                                    .padding(.leading, 10)
+                                Spacer()
+                            }
+                            
+                            // Text Field
+                            CustomTextField("Email", text: $email) {
+                                emailError.evaluate(email)
+                            }.frame(width: 345, height: 50)
+                                .padding(.top, 5)
+                            
+                            // Error Text
+                            if let emailError = emailError {
+                                Text(emailError.rawValue)
+                                    .foregroundColor(Color.custom.red)
+                                    .font(.text(20))
+                                    .lineLimit(1)
+                                    .padding(.horizontal, 15)
+                                    .padding(.top, 5)
+                            }
+                            
+                        }.padding(.top, 10)
+                        
+                        // Password
+                        VStack(spacing: 0) {
+                            
+                            // Title
+                            HStack(spacing: 0) {
+                                Text("Passwort:")
+                                    .foregroundColor(Color.textColor)
+                                    .font(.text(20))
+                                    .padding(.leading, 10)
+                                Spacer()
+                            }
+                            
+                            // Text Field
+                            CustomSecureField(text: $password, placeholder: "Passwort", keyboardOnScreen: $isPasswordKeyboardShown) {
+                                passwordError.evaluate(password)
+                            }.frame(width: 345, height: 50)
+                                .padding(.top, 5)
+                            
+                            
+                            // Error Text
+                            if let passwordError = passwordError {
+                                Text(passwordError.rawValue)
+                                    .foregroundColor(Color.custom.red)
+                                    .font(.text(20))
+                                    .lineLimit(1)
+                                    .padding(.horizontal, 15)
+                                    .padding(.top, 5)
+                            }
+                            
+                        }.padding(.top, 10)
+                        
+                        // Repeat Password
+                        VStack(spacing: 0) {
+                        
+                            // Text Field
+                            CustomSecureField(text: $repeatPassword, placeholder: "Passwort Wiederholen", keyboardOnScreen: $isRepeatPasswordKeyboardShown) {
+                                repeatPasswordError.evaluate(password, repeatPassword: repeatPassword)
+                            }.frame(width: 345, height: 50)
+                                .padding(.top, 5)
+                            
+                            // Error Text
+                            if let repeatPasswordError = repeatPasswordError {
+                                Text(repeatPasswordError.rawValue)
+                                    .foregroundColor(Color.custom.red)
+                                    .font(.text(20))
+                                    .lineLimit(1)
+                                    .padding(.horizontal, 15)
+                                    .padding(.top, 5)
+                            }
+                            
+                        }.padding(.bottom, isPasswordKeyboardShown ? 50 : isRepeatPasswordKeyboardShown ? 150 : 0)
+                    
                     }.padding(.vertical, 10)
-                    
-                    Spacer()
-                    
-                    // Cancel and Confirm Button
-                    CancelConfirmButton {
-                        presentationMode.wrappedValue.dismiss()
-                    } confirmButtonHandler: {
-                        if firstName == "" {
-                            isFirstNameError = true
-                        } else {
-                            isFirstNameError = false
-                        }
-                        if lastName == "" {
-                            isLastNameError = true
-                        } else {
-                            isLastNameError = false
-                        }
-                        emailError.evaluate(email)
-                        passwordError.evaluate(password)
-                        repeatPasswordError.evaluate(password, repeatPassword: repeatPassword)
-                        if isFirstNameError || isLastNameError || emailError != nil || passwordError != nil || repeatPasswordError != nil {
-                            isErrorAlertAlreadyRegistered = false
-                            showErrorAlert = true
-                        } else if false {
-                            // TODO check if email is not already registered
-//                            isErrorAlertAlreadyRegistered = true
-//                            showErrorAlert = true
-                        } else {
-                            confirmButtonClicked = true
-                        }
-                    }.padding(.bottom, 50)
+                }.padding(.vertical, 10)
+                
+                Spacer()
+                
+                ConfirmButton("Weiter") {
+                    confirmButtonClicked = true // TODO
+//                    if firstName == "" {
+//                        isFirstNameError = true
+//                    } else {
+//                        isFirstNameError = false
+//                    }
+//                    if lastName == "" {
+//                        isLastNameError = true
+//                    } else {
+//                        isLastNameError = false
+//                    }
+//                    emailError.evaluate(email)
+//                    passwordError.evaluate(password)
+//                    repeatPasswordError.evaluate(password, repeatPassword: repeatPassword)
+//                    if isFirstNameError || isLastNameError || emailError != nil || passwordError != nil || repeatPasswordError != nil {
+//                        isErrorAlertAlreadyRegistered = false
+//                        showErrorAlert = true
+//                    } else if false {
+//                        // TODO check if email is not already registered
+////                            isErrorAlertAlreadyRegistered = true
+////                            showErrorAlert = true
+//                    } else {
+//                        confirmButtonClicked = true
+//                    }
+                }.padding(.bottom, 50)
                     .alert(isPresented: $showErrorAlert) {
                         if isErrorAlertAlreadyRegistered {
                             return Alert(title: Text("Email existiert bereit"), message: Text("Es ist bereits eine Person unter diese Email registriert."), dismissButton: .default(Text("Verstanden")))
@@ -308,13 +320,12 @@ struct SignInEMailView: View {
                             return Alert(title: Text("Fehler in der Eingabe"), message: Text("Es gab ein Fehler in der Eingabe der Profildaten."), dismissButton: .default(Text("Verstanden")))
                         }
                     }
-                    
-                }
                 
-            }.background(colorScheme.backgroundColor)
-                .navigationTitle("title")
-                .navigationBarHidden(true)
-        }
+            }
+            
+        }.background(colorScheme.backgroundColor)
+            .navigationTitle("title")
+            .navigationBarHidden(true)
     }
 }
 

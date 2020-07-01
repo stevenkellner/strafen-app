@@ -47,7 +47,7 @@ struct LoginView: View {
                 }
                 
                 // Text Field
-                CustomTextField("Email", text: $email, keyboardOnScreen: .constant(false))
+                CustomTextField("Email", text: $email)
                     .frame(width: 345, height: 50)
                     .padding(.top, 5)
             }
@@ -65,7 +65,7 @@ struct LoginView: View {
                 }
                 
                 // Text Field
-                CustomSecureField(text: $password, placeholder: "Passwort", keyboardOnScreen: .constant(false))
+                CustomSecureField(text: $password, placeholder: "Passwort")
                     .frame(width: 345, height: 50)
                     .padding(.top, 5)
             }.padding(.top, 20)

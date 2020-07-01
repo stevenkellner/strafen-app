@@ -22,7 +22,7 @@ struct CustomTextField: View {
     /// Handler execuded after keyboard dismisses
     let completionHandler: (() -> ())?
     
-    init(_ title: String, text: Binding<String>, keyboardOnScreen: Binding<Bool>, completionHandler: (() -> ())? = nil) {
+    init(_ title: String, text: Binding<String>, keyboardOnScreen: Binding<Bool> = .constant(false), completionHandler: (() -> ())? = nil) {
         self.title = title
         self._text = text
         self._keyboardOnScreen = keyboardOnScreen
@@ -67,7 +67,7 @@ struct CustomSecureField: View {
     /// Handler execuded after keyboard dismisses
     let completionHandler: (() -> ())?
     
-    init(text: Binding<String>, placeholder: String, keyboardOnScreen: Binding<Bool>, completionHandler: (() -> ())? = nil) {
+    init(text: Binding<String>, placeholder: String, keyboardOnScreen: Binding<Bool> = .constant(false), completionHandler: (() -> ())? = nil) {
         self.placeholder = placeholder
         self._text = text
         self._keyboardOnScreen = keyboardOnScreen
