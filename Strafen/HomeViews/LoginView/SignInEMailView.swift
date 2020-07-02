@@ -106,7 +106,7 @@ struct SignInEMailView: View {
         ZStack {
             
             // Navigation Link
-            NavigationLink(destination: SignInEMailValidationView(email: $email), isActive: $confirmButtonClicked) {
+            NavigationLink(destination: SignInEMailValidationView(email: $email, personName: PersonName(firstName: firstName, lastName: lastName), personLogin: PersonLoginEmail(email: email, password: password)), isActive: $confirmButtonClicked) {
                     EmptyView()
             }.frame(width: 0, height: 0)
             
@@ -288,36 +288,35 @@ struct SignInEMailView: View {
                 Spacer()
                 
                 ConfirmButton("Weiter") {
-                    confirmButtonClicked = true // TODO
-//                    if firstName == "" {
-//                        isFirstNameError = true
-//                    } else {
-//                        isFirstNameError = false
-//                    }
-//                    if lastName == "" {
-//                        isLastNameError = true
-//                    } else {
-//                        isLastNameError = false
-//                    }
-//                    emailError.evaluate(email)
-//                    passwordError.evaluate(password)
-//                    repeatPasswordError.evaluate(password, repeatPassword: repeatPassword)
-//                    if isFirstNameError || isLastNameError || emailError != nil || passwordError != nil || repeatPasswordError != nil {
-//                        isErrorAlertAlreadyRegistered = false
-//                        showErrorAlert = true
-//                    } else if false {
-//                        // TODO check if email is not already registered
-////                            isErrorAlertAlreadyRegistered = true
-////                            showErrorAlert = true
-//                    } else {
-//                        confirmButtonClicked = true
-//                    }
+                    if firstName == "" {
+                        isFirstNameError = true
+                    } else {
+                        isFirstNameError = false
+                    }
+                    if lastName == "" {
+                        isLastNameError = true
+                    } else {
+                        isLastNameError = false
+                    }
+                    emailError.evaluate(email)
+                    passwordError.evaluate(password)
+                    repeatPasswordError.evaluate(password, repeatPassword: repeatPassword)
+                    if isFirstNameError || isLastNameError || emailError != nil || passwordError != nil || repeatPasswordError != nil {
+                        isErrorAlertAlreadyRegistered = false
+                        showErrorAlert = true
+                    } else if false {
+                        // TODO check if email is not already registered
+//                            isErrorAlertAlreadyRegistered = true
+//                            showErrorAlert = true
+                    } else {
+                        confirmButtonClicked = true
+                    }
                 }.padding(.bottom, 50)
                     .alert(isPresented: $showErrorAlert) {
                         if isErrorAlertAlreadyRegistered {
                             return Alert(title: Text("Email existiert bereit"), message: Text("Es ist bereits eine Person unter diese Email registriert."), dismissButton: .default(Text("Verstanden")))
                         } else {
-                            return Alert(title: Text("Fehler in der Eingabe"), message: Text("Es gab ein Fehler in der Eingabe der Profildaten."), dismissButton: .default(Text("Verstanden")))
+                            return Alert(title: Text("Eingabefehler"), message: Text("Es gab ein Fehler in der Eingabe der Profildaten."), dismissButton: .default(Text("Verstanden")))
                         }
                     }
                 

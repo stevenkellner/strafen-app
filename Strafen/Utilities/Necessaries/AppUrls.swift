@@ -23,6 +23,22 @@ struct AppUrls {
         let reason: URL
     }
     
+    /// Contains all changer urls
+    struct Changer {
+        
+        /// for new club
+        let newClub: URL
+        
+        /// for changing club image
+        let clubImage: URL
+        
+        init(_ appUrls: CodableAppUrls) {
+            let baseUrl = URL(string: appUrls.baseUrl)!
+            newClub = baseUrl.appendingPathComponent(appUrls.changer.newClub)
+            clubImage = baseUrl.appendingPathComponent(appUrls.changer.clubImage)
+        }
+    }
+    
     /// Used to decode app urls from json
     struct CodableAppUrls: Decodable {
         
@@ -39,17 +55,36 @@ struct AppUrls {
             let reason: String
         }
         
+        /// Used to decode urls for changers
+        struct ChangerTypes: Decodable {
+            
+            /// for new club
+            let newClub: String
+            
+            /// for changing club image
+            let clubImage: String
+        }
+        
         /// Base url of server
         let baseUrl: String
         
         /// Url extensions for lists of different app types
         let lists: AppTypes
         
+        /// Url extensions for image directory
+        let imagesDirectory: String
+        
+        /// Url extensions for changer
+        let changer: ChangerTypes
+        
         /// Authorization for server
         let authorization: String
         
-        /// Url extensions for image directory
-        let imagesDirectory: String
+        /// Changer key
+        let key: String
+        
+        /// Cipher Key
+        let cipherKey: String
         
         /// Url extension for settings file
         let settings: String
@@ -79,11 +114,6 @@ struct AppUrls {
         return AppTypesUrls(person: personUrl, fine: fineUrl, reason: reasonUrl)
     }
     
-    /// Contains username and password for website authorization
-    var loginString: String {
-        codableAppUrls.authorization
-    }
-    
     /// Url for the image directory
     ///
     /// nil if no person logged in
@@ -91,6 +121,26 @@ struct AppUrls {
         guard let loggedInPerson = Settings.shared.person else { return nil }
         let baseUrl = URL(string: codableAppUrls.baseUrl)!
         return baseUrl.appendingPathComponent(loggedInPerson.clubId.uuidString).appendingPathComponent(codableAppUrls.imagesDirectory)
+    }
+    
+    /// Contains all changer urls
+    var changer: Changer {
+        Changer(codableAppUrls)
+    }
+    
+    /// Contains username and password for website authorization
+    var loginString: String {
+        codableAppUrls.authorization
+    }
+    
+    /// Changer key
+    var key: String {
+        codableAppUrls.key
+    }
+    
+    /// Cipher Key
+    var cipherKey: String {
+        codableAppUrls.cipherKey
     }
     
     /// Url for settings file

@@ -15,4 +15,12 @@ struct PersonName: Codable {
     
     /// Last name of a person
     let lastName: String
+    
+    /// POST parameters
+    var parameters: [String : Any] {
+        [
+            "firstName": firstName,
+            "lastName": lastName
+        ]
+    }
 }

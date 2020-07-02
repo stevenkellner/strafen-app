@@ -11,13 +11,19 @@ import Foundation
 let appUrls = """
         {
             "baseUrl": "http://svkleinsendelbach.de/strafen_v2",
+            "imagesDirectory": "images",
             "lists": {
                 "person": "lists/person.json",
                 "fine": "lists/fine.json",
                 "reason": "lists/reason.json"
             },
+            "changer": {
+                "newClub": "changer/newClub.php",
+                "clubImage": "changer/clubImageChanger.php"
+            },
             "authorization": "c3RldmVuOmZ5d3dlYi1yeWhrdU0tcXlneGU2",
-            "imagesDirectory": "images",
+            "key": "UM5fZEML22vzCQvMwyVN",
+            "cipherKey": "3457758372438058",
             "settings": "settings.json"
         }
     """

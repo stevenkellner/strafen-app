@@ -22,6 +22,12 @@ struct SignInEMailValidationView: View {
     /// Input email
     @Binding var email: String
     
+    /// Contains first and last name of a person
+    let personName: PersonName
+    
+    /// Contains all properties for the login
+    let personLogin: PersonLogin
+    
     /// Input Email Code
     @State var inputEmailCode = ""
     
@@ -127,7 +133,7 @@ struct SignInEMailValidationView: View {
                             .padding(.horizontal, 25)
                         
                         // Button
-                        NavigationLink(destination: SignInNewClubView()) {
+                        NavigationLink(destination: SignInNewClubView(personName: personName, personLogin: personLogin)) {
                             ZStack {
                                 
                                 // Outline
@@ -172,7 +178,7 @@ struct SignInEMailValidationView: View {
 #if DEBUG
 struct SignInEMailValidationView_Previews: PreviewProvider {
     static var previews: some View {
-        SignInEMailValidationView(email: .constant("steven.kellner@web.de"))
+        SignInEMailValidationView(email: .constant(""), personName: PersonName(firstName: "", lastName: ""), personLogin: PersonLoginEmail(email: "", password: ""))
             .edgesIgnoringSafeArea(.all)
     }
 }

@@ -10,6 +10,12 @@ import AVFoundation
 
 struct SignInNewClubView: View {
     
+    /// Contains first and last name of a person
+    let personName: PersonName
+    
+    /// Contains all properties for the login
+    let personLogin: PersonLogin
+    
     /// Generated club id
     let clubId = UUID()
     
@@ -18,6 +24,12 @@ struct SignInNewClubView: View {
     
     /// Club name
     @State var clubName = ""
+    
+    /// True if empty String in club name field
+    @State var isClubNameError = false
+    
+    /// Inidcate whether the error alert is shown
+    @State var showErrorAlert = false
     
     /// Presentation mode
     @Environment(\.presentationMode) var presentationMode
@@ -74,9 +86,20 @@ struct SignInNewClubView: View {
                             }
                             
                             // Text Field
-                            CustomSecureField(text: $clubName, placeholder: "Vereinsname")
+                            CustomTextField("Vereinsname", text: $clubName)
                                 .frame(width: 345, height: 50)
                                 .padding(.top, 5)
+                            
+                            // Error Text
+                            if isClubNameError {
+                                Text("Dieses Feld darf nicht leer sein!")
+                                    .foregroundColor(Color.custom.red)
+                                    .font(.text(20))
+                                    .lineLimit(1)
+                                    .padding(.horizontal, 15)
+                                    .padding(.top, 5)
+                            }
+                            
                         }.padding(.top, 15)
                         
                         // Club id
@@ -130,8 +153,22 @@ struct SignInNewClubView: View {
                 
                 // Confirm Button
                 ConfirmButton("Erstellen") {
-                    
+                    isClubNameError = clubName == ""
+                    if !isClubNameError {
+                        let personId = UUID()
+                        let club = NewClubChanger.Club(clubId: clubId, clubName: clubName, personId: personId, personName: personName, login: personLogin)
+                        NewClubChanger.shared.createNewClub(club)
+                        if let image = image {
+                            ClubImageChanger.shared.changeImage(.add(image: image, clubId: clubId))
+                        }
+                        Settings.shared.person = Settings.CodableSettings.Person(id: personId, name: personName, clubId: clubId)
+                    } else {
+                        showErrorAlert = true
+                    }
                 }.padding(.bottom, 50)
+                .alert(isPresented: $showErrorAlert) {
+                    Alert(title: Text("Eingabefehler"), message: Text("Es gab ein Fehler in der Eingabe des Verseinsnamens."), dismissButton: .default(Text("Verstanden")))
+                }
 
             }
         }.background(colorScheme.backgroundColor)
@@ -143,7 +180,7 @@ struct SignInNewClubView: View {
 #if DEBUG
 struct SignInNewClubView_Previews: PreviewProvider {
     static var previews: some View {
-        SignInNewClubView()
+        SignInNewClubView(personName: PersonName(firstName: "", lastName: ""), personLogin: PersonLoginEmail(email: "", password: ""))
             .edgesIgnoringSafeArea(.all)
     }
 }
