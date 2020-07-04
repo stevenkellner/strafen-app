@@ -106,3 +106,13 @@ extension UIImage {
         return self
     }
 }
+
+// Extension of UIImage to init from optioal data
+extension UIImage {
+    
+    /// Init UIImage from optional data
+    convenience init?(data: Data?) {
+        guard let data = data else { return nil }
+        self.init(data: data)
+    }
+}

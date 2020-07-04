@@ -111,6 +111,9 @@ class Settings: ObservableObject {
             
             /// Id of the associated club
             let clubId: UUID
+            
+            /// Name of the associated club
+            let clubName: String
         }
         
         /// Appearance of the app (light / dark / system)

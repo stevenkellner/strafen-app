@@ -19,6 +19,19 @@ struct SignInEMailValidationView: View {
         case joinClub
     }
     
+    /// Errors occurs on club code input
+    enum ClubCodeError {
+        
+        /// No Internet connection
+        case noInternet
+        
+        /// Unable to create UUID from Code
+        case noValidCode
+        
+        /// no club with this Code
+        case doesntExist
+    }
+    
     /// Input email
     @Binding var email: String
     
@@ -28,17 +41,32 @@ struct SignInEMailValidationView: View {
     /// Contains all properties for the login
     let personLogin: PersonLogin
     
+    /// Used to indicate whether signIn sheet is displayed or not
+    @Binding var showSignInSheet: Bool
+    
     /// Input Email Code
     @State var inputEmailCode = ""
     
     /// Input club code
     @State var inputClubCode = ""
     
+    /// Entered club id
+    @State var clubId: UUID?
+    
+    /// club name of entered club id
+    @State var clubName: String?
+    
     /// States of SignInEMailValidationView
     @State var state: PageState = .codeInput
     
     /// Indicate whether confirm button is clicked or not
     @State var confirmButtonClicked = false
+    
+    /// Errors occurs on club code input
+    @State var clubCodeError: ClubCodeError = .noValidCode
+    
+    /// Show club code input error alert
+    @State var showClubCodeInputErrorAlert = false
     
     /// Presentation mode
     @Environment(\.presentationMode) var presentationMode
@@ -53,7 +81,7 @@ struct SignInEMailValidationView: View {
         ZStack {
             
             // Navigation Link
-            NavigationLink(destination: Text("asdf"), isActive: $confirmButtonClicked) {
+            NavigationLink(destination: SignInSelectPersonView(personName: personName, personLogin: personLogin, clubId: clubId, clubName: clubName, showSignInSheet: $showSignInSheet), isActive: $confirmButtonClicked) {
                     EmptyView()
             }.frame(width: 0, height: 0)
             
@@ -133,7 +161,7 @@ struct SignInEMailValidationView: View {
                             .padding(.horizontal, 25)
                         
                         // Button
-                        NavigationLink(destination: SignInNewClubView(personName: personName, personLogin: personLogin)) {
+                        NavigationLink(destination: SignInNewClubView(personName: personName, personLogin: personLogin, showSignInSheet: $showSignInSheet)) {
                             ZStack {
                                 
                                 // Outline
@@ -159,14 +187,43 @@ struct SignInEMailValidationView: View {
                 // Confirm Button
                 ConfirmButton("Weiter") {
                     switch state {
-                    case .codeInput: // TODO check code
+                    case .codeInput:
                         withAnimation {
                             state = .joinClub
                         }
                     case .joinClub:
-                        confirmButtonClicked = true
+                        if let clubId = UUID(uuidString: inputClubCode) {
+                            ListData.clubMappedClub.getList { fetchedList in
+                                if let list = fetchedList {
+                                    if let club = list.first(where: { $0.id == clubId }) {
+                                        confirmButtonClicked = true
+                                        self.clubId = club.id
+                                        clubName = club.name
+                                    } else {
+                                        clubCodeError = .doesntExist
+                                        showClubCodeInputErrorAlert = true
+                                    }
+                                } else {
+                                    clubCodeError = .noInternet
+                                    showClubCodeInputErrorAlert = true
+                                }
+                            }
+                        } else {
+                            clubCodeError = .noValidCode
+                            showClubCodeInputErrorAlert = true
+                        }
                     }
                 }.padding(.bottom, 50)
+                    .alert(isPresented: $showClubCodeInputErrorAlert) {
+                        switch clubCodeError {
+                        case .doesntExist:
+                            return Alert(title: Text("Kein Verein gefunden"), message: Text("Es wurde kein Verein mit diesem Code gefunden."), dismissButton: .default(Text("Verstanden")))
+                        case .noInternet:
+                            return Alert(title: Text("Kein Internet"), message: Text("Es wird eine Internetverbindung benötigt um sich zu registrieren."), dismissButton: .default(Text("Verstanden")))
+                        case .noValidCode:
+                            return Alert(title: Text("Kein gültiger Code"), message: Text("Der eingegebene Code hat nicht das richtige Format."), dismissButton: .default(Text("Verstanden")))
+                        }
+                    }
 
             }
         }.background(colorScheme.backgroundColor)
@@ -178,7 +235,7 @@ struct SignInEMailValidationView: View {
 #if DEBUG
 struct SignInEMailValidationView_Previews: PreviewProvider {
     static var previews: some View {
-        SignInEMailValidationView(email: .constant(""), personName: PersonName(firstName: "", lastName: ""), personLogin: PersonLoginEmail(email: "", password: ""))
+        SignInEMailValidationView(email: .constant(""), personName: PersonName(firstName: "", lastName: ""), personLogin: PersonLoginEmail(email: "", password: ""), showSignInSheet: .constant(false))
             .edgesIgnoringSafeArea(.all)
     }
 }

@@ -16,6 +16,9 @@ struct SignInNewClubView: View {
     /// Contains all properties for the login
     let personLogin: PersonLogin
     
+    /// Used to indicate whether signIn sheet is displayed or not
+    @Binding var showSignInSheet: Bool
+    
     /// Generated club id
     let clubId = UUID()
     
@@ -156,12 +159,13 @@ struct SignInNewClubView: View {
                     isClubNameError = clubName == ""
                     if !isClubNameError {
                         let personId = UUID()
-                        let club = NewClubChanger.Club(clubId: clubId, clubName: clubName, personId: personId, personName: personName, login: personLogin)
+                        let club = ChangerClub(clubId: clubId, clubName: clubName, personId: personId, personName: personName, login: personLogin)
                         NewClubChanger.shared.createNewClub(club)
                         if let image = image {
                             ClubImageChanger.shared.changeImage(.add(image: image, clubId: clubId))
                         }
-                        Settings.shared.person = Settings.CodableSettings.Person(id: personId, name: personName, clubId: clubId)
+                        Settings.shared.person = Settings.CodableSettings.Person(id: personId, name: personName, clubId: clubId, clubName: clubName)
+                        showSignInSheet = false
                     } else {
                         showErrorAlert = true
                     }
@@ -180,7 +184,7 @@ struct SignInNewClubView: View {
 #if DEBUG
 struct SignInNewClubView_Previews: PreviewProvider {
     static var previews: some View {
-        SignInNewClubView(personName: PersonName(firstName: "", lastName: ""), personLogin: PersonLoginEmail(email: "", password: ""))
+        SignInNewClubView(personName: PersonName(firstName: "", lastName: ""), personLogin: PersonLoginEmail(email: "", password: ""), showSignInSheet: .constant(false))
             .edgesIgnoringSafeArea(.all)
     }
 }

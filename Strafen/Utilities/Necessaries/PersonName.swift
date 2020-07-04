@@ -23,4 +23,14 @@ struct PersonName: Codable {
             "lastName": lastName
         ]
     }
+    
+    /// formatted
+    var formatted: String {
+        var componets = PersonNameComponents()
+        componets.givenName = firstName
+        componets.familyName = lastName
+        let formatter = PersonNameComponentsFormatter()
+        formatter.style = .default
+        return formatter.string(from: componets)
+    }
 }

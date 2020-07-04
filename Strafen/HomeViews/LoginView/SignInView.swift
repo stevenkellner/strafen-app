@@ -10,6 +10,9 @@ import SwiftUI
 /// View  for signIn
 struct SignInView: View {
     
+    /// Used to indicate whether signIn sheet is displayed or not
+    @Binding var showSignInSheet: Bool
+    
     /// Used to indicate whether signIn with EMail sheet is displayed or not
     @State var showSignInEMailSheet = false
     
@@ -27,7 +30,7 @@ struct SignInView: View {
             ZStack {
                 
                 // Navigation Link
-                NavigationLink(destination: SignInEMailView(), isActive: $showSignInEMailSheet) {
+                NavigationLink(destination: SignInEMailView(showSignInSheet: $showSignInSheet), isActive: $showSignInEMailSheet) {
                         EmptyView()
                 }.frame(width: 0, height: 0)
                 
@@ -94,7 +97,7 @@ struct SignInView_Previews: PreviewProvider {
         Group {
             
             // IPhone 11
-            SignInView()
+            SignInView(showSignInSheet: .constant(false))
                 .previewDevice(.init(rawValue: "iPhone 11"))
                 .previewDisplayName("iPhone 11")
                 .edgesIgnoringSafeArea(.all)

@@ -39,59 +39,24 @@ struct AppUrls {
         }
     }
     
-    /// Used to decode app urls from json
-    struct CodableAppUrls: Decodable {
+    /// Different all Clubs List
+    struct AllClubs {
         
-        /// Used to decode urls of the different app types
-        struct AppTypes: Decodable {
-            
-            /// for person
-            let person: String
-            
-            /// for fine
-            let fine: String
-            
-            /// for reason
-            let reason: String
+        /// Original all club list
+        let allClubs: URL?
+        
+        /// maped to club name and id
+        let onlyClubs: URL?
+        
+        init(_ appUrls: CodableAppUrls) {
+            let baseUrl = URL(string: appUrls.baseUrl)!
+            allClubs = baseUrl.appendingPathComponent(appUrls.allClubs.allClubs)
+            onlyClubs = baseUrl.appendingPathComponent(appUrls.allClubs.mappedClubs)
         }
-        
-        /// Used to decode urls for changers
-        struct ChangerTypes: Decodable {
-            
-            /// for new club
-            let newClub: String
-            
-            /// for changing club image
-            let clubImage: String
-        }
-        
-        /// Base url of server
-        let baseUrl: String
-        
-        /// Url extensions for lists of different app types
-        let lists: AppTypes
-        
-        /// Url extensions for image directory
-        let imagesDirectory: String
-        
-        /// Url extensions for changer
-        let changer: ChangerTypes
-        
-        /// Authorization for server
-        let authorization: String
-        
-        /// Changer key
-        let key: String
-        
-        /// Cipher Key
-        let cipherKey: String
-        
-        /// Url extension for settings file
-        let settings: String
     }
     
     /// Shared instance for singelton
-    static let shared = AppUrls()
+    static let shared = Self()
     
     /// Private init for singleton
     private init() {
@@ -100,18 +65,30 @@ struct AppUrls {
     }
     
     /// Used to decode app urls from json
-    let codableAppUrls: CodableAppUrls
+    private let codableAppUrls: CodableAppUrls
     
     /// Url for the different app lists
     ///
     /// nil if no person logged in
-    var listUrls: AppTypesUrls? {
+    var appTypesUrls: AppTypesUrls? {
         guard let loggedInPerson = Settings.shared.person else { return nil }
-        let baseUrl = URL(string: codableAppUrls.baseUrl)!
-        let personUrl = baseUrl.appendingPathComponent(loggedInPerson.clubId.uuidString).appendingPathComponent(codableAppUrls.lists.person)
-        let fineUrl = baseUrl.appendingPathComponent(loggedInPerson.clubId.uuidString).appendingPathComponent(codableAppUrls.lists.fine)
-        let reasonUrl = baseUrl.appendingPathComponent(loggedInPerson.clubId.uuidString).appendingPathComponent(codableAppUrls.lists.reason)
+        let baseUrl = URL(string: codableAppUrls.baseUrl)!.appendingPathComponent("clubs").appendingPathComponent(loggedInPerson.clubId.uuidString)
+        let personUrl = baseUrl.appendingPathComponent(codableAppUrls.lists.person)
+        let fineUrl = baseUrl.appendingPathComponent(codableAppUrls.lists.fine)
+        let reasonUrl = baseUrl.appendingPathComponent(codableAppUrls.lists.reason)
         return AppTypesUrls(person: personUrl, fine: fineUrl, reason: reasonUrl)
+    }
+    
+    /// Url of person list of given clubId
+    func personListUrl(of clubId: UUID) -> URL {
+        let baseUrl = URL(string: codableAppUrls.baseUrl)!
+        return baseUrl.appendingPathComponent("clubs").appendingPathComponent(clubId.uuidString).appendingPathComponent(codableAppUrls.lists.person)
+    }
+    
+    /// Url for the image directory of given clubId
+    func imageDirUrl(of clubId: UUID) -> URL {
+        let baseUrl = URL(string: codableAppUrls.baseUrl)!
+        return baseUrl.appendingPathComponent("clubs").appendingPathComponent(clubId.uuidString).appendingPathComponent(codableAppUrls.imagesDirectory)
     }
     
     /// Url for the image directory
@@ -120,7 +97,7 @@ struct AppUrls {
     var imagesDirUrl: URL? {
         guard let loggedInPerson = Settings.shared.person else { return nil }
         let baseUrl = URL(string: codableAppUrls.baseUrl)!
-        return baseUrl.appendingPathComponent(loggedInPerson.clubId.uuidString).appendingPathComponent(codableAppUrls.imagesDirectory)
+        return baseUrl.appendingPathComponent("clubs").appendingPathComponent(loggedInPerson.clubId.uuidString).appendingPathComponent(codableAppUrls.imagesDirectory)
     }
     
     /// Contains all changer urls
@@ -156,4 +133,73 @@ struct AppUrls {
         }
         return settingsUrl
     }
+    
+    /// Different all Clubs List Url
+    var allClubs: AllClubs {
+        AllClubs(codableAppUrls)
+    }
+}
+
+/// Used to decode app urls from json
+struct CodableAppUrls: Decodable {
+    
+    /// Used to decode urls of the different app types
+    struct AppTypes: Decodable {
+        
+        /// for person
+        let person: String
+        
+        /// for fine
+        let fine: String
+        
+        /// for reason
+        let reason: String
+    }
+    
+    /// Used to decode urls for changers
+    struct ChangerTypes: Decodable {
+        
+        /// for new club
+        let newClub: String
+        
+        /// for changing club image
+        let clubImage: String
+    }
+    
+    /// Different all Clubs List
+    struct AllClubsLists: Decodable {
+        
+        /// Original all club list
+        let allClubs: String
+        
+        /// maped to club name and id
+        let mappedClubs: String
+    }
+    
+    /// Base url of server
+    let baseUrl: String
+    
+    /// Url extensions for lists of different app types
+    let lists: AppTypes
+    
+    /// Url extensions for image directory
+    let imagesDirectory: String
+    
+    /// Url extensions for changer
+    let changer: ChangerTypes
+    
+    /// Authorization for server
+    let authorization: String
+    
+    /// Changer key
+    let key: String
+    
+    /// Cipher Key
+    let cipherKey: String
+    
+    /// Url extension for settings file
+    let settings: String
+    
+    /// Different all Clubs List
+    let allClubs: AllClubsLists
 }

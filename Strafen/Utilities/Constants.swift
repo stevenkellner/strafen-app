@@ -24,6 +24,10 @@ let appUrls = """
             "authorization": "c3RldmVuOmZ5d3dlYi1yeWhrdU0tcXlneGU2",
             "key": "UM5fZEML22vzCQvMwyVN",
             "cipherKey": "3457758372438058",
-            "settings": "settings.json"
+            "settings": "settings.json",
+            "allClubs": {
+                "allClubs": "allClubs.json",
+                "mappedClubs": "allClubsMapedClubs.php"
+            }
         }
     """

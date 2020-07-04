@@ -110,7 +110,7 @@ struct LoginView: View {
                         showSignInSheet = true
                     }
                     .sheet(isPresented: $showSignInSheet) {
-                        SignInView()
+                        SignInView(showSignInSheet: $showSignInSheet)
                     }
                 
             }.padding(.top, 20)

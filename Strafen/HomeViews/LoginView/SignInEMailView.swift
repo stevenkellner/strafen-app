@@ -48,6 +48,9 @@ struct SignInEMailView: View {
         case notSamePassword = "Passwörter stimmen nicht überein!"
     }
     
+    /// Used to indicate whether signIn sheet is displayed or not
+    @Binding var showSignInSheet: Bool
+    
     /// Input first Name
     @State var firstName = ""
     
@@ -106,7 +109,7 @@ struct SignInEMailView: View {
         ZStack {
             
             // Navigation Link
-            NavigationLink(destination: SignInEMailValidationView(email: $email, personName: PersonName(firstName: firstName, lastName: lastName), personLogin: PersonLoginEmail(email: email, password: password)), isActive: $confirmButtonClicked) {
+            NavigationLink(destination: SignInEMailValidationView(email: $email, personName: PersonName(firstName: firstName, lastName: lastName), personLogin: PersonLoginEmail(email: email, password: password), showSignInSheet: $showSignInSheet), isActive: $confirmButtonClicked) {
                     EmptyView()
             }.frame(width: 0, height: 0)
             
@@ -388,7 +391,7 @@ struct SignInEMailView_Previews: PreviewProvider {
         Group {
 
             // IPhone 11
-            SignInEMailView()
+            SignInEMailView(showSignInSheet: .constant(false))
                 .previewDevice(.init(rawValue: "iPhone 11"))
                 .previewDisplayName("iPhone 11")
                 .edgesIgnoringSafeArea(.all)
