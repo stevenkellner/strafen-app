@@ -19,15 +19,16 @@ let appUrls = """
             },
             "changer": {
                 "newClub": "changer/newClub.php",
-                "clubImage": "changer/clubImageChanger.php"
+                "clubImage": "changer/clubImageChanger.php",
+                "registerPerson": "changer/registerPerson.php",
+                "mailCode": "changer/codeMail.php"
             },
             "authorization": "c3RldmVuOmZ5d3dlYi1yeWhrdU0tcXlneGU2",
             "key": "UM5fZEML22vzCQvMwyVN",
             "cipherKey": "3457758372438058",
             "settings": "settings.json",
             "allClubs": {
-                "allClubs": "allClubs.json",
-                "mappedClubs": "allClubsMapedClubs.php"
+                "allClubs": "allClubs.json"
             }
         }
     """

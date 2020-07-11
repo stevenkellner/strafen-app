@@ -76,7 +76,7 @@ struct LoginView: View {
                 .font(.text(20))
                 .padding(.top, 20)
             
-            // Login with Apple Button
+            // TODO Login with Apple Button
             Outline()
                 .frame(width: 345, height: 50)
                 .padding(.top, 20)
@@ -123,6 +123,11 @@ struct LoginView: View {
             }.padding(.bottom, 50)
             
         }.background(colorScheme.backgroundColor)
+        .onAppear {
+            ListData.club.fetch {
+                // TODO no internet connection
+            }
+        }
     }
 }
 

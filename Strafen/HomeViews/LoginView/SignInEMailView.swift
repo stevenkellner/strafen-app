@@ -52,19 +52,19 @@ struct SignInEMailView: View {
     @Binding var showSignInSheet: Bool
     
     /// Input first Name
-    @State var firstName = ""
+    @State var firstName = "Andreas"
     
     /// Input last Name
-    @State var lastName = ""
+    @State var lastName = "Wartenfelser"
     
     /// Input email
-    @State var email = ""
+    @State var email = "steven.kellner@web.de"
     
     /// Input password
-    @State var password = ""
+    @State var password = "Andreas90"
     
     /// Input repeat password
-    @State var repeatPassword = ""
+    @State var repeatPassword = "Andreas90"
     
     /// Indicate whether confirm button is clicked or not
     @State var confirmButtonClicked = false
@@ -95,6 +95,9 @@ struct SignInEMailView: View {
     
     /// True if keybord of repeat password field is shown
     @State var isRepeatPasswordKeyboardShown = false
+    
+    /// Club list data
+    @ObservedObject var clubListData = ListData.club
     
     /// Presentation mode
     @Environment(\.presentationMode) var presentationMode
@@ -216,7 +219,7 @@ struct SignInEMailView: View {
                             }
                             
                             // Text Field
-                            CustomTextField("Email", text: $email) {
+                            CustomTextField("Email", text: $email, keyboardType: .emailAddress) {
                                 emailError.evaluate(email)
                             }.frame(width: 345, height: 50)
                                 .padding(.top, 5)
@@ -307,12 +310,15 @@ struct SignInEMailView: View {
                     if isFirstNameError || isLastNameError || emailError != nil || passwordError != nil || repeatPasswordError != nil {
                         isErrorAlertAlreadyRegistered = false
                         showErrorAlert = true
-                    } else if false {
-                        // TODO check if email is not already registered
-//                            isErrorAlertAlreadyRegistered = true
-//                            showErrorAlert = true
                     } else {
-                        confirmButtonClicked = true
+                        clubListData.dispatchGroup.wait()
+                        if clubListData.list!.flatMap(\.allPersons).contains(where: { ($0.login.personLogin as? PersonLoginEmail)?.email == email }) {
+                                isErrorAlertAlreadyRegistered = true
+                                showErrorAlert = true
+                        } else {
+                            SendCodeMail.shared.sendMail(to: email)
+                            confirmButtonClicked = true
+                        }
                     }
                 }.padding(.bottom, 50)
                     .alert(isPresented: $showErrorAlert) {

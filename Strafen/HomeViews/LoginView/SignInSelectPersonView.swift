@@ -69,7 +69,7 @@ struct SignInSelectPersonView: View {
                 
                 // Text
                 Text("Wähle dein Namen aus, wenn er nicht vorhanden ist, drücke auf 'Registrieren'.")
-                    .font(.text(25))
+                    .font(.text(20))
                     .foregroundColor(.textColor)
                     .padding(.horizontal, 15)
                     .multilineTextAlignment(.center)
@@ -84,8 +84,6 @@ struct SignInSelectPersonView: View {
                             }
                         }.padding(.vertical, 10)
                     }.padding(.vertical, 10)
-                } else {
-                    // TODO
                 }
                 
                 Spacer()
@@ -93,9 +91,9 @@ struct SignInSelectPersonView: View {
                 // Confirm Button
                 ConfirmButton("Registrieren") {
                     let personId = selectedPerson?.id ?? UUID()
-                    let person = Person(firstName: selectedPerson?.firstName ?? personName.firstName, lastName: selectedPerson?.lastName ?? personName.lastName, id: personId, loggedIn: true)
-                    // TODO save
-                    Settings.shared.person = .init(id: personId, name: personName, clubId: clubId, clubName: clubName)
+                    let person = RegisterPerson(clubId: clubId, personId: personId, personName: personName, login: personLogin)
+                    RegisterPersonChanger.shared.registerPerson(person)
+                    Settings.shared.person = .init(id: personId, name: selectedPerson?.personName ?? personName, clubId: clubId, clubName: clubName)
                     showSignInSheet = false
                 }.padding(.bottom, 50)
                 
@@ -133,12 +131,15 @@ struct SignInSelectPersonRow: View {
     /// Observed Object that contains all settings of the app of this device
     @ObservedObject var settings = Settings.shared
     
+    /// Club List Data
+    @ObservedObject var clubListData = ListData.club
+    
     var body: some View {
         ZStack {
             
             // Outline
             Outline()
-                .fillColor(settings.style == .default ? (person.loggedIn ? Color.custom.red : (person.id == selectedPerson?.id ? Color.custom.lightGreen : settings.style.fillColor(colorScheme))) : settings.style.fillColor(colorScheme))
+                .fillColor(settings.style == .default ? (clubListData.list?.flatMap(\.allPersons).contains(where: { $0.id == person.id }) ?? false ? Color.custom.red : (person.id == selectedPerson?.id ? Color.custom.lightGreen : settings.style.fillColor(colorScheme))) : settings.style.fillColor(colorScheme))
             
             // Inside
             HStack(spacing: 0) {
@@ -148,7 +149,7 @@ struct SignInSelectPersonRow: View {
                 
                 // Name
                 Text(person.personName.formatted)
-                    .foregroundColor(settings.style == .default ? .textColor : (person.loggedIn ? Color.custom.red : (selectedPerson?.id == person.id ? Color.custom.lightGreen : .textColor)))
+                    .foregroundColor(settings.style == .default ? .textColor : (clubListData.list?.flatMap(\.allPersons).contains(where: { $0.id == person.id }) ?? false ? Color.custom.red : (selectedPerson?.id == person.id ? Color.custom.lightGreen : .textColor)))
                     .font(.text(20))
                     .lineLimit(1)
                     .padding(.trailing, 15)
@@ -163,7 +164,9 @@ struct SignInSelectPersonRow: View {
                 }
             }
             .onTapGesture {
-                if person.loggedIn {
+                print(clubListData.list?.flatMap(\.allPersons) as Any)
+                print(person.id)
+                if clubListData.list?.flatMap(\.allPersons).contains(where: { $0.id == person.id }) ?? true {
                     showAlert = true
                 } else if selectedPerson?.id != person.id {
                     selectedPerson = person
@@ -172,7 +175,7 @@ struct SignInSelectPersonRow: View {
                 }
             }
             .alert(isPresented: $showAlert) {
-                Alert(title: Text("Nicht möglich"), message: Text("Diese Person ist bereits auf einem anderen Gerät angemeldet."), dismissButton: .default(Text("Verstanden")))
+                Alert(title: Text("Nicht möglich"), message: Text("Diese Person ist bereits registriert."), dismissButton: .default(Text("Verstanden")))
             }
     }
 }

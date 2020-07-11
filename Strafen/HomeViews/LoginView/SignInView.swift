@@ -71,7 +71,7 @@ struct SignInView: View {
                         .font(.text(20))
                         .padding(.top, 20)
                     
-                    // Sign in with Apple
+                    // TODO Sign in with Apple
                     Outline()
                         .frame(width: 345, height: 50)
                         .padding(.top, 20)

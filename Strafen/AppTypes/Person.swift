@@ -22,9 +22,6 @@ struct Person: AppTypes, Identifiable {
     /// id
     let id: UUID
     
-    /// True if person logged in on a device
-    let loggedIn: Bool
-    
     /// First and last name
     var personName: PersonName {
         PersonName(firstName: firstName, lastName: lastName)

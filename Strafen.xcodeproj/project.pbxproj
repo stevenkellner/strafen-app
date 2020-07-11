@@ -18,6 +18,10 @@
 		B020C7C224B0B9D0008940FE /* PersonRowImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B020C7C124B0B9D0008940FE /* PersonRowImage.swift */; };
 		B020C7C424B0C5E6008940FE /* ImageFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = B020C7C324B0C5E6008940FE /* ImageFetcher.swift */; };
 		B020C7C624B0C8BE008940FE /* ImageData.swift in Sources */ = {isa = PBXBuildFile; fileRef = B020C7C524B0C8BE008940FE /* ImageData.swift */; };
+		B020C7C824B11649008940FE /* RegisterPersonChanger.swift in Sources */ = {isa = PBXBuildFile; fileRef = B020C7C724B11649008940FE /* RegisterPersonChanger.swift */; };
+		B020C7CA24B1168F008940FE /* RegisterPerson.swift in Sources */ = {isa = PBXBuildFile; fileRef = B020C7C924B1168F008940FE /* RegisterPerson.swift */; };
+		B020C7CC24B87653008940FE /* Club.swift in Sources */ = {isa = PBXBuildFile; fileRef = B020C7CB24B87653008940FE /* Club.swift */; };
+		B020C7D024B9E310008940FE /* SendCodeMail.swift in Sources */ = {isa = PBXBuildFile; fileRef = B020C7CF24B9E310008940FE /* SendCodeMail.swift */; };
 		B0A385B024ABC21C00628038 /* SignInEMailValidationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0A385AF24ABC21C00628038 /* SignInEMailValidationView.swift */; };
 		B0B4822024A8D46B00CB7A1A /* Header.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0B4821F24A8D46B00CB7A1A /* Header.swift */; };
 		B0B4822224A8D61300CB7A1A /* CustomTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0B4822124A8D61300CB7A1A /* CustomTextField.swift */; };
@@ -27,7 +31,6 @@
 		B0B799CF24ACEA0C0027727E /* NewClubChanger.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0B799CE24ACEA0C0027727E /* NewClubChanger.swift */; };
 		B0B799D124AE50060027727E /* ClubImageChanger.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0B799D024AE50060027727E /* ClubImageChanger.swift */; };
 		B0B799D324AE64770027727E /* SignInSelectPersonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0B799D224AE64770027727E /* SignInSelectPersonView.swift */; };
-		B0B799D624AE6FC90027727E /* ClubMappedClub.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0B799D524AE6FC90027727E /* ClubMappedClub.swift */; };
 		B0BE62D524AB50FF0018604C /* SignInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0BE62D424AB50FF0018604C /* SignInView.swift */; };
 		B0BE62D724AB58AE0018604C /* SignInEMailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0BE62D624AB58AE0018604C /* SignInEMailView.swift */; };
 		B0C1C51524A78BD7007B584B /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0C1C51424A78BD7007B584B /* LoginView.swift */; };
@@ -81,6 +84,10 @@
 		B020C7C124B0B9D0008940FE /* PersonRowImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonRowImage.swift; sourceTree = "<group>"; };
 		B020C7C324B0C5E6008940FE /* ImageFetcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageFetcher.swift; sourceTree = "<group>"; };
 		B020C7C524B0C8BE008940FE /* ImageData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageData.swift; sourceTree = "<group>"; };
+		B020C7C724B11649008940FE /* RegisterPersonChanger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterPersonChanger.swift; sourceTree = "<group>"; };
+		B020C7C924B1168F008940FE /* RegisterPerson.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterPerson.swift; sourceTree = "<group>"; };
+		B020C7CB24B87653008940FE /* Club.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Club.swift; sourceTree = "<group>"; };
+		B020C7CF24B9E310008940FE /* SendCodeMail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendCodeMail.swift; sourceTree = "<group>"; };
 		B0A385AF24ABC21C00628038 /* SignInEMailValidationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInEMailValidationView.swift; sourceTree = "<group>"; };
 		B0B4821F24A8D46B00CB7A1A /* Header.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Header.swift; sourceTree = "<group>"; };
 		B0B4822124A8D61300CB7A1A /* CustomTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextField.swift; sourceTree = "<group>"; };
@@ -90,7 +97,6 @@
 		B0B799CE24ACEA0C0027727E /* NewClubChanger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewClubChanger.swift; sourceTree = "<group>"; };
 		B0B799D024AE50060027727E /* ClubImageChanger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubImageChanger.swift; sourceTree = "<group>"; };
 		B0B799D224AE64770027727E /* SignInSelectPersonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInSelectPersonView.swift; sourceTree = "<group>"; };
-		B0B799D524AE6FC90027727E /* ClubMappedClub.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubMappedClub.swift; sourceTree = "<group>"; };
 		B0BE62D424AB50FF0018604C /* SignInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInView.swift; sourceTree = "<group>"; };
 		B0BE62D624AB58AE0018604C /* SignInEMailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInEMailView.swift; sourceTree = "<group>"; };
 		B0C1C51424A78BD7007B584B /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
@@ -190,7 +196,9 @@
 			isa = PBXGroup;
 			children = (
 				B0B799CE24ACEA0C0027727E /* NewClubChanger.swift */,
+				B020C7C724B11649008940FE /* RegisterPersonChanger.swift */,
 				B0B799D024AE50060027727E /* ClubImageChanger.swift */,
+				B020C7CF24B9E310008940FE /* SendCodeMail.swift */,
 			);
 			path = Changer;
 			sourceTree = "<group>";
@@ -199,7 +207,7 @@
 			isa = PBXGroup;
 			children = (
 				B020C7B324AE7120008940FE /* AppTypes.swift */,
-				B0B799D524AE6FC90027727E /* ClubMappedClub.swift */,
+				B020C7CB24B87653008940FE /* Club.swift */,
 				B020C7BF24AF7CC6008940FE /* Person.swift */,
 			);
 			path = AppTypes;
@@ -223,6 +231,7 @@
 				B0C1C52124A7A021007B584B /* PersonName.swift */,
 				B020C7BD24AF1C31008940FE /* PersonLogin.swift */,
 				B020C7BB24AF1AE9008940FE /* ChangerClub.swift */,
+				B020C7C924B1168F008940FE /* RegisterPerson.swift */,
 			);
 			path = Necessaries;
 			sourceTree = "<group>";
@@ -589,14 +598,17 @@
 				B0C1C51924A78C90007B584B /* Color.swift in Sources */,
 				B0E0F82924A63E5800C82828 /* ContentView.swift in Sources */,
 				B0B799CC24ACA1990027727E /* ImageSelector.swift in Sources */,
+				B020C7D024B9E310008940FE /* SendCodeMail.swift in Sources */,
 				B0B4822424A8D69E00CB7A1A /* Buttons.swift in Sources */,
 				B0C1C52224A7A021007B584B /* PersonName.swift in Sources */,
 				B020C7C424B0C5E6008940FE /* ImageFetcher.swift in Sources */,
+				B020C7C824B11649008940FE /* RegisterPersonChanger.swift in Sources */,
 				B020C7C624B0C8BE008940FE /* ImageData.swift in Sources */,
 				B020C7C224B0B9D0008940FE /* PersonRowImage.swift in Sources */,
 				B0B799D324AE64770027727E /* SignInSelectPersonView.swift in Sources */,
 				B0E0F82724A63E5800C82828 /* StrafenApp.swift in Sources */,
 				B020C7BC24AF1AE9008940FE /* ChangerClub.swift in Sources */,
+				B020C7CA24B1168F008940FE /* RegisterPerson.swift in Sources */,
 				B0B4822024A8D46B00CB7A1A /* Header.swift in Sources */,
 				B020C7B424AE7120008940FE /* AppTypes.swift in Sources */,
 				B0C1C52024A79328007B584B /* Constants.swift in Sources */,
@@ -610,7 +622,7 @@
 				B0B799CF24ACEA0C0027727E /* NewClubChanger.swift in Sources */,
 				B0B799CA24AC96560027727E /* SignInNewClubView.swift in Sources */,
 				B0C1C51D24A7910F007B584B /* AppUrls.swift in Sources */,
-				B0B799D624AE6FC90027727E /* ClubMappedClub.swift in Sources */,
+				B020C7CC24B87653008940FE /* Club.swift in Sources */,
 				B020C7BA24AE744F008940FE /* ListData.swift in Sources */,
 				B020C7BE24AF1C31008940FE /* PersonLogin.swift in Sources */,
 			);

@@ -68,6 +68,15 @@ struct SignInEMailValidationView: View {
     /// Show club code input error alert
     @State var showClubCodeInputErrorAlert = false
     
+    /// Show club email input error alert
+    @State var showEmailCodeInputErrorAlert = false
+    
+    /// True if email keyboard is on screen
+    @State var emailCodeKeyboardOnScreen = false
+    
+    /// Club list data
+    @ObservedObject var clubListData = ListData.club
+    
     /// Presentation mode
     @Environment(\.presentationMode) var presentationMode
     
@@ -124,15 +133,19 @@ struct SignInEMailValidationView: View {
                             .multilineTextAlignment(.center)
                             .padding(.horizontal, 25)
                         
-                        // Codel Text Field
-                        CustomTextField("Bestätigungscode", text: $inputEmailCode)
+                        // Code Text Field
+                        CustomTextField("Bestätigungscode", text: $inputEmailCode, keyboardOnScreen: $emailCodeKeyboardOnScreen)
                             .frame(width: 345, height: 50)
                             .padding(.top, 50)
+                            .alert(isPresented: $showEmailCodeInputErrorAlert) {
+                                Alert(title: Text("Falscher Code"), message: Text("\(inputEmailCode) ist nicht der richtige Code."), dismissButton: .default(Text("Verstanden")))
+                            }
                         
                         Spacer()
                         
                     }.opacity(state == .codeInput ? 1 : 0)
-                        .offset(y: state == .codeInput ? 0 : -100)
+                        .offset(y: state == .codeInput ? emailCodeKeyboardOnScreen ? -130 : 0 : -100)
+                        .clipShape(Rectangle())
                     
                     // Club join page
                     VStack(spacing: 0) {
@@ -146,10 +159,24 @@ struct SignInEMailValidationView: View {
                             .multilineTextAlignment(.center)
                             .padding(.horizontal, 25)
                         
-                        // Club code text field
-                        CustomTextField("Vereinscode", text: $inputClubCode)
-                            .frame(width: 345, height: 50)
-                            .padding(.top, 30)
+                        HStack(spacing: 0) {
+                        
+                            // Club code text field
+                            CustomTextField("Vereinscode", text: $inputClubCode, keyboardType: .numbersAndPunctuation)
+                                .frame(width: 245, height: 50)
+                            
+                            // Paste Button
+                            Button {
+                                if let pasteString = UIPasteboard.general.string {
+                                    inputClubCode = pasteString
+                                }
+                            } label: {
+                                Image(systemName: "doc.on.clipboard")
+                                    .font(.system(size: 30, weight: .light))
+                                    .foregroundColor(.textColor)
+                            }.padding(.leading, 15)
+                            
+                        }.padding(.top, 30)
                         
                         Spacer()
                         
@@ -188,23 +215,24 @@ struct SignInEMailValidationView: View {
                 ConfirmButton("Weiter") {
                     switch state {
                     case .codeInput:
-                        withAnimation {
-                            state = .joinClub
+                        if inputEmailCode == SendCodeMail.shared.code {
+                            withAnimation {
+                                state = .joinClub
+                            }
+                        } else {
+                            showEmailCodeInputErrorAlert = true
                         }
                     case .joinClub:
                         if let clubId = UUID(uuidString: inputClubCode) {
-                            ListData.clubMappedClub.getList { fetchedList in
-                                if let list = fetchedList {
-                                    if let club = list.first(where: { $0.id == clubId }) {
-                                        confirmButtonClicked = true
-                                        self.clubId = club.id
-                                        clubName = club.name
-                                    } else {
-                                        clubCodeError = .doesntExist
-                                        showClubCodeInputErrorAlert = true
-                                    }
+                            clubListData.dispatchGroup.notify(queue: .main) {
+                                if let club = clubListData.list?.first(where: { $0.id == clubId }) {
+                                    ListData.person.list = nil
+                                    ListData.person.fetch(from: AppUrls.shared.personListUrl(of: clubId)) {}
+                                    confirmButtonClicked = true
+                                    self.clubId = club.id
+                                    clubName = club.name
                                 } else {
-                                    clubCodeError = .noInternet
+                                    clubCodeError = .doesntExist
                                     showClubCodeInputErrorAlert = true
                                 }
                             }

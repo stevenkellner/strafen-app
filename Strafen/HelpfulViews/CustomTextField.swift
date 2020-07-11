@@ -22,11 +22,15 @@ struct CustomTextField: View {
     /// Handler execuded after keyboard dismisses
     let completionHandler: (() -> ())?
     
-    init(_ title: String, text: Binding<String>, keyboardOnScreen: Binding<Bool> = .constant(false), completionHandler: (() -> ())? = nil) {
+    /// Keyboard type
+    let keyboardType: UIKeyboardType
+    
+    init(_ title: String, text: Binding<String>, keyboardType: UIKeyboardType = .default, keyboardOnScreen: Binding<Bool> = .constant(false), completionHandler: (() -> ())? = nil) {
         self.title = title
         self._text = text
         self._keyboardOnScreen = keyboardOnScreen
         self.completionHandler = completionHandler
+        self.keyboardType = keyboardType
     }
     
     var body: some View {
@@ -48,7 +52,7 @@ struct CustomTextField: View {
                 .lineLimit(1)
                 .padding(.horizontal, 10)
                 .multilineTextAlignment(.center)
-        }
+        }.keyboardType(keyboardType)
     }
 }
 
@@ -82,7 +86,7 @@ struct CustomSecureField: View {
             
             // Text Field
             UISecureField(placeholder: placeholder, text: $text, keyboardOnScreen: $keyboardOnScreen, completionHandler: completionHandler)
-                .foregroundColor(Color.textColor)
+                .foregroundColor(.textColor)
                 .font(.text(20))
                 .lineLimit(1)
                 .padding(.horizontal, 10)
@@ -176,6 +180,8 @@ struct UISecureField: UIViewRepresentable {
         textField.font = UIFont(name: "Futura-Medium", size: 20)
         textField.textColor = UIColor(red: 112 / 255, green: 112 / 255, blue: 112 / 255, alpha: 1)
         textField.textAlignment = .center
+        textField.clearButtonMode = .always
+        textField.clearsOnBeginEditing = true
         return textField
     }
     

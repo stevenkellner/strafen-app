@@ -1,20 +1,17 @@
 //
-//  ChangerClub.swift
+//  RegisterPerson.swift
 //  Strafen
 //
-//  Created by Steven on 03.07.20.
+//  Created by Steven on 04.07.20.
 //
 
 import Foundation
 
-/// Contains all properties for a new club
-struct ChangerClub {
+/// Contains all properties for a person to register on server
+struct RegisterPerson {
     
     /// Id of the club
     let clubId: UUID
-    
-    /// Name of the club
-    let clubName: String
     
     /// Id of the person
     let personId: UUID
@@ -29,8 +26,7 @@ struct ChangerClub {
     var parameters: [String : Any] {
         var parameters: [String : Any] = [
             "clubId": clubId,
-            "clubName": clubName,
-            "personId": personId
+            "id": personId
         ]
         parameters.merge(personName.parameters) { firstValue, _ in firstValue }
         parameters.merge(login.parameters) { firstValue, _ in firstValue }

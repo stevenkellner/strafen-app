@@ -17,6 +17,9 @@ class ListDataAppType<AppType>: ObservableObject where AppType: AppTypes {
     /// Dispatch Group to check if task is finished
     var dispatchGroup = DispatchGroup()
     
+    /// Number dispathGroup enterned
+    var numberDispathes = 1
+    
     /// Init to enter dispatch group
     init() {
         dispatchGroup.enter()
@@ -25,14 +28,19 @@ class ListDataAppType<AppType>: ObservableObject where AppType: AppTypes {
     /// Fetch list from server.
     func fetch(from url: URL? = nil, _ failedHandler: @escaping () -> ()) {
         if list != nil { return }
+        if numberDispathes == 0 {
+            dispatchGroup.enter()
+            numberDispathes += 1
+        }
         
         // Fetch list from server
-        ListFetcher.shared.fetch(from: url) { (fetchedList: [AppType]?)  in
+        ListFetcher.shared.fetch(from: url) { [self] (fetchedList: [AppType]?)  in
             if let fetchedList = fetchedList {
                 DispatchQueue.main.async {
-                    if self.list == nil {
-                        self.list = fetchedList
-                        self.dispatchGroup.leave()
+                    if list == nil {
+                        list = fetchedList
+                        dispatchGroup.leave()
+                        numberDispathes -= 1
                     }
                 }
             } else {
@@ -55,8 +63,11 @@ class ListDataAppType<AppType>: ObservableObject where AppType: AppTypes {
 /// Data of all list types
 struct ListData {
     
-    /// List data of ClubMappedClub list
-    static let clubMappedClub = ListDataAppType<ClubMappedClub>()
+    /// List data of clubMappedClub list
+//    static let clubMappedClub = ListDataAppType<ClubMappedClub>()
+    
+    /// List data of club list
+    static let club = ListDataAppType<Club>()
     
     /// List data of person list
     static let person = ListDataAppType<Person>()

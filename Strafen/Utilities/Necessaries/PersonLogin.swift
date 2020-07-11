@@ -12,6 +12,9 @@ protocol PersonLogin {
     
     /// POST parameters
     var parameters: [String : Any] { get }
+    
+    /// Check if is equal to other
+    func equalLogin(to other: PersonLogin) -> Bool
 }
 
 /// Contains all properties for the login with apple
@@ -23,6 +26,11 @@ struct PersonLoginApple: PersonLogin {
     /// POST parameters
     var parameters: [String : Any] {
         ["apple": appleIdentifier]
+    }
+    
+    /// Checks for equality
+    func equalLogin(to other: PersonLogin) -> Bool {
+        appleIdentifier == (other as? Self)?.appleIdentifier
     }
 }
 
@@ -42,4 +50,46 @@ struct PersonLoginEmail: PersonLogin {
             "password": password.encrypted
         ]
     }
+    
+    /// Checks for equality
+    func equalLogin(to other: PersonLogin) -> Bool {
+        email == (other as? Self)?.email
+    }
 }
+
+struct PersonLoginCodable: Decodable {
+    
+    /// Coding Key for Decoding Json
+    enum CodingKeys: String, CodingKey {
+        
+        /// Email
+        case email
+        
+        /// Password
+        case password
+        
+        /// Idetifier from apple
+        case appleIdentifier = "apple"
+    }
+    
+    /// Email
+    let email: String?
+    
+    /// Password
+    let password: String?
+    
+    /// Idetifier from apple
+    let appleIdentifier: String?
+    
+    /// Contains all properties for the login
+    var personLogin: PersonLogin {
+        if let appleIdentifier = appleIdentifier {
+            return PersonLoginApple(appleIdentifier: appleIdentifier)
+        } else if let email = email, let password = password {
+            return PersonLoginEmail(email: email, password: password)
+        } else {
+            fatalError("Error while decoding person login")
+        }
+    }
+}
+ 

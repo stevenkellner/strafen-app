@@ -32,10 +32,18 @@ struct AppUrls {
         /// for changing club image
         let clubImage: URL
         
+        /// for register new person
+        let registerPerson: URL
+        
+        /// for sending code mail
+        let mailCode: URL
+        
         init(_ appUrls: CodableAppUrls) {
             let baseUrl = URL(string: appUrls.baseUrl)!
             newClub = baseUrl.appendingPathComponent(appUrls.changer.newClub)
             clubImage = baseUrl.appendingPathComponent(appUrls.changer.clubImage)
+            registerPerson = baseUrl.appendingPathComponent(appUrls.changer.registerPerson)
+            mailCode = baseUrl.appendingPathComponent(appUrls.changer.mailCode)
         }
     }
     
@@ -45,13 +53,9 @@ struct AppUrls {
         /// Original all club list
         let allClubs: URL?
         
-        /// maped to club name and id
-        let onlyClubs: URL?
-        
         init(_ appUrls: CodableAppUrls) {
             let baseUrl = URL(string: appUrls.baseUrl)!
             allClubs = baseUrl.appendingPathComponent(appUrls.allClubs.allClubs)
-            onlyClubs = baseUrl.appendingPathComponent(appUrls.allClubs.mappedClubs)
         }
     }
     
@@ -65,7 +69,7 @@ struct AppUrls {
     }
     
     /// Used to decode app urls from json
-    private let codableAppUrls: CodableAppUrls
+    private var codableAppUrls: CodableAppUrls
     
     /// Url for the different app lists
     ///
@@ -164,6 +168,12 @@ struct CodableAppUrls: Decodable {
         
         /// for changing club image
         let clubImage: String
+        
+        /// for register a new person
+        let registerPerson: String
+        
+        /// for sending code mail
+        let mailCode: String
     }
     
     /// Different all Clubs List
@@ -171,9 +181,6 @@ struct CodableAppUrls: Decodable {
         
         /// Original all club list
         let allClubs: String
-        
-        /// maped to club name and id
-        let mappedClubs: String
     }
     
     /// Base url of server
