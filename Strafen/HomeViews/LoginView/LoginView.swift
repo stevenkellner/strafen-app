@@ -10,6 +10,16 @@ import SwiftUI
 /// View  for login
 struct LoginView: View {
     
+    /// Types of email login error
+    enum EmailLoginErrorType {
+        
+        /// Wrong password
+        case wrongPassword
+        
+        /// Person not registriered
+        case notRegistriered
+    }
+    
     /// Input email
     @State var email = ""
     
@@ -18,6 +28,15 @@ struct LoginView: View {
     
     /// Used to indicate whether signIn sheet is displayed or not
     @State var showSignInSheet = false
+    
+    /// Alert if email login fails
+    @State var emailLoginAlert = false
+    
+    /// Type of email login error
+    @State var emailLoginErrorType: EmailLoginErrorType = .wrongPassword
+    
+    /// Club list data
+    @ObservedObject var clubListData = ListData.club
     
     /// Color scheme to get appearance of this device
     @Environment(\.colorScheme) var colorScheme
@@ -47,7 +66,7 @@ struct LoginView: View {
                 }
                 
                 // Text Field
-                CustomTextField("Email", text: $email)
+                CustomTextField("Email", text: $email, keyboardType: .emailAddress)
                     .frame(width: 345, height: 50)
                     .padding(.top, 5)
             }
@@ -119,8 +138,30 @@ struct LoginView: View {
             
             // Confirm Button
             ConfirmButton("Anmelden") {
-                // TODO Login
+                clubListData.dispatchGroup.notify(queue: .main) {
+                    if let club = clubListData.list!.first(where: { $0.allPersons.contains(where: { ($0.login.personLogin as? PersonLoginEmail)?.email == email }) }) {
+                        let person = club.allPersons.first(where: { ($0.login.personLogin as? PersonLoginEmail)?.email == email })!
+                        if (person.login.personLogin as! PersonLoginEmail).password == password.encrypted {
+                            Settings.shared.person = .init(id: person.id, name: person.personName, clubId: club.id, clubName: club.name, isCashier: person.isCashier)
+                        } else {
+                            emailLoginErrorType = .wrongPassword
+                            emailLoginAlert = true
+                        }
+                    } else {
+                        emailLoginErrorType = .notRegistriered
+                        emailLoginAlert = true
+                    }
+                }
             }.padding(.bottom, 50)
+                .alert(isPresented: $emailLoginAlert) {
+                    switch emailLoginErrorType {
+                    case .wrongPassword:
+                        return
+                            Alert(title: Text("Falsches Passwort"), message: Text("Das Passwort ist falsch."), dismissButton: .default(Text("Verstanden")))
+                    case .notRegistriered:
+                        return Alert(title: Text("Email Nicht Registriert"), message: Text("Diese Email ist nicht registriert."), dismissButton: .default(Text("Verstanden")))
+                    }
+                }
             
         }.background(colorScheme.backgroundColor)
         .onAppear {

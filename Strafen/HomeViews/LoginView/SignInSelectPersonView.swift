@@ -93,7 +93,7 @@ struct SignInSelectPersonView: View {
                     let personId = selectedPerson?.id ?? UUID()
                     let person = RegisterPerson(clubId: clubId, personId: personId, personName: personName, login: personLogin)
                     RegisterPersonChanger.shared.registerPerson(person)
-                    Settings.shared.person = .init(id: personId, name: selectedPerson?.personName ?? personName, clubId: clubId, clubName: clubName)
+                    Settings.shared.person = .init(id: personId, name: selectedPerson?.personName ?? personName, clubId: clubId, clubName: clubName, isCashier: false)
                     showSignInSheet = false
                 }.padding(.bottom, 50)
                 

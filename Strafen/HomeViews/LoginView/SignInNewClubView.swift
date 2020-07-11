@@ -164,7 +164,7 @@ struct SignInNewClubView: View {
                         if let image = image {
                             ClubImageChanger.shared.changeImage(.add(image: image, clubId: clubId))
                         }
-                        Settings.shared.person = Settings.CodableSettings.Person(id: personId, name: personName, clubId: clubId, clubName: clubName)
+                        Settings.shared.person = Settings.CodableSettings.Person(id: personId, name: personName, clubId: clubId, clubName: clubName, isCashier: true)
                         showSignInSheet = false
                     } else {
                         showErrorAlert = true

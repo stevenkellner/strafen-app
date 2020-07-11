@@ -52,19 +52,19 @@ struct SignInEMailView: View {
     @Binding var showSignInSheet: Bool
     
     /// Input first Name
-    @State var firstName = "Andreas"
+    @State var firstName = ""
     
     /// Input last Name
-    @State var lastName = "Wartenfelser"
+    @State var lastName = ""
     
     /// Input email
-    @State var email = "steven.kellner@web.de"
+    @State var email = ""
     
     /// Input password
-    @State var password = "Andreas90"
+    @State var password = ""
     
     /// Input repeat password
-    @State var repeatPassword = "Andreas90"
+    @State var repeatPassword = ""
     
     /// Indicate whether confirm button is clicked or not
     @State var confirmButtonClicked = false
@@ -311,13 +311,14 @@ struct SignInEMailView: View {
                         isErrorAlertAlreadyRegistered = false
                         showErrorAlert = true
                     } else {
-                        clubListData.dispatchGroup.wait()
-                        if clubListData.list!.flatMap(\.allPersons).contains(where: { ($0.login.personLogin as? PersonLoginEmail)?.email == email }) {
-                                isErrorAlertAlreadyRegistered = true
-                                showErrorAlert = true
-                        } else {
-                            SendCodeMail.shared.sendMail(to: email)
-                            confirmButtonClicked = true
+                        clubListData.dispatchGroup.notify(queue: .main) {
+                            if clubListData.list!.flatMap(\.allPersons).contains(where: { ($0.login.personLogin as? PersonLoginEmail)?.email == email }) {
+                                    isErrorAlertAlreadyRegistered = true
+                                    showErrorAlert = true
+                            } else {
+                                SendCodeMail.shared.sendMail(to: email)
+                                confirmButtonClicked = true
+                            }
                         }
                     }
                 }.padding(.bottom, 50)

@@ -22,6 +22,12 @@ struct Club: AppTypes {
             /// Person id
             case id = "personId"
             
+            /// First name
+            case firstName
+            
+            /// Last name
+            case lastName
+            
             /// Person login
             case login
             
@@ -32,11 +38,22 @@ struct Club: AppTypes {
         /// Person id
         let id: UUID
         
+        /// First name
+        let firstName: String
+        
+        /// Last name
+        let lastName: String
+        
         /// Person login
         let login: PersonLoginCodable
         
         /// Is person the cashier
         let isCashier: Bool
+        
+        /// First and last name
+        var personName: PersonName {
+            PersonName(firstName: firstName, lastName: lastName)
+        }
     }
     
     /// Coding Key for Decoding Json

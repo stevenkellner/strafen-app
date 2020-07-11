@@ -11,9 +11,17 @@ struct ContentView: View {
     
     @State var show = false
     
+    /// Observed Object that contains all settings of the app of this device
+    @ObservedObject var settings = Settings.shared
+    
     var body: some View {
-        LoginView()
-            .edgesIgnoringSafeArea(.all)
+        ZStack {
+            if let loggedInPerson = settings.person {
+                Text(loggedInPerson.name.formatted)
+            } else {
+                LoginView()
+            }
+        }.edgesIgnoringSafeArea(.all)
             .onAppear {
                 Settings.shared.applySettings()
             }
