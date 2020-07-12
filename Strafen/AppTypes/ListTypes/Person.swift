@@ -7,11 +7,11 @@
 
 import Foundation
 
-/// Person with name, id and loggedIn
-struct Person: AppTypes, Identifiable {
+/// Person with name, id
+struct Person: ListTypes, Identifiable {
     
     /// Url to list on server
-    static var serverListUrl = \AppUrls.appTypesUrls?.person
+    static var serverListUrl = \AppUrls.listTypesUrls?.person
     
     /// First name
     let firstName: String

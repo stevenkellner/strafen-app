@@ -13,7 +13,7 @@ struct ImageSelector: View {
     /// Selected Image
     @Binding var image: UIImage?
     
-    /// Idicate if image picker is shown
+    /// Indicate if image picker is shown
     @State var showImagePicker = false
     
     var body: some View {
@@ -64,7 +64,7 @@ struct ImageSelector: View {
                     showImagePicker = true
                 }
                 .sheet(isPresented: self.$showImagePicker) {
-                    ImagePicker(image: $image)
+                    ImagePicker($image)
                 }
             
             // remove image button
@@ -93,20 +93,33 @@ struct ImagePicker: UIViewControllerRepresentable {
     /// Selected Image
     @Binding var image: UIImage?
     
+    /// Completion handler
+    let completionHandler: ((UIImage) -> ())?
+    
+    init(_ image: Binding<UIImage?>, completionHandler: ((UIImage) -> ())? = nil) {
+        self._image = image
+        self.completionHandler = completionHandler
+    }
+    
     /// Image Oicker Coordinator
     class Coordinator: NSObject, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
         
         /// Image picker
         let parent: ImagePicker
         
-        init(_ parent: ImagePicker) {
+        /// Completion handler
+        let completionHandler: ((UIImage) -> ())?
+        
+        init(_ parent: ImagePicker, completionHandler: ((UIImage) -> ())?) {
             self.parent = parent
+            self.completionHandler = completionHandler
         }
         
         /// delegation function
         func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
             if let uiImage = info[.originalImage] as? UIImage {
                 parent.image = uiImage
+                if let completionHandler = completionHandler { completionHandler(uiImage) }
             }
             parent.presentationMode.wrappedValue.dismiss()
         }
@@ -114,7 +127,7 @@ struct ImagePicker: UIViewControllerRepresentable {
     
     /// make coordinator
     func makeCoordinator() -> Coordinator {
-        Coordinator(self)
+        Coordinator(self, completionHandler: completionHandler)
     }
     
     /// make controller

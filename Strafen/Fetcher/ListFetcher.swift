@@ -17,10 +17,10 @@ struct ListFetcher {
     private init() {}
     
     /// Fetches the  list and execute the completionHandler if no error appear.
-    func fetch<AppType>(from url: URL? = nil, _ completionHandler: @escaping ([AppType]?) -> ()) where AppType: AppTypes {
+    func fetch<ListType>(from url: URL? = nil, _ completionHandler: @escaping ([ListType]?) -> ()) where ListType: ListTypes {
         
         // Get request
-        guard let url = url ?? AppUrls.shared[keyPath: AppType.serverListUrl] else { return completionHandler(nil) }
+        guard let url = url ?? AppUrls.shared[keyPath: ListType.serverListUrl] else { return completionHandler(nil) }
         var request = URLRequest(url: url)
         request.setValue("Basic \(AppUrls.shared.loginString)", forHTTPHeaderField: "Authorization")
         request.cachePolicy = .reloadIgnoringLocalCacheData
@@ -36,7 +36,7 @@ struct ListFetcher {
             
             // Decode Json
             let decoder = JSONDecoder()
-            let list = try? decoder.decode([AppType].self, from: data)
+            let list = try? decoder.decode([ListType].self, from: data)
             completionHandler(list)
         }.resume()
     }

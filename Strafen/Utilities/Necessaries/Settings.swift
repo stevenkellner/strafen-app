@@ -44,7 +44,7 @@ class Settings: ObservableObject {
         }
         
         /// Style of the app (default / plain)
-        enum Style: String, Codable {
+        enum Style: String, Codable, CaseIterable {
             
             /// Default style
             case `default`
@@ -163,7 +163,7 @@ class Settings: ObservableObject {
     }
     
     /// Deafulf setting for first apply
-    static let `default` = CodableSettings(appearance: .system, style: .default, person: nil)
+    static let `default` = CodableSettings(appearance: .system, style: CodableSettings.Style.allCases.randomElement()!, person: nil)
     
     /// Shared instance for singelton
     static let shared = Settings()
@@ -176,6 +176,12 @@ class Settings: ObservableObject {
         appearance = setting.appearance
         style = setting.style
         person = setting.person
+    }
+    
+    init(style: CodableSettings.Style, isCashier: Bool) {
+        appearance = .system
+        self.style = style
+        person = .init(id: UUID(), name: PersonName(firstName: "", lastName: ""), clubId: UUID(), clubName: "", isCashier: isCashier)
     }
     
     /// Apply settings

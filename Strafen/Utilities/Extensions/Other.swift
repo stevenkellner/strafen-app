@@ -116,3 +116,17 @@ extension UIImage {
         self.init(data: data)
     }
 }
+
+// Extension of Optioanl Euro to confirm to CustomStringConvertible
+extension Optional where Wrapped == Euro {
+    
+    /// Description
+    var text: String {
+        switch self {
+        case .none:
+            return ",-€"
+        case .some(let amount):
+            return amount.description
+        }
+    }
+}

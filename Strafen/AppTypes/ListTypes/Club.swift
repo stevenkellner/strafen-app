@@ -8,7 +8,7 @@
 import Foundation
 
 /// Club for decoding json list
-struct Club: AppTypes {
+struct Club: ListTypes {
     
     /// Url to list on server
     static var serverListUrl = \AppUrls.allClubs.allClubs

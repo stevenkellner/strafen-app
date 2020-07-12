@@ -11,7 +11,7 @@ import Foundation
 struct AppUrls {
     
     /// Urls of the different app types
-    struct AppTypesUrls {
+    struct ListTypesUrls {
         
         /// for person
         let person: URL
@@ -74,13 +74,13 @@ struct AppUrls {
     /// Url for the different app lists
     ///
     /// nil if no person logged in
-    var appTypesUrls: AppTypesUrls? {
+    var listTypesUrls: ListTypesUrls? {
         guard let loggedInPerson = Settings.shared.person else { return nil }
         let baseUrl = URL(string: codableAppUrls.baseUrl)!.appendingPathComponent("clubs").appendingPathComponent(loggedInPerson.clubId.uuidString)
         let personUrl = baseUrl.appendingPathComponent(codableAppUrls.lists.person)
         let fineUrl = baseUrl.appendingPathComponent(codableAppUrls.lists.fine)
         let reasonUrl = baseUrl.appendingPathComponent(codableAppUrls.lists.reason)
-        return AppTypesUrls(person: personUrl, fine: fineUrl, reason: reasonUrl)
+        return ListTypesUrls(person: personUrl, fine: fineUrl, reason: reasonUrl)
     }
     
     /// Url of person list of given clubId
