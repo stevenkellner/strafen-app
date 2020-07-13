@@ -90,7 +90,7 @@ struct ProfileDetail: View {
                         }
                     
                 }.frame(height: 100)
-                    .padding(.top, 40)
+                    .padding(.top, 35)
                 
                 // Name
                 HStack {
@@ -237,20 +237,18 @@ struct ProfileDetail: View {
                 }.padding(.top, 5)
                 
                 // Fine list
-                if let fineList = fineListData.list {
-                    ScrollView(showsIndicators: false) {
-                        VStack(spacing: 15) {
-                            ForEach(fineList.filter({ $0.personId == settings.person!.id }).sorted(by: \.wrappedReason.localizedUppercase)) { fine in
-                                Text(fine.wrappedReason)
-//                                NavigationLink(destination: TODO
-//                                    // PersonFineDetail(personName: self.settings.person!.name, fine: fine, dismissHandler: self.$dismissHandler)
-//                                ) {
-//                                    // PersonDetailRow(fine: fine)
-//                                }.buttonStyle(PlainButtonStyle())
-                            }
-                        }.padding(.vertical, 20)
-                    }.padding(.top, 5)
-                }
+                ScrollView(showsIndicators: false) {
+                    LazyVStack(spacing: 15) {
+                        ForEach(fineListData.list!.filter({ $0.personId == settings.person!.id }).sorted(by: \.wrappedReason.localizedUppercase)) { fine in
+                            Text(fine.wrappedReason)
+//                            NavigationLink(destination: TODO
+//                                // PersonFineDetail(personName: self.settings.person!.name, fine: fine, dismissHandler: self.$dismissHandler)
+//                            ) {
+//                                // PersonDetailRow(fine: fine)
+//                            }.buttonStyle(PlainButtonStyle())
+                        }
+                    }.padding(.vertical, 20)
+                }.padding(.top, 5)
                 
                 Spacer()
             }.navigationBarTitle("Title")

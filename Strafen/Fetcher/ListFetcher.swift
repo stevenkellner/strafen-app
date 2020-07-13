@@ -23,7 +23,7 @@ struct ListFetcher {
         guard let url = url ?? AppUrls.shared[keyPath: ListType.serverListUrl] else { return completionHandler(nil) }
         var request = URLRequest(url: url)
         request.setValue("Basic \(AppUrls.shared.loginString)", forHTTPHeaderField: "Authorization")
-        request.cachePolicy = .reloadIgnoringLocalCacheData
+        request.cachePolicy = .reloadIgnoringLocalAndRemoteCacheData
         
         // Execute data task to fetch data from Url.
         URLSession.shared.dataTask(with: request) { data, _, error in

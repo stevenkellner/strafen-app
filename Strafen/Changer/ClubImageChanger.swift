@@ -77,7 +77,7 @@ struct ClubImageChanger {
         // Url request
         var request = URLRequest(url: AppUrls.shared.changer.clubImage)
         request.httpMethod = "POST"
-        request.cachePolicy = .reloadIgnoringLocalCacheData
+        request.cachePolicy = .reloadIgnoringLocalAndRemoteCacheData
         request.setValue("Basic \(AppUrls.shared.loginString)", forHTTPHeaderField: "Authorization")
         
         // Set boundary

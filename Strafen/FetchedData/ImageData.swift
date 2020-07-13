@@ -27,14 +27,17 @@ class ImageData: ObservableObject {
     private init() {}
     
     /// All person images
-    @Published var personImage = [PersonImage]()
+    @Published var personImage = [PersonImage]() // TODO max memory
     
     /// Fetch Image from server
     func fetch(from clubUrl: URL? = nil, of personId: UUID, completionHandler: @escaping (UIImage) -> ()) {
         
         // Check if person image has already been loaded
         if let image = personImage.first(where: { $0.personId == personId })?.image {
-            return completionHandler(image)
+            DispatchQueue.global(qos: .background).async {
+                completionHandler(image)
+            }
+            return
         }
         
         // Fetch image

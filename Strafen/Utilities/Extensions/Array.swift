@@ -11,7 +11,7 @@ import Foundation
 extension Array where Element == Fine {
     
     /// Payed amount sum of given person
-    func payedAmountSum(of personId: UUID) -> Euro? {
+    func payedAmountSum(of personId: UUID) -> Euro {
         filter {
             $0.personId == personId && $0.payed == .payed
         }.reduce(Euro.zero) { result, fine in
@@ -20,7 +20,7 @@ extension Array where Element == Fine {
     }
     
     /// Unpayed amount sum of given person
-    func unpayedAmountSum(of personId: UUID) -> Euro? {
+    func unpayedAmountSum(of personId: UUID) -> Euro {
         filter {
             $0.personId == personId && $0.payed == .unpayed
         }.reduce(Euro.zero) { result, fine in
@@ -29,7 +29,7 @@ extension Array where Element == Fine {
     }
     
     /// Total amount sum of given person
-    func totalAmountSum(of personId: UUID) -> Euro? {
+    func totalAmountSum(of personId: UUID) -> Euro {
         filter {
             $0.personId == personId
         }.reduce(Euro.zero) { result, fine in

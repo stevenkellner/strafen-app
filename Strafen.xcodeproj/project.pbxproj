@@ -29,6 +29,9 @@
 		B042D43924BB1DDD0029F2D5 /* Fine.swift in Sources */ = {isa = PBXBuildFile; fileRef = B042D43824BB1DDD0029F2D5 /* Fine.swift */; };
 		B042D43B24BB27EF0029F2D5 /* FormattedDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B042D43A24BB27EF0029F2D5 /* FormattedDate.swift */; };
 		B042D43D24BB2BBD0029F2D5 /* Array.swift in Sources */ = {isa = PBXBuildFile; fileRef = B042D43C24BB2BBD0029F2D5 /* Array.swift */; };
+		B042D44024BB5B420029F2D5 /* PersonList.swift in Sources */ = {isa = PBXBuildFile; fileRef = B042D43F24BB5B420029F2D5 /* PersonList.swift */; };
+		B042D44224BB61810029F2D5 /* SearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B042D44124BB61810029F2D5 /* SearchBar.swift */; };
+		B042D44524BCD80C0029F2D5 /* PersonDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = B042D44424BCD80B0029F2D5 /* PersonDetail.swift */; };
 		B0A385B024ABC21C00628038 /* SignInEMailValidationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0A385AF24ABC21C00628038 /* SignInEMailValidationView.swift */; };
 		B0B4822024A8D46B00CB7A1A /* Header.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0B4821F24A8D46B00CB7A1A /* Header.swift */; };
 		B0B4822224A8D61300CB7A1A /* CustomTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0B4822124A8D61300CB7A1A /* CustomTextField.swift */; };
@@ -102,6 +105,9 @@
 		B042D43824BB1DDD0029F2D5 /* Fine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fine.swift; sourceTree = "<group>"; };
 		B042D43A24BB27EF0029F2D5 /* FormattedDate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormattedDate.swift; sourceTree = "<group>"; };
 		B042D43C24BB2BBD0029F2D5 /* Array.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Array.swift; sourceTree = "<group>"; };
+		B042D43F24BB5B420029F2D5 /* PersonList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonList.swift; sourceTree = "<group>"; };
+		B042D44124BB61810029F2D5 /* SearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBar.swift; sourceTree = "<group>"; };
+		B042D44424BCD80B0029F2D5 /* PersonDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonDetail.swift; sourceTree = "<group>"; };
 		B0A385AF24ABC21C00628038 /* SignInEMailValidationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInEMailValidationView.swift; sourceTree = "<group>"; };
 		B0B4821F24A8D46B00CB7A1A /* Header.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Header.swift; sourceTree = "<group>"; };
 		B0B4822124A8D61300CB7A1A /* CustomTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextField.swift; sourceTree = "<group>"; };
@@ -226,6 +232,23 @@
 			path = ProfileDetail;
 			sourceTree = "<group>";
 		};
+		B042D43E24BB5B290029F2D5 /* PersonList */ = {
+			isa = PBXGroup;
+			children = (
+				B042D43F24BB5B420029F2D5 /* PersonList.swift */,
+				B042D44324BCD7FD0029F2D5 /* PersonDetail */,
+			);
+			path = PersonList;
+			sourceTree = "<group>";
+		};
+		B042D44324BCD7FD0029F2D5 /* PersonDetail */ = {
+			isa = PBXGroup;
+			children = (
+				B042D44424BCD80B0029F2D5 /* PersonDetail.swift */,
+			);
+			path = PersonDetail;
+			sourceTree = "<group>";
+		};
 		B0B799CD24ACE9EF0027727E /* Changer */ = {
 			isa = PBXGroup;
 			children = (
@@ -290,6 +313,7 @@
 				B0B799CB24ACA1990027727E /* ImageSelector.swift */,
 				B020C7C124B0B9D0008940FE /* PersonRowImage.swift */,
 				B042D42F24BA42EB0029F2D5 /* TabBar.swift */,
+				B042D44124BB61810029F2D5 /* SearchBar.swift */,
 			);
 			path = HelpfulViews;
 			sourceTree = "<group>";
@@ -299,6 +323,7 @@
 			children = (
 				B0D3440024A92612003C8831 /* LoginView */,
 				B042D43124BB19CC0029F2D5 /* ProfileDetail */,
+				B042D43E24BB5B290029F2D5 /* PersonList */,
 			);
 			path = HomeViews;
 			sourceTree = "<group>";
@@ -644,6 +669,7 @@
 				B020C7C624B0C8BE008940FE /* ImageData.swift in Sources */,
 				B020C7C224B0B9D0008940FE /* PersonRowImage.swift in Sources */,
 				B042D43D24BB2BBD0029F2D5 /* Array.swift in Sources */,
+				B042D44024BB5B420029F2D5 /* PersonList.swift in Sources */,
 				B0B799D324AE64770027727E /* SignInSelectPersonView.swift in Sources */,
 				B0E0F82724A63E5800C82828 /* StrafenApp.swift in Sources */,
 				B042D42E24BA21540029F2D5 /* ListTypes.swift in Sources */,
@@ -654,6 +680,7 @@
 				B042D43524BB1B040029F2D5 /* Euro.swift in Sources */,
 				B0C1C51B24A78CC2007B584B /* Settings.swift in Sources */,
 				B042D43324BB19E10029F2D5 /* ProfileDetail.swift in Sources */,
+				B042D44524BCD80C0029F2D5 /* PersonDetail.swift in Sources */,
 				B042D43924BB1DDD0029F2D5 /* Fine.swift in Sources */,
 				B0B4822224A8D61300CB7A1A /* CustomTextField.swift in Sources */,
 				B0BE62D724AB58AE0018604C /* SignInEMailView.swift in Sources */,
@@ -666,6 +693,7 @@
 				B042D43B24BB27EF0029F2D5 /* FormattedDate.swift in Sources */,
 				B0C1C51D24A7910F007B584B /* AppUrls.swift in Sources */,
 				B020C7CC24B87653008940FE /* Club.swift in Sources */,
+				B042D44224BB61810029F2D5 /* SearchBar.swift in Sources */,
 				B020C7BA24AE744F008940FE /* ListData.swift in Sources */,
 				B020C7BE24AF1C31008940FE /* PersonLogin.swift in Sources */,
 				B042D43024BA42EB0029F2D5 /* TabBar.swift in Sources */,

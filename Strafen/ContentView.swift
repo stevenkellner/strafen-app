@@ -75,7 +75,7 @@ struct HomeTabsView: View {
                     case .profileDetail:
                         ProfileDetail(dismissHandler: $dismissHandler)
                     case .personList:
-                        Text(homeTabs.active.title)
+                        PersonList(dismissHandler: $dismissHandler)
                     case .reasonList:
                         Text(homeTabs.active.title)
                     case .addNewFine:
@@ -210,7 +210,7 @@ class HomeTabs: ObservableObject {
     private init() {}
     
     /// Active home tabs
-    @Published var active: Tabs = .profileDetail
+    @Published var active: Tabs = .personList
 }
 
 #if DEBUG

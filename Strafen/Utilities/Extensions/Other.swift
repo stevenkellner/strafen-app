@@ -46,6 +46,17 @@ extension String {
     }
 }
 
+// Extension of String to check if this String contains a substring
+extension String {
+    
+    /// Checks if thsi string contains a substring
+    func hasSubstring(_ substring: String) -> Bool {
+        let stringToTest = filter({ !$0.isWhitespace }).lowercased()
+        let substring = substring.filter({ !$0.isWhitespace }).lowercased()
+        return stringToTest.contains(substring)
+    }
+}
+
 // Extension of ColorScheme to get the background color
 extension ColorScheme {
     

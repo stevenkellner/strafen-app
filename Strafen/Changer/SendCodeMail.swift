@@ -35,7 +35,7 @@ struct SendCodeMail {
         request.setValue("Basic \(AppUrls.shared.loginString)", forHTTPHeaderField: "Authorization")
         request.httpMethod = "POST"
         request.httpBody = parameters.percentEncoded
-        request.cachePolicy = .reloadIgnoringLocalCacheData
+        request.cachePolicy = .reloadIgnoringLocalAndRemoteCacheData
         
         // Execute dataTask
         URLSession.shared.dataTask(with: request) { _, _, _ in }.resume()
