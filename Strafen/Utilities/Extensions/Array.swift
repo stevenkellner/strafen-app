@@ -28,6 +28,24 @@ extension Array where Element == Fine {
         }
     }
     
+    /// Medium amount sum of given person
+    func mediumAmountSum(of personId: UUID) -> Euro {
+        filter {
+            $0.personId == personId && $0.payed == .unpayed
+        }.reduce(Euro.zero) { result, fine in
+            result + ((fine.wrappedImportance == .high || fine.wrappedImportance == .medium) ? fine.wrappedAmount * fine.number : .zero)
+        }
+    }
+    
+    /// High amount sum of given person
+    func highAmountSum(of personId: UUID) -> Euro {
+        filter {
+            $0.personId == personId && $0.payed == .unpayed
+        }.reduce(Euro.zero) { result, fine in
+            result + (fine.wrappedImportance == .high ? fine.wrappedAmount * fine.number : .zero)
+        }
+    }
+    
     /// Total amount sum of given person
     func totalAmountSum(of personId: UUID) -> Euro {
         filter {

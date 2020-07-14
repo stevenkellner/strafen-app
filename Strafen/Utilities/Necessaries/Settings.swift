@@ -178,6 +178,7 @@ class Settings: ObservableObject {
         person = setting.person
     }
     
+    /// Only use in preview
     init(style: CodableSettings.Style, isCashier: Bool) {
         appearance = .system
         self.style = style

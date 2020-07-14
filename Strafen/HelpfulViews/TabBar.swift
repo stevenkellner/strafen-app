@@ -116,7 +116,7 @@ struct TabBar: View {
                     
                 }
             }.frame(height: 65)
-        }
+        }.background(settings.style == .plain ? colorScheme == .light ? Color.plain.lightLightGray : Color.plain.darkDarkGray : colorScheme.backgroundColor)
     }
     
     /// Content of TabBar Button

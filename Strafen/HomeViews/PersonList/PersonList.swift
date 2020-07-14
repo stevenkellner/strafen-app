@@ -32,6 +32,9 @@ struct PersonList: View {
         NavigationView {
             ZStack {
                 
+                // Background color
+                colorScheme.backgroundColor
+                
                 // Header and list
                 VStack(spacing: 0) {
                     
@@ -53,7 +56,7 @@ struct PersonList: View {
                                 } else if $1.id == settings.person!.id { return false }
                                 return $0.personName.formatted < $1.personName.formatted
                             })) { person in
-                                NavigationLink(destination: Text("PersonDetail")) { // TODO
+                                NavigationLink(destination: PersonDetail(person: person, dismissHandler: $dismissHandler)) {
                                     PersonListRow(person: person)
                                         .animation(.none)
                                 }.buttonStyle(PlainButtonStyle())
@@ -95,9 +98,9 @@ struct PersonList: View {
                     }
                 }
                 
-            }.navigationTitle("Title")
+            }.edgesIgnoringSafeArea(.all)
+                .navigationTitle("Title")
                 .navigationBarHidden(true)
-                .background(colorScheme.backgroundColor)
         }
     }
 }

@@ -141,3 +141,12 @@ extension Optional where Wrapped == Euro {
         }
     }
 }
+
+// Extension of CGSize for Multiplication with CGFloat
+extension CGSize {
+    
+    /// Multiplies by a CGFloat
+    static func *(lhs: CGFloat, rhs: CGSize) -> CGSize {
+        CGSize(width: lhs * rhs.width, height: lhs * rhs.height)
+    }
+}

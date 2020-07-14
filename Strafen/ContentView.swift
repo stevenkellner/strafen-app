@@ -14,6 +14,10 @@ struct ContentView: View {
     
     var body: some View {
         ZStack {
+            
+            // Activity View
+            ActivityView.shared
+            
             if settings.person != nil {
                 HomeTabsView()
             } else {
