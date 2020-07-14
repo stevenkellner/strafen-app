@@ -87,7 +87,7 @@ struct HomeTabsView: View {
                     case .notes:
                         Text(homeTabs.active.title)
                     case .settings:
-                        Text(homeTabs.active.title)
+                        SettingsView()
                     }
                     
                 }.background(colorScheme.backgroundColor)

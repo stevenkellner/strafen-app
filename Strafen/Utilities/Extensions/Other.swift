@@ -150,3 +150,15 @@ extension CGSize {
         CGSize(width: lhs * rhs.width, height: lhs * rhs.height)
     }
 }
+
+// Extension for path to make it intuitive
+extension Path {
+    
+    /// Add arc starting on top
+    mutating func addArc(center: CGPoint,_ radius: CGFloat, startAngle: Angle, endAngle: Angle, clockwise: Bool) {
+        let rotationAdjustment = Angle.degrees(90)
+        let modifiedStart = startAngle - rotationAdjustment
+        let modifiedEnd = endAngle - rotationAdjustment
+        addArc(center: center, radius: radius, startAngle: modifiedStart, endAngle: modifiedEnd, clockwise: clockwise)
+    }
+}

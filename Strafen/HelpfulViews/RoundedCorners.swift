@@ -221,6 +221,9 @@ struct Outline: View {
     /// Set of rounded corners
     let cornerSet: RoundedCorners.CornerSet
     
+    /// Set fill color only in default style
+    private var onlyDefault = true
+    
     /// Fill Color of the Outline
     private var fillColor: Color? = nil
     
@@ -238,14 +241,15 @@ struct Outline: View {
         RoundedCorners(cornerSet)
             .radius(settings.style.radius)
             .lineWidth(settings.style.lineWidth)
-            .fillColor(settings.style.fillColor(colorScheme, defaultStyle: fillColor))
+            .fillColor(onlyDefault ? settings.style.fillColor(colorScheme, defaultStyle: fillColor) : fillColor!)
             .strokeColor(settings.style.strokeColor(colorScheme))
     }
     
     /// Set fill color
-    func fillColor(_ fillColor: Color) -> Outline {
+    func fillColor(_ fillColor: Color, onlyDefault: Bool = true) -> Outline {
         var outline = self
         outline.fillColor = fillColor
+        outline.onlyDefault = onlyDefault
         return outline
     }
 }
