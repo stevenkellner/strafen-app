@@ -81,7 +81,7 @@ struct HomeTabsView: View {
                     case .personList:
                         PersonList(dismissHandler: $dismissHandler)
                     case .reasonList:
-                        Text(homeTabs.active.title)
+                        ReasonList()
                     case .addNewFine:
                         Text(homeTabs.active.title)
                     case .notes:
@@ -214,7 +214,7 @@ class HomeTabs: ObservableObject {
     private init() {}
     
     /// Active home tabs
-    @Published var active: Tabs = .personList
+    @Published var active: Tabs = .reasonList
 }
 
 #if DEBUG

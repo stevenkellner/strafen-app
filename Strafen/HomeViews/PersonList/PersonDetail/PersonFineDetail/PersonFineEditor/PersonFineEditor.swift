@@ -214,7 +214,7 @@ struct PersonFineEditor: View {
                     } else if amount == .zero {
                         return Alert(title: Text("Betrag ist Null"), message: Text("Bitte gebe einen Bertag ein, der nicht gleich Null ist."), dismissButton: .default(Text("Verstanden")))
                     }
-                    return Alert(title: Text(""), message: Text(""), primaryButton: .destructive(Text("Abbrechen")), secondaryButton: .default(Text("Bestätigen"), action: {
+                    return Alert(title: Text("Strafe Ändern"), message: Text("Möchtest du diese Strafe wirklich ändern?"), primaryButton: .destructive(Text("Abbrechen")), secondaryButton: .default(Text("Bestätigen"), action: {
                         var editedFine = Fine(personId: fine.personId, date: FormattedDate(date: date), reason: reason, amount: amount, payed: fine.payed, number: number, importance: importance, id: fine.id, templateId: nil)
                         if let templateId = templateId {
                             if let template = ListData.reason.list?.first(where: { $0.id == templateId }) {

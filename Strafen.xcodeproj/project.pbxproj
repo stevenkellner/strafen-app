@@ -42,6 +42,9 @@
 		B0619C0424C186FC008969A1 /* PersonFineTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0619C0324C186FC008969A1 /* PersonFineTemplate.swift */; };
 		B0619C0824C1CAB9008969A1 /* CustomDatePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0619C0724C1CAB9008969A1 /* CustomDatePicker.swift */; };
 		B0619C0A24C1E62C008969A1 /* PersonFineAdvanced.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0619C0924C1E62C008969A1 /* PersonFineAdvanced.swift */; };
+		B0619C0D24C20C4B008969A1 /* ReasonList.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0619C0C24C20C4B008969A1 /* ReasonList.swift */; };
+		B0619C0F24C20EAA008969A1 /* ReasonAddNew.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0619C0E24C20EAA008969A1 /* ReasonAddNew.swift */; };
+		B0619C1124C21463008969A1 /* ReasonEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0619C1024C21463008969A1 /* ReasonEditor.swift */; };
 		B07938D624BEF4C300F86E86 /* PersonFineDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = B07938D524BEF4C300F86E86 /* PersonFineDetail.swift */; };
 		B07938D824BF037900F86E86 /* PersonAddNew.swift in Sources */ = {isa = PBXBuildFile; fileRef = B07938D724BF037900F86E86 /* PersonAddNew.swift */; };
 		B0A385B024ABC21C00628038 /* SignInEMailValidationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0A385AF24ABC21C00628038 /* SignInEMailValidationView.swift */; };
@@ -130,6 +133,9 @@
 		B0619C0324C186FC008969A1 /* PersonFineTemplate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonFineTemplate.swift; sourceTree = "<group>"; };
 		B0619C0724C1CAB9008969A1 /* CustomDatePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDatePicker.swift; sourceTree = "<group>"; };
 		B0619C0924C1E62C008969A1 /* PersonFineAdvanced.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonFineAdvanced.swift; sourceTree = "<group>"; };
+		B0619C0C24C20C4B008969A1 /* ReasonList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReasonList.swift; sourceTree = "<group>"; };
+		B0619C0E24C20EAA008969A1 /* ReasonAddNew.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReasonAddNew.swift; sourceTree = "<group>"; };
+		B0619C1024C21463008969A1 /* ReasonEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReasonEditor.swift; sourceTree = "<group>"; };
 		B07938D524BEF4C300F86E86 /* PersonFineDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonFineDetail.swift; sourceTree = "<group>"; };
 		B07938D724BF037900F86E86 /* PersonAddNew.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonAddNew.swift; sourceTree = "<group>"; };
 		B0A385AF24ABC21C00628038 /* SignInEMailValidationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInEMailValidationView.swift; sourceTree = "<group>"; };
@@ -294,6 +300,16 @@
 			path = PersonFineEditor;
 			sourceTree = "<group>";
 		};
+		B0619C0B24C20C3A008969A1 /* ReasonList */ = {
+			isa = PBXGroup;
+			children = (
+				B0619C0C24C20C4B008969A1 /* ReasonList.swift */,
+				B0619C0E24C20EAA008969A1 /* ReasonAddNew.swift */,
+				B0619C1024C21463008969A1 /* ReasonEditor.swift */,
+			);
+			path = ReasonList;
+			sourceTree = "<group>";
+		};
 		B07938D424BEF4AF00F86E86 /* PersonFineDetail */ = {
 			isa = PBXGroup;
 			children = (
@@ -383,6 +399,7 @@
 				B0D3440024A92612003C8831 /* LoginView */,
 				B042D43124BB19CC0029F2D5 /* ProfileDetail */,
 				B042D43E24BB5B290029F2D5 /* PersonList */,
+				B0619C0B24C20C3A008969A1 /* ReasonList */,
 				B02B891324BDFD93004562B9 /* Settings */,
 			);
 			path = HomeViews;
@@ -751,10 +768,12 @@
 				B042D44524BCD80C0029F2D5 /* PersonDetail.swift in Sources */,
 				B0619C0824C1CAB9008969A1 /* CustomDatePicker.swift in Sources */,
 				B042D43924BB1DDD0029F2D5 /* Fine.swift in Sources */,
+				B0619C0F24C20EAA008969A1 /* ReasonAddNew.swift in Sources */,
 				B0B4822224A8D61300CB7A1A /* CustomTextField.swift in Sources */,
 				B0619BFE24C0B999008969A1 /* PersonFineEditor.swift in Sources */,
 				B0BE62D724AB58AE0018604C /* SignInEMailView.swift in Sources */,
 				B020C7C024AF7CC6008940FE /* Person.swift in Sources */,
+				B0619C0D24C20C4B008969A1 /* ReasonList.swift in Sources */,
 				B0C1C52524A8BC14007B584B /* RoundedCorners.swift in Sources */,
 				B0BE62D524AB50FF0018604C /* SignInView.swift in Sources */,
 				B0C1C52724A8BEE6007B584B /* Other.swift in Sources */,
@@ -762,6 +781,7 @@
 				B0B799CA24AC96560027727E /* SignInNewClubView.swift in Sources */,
 				B042D43B24BB27EF0029F2D5 /* FormattedDate.swift in Sources */,
 				B0619C0424C186FC008969A1 /* PersonFineTemplate.swift in Sources */,
+				B0619C1124C21463008969A1 /* ReasonEditor.swift in Sources */,
 				B0C1C51D24A7910F007B584B /* AppUrls.swift in Sources */,
 				B020C7CC24B87653008940FE /* Club.swift in Sources */,
 				B042D44224BB61810029F2D5 /* SearchBar.swift in Sources */,
