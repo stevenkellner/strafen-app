@@ -8,7 +8,7 @@
 import SwiftUI
 
 /// Contains all data of a fine
-struct Fine: Identifiable, ListTypes {
+struct Fine: Identifiable, Equatable, ListTypes {
     
     /// Url to list on server
     static let serverListUrl = \AppUrls.listTypesUrls?.fine

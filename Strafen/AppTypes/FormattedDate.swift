@@ -8,10 +8,10 @@
 import Foundation
 
 /// Date with formatted Style
-struct FormattedDate: Decodable {
+struct FormattedDate: Decodable, Equatable {
     
     /// Raw date
-    private let date: Date
+    let date: Date
     
     /// Error for decoding json
     enum CodingError: Error {
@@ -19,6 +19,18 @@ struct FormattedDate: Decodable {
         /// Error for unknown string value
         case unknownStringValue
     }
+        
+    /// Long format, only date, no time
+    var formattedDate: String {
+        let formatter = DateFormatter()
+        formatter.setLocalizedDateFormatFromTemplate("dMMMMyyyy")
+        formatter.locale = Locale(identifier: "de")
+        return formatter.string(from: date)
+    }
+}
+
+// Extension for FormattedDate for init from decoder
+extension FormattedDate {
     
     /// Init from decoder
     init(from decoder: Decoder) throws {

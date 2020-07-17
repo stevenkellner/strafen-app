@@ -74,7 +74,9 @@ struct SignInNewClubView: View {
                     VStack(spacing: 0) {
                         
                         // Image
-                        ImageSelector(image: $image).padding(.top, 35)
+                        ImageSelector(image: $image)
+                            .frame(width: 150, height: 150)
+                            .padding(.top, 35)
                         
                         // Club name
                         VStack(spacing: 0) {

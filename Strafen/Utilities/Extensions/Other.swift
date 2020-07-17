@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import CryptoSwift
 
 // Extension of Font for custom Text Font
 extension Font {
@@ -14,46 +13,6 @@ extension Font {
     /// Custom text font of Futura-Medium
     static func text(_ size: CGFloat) -> Font {
         .custom("Futura-Medium", size: size)
-    }
-}
-
-// Extension of String to validate if string is an email
-extension String {
-    
-    /// Check if string is valid emial
-    var isValidEmail: Bool {
-        let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
-        let emailPred = NSPredicate(format:"SELF MATCHES %@", emailRegEx)
-        return emailPred.evaluate(with: self)
-    }
-}
-
-// Extension of String to de- / encrypt it
-extension String {
-    
-    /// Encrypted String with base 64 cipher
-    var encrypted: String {
-        let base64cipher = try! Rabbit(key: AppUrls.shared.cipherKey)
-        return try! encryptToBase64(cipher: base64cipher)!
-    }
-    
-    /// Encrypted String with base 64 cipher
-    ///
-    /// nil if error in decrypting
-    var decrypted: String? {
-        let base64cipher = try! Rabbit(key: AppUrls.shared.cipherKey)
-        return try? decryptBase64ToString(cipher: base64cipher)
-    }
-}
-
-// Extension of String to check if this String contains a substring
-extension String {
-    
-    /// Checks if thsi string contains a substring
-    func hasSubstring(_ substring: String) -> Bool {
-        let stringToTest = filter({ !$0.isWhitespace }).lowercased()
-        let substring = substring.filter({ !$0.isWhitespace }).lowercased()
-        return stringToTest.contains(substring)
     }
 }
 
@@ -151,7 +110,7 @@ extension CGSize {
     }
 }
 
-// Extension for path to make it intuitive
+// Extension of path to make it intuitive
 extension Path {
     
     /// Add arc starting on top

@@ -16,68 +16,74 @@ struct ImageSelector: View {
     /// Indicate if image picker is shown
     @State var showImagePicker = false
     
+    /// Observed Object that contains all settings of the app of this device
+    @ObservedObject var settings = Settings.shared
+    
     var body: some View {
-        HStack(spacing: 0) {
-            
-            // image
-            VStack(spacing: 0) {
+        GeometryReader { geometry in
+            HStack(spacing: 0) {
                 
-                // Image
-                if let inputImage = image {
-                    Image(uiImage: inputImage)
-                        .resizable()
-                        .aspectRatio(inputImage.size, contentMode: .fill)
-                        .frame(width: 150, height: 150)
-                        .clipShape(Circle())
-                        .overlay(
-                            Circle()
-                                .stroke(Color.custom.gray, lineWidth: 4)
-                                .frame(width: 150, height: 150)
-                        )
-                        .frame(width: 150, height: 150)
+                // image
+                VStack(spacing: 0) {
                     
-                // No image
-                } else {
-                    Image(systemName: "person")
-                        .resizable()
-                        .font(.system(size: 90, weight: .thin))
-                        .frame(width: 90, height: 90)
-                        .scaledToFit()
-                        .offset(y: -6)
-                        .foregroundColor(Color.custom.gray)
-                        .overlay(
-                            Circle()
-                                .stroke(Color.custom.gray, lineWidth: 4)
-                                .frame(width: 150, height: 150)
-                        )
-                        .frame(width: 150, height: 150)
-                }
-                
-                // Change image text
-                Text("Bild ändern")
-                    .foregroundColor(Color.custom.gray)
-                    .font(.custom("Futura-Medium", size: 20))
-                    .lineLimit(1)
-                    .padding(.top, 5)
-                
-            }.onTapGesture {
-                    showImagePicker = true
-                }
-                .sheet(isPresented: self.$showImagePicker) {
-                    ImagePicker($image)
-                }
-            
-            // remove image button
-            if image != nil {
-                Image(systemName: "xmark.circle")
-                    .foregroundColor(Color.custom.red)
-                    .font(.system(size: 50, weight: .light))
-                    .padding(.leading, 15)
-                    .onTapGesture {
-                        withAnimation {
-                            image = nil
-                        }
+                    // Image
+                    if let inputImage = image {
+                        Image(uiImage: inputImage)
+                            .resizable()
+                            .aspectRatio(inputImage.size, contentMode: .fill)
+                            .frame(width: geometry.size.width, height: geometry.size.height)
+                            .clipShape(Circle())
+                            .overlay(
+                                Circle()
+                                    .stroke(Color.custom.gray, lineWidth: settings.style == .default ? 4 : 2)
+                                    .frame(width: geometry.size.width, height: geometry.size.height)
+                            )
+                            .frame(width: geometry.size.width, height: geometry.size.height)
+                        
+                    // No image
+                    } else {
+                        Image(systemName: "person")
+                            .resizable()
+                            .font(.system(size: geometry.size.width * 0.6, weight: settings.style == .default ? .thin : .ultraLight))
+                            .frame(width: geometry.size.width * 0.6, height: geometry.size.height * 0.6)
+                            .scaledToFit()
+                            .offset(y: -6)
+                            .foregroundColor(Color.custom.gray)
+                            .overlay(
+                                Circle()
+                                    .stroke(Color.custom.gray, lineWidth: settings.style == .default ? 4 : 2)
+                                    .frame(width: geometry.size.width, height: geometry.size.height)
+                            )
+                            .frame(width: geometry.size.width, height: geometry.size.height)
                     }
+                    
+                    // Change image text
+                    Text("Bild ändern")
+                        .foregroundColor(Color.custom.gray)
+                        .font(.custom("Futura-Medium", size: geometry.size.width / 7.5))
+                        .frame(width: geometry.size.width)
+                        .lineLimit(1)
+                        .padding(.top, 5)
+                    
+                }.onTapGesture {
+                        showImagePicker = true
+                    }
+                    .sheet(isPresented: self.$showImagePicker) {
+                        ImagePicker($image)
+                    }
+                
+                // remove image button
+                if image != nil {
+                    Image(systemName: "xmark.circle")
+                        .foregroundColor(Color.custom.red)
+                        .font(.system(size: geometry.size.width / 3, weight: settings.style == .default ? .light : .thin))
+                        .padding(.leading, geometry.size.width / 10)
+                        .onTapGesture {
+                            withAnimation {
+                                image = nil
+                            }
+                        }
+                }
             }
             
         }

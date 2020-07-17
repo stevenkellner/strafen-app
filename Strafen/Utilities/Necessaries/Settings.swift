@@ -116,7 +116,7 @@ class Settings: ObservableObject {
             let clubName: String
             
             /// True if person is cashier of the club
-            let isCashier: Bool
+            var isCashier: Bool
         }
         
         /// Appearance of the app (light / dark / system)

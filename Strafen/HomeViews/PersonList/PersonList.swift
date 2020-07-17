@@ -92,7 +92,7 @@ struct PersonList: View {
                                     isAddNewPersonSheetShown = true
                                 }
                                 .sheet(isPresented: $isAddNewPersonSheetShown) {
-                                    // PersonAddNew() TODO
+                                    PersonAddNew()
                                 }
                         }
                     }

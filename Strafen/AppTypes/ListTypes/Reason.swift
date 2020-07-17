@@ -8,7 +8,7 @@
 import Foundation
 
 /// Contains all data of a reason
-struct Reason: ListTypes {
+struct Reason: ListTypes, Identifiable {
     
     /// Url to list on server
     static let serverListUrl = \AppUrls.listTypesUrls?.reason

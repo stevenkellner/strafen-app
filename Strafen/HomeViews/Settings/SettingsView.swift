@@ -6,9 +6,14 @@
 //
 
 import SwiftUI
+import AVFoundation
 
 /// Setting View
 struct SettingsView: View {
+    
+    /// Observed Object that contains all settings of the app of this device
+    @ObservedObject var settings = Settings.shared
+    
     var body: some View {
         VStack(spacing: 0) {
             
@@ -16,15 +21,68 @@ struct SettingsView: View {
             Header("Einstellungen")
                 .padding(.top, 50)
             
-            // Club id TODO
+            // Club id title
+            HStack(spacing: 0) {
+                Text("Dein Vereinscode:")
+                    .foregroundColor(.textColor)
+                    .font(.text(20))
+                    .padding(.leading, 10)
+                Spacer()
+            }.padding(.top, 30)
+            
+            // Club id
+            HStack(spacing: 0) {
+                Spacer()
+                
+                // Id
+                Text(settings.person!.clubId.uuidString)
+                    .foregroundColor(.orange)
+                    .font(.text(17))
+                    .multilineTextAlignment(.center)
+                    .padding(.horizontal, 15)
+                
+                Spacer()
+                
+                // Copy Button
+                Button {
+                    UIPasteboard.general.string = settings.person!.clubId.uuidString
+                    AudioServicesPlaySystemSoundWithCompletion(kSystemSoundID_Vibrate, nil)
+                    
+                } label: {
+                    Image(systemName: "doc.on.doc")
+                        .font(.system(size: 25, weight: .light))
+                        .foregroundColor(.textColor)
+                }.padding(.trailing, 15)
+                
+                Spacer()
+            }.padding(.top, 5)
 
             // Apearance Changer
             AppearanceChanger()
-                .padding(.top, 30)
+                .padding(.top, 20)
 
             // Style Changer
             StyleChanger()
                 .padding(.top, 30)
+            
+            HStack(spacing: 30) {
+                Text("Kassier")
+                    .font(.text(20))
+                    .foregroundColor(.textColor)
+                    .onTapGesture {
+                        var person = settings.person
+                        person?.isCashier = true
+                        settings.person = person
+                    }
+                Text("Kein Kassier")
+                    .font(.text(20))
+                    .foregroundColor(.textColor)
+                    .onTapGesture {
+                        var person = settings.person
+                        person?.isCashier = false
+                        settings.person = person
+                    }
+            }.padding(.top, 30)
             
             // Log Out TODO
             

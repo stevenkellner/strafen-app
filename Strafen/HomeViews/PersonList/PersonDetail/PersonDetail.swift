@@ -69,7 +69,7 @@ struct PersonDetail: View {
                                 isEditSheetPresented = true
                             }
                             .sheet(isPresented: $isEditSheetPresented) {
-                                // PersonEditor(person: self.person) TODO
+                                PersonEditor(person: person)
                             }
                     }
                 }
@@ -114,7 +114,7 @@ struct PersonDetail: View {
                 ScrollView(showsIndicators: false) {
                     LazyVStack(spacing: 15) {
                         ForEach(fineListData.list!.filter({ $0.personId == person.id }).sorted(by: \.wrappedReason.localizedUppercase)) { fine in
-                            NavigationLink(destination: Text(fine.wrappedReason)) { // TODO
+                            NavigationLink(destination: PersonFineDetail(personName: person.personName, fine: fine, dismissHandler: $dismissHandler)) {
                                 PersonDetailRow(fine: fine)
                             }.buttonStyle(PlainButtonStyle())
                         }
