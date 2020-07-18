@@ -140,7 +140,7 @@ struct PersonFineDetail: View {
                 }
                 
                 // Date
-                Text(fine.date.formattedDate)
+                Text(fine.date.formatted)
                     .foregroundColor(.textColor)
                     .font(.text(25))
                     .padding(.horizontal, 25)

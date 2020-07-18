@@ -83,7 +83,7 @@ struct HomeTabsView: View {
                     case .reasonList:
                         ReasonList()
                     case .addNewFine:
-                        Text(homeTabs.active.title)
+                        AddNewFine()
                     case .notes:
                         Text(homeTabs.active.title)
                     case .settings:
@@ -214,7 +214,7 @@ class HomeTabs: ObservableObject {
     private init() {}
     
     /// Active home tabs
-    @Published var active: Tabs = .reasonList
+    @Published var active: Tabs = .addNewFine
 }
 
 #if DEBUG

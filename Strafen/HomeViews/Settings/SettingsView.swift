@@ -19,7 +19,7 @@ struct SettingsView: View {
             
             // Header
             Header("Einstellungen")
-                .padding(.top, 50)
+                .padding(.top, 35)
             
             // Club id title
             HStack(spacing: 0) {

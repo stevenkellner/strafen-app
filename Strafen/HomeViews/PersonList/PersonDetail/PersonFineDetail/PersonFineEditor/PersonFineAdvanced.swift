@@ -43,6 +43,7 @@ struct PersonFineAdvanced: View {
                 
                 // Date picker
                 CustomDatePicker(date: $date)
+                    .style(.inline)
                     .frame(width: 345, height: 345)
                     .padding(.top, 15)
                 

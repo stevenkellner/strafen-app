@@ -115,6 +115,9 @@ struct Fine: Identifiable, Equatable, ListTypes {
     /// Id of the template if it's from a template
     var templateId: UUID?
     
+    /// Wrapped reason
+    ///
+    /// Use it only if reason list is fetched
     var wrappedReason: String {
         if let template = ListData.reason.list!.first(where: { $0.id == templateId }) {
             return template.reason
@@ -123,6 +126,9 @@ struct Fine: Identifiable, Equatable, ListTypes {
         }
     }
     
+    /// Wrapped amount
+    ///
+    /// Use it only if reason list is fetched
     var wrappedAmount: Euro {
         if let template = ListData.reason.list!.first(where: { $0.id == templateId }) {
             return template.amount
@@ -131,11 +137,91 @@ struct Fine: Identifiable, Equatable, ListTypes {
         }
     }
     
+    /// Wrapped importance
+    ///
+    /// Use it only if reason list is fetched
     var wrappedImportance: Importance {
         if let template = ListData.reason.list!.first(where: { $0.id == templateId }) {
             return template.importance
         } else {
             return importance!
         }
+    }
+}
+
+// Extension of Fine to init from FineReason
+extension Fine {
+    
+    /// For init from FineReason
+    init(personId: UUID, date: FormattedDate, payed: Payed, number: Int, id: UUID, fineReason: FineReason) {
+        self.personId = personId
+        self.date = date
+        self.payed = payed
+        self.number = number
+        self.id = id
+        reason = (fineReason as? FineReasonCustom)?.reason
+        amount = (fineReason as? FineReasonCustom)?.amount
+        importance = (fineReason as? FineReasonCustom)?.importance
+        templateId = (fineReason as? FineReasonTemplate)?.templateId
+    }
+}
+
+/// Protocol of fine reason for reason / amount / importance or templateId
+protocol FineReason {
+    
+    /// Reason
+    ///
+    /// Use it only if reason list is fetched
+    var reason: String { get }
+    
+    /// Amount
+    ///
+    /// Use it only if reason list is fetched
+    var amount: Euro { get }
+    
+    /// Importance
+    ///
+    /// Use it only if reason list is fetched
+    var importance: Fine.Importance { get }
+}
+
+/// Fine Reason for reason / amount / importance
+struct FineReasonCustom: FineReason {
+    
+    /// Reason
+    let reason: String
+    
+    /// Amount
+    let amount: Euro
+    
+    /// Importance
+    let importance: Fine.Importance
+}
+
+/// Fine Reason for templateId
+struct FineReasonTemplate: FineReason {
+    
+    /// Template id
+    let templateId: UUID
+    
+    /// Reason
+    ///
+    /// Use it only if reason list is fetched
+    var reason: String {
+        ListData.reason.list!.first(where: { $0.id == templateId })!.reason
+    }
+    
+    /// Amount
+    ///
+    /// Use it only if reason list is fetched
+    var amount: Euro {
+        ListData.reason.list!.first(where: { $0.id == templateId })!.amount
+    }
+    
+    /// Importance
+    ///
+    /// Use it only if reason list is fetched
+    var importance: Fine.Importance {
+        ListData.reason.list!.first(where: { $0.id == templateId })!.importance
     }
 }

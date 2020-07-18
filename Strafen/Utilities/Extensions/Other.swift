@@ -121,3 +121,12 @@ extension Path {
         addArc(center: center, radius: radius, startAngle: modifiedStart, endAngle: modifiedEnd, clockwise: clockwise)
     }
 }
+
+// Extension of Date to get formatted date
+extension Date {
+    
+    /// Formatted date struct
+    var formattedDate: FormattedDate {
+        FormattedDate(date: self)
+    }
+}

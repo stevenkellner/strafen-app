@@ -47,7 +47,7 @@ struct ReasonList: View {
                     }.padding(.bottom, 20)
                         .padding(.top, 5)
                     
-                }.padding(.top, 20)
+                }.padding(.top, 10)
                 
                 Spacer()
             }
@@ -141,7 +141,9 @@ struct ReasonListRow: View {
         }.frame(width: 345, height: 50)
             .padding(.horizontal, 1)
             .onTapGesture {
-                isEditorSheetShown = true
+                if settings.person!.isCashier {
+                    isEditorSheetShown = true
+                }
             }
             .sheet(isPresented: $isEditorSheetShown) {
                 ReasonEditor(reasonToEdit: reason)

@@ -21,7 +21,7 @@ struct FormattedDate: Decodable, Equatable {
     }
         
     /// Long format, only date, no time
-    var formattedDate: String {
+    var formatted: String {
         let formatter = DateFormatter()
         formatter.setLocalizedDateFormatFromTemplate("dMMMMyyyy")
         formatter.locale = Locale(identifier: "de")

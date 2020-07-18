@@ -13,8 +13,15 @@ struct CustomDatePicker: UIViewRepresentable {
     /// Selected date
     @Binding var date: Date
     
+    /// Date picker style
+    private var style: UIDatePickerStyle = .automatic
+    
     /// Date picker
     private let datePicker = UIDatePicker()
+    
+    init(date: Binding<Date>) {
+        _date = date
+    }
     
     /// CustomDatePicker Coordinator
     class Coordinator: NSObject {
@@ -42,7 +49,7 @@ struct CustomDatePicker: UIViewRepresentable {
         datePicker.maximumDate = Date()
         datePicker.locale = Locale(identifier: "de")
         datePicker.addTarget(context.coordinator, action: #selector(Coordinator.changed), for: .valueChanged)
-        datePicker.preferredDatePickerStyle = .inline
+        datePicker.preferredDatePickerStyle = style
         datePicker.sizeToFit()
         return datePicker
     }
@@ -50,5 +57,12 @@ struct CustomDatePicker: UIViewRepresentable {
     /// Update View
     func updateUIView(_ uiView: UIDatePicker, context: Context) {
         datePicker.date = date
+    }
+    
+    /// Date picker style
+    func style(_ style: UIDatePickerStyle) -> some View {
+        var datePicker = self
+        datePicker.style = style
+        return datePicker
     }
 }

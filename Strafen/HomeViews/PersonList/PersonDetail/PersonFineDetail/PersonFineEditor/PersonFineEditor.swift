@@ -32,7 +32,7 @@ struct PersonFineEditor: View {
     @State var amount: Euro = .zero
     
     /// Input amount string
-    @State var amountString = ""
+    @State var amountString = Euro.zero.stringValue
     
     /// Input date
     @State var date = Date()
@@ -119,7 +119,7 @@ struct PersonFineEditor: View {
             }.padding(.top, 30)
             
             // Date
-            Text("am \(FormattedDate(date: date).formattedDate)")
+            Text("am \(date.formattedDate.formatted)")
                 .font(.text(25))
                 .foregroundColor(.textColor)
                 .lineLimit(1)
@@ -190,8 +190,7 @@ struct PersonFineEditor: View {
             DeleteConfirmButton {
                 showDeleteAlert = true
             } confirmButtonHandler: {
-                print(date, number)
-                var editedFine = Fine(personId: fine.personId, date: FormattedDate(date: date), reason: reason, amount: amount, payed: fine.payed, number: number, importance: importance, id: fine.id, templateId: nil)
+                var editedFine = Fine(personId: fine.personId, date: date.formattedDate, reason: reason, amount: amount, payed: fine.payed, number: number, importance: importance, id: fine.id, templateId: nil)
                 if let templateId = templateId {
                     if let template = ListData.reason.list?.first(where: { $0.id == templateId }) {
                         if reason == template.reason && amount == template.amount && importance == template.importance {
@@ -215,7 +214,7 @@ struct PersonFineEditor: View {
                         return Alert(title: Text("Betrag ist Null"), message: Text("Bitte gebe einen Bertag ein, der nicht gleich Null ist."), dismissButton: .default(Text("Verstanden")))
                     }
                     return Alert(title: Text("Strafe Ändern"), message: Text("Möchtest du diese Strafe wirklich ändern?"), primaryButton: .destructive(Text("Abbrechen")), secondaryButton: .default(Text("Bestätigen"), action: {
-                        var editedFine = Fine(personId: fine.personId, date: FormattedDate(date: date), reason: reason, amount: amount, payed: fine.payed, number: number, importance: importance, id: fine.id, templateId: nil)
+                        var editedFine = Fine(personId: fine.personId, date: date.formattedDate, reason: reason, amount: amount, payed: fine.payed, number: number, importance: importance, id: fine.id, templateId: nil)
                         if let templateId = templateId {
                             if let template = ListData.reason.list?.first(where: { $0.id == templateId }) {
                                 if reason == template.reason && amount == template.amount && importance == template.importance {
