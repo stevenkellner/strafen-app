@@ -96,7 +96,7 @@ struct ReasonEditor: View {
             
             Spacer()
                 .alert(isPresented: $showDeleteAlert) {
-                    if ListData.fine.list!.contains(where: { $0.templateId == reasonToEdit.id }) {
+                    if ListData.fine.list!.contains(where: { ($0.fineReason as? FineReasonTemplate)?.templateId == reasonToEdit.id }) {
                         return Alert(title: Text("Nicht Löschen"), message: Text("Die Vorlage kann nicht gelöscht werden, da es Strafen gibt, die diese Vorlage benutzt."), dismissButton: .default(Text("Verstanden")))
                     }
                     return Alert(title: Text("Vorlage Löschen"), message: Text("Möchtest du diese Vorlage wirklich löschen?"), primaryButton: .cancel(Text("Abbrechen")), secondaryButton: .destructive(Text("Löschen"), action: {

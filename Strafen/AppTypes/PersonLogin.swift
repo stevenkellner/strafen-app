@@ -12,9 +12,6 @@ protocol PersonLogin {
     
     /// POST parameters
     var parameters: [String : Any] { get }
-    
-    /// Check if is equal to other
-    func equalLogin(to other: PersonLogin) -> Bool
 }
 
 /// Contains all properties for the login with apple
@@ -26,11 +23,6 @@ struct PersonLoginApple: PersonLogin {
     /// POST parameters
     var parameters: [String : Any] {
         ["apple": appleIdentifier]
-    }
-    
-    /// Checks for equality
-    func equalLogin(to other: PersonLogin) -> Bool {
-        appleIdentifier == (other as? Self)?.appleIdentifier
     }
 }
 
@@ -49,11 +41,6 @@ struct PersonLoginEmail: PersonLogin {
             "email": email,
             "password": password.encrypted
         ]
-    }
-    
-    /// Checks for equality
-    func equalLogin(to other: PersonLogin) -> Bool {
-        email == (other as? Self)?.email
     }
 }
 

@@ -244,7 +244,7 @@ struct ProfileDetail: View {
                     // Fine list
                     ScrollView(showsIndicators: false) {
                         LazyVStack(spacing: 15) {
-                            ForEach(fineListData.list!.filter({ $0.personId == settings.person!.id }).sorted(by: \.wrappedReason.localizedUppercase)) { fine in
+                            ForEach(fineListData.list!.filter({ $0.personId == settings.person!.id }).sorted(by: \.fineReason.reason.localizedUppercase)) { fine in
                                 NavigationLink(destination: PersonFineDetail(personName: settings.person!.name, fine: fine, dismissHandler: $dismissHandler)) {
                                     PersonDetailRow(fine: fine)
                                 }.buttonStyle(PlainButtonStyle())

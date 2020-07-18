@@ -15,7 +15,7 @@ extension Array where Element == Fine {
         filter {
             $0.personId == personId && $0.payed == .payed
         }.reduce(Euro.zero) { result, fine in
-            result + fine.wrappedAmount * fine.number
+            result + fine.fineReason.amount * fine.number
         }
     }
     
@@ -24,7 +24,7 @@ extension Array where Element == Fine {
         filter {
             $0.personId == personId && $0.payed == .unpayed
         }.reduce(Euro.zero) { result, fine in
-            result + fine.wrappedAmount * fine.number
+            result + fine.fineReason.amount * fine.number
         }
     }
     
@@ -33,7 +33,7 @@ extension Array where Element == Fine {
         filter {
             $0.personId == personId && $0.payed == .unpayed
         }.reduce(Euro.zero) { result, fine in
-            result + ((fine.wrappedImportance == .high || fine.wrappedImportance == .medium) ? fine.wrappedAmount * fine.number : .zero)
+            result + ((fine.fineReason.importance == .high || fine.fineReason.importance == .medium) ? fine.fineReason.amount * fine.number : .zero)
         }
     }
     
@@ -42,7 +42,7 @@ extension Array where Element == Fine {
         filter {
             $0.personId == personId && $0.payed == .unpayed
         }.reduce(Euro.zero) { result, fine in
-            result + (fine.wrappedImportance == .high ? fine.wrappedAmount * fine.number : .zero)
+            result + (fine.fineReason.importance == .high ? fine.fineReason.amount * fine.number : .zero)
         }
     }
     
@@ -51,7 +51,7 @@ extension Array where Element == Fine {
         filter {
             $0.personId == personId
         }.reduce(Euro.zero) { result, fine in
-            result + fine.wrappedAmount * fine.number
+            result + fine.fineReason.amount * fine.number
         }
     }
 }

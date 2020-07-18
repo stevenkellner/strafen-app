@@ -190,17 +190,15 @@ struct PersonFineEditor: View {
             DeleteConfirmButton {
                 showDeleteAlert = true
             } confirmButtonHandler: {
-                var editedFine = Fine(personId: fine.personId, date: date.formattedDate, reason: reason, amount: amount, payed: fine.payed, number: number, importance: importance, id: fine.id, templateId: nil)
+                var fineReason: FineReason = FineReasonCustom(reason: reason, amount: amount, importance: importance)
                 if let templateId = templateId {
                     if let template = ListData.reason.list?.first(where: { $0.id == templateId }) {
                         if reason == template.reason && amount == template.amount && importance == template.importance {
-                            editedFine.amount = nil
-                            editedFine.reason = nil
-                            editedFine.importance = nil
-                            editedFine.templateId = templateId
+                            fineReason = FineReasonTemplate(templateId: templateId)
                         }
                     }
                 }
+                let editedFine = Fine(personId: fine.personId, date: date.formattedDate, payed: fine.payed, number: number, id: fine.id, fineReason: fineReason)
                 if fine != editedFine {
                     showConfirmAlert = true
                 } else {
@@ -214,26 +212,24 @@ struct PersonFineEditor: View {
                         return Alert(title: Text("Betrag ist Null"), message: Text("Bitte gebe einen Bertag ein, der nicht gleich Null ist."), dismissButton: .default(Text("Verstanden")))
                     }
                     return Alert(title: Text("Strafe Ändern"), message: Text("Möchtest du diese Strafe wirklich ändern?"), primaryButton: .destructive(Text("Abbrechen")), secondaryButton: .default(Text("Bestätigen"), action: {
-                        var editedFine = Fine(personId: fine.personId, date: date.formattedDate, reason: reason, amount: amount, payed: fine.payed, number: number, importance: importance, id: fine.id, templateId: nil)
+                        var fineReason: FineReason = FineReasonCustom(reason: reason, amount: amount, importance: importance)
                         if let templateId = templateId {
                             if let template = ListData.reason.list?.first(where: { $0.id == templateId }) {
                                 if reason == template.reason && amount == template.amount && importance == template.importance {
-                                    editedFine.amount = nil
-                                    editedFine.reason = nil
-                                    editedFine.importance = nil
-                                    editedFine.templateId = templateId
+                                    fineReason = FineReasonTemplate(templateId: templateId)
                                 }
                             }
                         }
+                        let _ = Fine(personId: fine.personId, date: date.formattedDate, payed: fine.payed, number: number, id: fine.id, fineReason: fineReason)
                         // TODO save fine
                         presentationMode.wrappedValue.dismiss()
                     }))
                 }
             
         }.onAppear {
-            importance = fine.wrappedImportance
-            amount = fine.wrappedAmount
-            reason = fine.wrappedReason
+            importance = fine.fineReason.importance
+            amount = fine.fineReason.amount
+            reason = fine.fineReason.reason
             amountString = amount.stringValue
             date = fine.date.date
             number = fine.number

@@ -113,7 +113,7 @@ struct PersonDetail: View {
                 // Fine List
                 ScrollView(showsIndicators: false) {
                     LazyVStack(spacing: 15) {
-                        ForEach(fineListData.list!.filter({ $0.personId == person.id }).sorted(by: \.wrappedReason.localizedUppercase)) { fine in
+                        ForEach(fineListData.list!.filter({ $0.personId == person.id }).sorted(by: \.fineReason.reason.localizedUppercase)) { fine in
                             NavigationLink(destination: PersonFineDetail(personName: person.personName, fine: fine, dismissHandler: $dismissHandler)) {
                                 PersonDetailRow(fine: fine)
                             }.buttonStyle(PlainButtonStyle())
@@ -297,7 +297,7 @@ struct PersonDetailRow: View {
                 
                 // Inside
                 HStack(spacing: 0) {
-                    Text(fine.wrappedReason)
+                    Text(fine.fineReason.reason)
                         .foregroundColor(.textColor)
                         .font(.text(20))
                         .padding(.leading, 15)
@@ -312,11 +312,11 @@ struct PersonDetailRow: View {
                 
                 // Outline
                 Outline(.right)
-                    .fillColor(fine.payed.boolValue ? Color.custom.lightGreen : fine.wrappedImportance.color)
+                    .fillColor(fine.payed.boolValue ? Color.custom.lightGreen : fine.fineReason.importance.color)
                 
                 // Inside
-                Text(String(describing: fine.wrappedAmount * fine.number))
-                    .foregroundColor(settings.style == .default ? .textColor : fine.payed.boolValue ? Color.custom.lightGreen : fine.wrappedImportance.color)
+                Text(String(describing: fine.fineReason.amount * fine.number))
+                    .foregroundColor(settings.style == .default ? .textColor : fine.payed.boolValue ? Color.custom.lightGreen : fine.fineReason.importance.color)
                     .font(.text(20))
                     .lineLimit(1)
                 

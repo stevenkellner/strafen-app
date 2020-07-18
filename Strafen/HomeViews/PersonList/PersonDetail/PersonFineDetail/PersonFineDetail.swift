@@ -113,7 +113,7 @@ struct PersonFineDetail: View {
                 }.padding(.top, 5)
                 
                 // Reason
-                Text(fine.wrappedReason)
+                Text(fine.fineReason.reason)
                     .foregroundColor(.textColor)
                     .font(.text(25))
                     .padding(.horizontal, 25)
@@ -131,7 +131,7 @@ struct PersonFineDetail: View {
                             .lineLimit(1)
                     }
                     
-                    Text(String(describing: fine.wrappedAmount))
+                    Text(String(describing: fine.fineReason.amount))
                         .foregroundColor(.textColor)
                         .font(.text(50))
                         .padding(.horizontal, 25)
@@ -154,7 +154,7 @@ struct PersonFineDetail: View {
                         
                         // Left of the divider
                         Outline(.left)
-                            .fillColor(fine.wrappedImportance.color, onlyDefault: false)
+                            .fillColor(fine.fineReason.importance.color, onlyDefault: false)
                             .frame(width: 100, height: 50)
                             .onTapGesture {
                                 if settings.person!.isCashier && fine.payed == .payed {

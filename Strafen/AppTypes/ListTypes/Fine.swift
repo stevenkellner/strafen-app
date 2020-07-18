@@ -8,7 +8,7 @@
 import SwiftUI
 
 /// Contains all data of a fine
-struct Fine: Identifiable, Equatable, ListTypes {
+struct Fine: Identifiable, ListTypes {
     
     /// Url to list on server
     static let serverListUrl = \AppUrls.listTypesUrls?.fine
@@ -94,75 +94,87 @@ struct Fine: Identifiable, Equatable, ListTypes {
     /// Date this fine was issued
     let date: FormattedDate
     
-    /// Reason why the fine was issued
-    var reason: String?
-    
-    /// Amount of the fine
-    var amount: Euro?
-    
     /// Is fine payed
     var payed: Payed
     
     /// Number of fines
     let number: Int
     
-    /// importance of fine
-    var importance: Importance?
-    
     /// Id of the fine
     let id: UUID
     
-    /// Id of the template if it's from a template
-    var templateId: UUID?
+    /// Fine reason for reason / amount / importance or templateId
+    let fineReason: FineReason
+}
+
+// Extension of Fine to confirm to Equatable
+extension Fine: Equatable {
     
-    /// Wrapped reason
-    ///
-    /// Use it only if reason list is fetched
-    var wrappedReason: String {
-        if let template = ListData.reason.list!.first(where: { $0.id == templateId }) {
-            return template.reason
+    /// Function for Equatable
+    static func == (lhs: Fine, rhs: Fine) -> Bool {
+        var equal = lhs.personId == rhs.personId && lhs.date == rhs.date && lhs.payed == rhs.payed && lhs.number == rhs.number && lhs.id == rhs.id
+        if let lhsFineReasonCustom = lhs.fineReason as? FineReasonCustom, equal {
+            equal = lhsFineReasonCustom == rhs.fineReason as? FineReasonCustom
+        } else if let lhsFineReasonTemplate = lhs.fineReason as? FineReasonTemplate, equal {
+            equal = lhsFineReasonTemplate == rhs.fineReason as? FineReasonTemplate
         } else {
-            return reason!
+            equal = false
         }
-    }
-    
-    /// Wrapped amount
-    ///
-    /// Use it only if reason list is fetched
-    var wrappedAmount: Euro {
-        if let template = ListData.reason.list!.first(where: { $0.id == templateId }) {
-            return template.amount
-        } else {
-            return amount!
-        }
-    }
-    
-    /// Wrapped importance
-    ///
-    /// Use it only if reason list is fetched
-    var wrappedImportance: Importance {
-        if let template = ListData.reason.list!.first(where: { $0.id == templateId }) {
-            return template.importance
-        } else {
-            return importance!
-        }
+        return equal
     }
 }
 
-// Extension of Fine to init from FineReason
-extension Fine {
+// Extension of Fine to confirm to Decodable
+extension Fine: Decodable {
     
-    /// For init from FineReason
-    init(personId: UUID, date: FormattedDate, payed: Payed, number: Int, id: UUID, fineReason: FineReason) {
-        self.personId = personId
-        self.date = date
-        self.payed = payed
-        self.number = number
-        self.id = id
-        reason = (fineReason as? FineReasonCustom)?.reason
-        amount = (fineReason as? FineReasonCustom)?.amount
-        importance = (fineReason as? FineReasonCustom)?.importance
-        templateId = (fineReason as? FineReasonTemplate)?.templateId
+    /// Keys for decoding json
+    enum Keys: CodingKey {
+        
+        /// Person id
+        case personId
+        
+        /// Date
+        case date
+        
+        /// Payed
+        case payed
+        
+        /// Number
+        case number
+        
+        /// Id
+        case id
+        
+        /// Reason
+        case reason
+        
+        /// Amount
+        case amount
+        
+        /// Importance
+        case importance
+        
+        /// TemplateId
+        case templateId
+    }
+    
+    /// Init from decoder for decodable
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: Keys.self)
+        personId = try container.decode(UUID.self, forKey: .personId)
+        date = try container.decode(FormattedDate.self, forKey: .date)
+        payed = try container.decode(Payed.self, forKey: .payed)
+        number = try container.decode(Int.self, forKey: .number)
+        id = try container.decode(UUID.self, forKey: .id)
+        let reason = try container.decode(Optional<String>.self, forKey: .reason)
+        let amount = try container.decode(Optional<Euro>.self, forKey: .amount)
+        let importace = try container.decode(Optional<Importance>.self, forKey: .importance)
+        let templateId = try container.decode(Optional<UUID>.self, forKey: .templateId)
+        if let templateId = templateId {
+            fineReason = FineReasonTemplate(templateId: templateId)
+        } else {
+            fineReason = FineReasonCustom(reason: reason!, amount: amount!, importance: importace!)
+        }
     }
 }
 
@@ -186,7 +198,7 @@ protocol FineReason {
 }
 
 /// Fine Reason for reason / amount / importance
-struct FineReasonCustom: FineReason {
+struct FineReasonCustom: FineReason, Equatable {
     
     /// Reason
     let reason: String
@@ -199,7 +211,7 @@ struct FineReasonCustom: FineReason {
 }
 
 /// Fine Reason for templateId
-struct FineReasonTemplate: FineReason {
+struct FineReasonTemplate: FineReason, Equatable {
     
     /// Template id
     let templateId: UUID
