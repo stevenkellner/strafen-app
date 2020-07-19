@@ -113,7 +113,7 @@ struct PersonAddNew: View {
                 
             }.clipped()
                 .padding(.top, 10)
-            .offset(y: isFirstNameKeyboardShown ? -25 : isLastNameKeyboardShown ? -100 : 0)
+                .offset(y: isFirstNameKeyboardShown ? -25 : isLastNameKeyboardShown ? -100 : 0)
             
             Spacer()
             

@@ -43,6 +43,9 @@ struct PersonEditor: View {
     /// True if keybord of lastName field is shown
     @State var isLastNameKeyboardShown = false
     
+    /// Indicates if delete button is pressed and the alert is shown
+    @State var deleteAlertShown = false
+    
     /// Indicates if cofirm button is pressed and the alert is shown
     @State var confirmAlertShown = false
     
@@ -119,8 +122,16 @@ struct PersonEditor: View {
             .offset(y: isFirstNameKeyboardShown ? -25 : isLastNameKeyboardShown ? -100 : 0)
             
             Spacer()
+                .alert(isPresented: $deleteAlertShown) {
+                    Alert(title: Text("Person Löschen"), message: Text("Möchtest du diese Person wirklich löschen?"), primaryButton: .cancel(Text("Abbrechen")), secondaryButton: .destructive(Text("Löschen"), action: {
+                        // TODO delete person
+                        presentationMode.wrappedValue.dismiss()
+                    }))
+                }
             
-            CancelConfirmButton {
+            DeleteConfirmButton {
+                // TODO delete person
+                deleteAlertShown = true
                 presentationMode.wrappedValue.dismiss()
             } confirmButtonHandler: {
                 // TODO check if something changed
@@ -128,18 +139,18 @@ struct PersonEditor: View {
                 isLastNameError = lastName == ""
                 confirmAlertShown = true
             }.padding(.bottom, 50)
-            .alert(isPresented: $confirmAlertShown) {
-                if isFirstNameError || isLastNameError {
-                    return Alert(title: Text("Eingabefehler"), message: Text("Es gab ein Fehler in der Eingabe des Namens."), dismissButton: .default(Text("Verstanden")))
+                .alert(isPresented: $confirmAlertShown) {
+                    if isFirstNameError || isLastNameError {
+                        return Alert(title: Text("Eingabefehler"), message: Text("Es gab ein Fehler in der Eingabe des Namens."), dismissButton: .default(Text("Verstanden")))
+                    }
+                    return Alert(title: Text("Person Ändern"), message: Text("Möchtest du diese Person wirklich ändern?"), primaryButton: .destructive(Text("Abbrechen")), secondaryButton: .default(Text("Bestätigen"), action: {
+                        
+    //                    TODO update person
+    //                    if let image = image {
+    //                        TODO update image
+    //                    }
+                    }))
                 }
-                return Alert(title: Text("Person Ändern"), message: Text("Möchtest du diese Person wirklich ändern?"), primaryButton: .destructive(Text("Abbrechen")), secondaryButton: .default(Text("Bestätigen"), action: {
-                    
-//                    TODO update person
-//                    if let image = image {
-//                        TODO update image
-//                    }
-                }))
-            }
 
         }.background(colorScheme.backgroundColor)
             .onAppear {

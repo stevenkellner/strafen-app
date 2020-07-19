@@ -85,7 +85,7 @@ struct HomeTabsView: View {
                     case .addNewFine:
                         AddNewFine()
                     case .notes:
-                        Text(homeTabs.active.title)
+                        NoteList(dismissHandler: $dismissHandler)
                     case .settings:
                         SettingsView()
                     }
@@ -108,6 +108,7 @@ struct HomeTabsView: View {
     func fetchLists() {
         
         // Reset lists
+        ListData.note.list = nil
         ListData.person.list = nil
         ListData.reason.list = nil
         ListData.fine.list = nil
@@ -117,6 +118,12 @@ struct HomeTabsView: View {
         dispatchGroup.enter()
         dispatchGroup.enter()
         dispatchGroup.enter()
+        dispatchGroup.enter()
+        
+        // Fetch note list
+        ListData.note.fetch {
+            dispatchGroup.leave()
+        }
         
         // Fetch person list
         ListData.person.fetch {
@@ -214,7 +221,7 @@ class HomeTabs: ObservableObject {
     private init() {}
     
     /// Active home tabs
-    @Published var active: Tabs = .addNewFine
+    @Published var active: Tabs = .notes
 }
 
 #if DEBUG

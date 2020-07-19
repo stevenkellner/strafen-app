@@ -147,7 +147,7 @@ struct PersonDetail: View {
                                 isAddNewFineSheetShown = true
                             }
                             .sheet(isPresented: $isAddNewFineSheetShown) {
-                                // AddNewFine(person: person) TODO
+                                AddNewFine(personId: person.id)
                             }
                     }
                 }

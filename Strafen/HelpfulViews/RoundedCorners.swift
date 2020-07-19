@@ -153,21 +153,20 @@ struct RoundedCorners: View {
     
     var body: some View {
         GeometryReader { geometry in
-            self.path(width: geometry.size.width, height: geometry.size.height)
+            RoundedCorners.path(width: geometry.size.width, height: geometry.size.height, cornerRadius: CornerRadius(radius, corner: cornerSet))
                 .fill(self.fillColor)
                 .overlay(
-                    self.path(width: geometry.size.width, height: geometry.size.height)
+                    RoundedCorners.path(width: geometry.size.width, height: geometry.size.height, cornerRadius: CornerRadius(radius, corner: cornerSet))
                         .stroke(self.strokeColor, lineWidth: self.lineWidth)
                 )
         }
     }
     
     /// Path of the outline
-    private func path(width: CGFloat, height: CGFloat) -> some Shape {
+    static func path(width: CGFloat, height: CGFloat, cornerRadius: CornerRadius) -> some Shape {
         Path { path in
             
             // Make sure,the radius isn't larger than the Rectange.
-            let cornerRadius = CornerRadius(radius, corner: cornerSet)
             let topLeft = min(cornerRadius.topLeft, width / 2, height / 2)
             let topRight = min(cornerRadius.topRight, width / 2, height / 2)
             let bottomRight = min(cornerRadius.bottomRight, width / 2, height / 2)

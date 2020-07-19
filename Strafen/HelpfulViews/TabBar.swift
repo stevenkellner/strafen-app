@@ -98,7 +98,9 @@ struct TabBar: View {
                             }
                             
                             // Notes Button
-                            ButtonContent(tab: .notes, size: geometry.size, tabHandler: nil)
+                            ButtonContent(tab: .notes, size: geometry.size) {
+                                if let dismissHandler = dismissHandler { dismissHandler() }
+                            }
                             
                         }
                         

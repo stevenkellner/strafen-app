@@ -16,7 +16,7 @@ struct ListFetcher {
     /// Private init for singleton
     private init() {}
     
-    /// Fetches the  list and execute the completionHandler if no error appear.
+    /// Fetches the list and execute the completionHandler if no error appear.
     func fetch<ListType>(from url: URL? = nil, _ completionHandler: @escaping ([ListType]?) -> ()) where ListType: ListTypes {
         
         // Get request
@@ -39,5 +39,19 @@ struct ListFetcher {
             let list = try? decoder.decode([ListType].self, from: data)
             completionHandler(list)
         }.resume()
+    }
+    
+    /// Fetches the list and execute the completionHandler
+    func fetchLocal<LocalListType>(_ completionHandler: @escaping ([LocalListType]) -> ()) where LocalListType: LocalListTypes {
+        
+        /// Get data from local file
+        let url = AppUrls.shared[keyPath: LocalListType.localListUrl]
+        let data = FileManager.default.contents(atPath: url.path)!
+        
+        /// Decode Json
+        let decoder = JSONDecoder()
+        let list = try! decoder.decode([LocalListType].self, from: data)
+        completionHandler(list)
+        
     }
 }

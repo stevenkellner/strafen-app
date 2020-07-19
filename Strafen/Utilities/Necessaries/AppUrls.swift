@@ -21,6 +21,9 @@ struct AppUrls {
         
         /// for reason
         let reason: URL
+        
+        /// for all clubs
+        let allClubs: URL
     }
     
     /// Contains all changer urls
@@ -47,18 +50,6 @@ struct AppUrls {
         }
     }
     
-    /// Different all Clubs List
-    struct AllClubs {
-        
-        /// Original all club list
-        let allClubs: URL?
-        
-        init(_ appUrls: CodableAppUrls) {
-            let baseUrl = URL(string: appUrls.baseUrl)!
-            allClubs = baseUrl.appendingPathComponent(appUrls.allClubs.allClubs)
-        }
-    }
-    
     /// Shared instance for singelton
     static let shared = Self()
     
@@ -80,7 +71,8 @@ struct AppUrls {
         let personUrl = baseUrl.appendingPathComponent(codableAppUrls.lists.person)
         let fineUrl = baseUrl.appendingPathComponent(codableAppUrls.lists.fine)
         let reasonUrl = baseUrl.appendingPathComponent(codableAppUrls.lists.reason)
-        return ListTypesUrls(person: personUrl, fine: fineUrl, reason: reasonUrl)
+        let allClubsUrl = baseUrl.appendingPathComponent(codableAppUrls.lists.allClubs)
+        return ListTypesUrls(person: personUrl, fine: fineUrl, reason: reasonUrl, allClubs: allClubsUrl)
     }
     
     /// Url of person list of given clubId
@@ -133,14 +125,21 @@ struct AppUrls {
         if !FileManager.default.fileExists(atPath: settingsUrl.path) {
             let encoder = JSONEncoder()
             let settingsData = try! encoder.encode(Settings.default)
-            FileManager.default.createFile(atPath: settingsUrl.path, contents: settingsData, attributes: nil)
+            FileManager.default.createFile(atPath: settingsUrl.path, contents: settingsData)
         }
         return settingsUrl
     }
     
-    /// Different all Clubs List Url
-    var allClubs: AllClubs {
-        AllClubs(codableAppUrls)
+    /// Url for notes file
+    var notesUrl: URL {
+        let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+        let notesUrl = documentsDirectory.appendingPathComponent(codableAppUrls.notes)
+        
+        // Create notes file if it doesn't exist
+        if !FileManager.default.fileExists(atPath: notesUrl.path) {
+            FileManager.default.createFile(atPath: notesUrl.path, contents: "[]".data(using: .utf8))
+        }
+        return notesUrl
     }
 }
 
@@ -158,6 +157,9 @@ struct CodableAppUrls: Decodable {
         
         /// for reason
         let reason: String
+        
+        /// for all clubs
+        let allClubs: String
     }
     
     /// Used to decode urls for changers
@@ -174,13 +176,6 @@ struct CodableAppUrls: Decodable {
         
         /// for sending code mail
         let mailCode: String
-    }
-    
-    /// Different all Clubs List
-    struct AllClubsLists: Decodable {
-        
-        /// Original all club list
-        let allClubs: String
     }
     
     /// Base url of server
@@ -207,6 +202,6 @@ struct CodableAppUrls: Decodable {
     /// Url extension for settings file
     let settings: String
     
-    /// Different all Clubs List
-    let allClubs: AllClubsLists
+    /// Url extension for notes file
+    let notes: String
 }

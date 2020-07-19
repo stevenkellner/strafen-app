@@ -15,7 +15,8 @@ let appUrls = """
             "lists": {
                 "person": "lists/person.json",
                 "fine": "lists/fine.json",
-                "reason": "lists/reason.json"
+                "reason": "lists/reason.json",
+                "allClubs": "allClubs.json"
             },
             "changer": {
                 "newClub": "changer/newClub.php",
@@ -27,8 +28,6 @@ let appUrls = """
             "key": "UM5fZEML22vzCQvMwyVN",
             "cipherKey": "3457758372438058",
             "settings": "settings.json",
-            "allClubs": {
-                "allClubs": "allClubs.json"
-            }
+            "notes": "notes.json"
         }
     """

@@ -106,7 +106,7 @@ struct ReasonEditor: View {
                 }
             
             // Delete / Confirm button
-            CancelConfirmButton {
+            DeleteConfirmButton {
                 showDeleteAlert = true
             } confirmButtonHandler: {
                 let newReason = Reason(reason: reason, id: reasonToEdit.id, amount: amount, importance: importance)

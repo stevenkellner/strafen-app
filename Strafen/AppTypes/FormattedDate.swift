@@ -8,7 +8,7 @@
 import Foundation
 
 /// Date with formatted Style
-struct FormattedDate: Decodable, Equatable {
+struct FormattedDate: Equatable {
     
     /// Raw date
     let date: Date
@@ -29,8 +29,8 @@ struct FormattedDate: Decodable, Equatable {
     }
 }
 
-// Extension for FormattedDate for init from decoder
-extension FormattedDate {
+// Extension of FormattedDate for init from decoder
+extension FormattedDate: Decodable {
     
     /// Init from decoder
     init(from decoder: Decoder) throws {
@@ -42,5 +42,17 @@ extension FormattedDate {
             throw CodingError.unknownStringValue
         }
         self.date = date
+    }
+}
+
+// Extension of FormattedDate to encode to json
+extension FormattedDate: Encodable {
+    
+    /// Encode to json
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.singleValueContainer()
+        let formatter = DateFormatter()
+        formatter.dateFormat = "dd.MM.yyyy"
+        try container.encode(formatter.string(from: date))
     }
 }

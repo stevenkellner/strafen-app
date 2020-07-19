@@ -80,3 +80,17 @@ extension Array {
         }
     }
 }
+
+/// Extension of Array for mapped and filtered
+extension Array {
+    
+    /// Mapped array
+    mutating func mapped(_ transform: (Element) throws -> Element) rethrows {
+        self = try map(transform)
+    }
+    
+    /// Filtered Array
+    mutating func filtered(_ isIncluded: (Element) throws -> Bool) rethrows {
+        self = try filter(isIncluded)
+    }
+}
