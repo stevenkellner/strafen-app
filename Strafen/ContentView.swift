@@ -84,6 +84,7 @@ struct HomeTabsView: View {
                         ReasonList()
                     case .addNewFine:
                         AddNewFine()
+                            .padding(.top, 35)
                     case .notes:
                         NoteList(dismissHandler: $dismissHandler)
                     case .settings:
@@ -221,7 +222,7 @@ class HomeTabs: ObservableObject {
     private init() {}
     
     /// Active home tabs
-    @Published var active: Tabs = .notes
+    @Published var active: Tabs = .profileDetail
 }
 
 #if DEBUG

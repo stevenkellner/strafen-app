@@ -22,9 +22,6 @@ struct PersonList: View {
     /// Person List Data
     @ObservedObject var personListData = ListData.person
     
-    /// Indicates if addNewPerson sheet is shown
-    @State var isAddNewPersonSheetShown = false
-    
     /// Text searched in search bar
     @State var searchText = ""
     
@@ -42,12 +39,39 @@ struct PersonList: View {
                     Header("Alle Personen")
                         .padding(.top, 35)
                     
+                    // Empty List Text
+                    if personListData.list!.isEmpty {
+                        if settings.person!.isCashier {
+                            Text("Du hast noch keine Person erstellt.")
+                                .font(.text(25))
+                                .foregroundColor(.textColor)
+                                .padding(.horizontal, 15)
+                                .multilineTextAlignment(.center)
+                                .padding(.top, 50)
+                            Text("Füge eine Neue mit der Taste unten rechts hinzu.")
+                                .font(.text(25))
+                                .foregroundColor(.textColor)
+                                .padding(.horizontal, 15)
+                                .multilineTextAlignment(.center)
+                                .padding(.top, 20)
+                        } else {
+                            Text("Es sind keine Personen registriert.")
+                                .font(.text(25))
+                                .foregroundColor(.textColor)
+                                .padding(.horizontal, 15)
+                                .multilineTextAlignment(.center)
+                                .padding(.top, 50)
+                        }
+                    }
+                    
                     // Search Bar and Person List
                     ScrollView(showsIndicators: false) {
                         
                         // Search Bar
-                        SearchBar(searchText: $searchText)
-                            .frame(width: 360)
+                        if !personListData.list!.isEmpty {
+                            SearchBar(searchText: $searchText)
+                                .frame(width: 360)
+                        }
                         
                         // Person List
                         LazyVStack(spacing: 15) {
@@ -71,31 +95,8 @@ struct PersonList: View {
                 }
                 
                 // Add New Person Button
-                if settings.person!.isCashier {
-                    VStack(spacing: 0) {
-                        Spacer()
-                        HStack(spacing: 0) {
-                            Spacer()
-                            RoundedCorners()
-                                .strokeColor(settings.style.strokeColor(colorScheme))
-                                .fillColor(settings.style.fillColor(colorScheme, defaultStyle: Color.custom.lightGreen))
-                                .lineWidth(settings.style == .default ? 1.5 : 0.5)
-                                .radius(settings.style.radius)
-                                .frame(width: 45, height: 45)
-                                .overlay(
-                                    Image(systemName: "text.badge.plus")
-                                        .font(.system(size: 25, weight: .light))
-                                        .foregroundColor(.textColor)
-                                )
-                                .padding([.trailing, .bottom], 20)
-                                .onTapGesture {
-                                    isAddNewPersonSheetShown = true
-                                }
-                                .sheet(isPresented: $isAddNewPersonSheetShown) {
-                                    PersonAddNew()
-                                }
-                        }
-                    }
+                AddNewListItemButton(list: $personListData.list) {
+                    PersonAddNew()
                 }
                 
             }.edgesIgnoringSafeArea(.all)

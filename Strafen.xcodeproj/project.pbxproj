@@ -418,18 +418,18 @@
 		B0C1C52324A8BBFA007B584B /* HelpfulViews */ = {
 			isa = PBXGroup;
 			children = (
-				B0C1C52424A8BC14007B584B /* RoundedCorners.swift */,
-				B0B4821F24A8D46B00CB7A1A /* Header.swift */,
-				B0B4822124A8D61300CB7A1A /* CustomTextField.swift */,
-				B0B4822324A8D69E00CB7A1A /* Buttons.swift */,
-				B0B799CB24ACA1990027727E /* ImageSelector.swift */,
-				B020C7C124B0B9D0008940FE /* PersonRowImage.swift */,
-				B042D42F24BA42EB0029F2D5 /* TabBar.swift */,
-				B042D44124BB61810029F2D5 /* SearchBar.swift */,
 				B042D44624BDAB280029F2D5 /* ActivityView.swift */,
 				B026766C24BDD346005E79C1 /* AmountDisplay.swift */,
-				B0619BFF24C0BD16008969A1 /* ImportanceChanger.swift */,
 				B0619C0724C1CAB9008969A1 /* CustomDatePicker.swift */,
+				B0B4822124A8D61300CB7A1A /* CustomTextField.swift */,
+				B0B4822324A8D69E00CB7A1A /* Buttons.swift */,
+				B0B4821F24A8D46B00CB7A1A /* Header.swift */,
+				B0B799CB24ACA1990027727E /* ImageSelector.swift */,
+				B0619BFF24C0BD16008969A1 /* ImportanceChanger.swift */,
+				B020C7C124B0B9D0008940FE /* PersonRowImage.swift */,
+				B0C1C52424A8BC14007B584B /* RoundedCorners.swift */,
+				B042D44124BB61810029F2D5 /* SearchBar.swift */,
+				B042D42F24BA42EB0029F2D5 /* TabBar.swift */,
 			);
 			path = HelpfulViews;
 			sourceTree = "<group>";

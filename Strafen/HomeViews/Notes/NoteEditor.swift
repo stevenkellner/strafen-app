@@ -169,9 +169,9 @@ struct NoteEditor: View {
                 }
 
         }.background(colorScheme.backgroundColor)
-        .onAppear {
-            subject = noteToEdit.subject
-            message = noteToEdit.message
-        }
+            .onAppear {
+                subject = noteToEdit.subject
+                message = noteToEdit.message
+            }
     }
 }

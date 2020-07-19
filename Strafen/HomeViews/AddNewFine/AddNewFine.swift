@@ -51,7 +51,6 @@ struct AddNewFine: View {
             
             // Header
             Header("Strafen Hinzufügen")
-                .padding(.top, 35)
             
             // Person
             VStack(spacing: 0) {

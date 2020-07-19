@@ -241,6 +241,16 @@ struct ProfileDetail: View {
                         Spacer()
                     }.padding(.top, 5)
                     
+                    // Empty List Text
+                    if fineListData.list!.isEmpty {
+                        Text("Du hast keine Strafen.")
+                            .font(.text(25))
+                            .foregroundColor(.textColor)
+                            .padding(.horizontal, 15)
+                            .multilineTextAlignment(.center)
+                            .padding(.top, 30)
+                    }
+                    
                     // Fine list
                     ScrollView(showsIndicators: false) {
                         LazyVStack(spacing: 15) {

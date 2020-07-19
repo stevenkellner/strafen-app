@@ -194,3 +194,129 @@ struct DeleteConfirmButton: View {
         }
     }
 }
+
+/// Back and edit button
+struct BackAndEditButton<EditSheetContent>: View where EditSheetContent: View {
+    
+    /// Content of edit sheet
+    let editSheetContent: EditSheetContent
+    
+    /// Observed Object that contains all settings of the app of this device
+    @ObservedObject var settings = Settings.shared
+    
+    /// Presentation mode
+    @Environment(\.presentationMode) var presentationMode
+    
+    /// Indicates if edit sheet is shown
+    @State var isEditSheetPresented = false
+    
+    init(@ViewBuilder editSheetContent: () -> EditSheetContent) {
+        self.editSheetContent = editSheetContent()
+    }
+    
+    var body: some View {
+        VStack(spacing: 0) {
+            HStack(spacing: 0) {
+                
+                // Back Button
+                Text("Zurück")
+                    .foregroundColor(.textColor)
+                    .font(.text(25))
+                    .padding(.leading, 10)
+                    .padding(.top, 35)
+                    .onTapGesture {
+                        presentationMode.wrappedValue.dismiss()
+                    }
+                Spacer()
+                
+                // EditButton
+                if settings.person!.isCashier {
+                    Text("Bearbeiten")
+                        .foregroundColor(.textColor)
+                        .font(.text(25))
+                        .padding(.trailing, 10)
+                        .padding(.top, 35)
+                        .onTapGesture {
+                            isEditSheetPresented = true
+                        }
+                        .sheet(isPresented: $isEditSheetPresented) {
+                            editSheetContent
+                        }
+                }
+            }
+            Spacer()
+        }
+    }
+}
+
+
+// Add New List Item Button
+struct AddNewListItemButton<ListType, AddNewSheetContent>: View where AddNewSheetContent: View {
+    
+    /// Indicates if list is empty
+    @Binding var list: [ListType]?
+    
+    /// Filter of the list
+    let listFilter: (ListType) -> Bool
+    
+    /// Content of add new sheet
+    let addNewSheetContent: AddNewSheetContent
+    
+    /// Color scheme to get appearance of this device
+    @Environment(\.colorScheme) var colorScheme
+    
+    /// Observed Object that contains all settings of the app of this device
+    @ObservedObject var settings = Settings.shared
+    
+    /// Indicates if addNewNote sheet is shown
+    @State var isAddNewNoteSheetShown = false
+    
+    init(list: Binding<[ListType]?>, listFilter: ((ListType) -> Bool)? = nil, @ViewBuilder addNewSheetContent: () -> AddNewSheetContent) {
+        _list = list
+        self.listFilter = listFilter ?? { _ in true }
+        self.addNewSheetContent = addNewSheetContent()
+    }
+    
+    var body: some View {
+        VStack(spacing: 0) {
+            if settings.person!.isCashier {
+                Spacer()
+                HStack(spacing: 0) {
+                    Spacer()
+                    
+                    // Arrow
+                    if list?.filter(listFilter).isEmpty ?? false {
+                        Image(systemName: "arrowshape.zigzag.right")
+                            .rotationEffect(.radians(.pi))
+                            .rotation3DEffect(.radians(.pi), axis: (x: 0, y: 1, z: 0))
+                            .padding(.trailing, 25)
+                            .font(.system(size: 50, weight: .thin))
+                            .foregroundColor(Color.custom.red)
+                            .offset(y: -10)
+                    }
+                    
+                    // Add New Button
+                    RoundedCorners()
+                        .strokeColor(settings.style.strokeColor(colorScheme))
+                        .fillColor(settings.style.fillColor(colorScheme, defaultStyle: Color.custom.lightGreen))
+                        .lineWidth(settings.style == .default ? 1.5 : 0.5)
+                        .radius(settings.style.radius)
+                        .frame(width: 45, height: 45)
+                        .overlay(
+                            Image(systemName: "text.badge.plus")
+                                .font(.system(size: 25, weight: .light))
+                                .foregroundColor(.textColor)
+                        )
+                        .padding([.trailing, .bottom], 20)
+                        .onTapGesture {
+                            isAddNewNoteSheetShown = true
+                        }
+                        .sheet(isPresented: $isAddNewNoteSheetShown) {
+                            addNewSheetContent
+                        }
+                    
+                }
+            }
+        }
+    }
+}

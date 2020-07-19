@@ -1,0 +1,6 @@
+framework module Pods_StrafenTests {
+  umbrella header "Pods-StrafenTests-umbrella.h"
+
+  export *
+  module * { export * }
+}

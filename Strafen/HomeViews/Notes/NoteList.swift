@@ -22,9 +22,6 @@ struct NoteList: View {
     /// Note List Data
     @ObservedObject var noteListData = ListData.note
     
-    /// Indicates if addNewNote sheet is shown
-    @State var isAddNewNoteSheetShown = false
-    
     var body: some View {
         NavigationView {
             ZStack {
@@ -38,6 +35,22 @@ struct NoteList: View {
                     // Header
                     Header("Notizen")
                         .padding(.top, 35)
+                    
+                    // Empty List Text
+                    if noteListData.list!.isEmpty {
+                        Text("Du hast noch keine Notiz erstellt.")
+                            .font(.text(25))
+                            .foregroundColor(.textColor)
+                            .padding(.horizontal, 15)
+                            .multilineTextAlignment(.center)
+                            .padding(.top, 50)
+                        Text("Füge eine Neue mit der Taste unten rechts hinzu.")
+                            .font(.text(25))
+                            .foregroundColor(.textColor)
+                            .padding(.horizontal, 15)
+                            .multilineTextAlignment(.center)
+                            .padding(.top, 20)
+                    }
                     
                     // Note List
                     ScrollView(showsIndicators: false) {
@@ -56,29 +69,8 @@ struct NoteList: View {
                 }
                 
                 // Add New Note Button
-                VStack(spacing: 0) {
-                    Spacer()
-                    HStack(spacing: 0) {
-                        Spacer()
-                        RoundedCorners()
-                            .strokeColor(settings.style.strokeColor(colorScheme))
-                            .fillColor(settings.style.fillColor(colorScheme, defaultStyle: Color.custom.lightGreen))
-                            .lineWidth(settings.style == .default ? 1.5 : 0.5)
-                            .radius(settings.style.radius)
-                            .frame(width: 45, height: 45)
-                            .overlay(
-                                Image(systemName: "text.badge.plus")
-                                    .font(.system(size: 25, weight: .light))
-                                    .foregroundColor(.textColor)
-                            )
-                            .padding([.trailing, .bottom], 20)
-                            .onTapGesture {
-                                isAddNewNoteSheetShown = true
-                            }
-                            .sheet(isPresented: $isAddNewNoteSheetShown) {
-                                NoteAddNew()
-                            }
-                    }
+                AddNewListItemButton(list: $noteListData.list) {
+                    NoteAddNew()
                 }
                 
             }.edgesIgnoringSafeArea(.all)

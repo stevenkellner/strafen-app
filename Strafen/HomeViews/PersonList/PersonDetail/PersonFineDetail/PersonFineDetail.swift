@@ -28,9 +28,6 @@ struct PersonFineDetail: View {
     /// Observed Object that contains all settings of the app of this device
     @ObservedObject var settings = Settings.shared
     
-    /// Indicates if edit sheet is shown
-    @State var isEditSheetPresented = false
-    
     /// Indicates if to payed is pressed
     @State var showAlertToPayed = false
     
@@ -44,36 +41,8 @@ struct PersonFineDetail: View {
             colorScheme.backgroundColor
             
             // Back and edit button
-            VStack(spacing: 0) {
-                HStack(spacing: 0) {
-                    
-                    // Back Button
-                    Text("Zurück")
-                        .foregroundColor(.textColor)
-                        .font(.text(25))
-                        .padding(.leading, 10)
-                        .padding(.top, 35)
-                        .onTapGesture {
-                            presentationMode.wrappedValue.dismiss()
-                        }
-                    Spacer()
-                    
-                    // EditButton
-                    if settings.person!.isCashier {
-                        Text("Bearbeiten")
-                            .foregroundColor(.textColor)
-                            .font(.text(25))
-                            .padding(.trailing, 10)
-                            .padding(.top, 35)
-                            .onTapGesture {
-                                isEditSheetPresented = true
-                            }
-                            .sheet(isPresented: $isEditSheetPresented) {
-                                PersonFineEditor(fine: fine)
-                            }
-                    }
-                }
-                Spacer()
+            BackAndEditButton {
+                PersonFineEditor(fine: fine)
             }
             
             // Fine Detail

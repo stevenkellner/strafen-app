@@ -32,6 +32,22 @@ struct PersonFineTemplate: View {
             // Title
             Header("Strafe Auswählen")
             
+            // Empty List Text
+            if reasonListData.list!.isEmpty {
+                Text("Es sind keine Strafen verfügbar.")
+                    .font(.text(25))
+                    .foregroundColor(.textColor)
+                    .padding(.horizontal, 15)
+                    .multilineTextAlignment(.center)
+                    .padding(.top, 50)
+                Text("Lege erst eine Neue im Strafenkatalog an.")
+                    .font(.text(25))
+                    .foregroundColor(.textColor)
+                    .padding(.horizontal, 15)
+                    .multilineTextAlignment(.center)
+                    .padding(.top, 20)
+            }
+            
             // List of reasons
             ScrollView(showsIndicators: false) {
                 LazyVStack(spacing: 15) {

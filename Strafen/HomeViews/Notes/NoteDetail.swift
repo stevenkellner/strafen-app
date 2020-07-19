@@ -25,9 +25,6 @@ struct NoteDetail: View {
     /// Observed Object that contains all settings of the app of this device
     @ObservedObject var settings = Settings.shared
     
-    /// Indicates if edit sheet is shown
-    @State var isEditSheetPresented = false
-    
     var body: some View {
         ZStack {
             
@@ -35,36 +32,8 @@ struct NoteDetail: View {
             colorScheme.backgroundColor
             
             // Back and edit button
-            VStack(spacing: 0) {
-                HStack(spacing: 0) {
-                    
-                    // Back Button
-                    Text("Zurück")
-                        .foregroundColor(.textColor)
-                        .font(.text(25))
-                        .padding(.leading, 10)
-                        .padding(.top, 35)
-                        .onTapGesture {
-                            presentationMode.wrappedValue.dismiss()
-                        }
-                    Spacer()
-                    
-                    // EditButton
-                    if settings.person!.isCashier {
-                        Text("Bearbeiten")
-                            .foregroundColor(.textColor)
-                            .font(.text(25))
-                            .padding(.trailing, 10)
-                            .padding(.top, 35)
-                            .onTapGesture {
-                                isEditSheetPresented = true
-                            }
-                            .sheet(isPresented: $isEditSheetPresented) {
-                                NoteEditor(noteToEdit: note)
-                            }
-                    }
-                }
-                Spacer()
+            BackAndEditButton {
+                NoteEditor(noteToEdit: note)
             }
             
             // Content

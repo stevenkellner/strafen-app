@@ -130,7 +130,9 @@ struct PersonEditor: View {
                 }
             
             DeleteConfirmButton {
+                // check if person is sign in
                 // TODO delete person
+                // delete all fines of this person
                 deleteAlertShown = true
                 presentationMode.wrappedValue.dismiss()
             } confirmButtonHandler: {

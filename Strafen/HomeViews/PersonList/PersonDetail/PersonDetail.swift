@@ -25,12 +25,6 @@ struct PersonDetail: View {
     /// Presentation mode
     @Environment(\.presentationMode) var presentationMode
     
-    /// Indicates if edit sheet is shown
-    @State var isEditSheetPresented = false
-    
-    /// Indicates if addNewFine sheet is shown
-    @State var isAddNewFineSheetShown = false
-    
     /// Fine List Data
     @ObservedObject var fineListData = ListData.fine
     
@@ -44,36 +38,8 @@ struct PersonDetail: View {
             colorScheme.backgroundColor
             
             // Back and edit button
-            VStack(spacing: 0) {
-                HStack(spacing: 0) {
-                    
-                    // Back Button
-                    Text("Zurück")
-                        .foregroundColor(.textColor)
-                        .font(.text(25))
-                        .padding(.leading, 10)
-                        .padding(.top, 35)
-                        .onTapGesture {
-                            presentationMode.wrappedValue.dismiss()
-                        }
-                    Spacer()
-                    
-                    // EditButton
-                    if settings.person!.isCashier {
-                        Text("Bearbeiten")
-                            .foregroundColor(.textColor)
-                            .font(.text(25))
-                            .padding(.trailing, 10)
-                            .padding(.top, 35)
-                            .onTapGesture {
-                                isEditSheetPresented = true
-                            }
-                            .sheet(isPresented: $isEditSheetPresented) {
-                                PersonEditor(person: person)
-                            }
-                    }
-                }
-                Spacer()
+            BackAndEditButton {
+                PersonEditor(person: person)
             }
             
             // Person info and fine list
@@ -110,6 +76,24 @@ struct PersonDetail: View {
                     Spacer()
                 }.padding(.top, 5)
                 
+                // Empty List Text
+                if fineListData.list!.filter({ $0.personId == person.id }).isEmpty {
+                    Text("Diese Person hat keine Strafen.")
+                        .font(.text(25))
+                        .foregroundColor(.textColor)
+                        .padding(.horizontal, 15)
+                        .multilineTextAlignment(.center)
+                        .padding(.top, 30)
+                    if settings.person!.isCashier {
+                        Text("Füge eine Neue mit der Taste unten rechts hinzu.")
+                            .font(.text(25))
+                            .foregroundColor(.textColor)
+                            .padding(.horizontal, 15)
+                            .multilineTextAlignment(.center)
+                            .padding(.top, 20)
+                    }
+                }
+                
                 // Fine List
                 ScrollView(showsIndicators: false) {
                     LazyVStack(spacing: 15) {
@@ -126,30 +110,15 @@ struct PersonDetail: View {
             }.padding(.top, 60)
             
             // Add New fine button
-            if settings.person!.isCashier {
+            AddNewListItemButton(list: $fineListData.list, listFilter: { $0.personId == person.id }) {
                 VStack(spacing: 0) {
-                    Spacer()
-                    HStack(spacing: 0) {
-                        Spacer()
-                        RoundedCorners()
-                            .strokeColor(settings.style.strokeColor(colorScheme))
-                            .fillColor(settings.style.fillColor(colorScheme, defaultStyle: Color.custom.lightGreen))
-                            .lineWidth(settings.style == .default ? 1.5 : 0.5)
-                            .radius(settings.style.radius)
-                            .frame(width: 45, height: 45)
-                            .overlay(
-                                Image(systemName: "text.badge.plus")
-                                    .font(.system(size: 25, weight: .light))
-                                    .foregroundColor(.textColor)
-                            )
-                            .padding([.trailing, .bottom], 20)
-                            .onTapGesture {
-                                isAddNewFineSheetShown = true
-                            }
-                            .sheet(isPresented: $isAddNewFineSheetShown) {
-                                AddNewFine(personId: person.id)
-                            }
-                    }
+                    
+                    // Bar to wipe sheet down
+                    SheetBar()
+                    
+                    // Content
+                    AddNewFine(personId: person.id)
+                    
                 }
             }
             

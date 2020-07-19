@@ -38,6 +38,16 @@ struct AddNewFinePerson: View {
             // Title
             Header("Person Auswählen")
             
+            // Empty List Text
+            if personListData.list!.isEmpty {
+                Text("Es sind keine Personen registriert.")
+                    .font(.text(25))
+                    .foregroundColor(.textColor)
+                    .padding(.horizontal, 15)
+                    .multilineTextAlignment(.center)
+                    .padding(.top, 50)
+            }
+            
             // List of reasons
             ScrollView(showsIndicators: false) {
                 LazyVStack(spacing: 15) {
