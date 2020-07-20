@@ -219,7 +219,7 @@ struct AmountDisplay: View {
                             .lineLimit(1)
                             .padding(.horizontal, 5)
                         
-                    }.frame(width: 245)
+                    }.frame(width: UIScreen.main.bounds.width * 0.675)
                 
                     // Right of the divider
                     ZStack {
@@ -234,7 +234,7 @@ struct AmountDisplay: View {
                             .font(.text(20))
                             .lineLimit(1)
                         
-                    }.frame(width: 100)
+                    }.frame(width: UIScreen.main.bounds.width * 0.275)
                 
                     Spacer()
                 }.frame(height: 50)

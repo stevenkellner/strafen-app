@@ -25,12 +25,34 @@ struct TabBar: View {
     var body: some View {
         ZStack {
             
+            if settings.style == .plain {
+                if colorScheme == .light {
+                    Color.plain.lightLightGray
+                        .frame(height: 65)
+                        .offset(y: 65)
+                } else {
+                    Color.plain.darkDarkGray
+                        .frame(height: 65)
+                        .offset(y: 65)
+                }
+            } else {
+                colorScheme.backgroundColor
+                    .frame(height: 65)
+                    .offset(y: 65)
+            }
+            
             // Outline in default style
             if settings.style == .default {
-                RoundedCorners(.top)
-                    .strokeColor(Color.custom.darkGreen)
-                    .lineWidth(2)
-                    .frame(height: 72)
+                GeometryReader { geometry in
+                    Path { path in
+                        path.move(to: CGPoint(x: 0, y: 72))
+                        path.addLine(to: CGPoint(x: 0, y: 10))
+                        path.addArc(center: CGPoint(x: 10, y: 10), radius: 10, startAngle: .degrees(180), endAngle: .degrees(270), clockwise: false)
+                        path.addLine(to: CGPoint(x: geometry.size.width - 10, y: 0))
+                        path.addArc(center: CGPoint(x: geometry.size.width - 10, y: 10), radius: 10, startAngle: .degrees(-90), endAngle: .zero, clockwise: false)
+                        path.addLine(to: CGPoint(x: geometry.size.width, y: 72))
+                    }.stroke(Color.custom.darkGreen, lineWidth: 2)
+                }.frame(height: 72)
                     .padding(.horizontal, 1)
             }
             

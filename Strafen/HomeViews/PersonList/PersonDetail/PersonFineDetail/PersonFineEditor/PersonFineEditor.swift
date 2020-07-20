@@ -67,124 +67,122 @@ struct PersonFineEditor: View {
             // Title
             Header("Strafe Ändern")
             
-            // Importance changer
-            ImportanceChanger(importance: $importance)
-                .frame(width: 258, height: 25)
-                .padding(.top, 50)
-            
-            // Reason
-            CustomTextField("Grund", text: $reason)
-                .frame(width: 345, height: 50)
-                .padding(.top, 30)
-            
-            // Amount
-            HStack(spacing: 0) {
+            VStack(spacing: 0){
+                Spacer()
                 
-                // Number
-                if number != 1 {
-                    Text("\(number) *")
+                // Importance changer
+                ImportanceChanger(importance: $importance)
+                    .frame(width: 258, height: 25)
+                
+                Spacer()
+                
+                // Reason
+                CustomTextField("Grund", text: $reason)
+                    .frame(width: 345, height: 50)
+                
+                Spacer()
+                
+                // Amount
+                HStack(spacing: 0) {
+                    
+                    // Number
+                    if number != 1 {
+                        Text("\(number) *")
+                            .frame(height: 50)
+                            .foregroundColor(.textColor)
+                            .font(.text(25))
+                            .lineLimit(1)
+                    }
+                    
+                    // Text Field
+                    CustomTextField("Betrag", text: $amountString, keyboardType: .decimalPad, keyboardOnScreen: $isAmountKeyboardOnScreen) {
+                        amount = amountString.euroValue
+                        amountString = amount.stringValue
+                    }.frame(width: 148, height: 50)
+                        .padding(.leading, 15)
+                    
+                    // € - Sign
+                    Text("€")
                         .frame(height: 50)
                         .foregroundColor(.textColor)
                         .font(.text(25))
                         .lineLimit(1)
-                }
-                
-                // Text Field
-                CustomTextField("Betrag", text: $amountString, keyboardType: .decimalPad, keyboardOnScreen: $isAmountKeyboardOnScreen) {
-                    amount = amountString.euroValue
-                    amountString = amount.stringValue
-                }.frame(width: 148, height: 50)
-                    .padding(.leading, 15)
-                
-                // € - Sign
-                Text("€")
-                    .frame(height: 50)
-                    .foregroundColor(.textColor)
-                    .font(.text(25))
-                    .lineLimit(1)
-                    .padding(.leading, 5)
-                
-                // Done button
-                if isAmountKeyboardOnScreen {
-                    Text("Fertig")
-                        .foregroundColor(Color.custom.darkGreen)
-                        .font(.text(25))
-                        .lineLimit(1)
-                        .padding(.leading, 15)
-                        .onTapGesture {
-                            UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
-                        }
-                }
-                
-            }.padding(.top, 30)
-            
-            // Date
-            Text("am \(date.formattedDate.formatted)")
-                .font(.text(25))
-                .foregroundColor(.textColor)
-                .lineLimit(1)
-                .padding(.top, 30)
-            
-            // Advanced and template button
-            HStack(spacing: 15) {
-                
-                // Advanced button
-                ZStack {
-                    
-                    // Outline
-                    Outline()
-                        .fillColor(Color.custom.lightGreen)
-                    
-                    // Text
-                    Text("Erweitert")
-                        .foregroundColor(settings.style == .default ? .textColor : Color.custom.lightGreen)
-                        .font(.text(15))
-                        .lineLimit(1)
-                    
-                }.frame(width: 150, height: 35)
-                    .onTapGesture {
-                        advancedSheetShowing = true
-                    }
-                    .sheet(isPresented: $advancedSheetShowing) {
-                        PersonFineAdvanced(date: $date, number: $number)
-                    }
-                
-                // Template button
-                ZStack {
-                    
-                    // Outline
-                    Outline()
-                        .fillColor(Color.custom.yellow)
-                    
-                    // Text
-                    Text("Strafe Auswählen")
-                        .foregroundColor(settings.style == .default ? .textColor : Color.custom.yellow)
-                        .font(.text(15))
-                        .lineLimit(1)
-                    
-                }.frame(width: 150, height: 35)
-                    .onTapGesture {
-                        templateSheetShowing = true
-                    }
-                    .sheet(isPresented: $templateSheetShowing) {
-                        PersonFineTemplate { template in
-                            reason = template.reason
-                            amount = template.amount
-                            amountString = template.amount.stringValue
-                            importance = template.importance
-                            templateId = template.id
-                        }
-                    }
-                
-            }.padding(.top, 30)
-            
-            Spacer()
-                .alert(isPresented: $showDeleteAlert) {
+                }.alert(isPresented: $showDeleteAlert) {
                     Alert(title: Text("Strafe Löschen"), message: Text("Möchtest du diese Strafe wirklich löscehn?"), primaryButton: .cancel(Text("Abbrechen")), secondaryButton: .destructive(Text("Löschen"), action: {
                         // TODO delete fine
                         presentationMode.wrappedValue.dismiss()
                     }))
                 }
+                
+                // Date
+                Text("am \(date.formattedDate.formatted)")
+                    .font(.text(25))
+                    .foregroundColor(.textColor)
+                    .lineLimit(1)
+                    .padding(.top, 30)
+                
+            
+                Spacer()
+            
+                // Advanced and template button
+                HStack(spacing: 0) {
+                    Spacer()
+                    
+                    // Advanced button
+                    ZStack {
+                        
+                        // Outline
+                        Outline()
+                            .fillColor(Color.custom.lightGreen)
+                        
+                        // Text
+                        Text("Erweitert")
+                            .foregroundColor(settings.style == .default ? .textColor : Color.custom.lightGreen)
+                            .font(.text(15))
+                            .lineLimit(1)
+                        
+                    }.frame(width: 150, height: 35)
+                        .onTapGesture {
+                            advancedSheetShowing = true
+                        }
+                        .sheet(isPresented: $advancedSheetShowing) {
+                            PersonFineAdvanced(date: $date, number: $number)
+                        }
+                    
+                    Spacer()
+                    
+                    // Template button
+                    ZStack {
+                        
+                        // Outline
+                        Outline()
+                            .fillColor(Color.custom.yellow)
+                        
+                        // Text
+                        Text("Strafe Auswählen")
+                            .foregroundColor(settings.style == .default ? .textColor : Color.custom.yellow)
+                            .font(.text(15))
+                            .lineLimit(1)
+                        
+                    }.frame(width: 150, height: 35)
+                        .onTapGesture {
+                            templateSheetShowing = true
+                        }
+                        .sheet(isPresented: $templateSheetShowing) {
+                            PersonFineTemplate { template in
+                                reason = template.reason
+                                amount = template.amount
+                                amountString = template.amount.stringValue
+                                importance = template.importance
+                                templateId = template.id
+                            }
+                        }
+                    
+                    Spacer()
+                }
+                
+                Spacer()
+            }
             
             // Delete / Confirm Button
             DeleteConfirmButton {
@@ -199,10 +197,10 @@ struct PersonFineEditor: View {
                     }
                 }
                 let editedFine = Fine(personId: fine.personId, date: date.formattedDate, payed: fine.payed, number: number, id: fine.id, fineReason: fineReason)
-                if fine != editedFine {
-                    showConfirmAlert = true
-                } else {
+                if fine == editedFine {
                     presentationMode.wrappedValue.dismiss()
+                } else {
+                    showConfirmAlert = true
                 }
             }.padding(.bottom, 50)
                 .alert(isPresented: $showConfirmAlert) {
@@ -231,6 +229,7 @@ struct PersonFineEditor: View {
             amount = fine.fineReason.amount
             reason = fine.fineReason.reason
             amountString = amount.stringValue
+            templateId = (fine.fineReason as? FineReasonTemplate)?.templateId
             date = fine.date.date
             number = fine.number
         }

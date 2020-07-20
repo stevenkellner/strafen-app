@@ -63,83 +63,94 @@ struct AddNewFineReason: View {
             // Title
             Header("Strafe Auswählen")
             
-            // Importance changer
-            ImportanceChanger(importance: $importance)
-                .frame(width: 258, height: 25)
-                .padding(.top, 50)
-            
-            // Reason
-            CustomTextField("Grund", text: $reason)
-                .frame(width: 345, height: 50)
-                .padding(.top, 30)
-            
-            // Amount
-            HStack(spacing: 0) {
+            VStack(spacing: 0) {
+                Spacer()
                 
-                // Text Field
-                CustomTextField("Betrag", text: $amountString, keyboardType: .decimalPad, keyboardOnScreen: $isAmountKeyboardOnScreen) {
-                    amount = amountString.euroValue
-                    amountString = amount.stringValue
-                }.frame(width: 148, height: 50)
-                    .padding(.leading, 15)
+                // Importance changer
+                ImportanceChanger(importance: $importance)
+                    .frame(width: UIScreen.main.bounds.width * 0.7, height: 25)
                 
-                // € - Sign
-                Text("€")
-                    .frame(height: 50)
-                    .foregroundColor(.textColor)
-                    .font(.text(25))
-                    .lineLimit(1)
-                    .padding(.leading, 5)
+                Spacer()
                 
-                // Done button
-                if isAmountKeyboardOnScreen {
-                    Text("Fertig")
-                        .foregroundColor(Color.custom.darkGreen)
+                // Reason
+                CustomTextField("Grund", text: $reason)
+                    .frame(width: UIScreen.main.bounds.width * 0.95, height: 50)
+                
+                Spacer()
+                
+                // Amount
+                HStack(spacing: 0) {
+                    
+                    // Text Field
+                    CustomTextField("Betrag", text: $amountString, keyboardType: .decimalPad, keyboardOnScreen: $isAmountKeyboardOnScreen) {
+                        amount = amountString.euroValue
+                        amountString = amount.stringValue
+                    }.frame(width: UIScreen.main.bounds.width * 0.45, height: 50)
+                        .padding(.leading, 15)
+                    
+                    // € - Sign
+                    Text("€")
+                        .frame(height: 50)
+                        .foregroundColor(.textColor)
                         .font(.text(25))
                         .lineLimit(1)
-                        .padding(.leading, 15)
-                        .onTapGesture {
-                            UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
-                        }
+                        .padding(.leading, 5)
+                    
+                    // Done button
+                    if isAmountKeyboardOnScreen {
+                        Text("Fertig")
+                            .foregroundColor(Color.custom.darkGreen)
+                            .font(.text(25))
+                            .lineLimit(1)
+                            .padding(.leading, 15)
+                            .onTapGesture {
+                                UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+                            }
+                    }
+                    
                 }
                 
-            }.padding(.top, 30)
-            
-            // Template button
-            HStack(spacing: 0) {
                 Spacer()
                 
                 // Template button
-                ZStack {
+                HStack(spacing: 0) {
+                    Spacer()
+                    Spacer()
+                    Spacer()
+                    Spacer()
                     
-                    // Outline
-                    Outline()
-                        .fillColor(Color.custom.yellow)
-                    
-                    // Text
-                    Text("Strafe Auswählen")
-                        .foregroundColor(settings.style == .default ? .textColor : Color.custom.yellow)
-                        .font(.text(15))
-                        .lineLimit(1)
-                    
-                }.frame(width: 150, height: 35)
-                    .padding(.trailing, 30)
-                    .onTapGesture {
-                        templateSheetShowing = true
-                    }
-                    .sheet(isPresented: $templateSheetShowing) {
-                        PersonFineTemplate { template in
-                            reason = template.reason
-                            amount = template.amount
-                            amountString = template.amount.stringValue
-                            importance = template.importance
-                            templateId = template.id
+                    // Template button
+                    ZStack {
+                        
+                        // Outline
+                        Outline()
+                            .fillColor(Color.custom.yellow)
+                        
+                        // Text
+                        Text("Strafe Auswählen")
+                            .foregroundColor(settings.style == .default ? .textColor : Color.custom.yellow)
+                            .font(.text(15))
+                            .lineLimit(1)
+                        
+                    }.frame(width: 150, height: 35)
+                        .onTapGesture {
+                            templateSheetShowing = true
                         }
-                    }
+                        .sheet(isPresented: $templateSheetShowing) {
+                            PersonFineTemplate { template in
+                                reason = template.reason
+                                amount = template.amount
+                                amountString = template.amount.stringValue
+                                importance = template.importance
+                                templateId = template.id
+                            }
+                        }
+                    
+                    Spacer()
+                }
                 
-            }.padding(.top, 30)
-            
-            Spacer()
+                Spacer()
+            }
             
             CancelConfirmButton {
                 presentationMode.wrappedValue.dismiss()

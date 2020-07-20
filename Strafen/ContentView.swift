@@ -22,9 +22,9 @@ struct ContentView: View {
                 HomeTabsView()
             } else {
                 LoginView()
+                    .edgesIgnoringSafeArea(.all)
             }
-        }.edgesIgnoringSafeArea(.all)
-            .onAppear {
+        }.onAppear {
                 Settings.shared.applySettings()
             }
     }
@@ -64,10 +64,12 @@ struct HomeTabsView: View {
             switch connectionState {
             case .loading:
                 Text("Loading") // TODO
+                    .edgesIgnoringSafeArea(.all)
                     .background(colorScheme.backgroundColor)
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
             case .failed:
                 Text("Failed") // TODO
+                    .edgesIgnoringSafeArea(.all)
                     .background(colorScheme.backgroundColor)
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
             case .passed:
@@ -84,20 +86,22 @@ struct HomeTabsView: View {
                         ReasonList()
                     case .addNewFine:
                         AddNewFine()
-                            .padding(.top, 35)
+                            .padding(.top, 50)
                     case .notes:
                         NoteList(dismissHandler: $dismissHandler)
                     case .settings:
                         SettingsView()
                     }
                     
-                }.background(colorScheme.backgroundColor)
+                }.edgesIgnoringSafeArea(.all)
+                    .background(colorScheme.backgroundColor)
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                 
             }
             
             // Tab bar
             TabBar(dismissHandler: $dismissHandler)
+                .edgesIgnoringSafeArea([.horizontal, .top])
             
         }.frame(maxWidth: .infinity, maxHeight: .infinity)
             .onAppear {

@@ -33,7 +33,7 @@ struct ReasonList: View {
                 
                 // Header
                 Header("Verfügbare Strafen")
-                    .padding(.top, 35)
+                    .padding(.top, 50)
                 
                 // Empty List Text
                 if reasonListData.list!.isEmpty  {
@@ -120,7 +120,7 @@ struct ReasonListRow: View {
                     Spacer()
                 }
                 
-            }.frame(width: 245)
+            }.frame(width: UIScreen.main.bounds.width * 0.675)
             
             // Right of the divider
             ZStack {
@@ -135,9 +135,9 @@ struct ReasonListRow: View {
                     .font(.text(20))
                     .lineLimit(1)
                 
-            }.frame(width: 100)
+            }.frame(width: UIScreen.main.bounds.width * 0.275)
             
-        }.frame(width: 345, height: 50)
+        }.frame(width: UIScreen.main.bounds.width * 0.5, height: 50)
             .padding(.horizontal, 1)
             .onTapGesture {
                 if settings.person!.isCashier {

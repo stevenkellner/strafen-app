@@ -102,7 +102,7 @@ struct PersonFineTemplateRow: View {
                     Spacer()
                 }
                 
-            }.frame(width: 245, height: 50)
+            }.frame(width: UIScreen.main.bounds.width * 0.675, height: 50)
             
             // Right of the divider
             ZStack {
@@ -117,7 +117,7 @@ struct PersonFineTemplateRow: View {
                     .font(.text(20))
                     .lineLimit(1)
                 
-            }.frame(width: 100, height: 50)
+            }.frame(width: UIScreen.main.bounds.width * 0.275, height: 50)
             
         }
     }

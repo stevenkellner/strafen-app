@@ -41,6 +41,7 @@ struct NoteAddNew: View {
             Header("Notiz Hinzufügen")
             
             VStack(spacing: 0) {
+                Spacer()
                 
                 // Subject
                 VStack(spacing: 0) {
@@ -63,10 +64,12 @@ struct NoteAddNew: View {
                         withAnimation {
                             isMessageKeyboardShown = false
                         }
-                    }.frame(width: 345, height: 50)
+                    }.frame(width: UIScreen.main.bounds.width * 0.95, height: 50)
                         .padding(.top, 5)
                     
-                }.padding(.top, 30)
+                }
+                
+                Spacer()
                 
                 // Message
                 VStack(spacing: 0) {
@@ -117,20 +120,19 @@ struct NoteAddNew: View {
                             .multilineTextAlignment(.center)
                         
                         // Outline
-                        RoundedCorners.path(width: 345, height: 200, cornerRadius: RoundedCorners.CornerRadius(settings.style.radius, corner: .all))
+                        RoundedCorners.path(width: UIScreen.main.bounds.width * 0.95, height: UIScreen.main.bounds.width * 0.55, cornerRadius: RoundedCorners.CornerRadius(settings.style.radius, corner: .all))
                             .stroke(settings.style.strokeColor(colorScheme), lineWidth: settings.style.lineWidth)
                         
-                    }.frame(width: 345, height: 200)
+                    }.frame(width: UIScreen.main.bounds.width * 0.95, height: UIScreen.main.bounds.width * 0.55)
                         .padding(.top, 5)
                     
-                }.padding(.top, 30)
-                    .padding(.bottom, 1)
+                }.padding(.bottom, 1)
                 
+            
+            Spacer()
             }.offset(y: isMessageKeyboardShown ? -100 : 0)
                 .clipped()
                 .padding(.top, 20)
-            
-            Spacer()
             
             // Cancel / Confirm Button
             CancelConfirmButton {

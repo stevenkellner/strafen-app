@@ -48,46 +48,52 @@ struct PersonFineDetail: View {
             // Fine Detail
             VStack(spacing: 0) {
                 
-                // Title
-                HStack(spacing: 0) {
-                    Text("Strafe von:")
+                VStack(spacing: 0) {
+                    
+                    // Title
+                    HStack(spacing: 0) {
+                        Text("Strafe von:")
+                            .foregroundColor(.textColor)
+                            .font(.text(20))
+                            .padding(.leading, 10)
+                            .padding(.top, 40)
+                        Spacer()
+                    }
+                    
+                    // Person Name
+                    Text(personName.formatted)
                         .foregroundColor(.textColor)
-                        .font(.text(20))
-                        .padding(.leading, 10)
-                        .padding(.top, 40)
-                    Spacer()
-                }
+                        .font(.text(35))
+                        .padding(.horizontal, 25)
+                        .lineLimit(1)
+                    
+                    // Top Underline
+                    HStack {
+                        Rectangle()
+                            .frame(width: 300, height: 2)
+                            .border(settings.style == .default ? Color.custom.darkGreen : (colorScheme == .dark ? Color.plain.lightGray : Color.plain.darkGray), width: 1)
+                        Spacer()
+                    }.padding(.top, 10)
+                    
+                    // Bottom Underline
+                    HStack {
+                        Rectangle()
+                            .frame(width: 275, height: 2)
+                            .border(settings.style == .default ? Color.custom.darkGreen : (colorScheme == .dark ? Color.plain.lightGray : Color.plain.darkGray), width: 1)
+                        Spacer()
+                    }.padding(.top, 5)
+                }.padding(.top, 40)
                 
-                // Person Name
-                Text(personName.formatted)
-                    .foregroundColor(.textColor)
-                    .font(.text(35))
-                    .padding(.horizontal, 25)
-                    .lineLimit(1)
-                
-                // Top Underline
-                HStack {
-                    Rectangle()
-                        .frame(width: 300, height: 2)
-                        .border(settings.style == .default ? Color.custom.darkGreen : (colorScheme == .dark ? Color.plain.lightGray : Color.plain.darkGray), width: 1)
-                    Spacer()
-                }.padding(.top, 10)
-                
-                // Bottom Underline
-                HStack {
-                    Rectangle()
-                        .frame(width: 275, height: 2)
-                        .border(settings.style == .default ? Color.custom.darkGreen : (colorScheme == .dark ? Color.plain.lightGray : Color.plain.darkGray), width: 1)
-                    Spacer()
-                }.padding(.top, 5)
+                Spacer()
                 
                 // Reason
                 Text(fine.fineReason.reason)
                     .foregroundColor(.textColor)
                     .font(.text(25))
                     .padding(.horizontal, 25)
-                    .padding(.top, 40)
                     .lineLimit(1)
+                
+                Spacer()
                 
                 // Amount
                 HStack(spacing: 0) {
@@ -108,13 +114,16 @@ struct PersonFineDetail: View {
                         .lineLimit(1)
                 }
                 
+                Spacer()
+                
                 // Date
                 Text(fine.date.formatted)
                     .foregroundColor(.textColor)
                     .font(.text(25))
                     .padding(.horizontal, 25)
-                    .padding(.top, 50)
                     .lineLimit(1)
+                
+                Spacer()
                 
                 // Payed Display
                 ZStack {
@@ -167,10 +176,10 @@ struct PersonFineDetail: View {
                         .frame(width: 33, height: 2.5)
                         .offset(x: fine.payed == .payed ? 50 : -50)
                     
-                }.padding(.top, 58)
+                }
                 
                 Spacer()
-            }.padding(.top, 60)
+            }
             
         }.edgesIgnoringSafeArea(.all)
             .navigationTitle("Title")

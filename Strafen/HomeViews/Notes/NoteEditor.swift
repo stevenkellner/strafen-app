@@ -47,6 +47,7 @@ struct NoteEditor: View {
             Header("Notiz Ändern")
             
             VStack(spacing: 0) {
+                Spacer()
                 
                 // Subject
                 VStack(spacing: 0) {
@@ -69,10 +70,12 @@ struct NoteEditor: View {
                         withAnimation {
                             isMessageKeyboardShown = false
                         }
-                    }.frame(width: 345, height: 50)
+                    }.frame(width: UIScreen.main.bounds.width * 0.95, height: 50)
                         .padding(.top, 5)
                     
-                }.padding(.top, 30)
+                }
+                
+                Spacer()
                 
                 // Message
                 VStack(spacing: 0) {
@@ -123,20 +126,18 @@ struct NoteEditor: View {
                             .multilineTextAlignment(.center)
                         
                         // Outline
-                        RoundedCorners.path(width: 345, height: 200, cornerRadius: RoundedCorners.CornerRadius(settings.style.radius, corner: .all))
+                        RoundedCorners.path(width: UIScreen.main.bounds.width * 0.95, height: UIScreen.main.bounds.width * 0.55, cornerRadius: RoundedCorners.CornerRadius(settings.style.radius, corner: .all))
                             .stroke(settings.style.strokeColor(colorScheme), lineWidth: settings.style.lineWidth)
                         
-                    }.frame(width: 345, height: 200)
+                    }.frame(width: UIScreen.main.bounds.width * 0.95, height: UIScreen.main.bounds.width * 0.55)
                         .padding(.top, 5)
                     
-                }.padding(.top, 30)
-                    .padding(.bottom, 1)
+                }.padding(.bottom, 1)
                 
+                Spacer()
             }.offset(y: isMessageKeyboardShown ? -100 : 0)
                 .clipped()
                 .padding(.top, 20)
-            
-            Spacer()
                 .alert(isPresented: $showDeleteAlert) {
                     Alert(title: Text("Notiz Löschen"), message: Text("Möchtest du diese Notiz wirklich löschen?"), primaryButton: .cancel(Text("Abbrechen")), secondaryButton: .destructive(Text("Löschen"), action: {
                         LocalListChanger.shared.change(.delete, item: noteToEdit)

@@ -60,11 +60,13 @@ struct PersonEditor: View {
             
             // Image and Name
             VStack(spacing: 0) {
+                Spacer()
                 
                 // Image
                 ImageSelector(image: $image)
                     .frame(width: 120, height: 120)
-                    .padding(.top, 25)
+                
+                Spacer()
                 
                 // First Name
                 VStack(spacing: 0) {
@@ -93,7 +95,7 @@ struct PersonEditor: View {
                             .padding(.horizontal, 15)
                             .padding(.top, 5)
                     }
-                }.padding(.top, 30)
+                }
                 
                 // Last Name
                 VStack(spacing: 0) {
@@ -115,13 +117,12 @@ struct PersonEditor: View {
                     }
                     
                 }.padding(.top, 10)
-                    .padding(.bottom, 1)
+                
+                Spacer()
                 
             }.clipped()
                 .padding(.top, 10)
-            .offset(y: isFirstNameKeyboardShown ? -25 : isLastNameKeyboardShown ? -100 : 0)
-            
-            Spacer()
+                .offset(y: isFirstNameKeyboardShown ? -25 : isLastNameKeyboardShown ? -100 : 0)
                 .alert(isPresented: $deleteAlertShown) {
                     Alert(title: Text("Person Löschen"), message: Text("Möchtest du diese Person wirklich löschen?"), primaryButton: .cancel(Text("Abbrechen")), secondaryButton: .destructive(Text("Löschen"), action: {
                         // TODO delete person

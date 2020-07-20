@@ -34,7 +34,7 @@ struct NoteList: View {
                     
                     // Header
                     Header("Notizen")
-                        .padding(.top, 35)
+                        .padding(.top, 50)
                     
                     // Empty List Text
                     if noteListData.list!.isEmpty {
@@ -102,6 +102,6 @@ struct NoteListRow: View {
                 Spacer()
             }
             
-        }.frame(width: 345, height: 50)
+        }.frame(width: UIScreen.main.bounds.width * 0.95, height: 50)
     }
 }

@@ -105,7 +105,7 @@ struct AddNewFinePersonRow: View {
                 Spacer()
             }
             
-        }.frame(width: 345, height: 50)
+        }.frame(width: UIScreen.main.bounds.width * 0.95, height: 50)
         .onAppear {
             ImageData.shared.fetch(of: person.id) { image in
                 self.image = image

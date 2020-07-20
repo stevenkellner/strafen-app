@@ -274,7 +274,7 @@ struct PersonDetailRow: View {
                     Spacer()
                 }
                 
-            }.frame(width: 245)
+            }.frame(width: UIScreen.main.bounds.width * 0.675)
             
             // Right of the divider
             ZStack {
@@ -289,9 +289,9 @@ struct PersonDetailRow: View {
                     .font(.text(20))
                     .lineLimit(1)
                 
-            }.frame(width: 100)
+            }.frame(width: UIScreen.main.bounds.width * 0.275)
             
-        }.frame(width: 345, height: 50)
+        }.frame(width: UIScreen.main.bounds.width * 0.95, height: 50)
             .padding(.horizontal, 1)
     }
 }

@@ -95,7 +95,7 @@ struct ProfileDetail: View {
                             }
                         
                     }.frame(height: 100)
-                        .padding(.top, 35)
+                        .padding(.top, 50)
                     
                     // Name
                     HStack {

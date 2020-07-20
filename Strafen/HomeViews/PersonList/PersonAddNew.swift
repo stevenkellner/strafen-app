@@ -54,11 +54,13 @@ struct PersonAddNew: View {
             
             // Image and Name
             VStack(spacing: 0) {
+                Spacer()
                 
                 // Image
                 ImageSelector(image: $image)
                     .frame(width: 120, height: 120)
-                    .padding(.top, 25)
+                
+                Spacer()
                 
                 // First Name
                 VStack(spacing: 0) {
@@ -75,7 +77,7 @@ struct PersonAddNew: View {
                     // Text Field
                     CustomTextField("Vorname", text: $firstName, keyboardOnScreen: $isFirstNameKeyboardShown) {
                         isFirstNameError = firstName == ""
-                    }.frame(width: 345, height: 50)
+                    }.frame(width: UIScreen.main.bounds.width * 0.95, height: 50)
                         .padding(.top, 5)
                     
                     // Error Text
@@ -87,7 +89,7 @@ struct PersonAddNew: View {
                             .padding(.horizontal, 15)
                             .padding(.top, 5)
                     }
-                }.padding(.top, 30)
+                }
                 
                 // Last Name
                 VStack(spacing: 0) {
@@ -95,7 +97,7 @@ struct PersonAddNew: View {
                     // Text Field
                     CustomTextField("Nachname", text: $lastName, keyboardOnScreen: $isLastNameKeyboardShown) {
                         isLastNameError = lastName == ""
-                    }.frame(width: 345, height: 50)
+                    }.frame(width: UIScreen.main.bounds.width * 0.95, height: 50)
                         .padding(.top, 5)
                     
                     // Error Text
@@ -109,13 +111,12 @@ struct PersonAddNew: View {
                     }
                     
                 }.padding(.top, 10)
-                    .padding(.bottom, 1)
+                
+                Spacer()
                 
             }.clipped()
                 .padding(.top, 10)
                 .offset(y: isFirstNameKeyboardShown ? -25 : isLastNameKeyboardShown ? -100 : 0)
-            
-            Spacer()
             
             CancelConfirmButton {
                 presentationMode.wrappedValue.dismiss()
@@ -124,19 +125,19 @@ struct PersonAddNew: View {
                 isLastNameError = lastName == ""
                 confirmAlertShown = true
             }.padding(.bottom, 50)
-            .alert(isPresented: $confirmAlertShown) {
-                if isFirstNameError || isLastNameError {
-                    return Alert(title: Text("Eingabefehler"), message: Text("Es gab ein Fehler in der Eingabe des Namens."), dismissButton: .default(Text("Verstanden")))
+                .alert(isPresented: $confirmAlertShown) {
+                    if isFirstNameError || isLastNameError {
+                        return Alert(title: Text("Eingabefehler"), message: Text("Es gab ein Fehler in der Eingabe des Namens."), dismissButton: .default(Text("Verstanden")))
+                    }
+                    return Alert(title: Text("Person Hinzufügen"), message: Text("Möchtest du diese Person wirklich hinzufügen?"), primaryButton: .destructive(Text("Abbrechen")), secondaryButton: .default(Text("Bestätigen"), action: {
+                        
+    //                    let personId = UUID()
+    //                    TODO save person
+    //                    if let image = image {
+    //                        TODO save image
+    //                    }
+                    }))
                 }
-                return Alert(title: Text("Person Hinzufügen"), message: Text("Möchtest du diese Person wirklich hinzufügen?"), primaryButton: .destructive(Text("Abbrechen")), secondaryButton: .default(Text("Bestätigen"), action: {
-                    
-//                    let personId = UUID()
-//                    TODO save person
-//                    if let image = image {
-//                        TODO save image
-//                    }
-                }))
-            }
 
         }.background(colorScheme.backgroundColor)
     }

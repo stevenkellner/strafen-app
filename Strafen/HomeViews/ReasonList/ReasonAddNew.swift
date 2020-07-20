@@ -46,15 +46,19 @@ struct ReasonAddNew: View {
             // Title
             Header("Vorlage Hinzufügen")
             
+            Spacer()
+            
             // Importance changer
             ImportanceChanger(importance: $importance)
-                .frame(width: 258, height: 25)
-                .padding(.top, 75)
+                .frame(width: UIScreen.main.bounds.width * 0.7, height: 25)
+            
+            Spacer()
             
             // Reason
             CustomTextField("Grund", text: $reason)
-                .frame(width: 345, height: 50)
-                .padding(.top, 50)
+                .frame(width: UIScreen.main.bounds.width * 0.95, height: 50)
+            
+            Spacer()
             
             // Amount
             HStack(spacing: 0) {
@@ -63,7 +67,7 @@ struct ReasonAddNew: View {
                 CustomTextField("Betrag", text: $amountString, keyboardType: .decimalPad, keyboardOnScreen: $isAmountKeyboardOnScreen) {
                     amount = amountString.euroValue
                     amountString = amount.stringValue
-                }.frame(width: 148, height: 50)
+                }.frame(width: UIScreen.main.bounds.width * 0.45, height: 50)
                     .padding(.leading, 15)
                 
                 // € - Sign
@@ -86,7 +90,7 @@ struct ReasonAddNew: View {
                         }
                 }
                 
-            }.padding(.top, 30)
+            }
             
             Spacer()
             

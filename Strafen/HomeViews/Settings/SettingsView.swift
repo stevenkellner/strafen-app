@@ -19,51 +19,62 @@ struct SettingsView: View {
             
             // Header
             Header("Einstellungen")
-                .padding(.top, 35)
+                .padding(.top, 50)
             
-            // Club id title
-            HStack(spacing: 0) {
-                Text("Dein Vereinscode:")
-                    .foregroundColor(.textColor)
-                    .font(.text(20))
-                    .padding(.leading, 10)
-                Spacer()
-            }.padding(.top, 30)
+            Spacer()
             
             // Club id
-            HStack(spacing: 0) {
-                Spacer()
-                
-                // Id
-                Text(settings.person!.clubId.uuidString)
-                    .foregroundColor(.orange)
-                    .font(.text(17))
-                    .multilineTextAlignment(.center)
-                    .padding(.horizontal, 15)
-                
-                Spacer()
-                
-                // Copy Button
-                Button {
-                    UIPasteboard.general.string = settings.person!.clubId.uuidString
-                    AudioServicesPlaySystemSoundWithCompletion(kSystemSoundID_Vibrate, nil)
+            VStack(spacing: 0) {
                     
-                } label: {
-                    Image(systemName: "doc.on.doc")
-                        .font(.system(size: 25, weight: .light))
+                // Club id title
+                HStack(spacing: 0) {
+                    Text("Dein Vereinscode:")
                         .foregroundColor(.textColor)
-                }.padding(.trailing, 15)
+                        .font(.text(20))
+                        .padding(.leading, 10)
+                    Spacer()
+                }
                 
-                Spacer()
-            }.padding(.top, 5)
+                // Club id
+                HStack(spacing: 0) {
+                    Spacer()
+                    
+                    // Id
+                    Text(settings.person!.clubId.uuidString)
+                        .foregroundColor(.orange)
+                        .font(.text(17))
+                        .multilineTextAlignment(.center)
+                        .padding(.horizontal, 15)
+                    
+                    Spacer()
+                    
+                    // Copy Button
+                    Button {
+                        UIPasteboard.general.string = settings.person!.clubId.uuidString
+                        AudioServicesPlaySystemSoundWithCompletion(kSystemSoundID_Vibrate, nil)
+                        
+                    } label: {
+                        Image(systemName: "doc.on.doc")
+                            .font(.system(size: 25, weight: .light))
+                            .foregroundColor(.textColor)
+                    }.padding(.trailing, 15)
+                    
+                    Spacer()
+                }.padding(.top, 5)
+                
+            }
+            
+            Spacer()
 
             // Apearance Changer
             AppearanceChanger()
-                .padding(.top, 20)
+            
+            Spacer()
 
             // Style Changer
             StyleChanger()
-                .padding(.top, 30)
+            
+            Spacer()
             
             HStack(spacing: 30) {
                 Text("Kassier")
@@ -82,7 +93,7 @@ struct SettingsView: View {
                         person?.isCashier = false
                         settings.person = person
                     }
-            }.padding(.top, 30)
+            }
             
             // Log Out TODO
             
@@ -120,7 +131,7 @@ struct SettingsView: View {
                         // Left Section
                         Outline(.left)
                             .fillColor(colorScheme == .dark ? Color.plain.darkDarkGray : Color.plain.darkGray, onlyDefault: false)
-                            .frame(width: 115, height: 50)
+                            .frame(width: UIScreen.main.bounds.width * 0.3187, height: 50)
                             .onTapGesture {
                                 settings.appearance = .dark
                             }
@@ -128,7 +139,7 @@ struct SettingsView: View {
                         // Middle Section
                         Outline(.none)
                             .fillColor(colorScheme == .dark ? Color.plain.lightGray : Color.plain.lightLightGray, onlyDefault: false)
-                            .frame(width: 115, height: 50)
+                            .frame(width: UIScreen.main.bounds.width * 0.3187, height: 50)
                             .onTapGesture {
                                 settings.appearance = .light
                             }
@@ -161,10 +172,10 @@ struct SettingsView: View {
                                     .strokeColor(settings.style.strokeColor(colorScheme))
                                     .lineWidth(settings.style.lineWidth)
                                     .radius(settings.style.radius)
-                                    .frame(width: 115, height: 50)
+                                    .frame(width: UIScreen.main.bounds.width * 0.3187, height: 50)
                                 
                             }
-                        }.frame(width: 115, height: 50)
+                        }.frame(width: UIScreen.main.bounds.width * 0.3187, height: 50)
                             .onTapGesture {
                                 settings.appearance = .system
                             }
@@ -176,7 +187,7 @@ struct SettingsView: View {
                         .lineWidth(2.5)
                         .radius(2.5)
                         .frame(width: 33, height: 2.5)
-                        .offset(x: settings.appearance == .dark ? -115 : (settings.appearance == .system ? 115 : 0))
+                        .offset(x: settings.appearance == .dark ? -UIScreen.main.bounds.width * 0.3187 : (settings.appearance == .system ? UIScreen.main.bounds.width * 0.3187 : 0))
                         .animation(.default)
                     
                 }.padding(.top, 5)
@@ -230,7 +241,7 @@ struct SettingsView: View {
                                 .padding(.horizontal, 15)
                                 
                             
-                        }.frame(width: 172.5, height: 50)
+                        }.frame(width: UIScreen.main.bounds.width * 0.475, height: 50)
                             .onTapGesture {
                                 withAnimation {
                                     settings.style = .default
@@ -255,7 +266,7 @@ struct SettingsView: View {
                                 .opacity(settings.style == .plain ? 0.75 : 1)
                                 .padding(.horizontal, 15)
                             
-                        }.frame(width: 172.5, height: 50)
+                        }.frame(width: UIScreen.main.bounds.width * 0.475, height: 50)
                             .onTapGesture {
                                 withAnimation {
                                     settings.style = .plain
@@ -270,7 +281,7 @@ struct SettingsView: View {
                         .lineWidth(2.5)
                         .radius(2.5)
                         .frame(width: 50, height: 2.5)
-                        .offset(x: settings.style == .default ? -86.25 : 86.25)
+                        .offset(x: settings.style == .default ? -UIScreen.main.bounds.width * 0.2375 : UIScreen.main.bounds.width * 0.2375)
                         .animation(.default)
                     
                 }.padding(.top, 5)

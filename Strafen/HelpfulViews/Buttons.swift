@@ -36,7 +36,7 @@ struct CancelButton: View {
                 .font(.text(20))
                 .lineLimit(1)
             
-        }.frame(width: 258, height: 50)
+        }.frame(width: UIScreen.main.bounds.width * 0.7, height: 50)
             .onTapGesture(perform: buttonHandler)
     }
 }
@@ -74,7 +74,7 @@ struct ConfirmButton: View {
                 .font(.text(20))
                 .lineLimit(1)
             
-        }.frame(width: 258, height: 50)
+        }.frame(width: UIScreen.main.bounds.width * 0.7, height: 50)
             .onTapGesture(perform: buttonHandler)
     }
 }
@@ -115,7 +115,7 @@ struct CancelConfirmButton: View {
                     .font(.text(20))
                     .lineLimit(1)
                 
-            }.frame(width: 172.5, height: 50)
+            }.frame(width: UIScreen.main.bounds.width * 0.475 , height: 50)
                 .onTapGesture(perform: cancelButtonHandler)
             
             // Confirm Button
@@ -130,7 +130,7 @@ struct CancelConfirmButton: View {
                     .font(.text(20))
                     .lineLimit(1)
                 
-            }.frame(width: 172.5, height: 50)
+            }.frame(width: UIScreen.main.bounds.width * 0.475, height: 50)
                 .onTapGesture(perform: confirmButtonHandler)
             
         }
@@ -173,7 +173,7 @@ struct DeleteConfirmButton: View {
                     .font(.text(20))
                     .lineLimit(1)
                 
-            }.frame(width: 172.5, height: 50)
+            }.frame(width: UIScreen.main.bounds.width * 0.475, height: 50)
                 .onTapGesture(perform: deleteButtonHandler)
             
             // Confirm Button
@@ -188,7 +188,7 @@ struct DeleteConfirmButton: View {
                     .font(.text(20))
                     .lineLimit(1)
                 
-            }.frame(width: 172.5, height: 50)
+            }.frame(width: UIScreen.main.bounds.width * 0.475, height: 50)
                 .onTapGesture(perform: confirmButtonHandler)
             
         }
