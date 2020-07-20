@@ -76,7 +76,7 @@ struct SignInSelectPersonView: View {
                     .padding(.top, 30)
                 
                 // List
-                if let personList = personListData.list?.sorted(by: { $0.personName.formatted < $1.personName.formatted }) {
+                if let personList = personListData.list?.sorted(by: \.personName.formatted) {
                     ScrollView(showsIndicators: false) {
                         LazyVStack(spacing: 15) {
                             ForEach(personList) { person in
@@ -156,7 +156,7 @@ struct SignInSelectPersonRow: View {
                 
                 Spacer()
             }
-        }.frame(width: 345, height: 50)
+        }.frame(width: UIScreen.main.bounds.width * 0.95, height: 50)
             .padding(.horizontal, 1)
             .onAppear {
                 ImageData.shared.fetch(from: AppUrls.shared.imageDirUrl(of: clubId), of: person.id) { image in

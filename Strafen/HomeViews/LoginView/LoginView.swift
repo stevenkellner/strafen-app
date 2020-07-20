@@ -7,6 +7,41 @@
 
 import SwiftUI
 
+/// First View in login
+struct LoginEntryView: View {
+    
+    /// Color scheme to get appearance of this device
+    @Environment(\.colorScheme) var colorScheme
+    
+    /// State of internet connection
+    @State var connectionState: ConnectionState = .loading
+    
+    var body: some View {
+        VStack(spacing: 0) {
+            switch connectionState {
+            case .loading:
+                Text("Loading") // TODO
+                    .edgesIgnoringSafeArea(.all)
+                    .background(colorScheme.backgroundColor)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+            case .failed:
+                Text("Failed") // TODO
+                    .edgesIgnoringSafeArea(.all)
+                    .background(colorScheme.backgroundColor)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+            case .passed:
+                LoginView()
+            }
+        }.onAppear {
+            ListData.club.fetch {
+                connectionState = .passed
+            } failedHandler: {
+                connectionState = .failed
+            }
+        }
+    }
+}
+
 /// View  for login
 struct LoginView: View {
     
@@ -67,7 +102,7 @@ struct LoginView: View {
                 
                 // Text Field
                 CustomTextField("Email", text: $email, keyboardType: .emailAddress)
-                    .frame(width: 345, height: 50)
+                    .frame(width: UIScreen.main.bounds.width * 0.95, height: 50)
                     .padding(.top, 5)
             }
             
@@ -85,7 +120,7 @@ struct LoginView: View {
                 
                 // Text Field
                 CustomSecureField(text: $password, placeholder: "Passwort")
-                    .frame(width: 345, height: 50)
+                    .frame(width: UIScreen.main.bounds.width * 0.95, height: 50)
                     .padding(.top, 5)
             }.padding(.top, 20)
             
@@ -97,7 +132,7 @@ struct LoginView: View {
             
             // TODO Login with Apple Button
             Outline()
-                .frame(width: 345, height: 50)
+                .frame(width: UIScreen.main.bounds.width * 0.95, height: 50)
                 .padding(.top, 20)
             
             // SignIn Button
@@ -138,19 +173,17 @@ struct LoginView: View {
             
             // Confirm Button
             ConfirmButton("Anmelden") {
-                clubListData.dispatchGroup.notify(queue: .main) {
-                    if let club = clubListData.list!.first(where: { $0.allPersons.contains(where: { ($0.login.personLogin as? PersonLoginEmail)?.email == email }) }) {
-                        let person = club.allPersons.first(where: { ($0.login.personLogin as? PersonLoginEmail)?.email == email })!
-                        if (person.login.personLogin as! PersonLoginEmail).password == password.encrypted {
-                            Settings.shared.person = .init(id: person.id, name: person.personName, clubId: club.id, clubName: club.name, isCashier: person.isCashier)
-                        } else {
-                            emailLoginErrorType = .wrongPassword
-                            emailLoginAlert = true
-                        }
+                if let club = clubListData.list!.first(where: { $0.allPersons.contains(where: { ($0.login.personLogin as? PersonLoginEmail)?.email == email }) }) {
+                    let person = club.allPersons.first(where: { ($0.login.personLogin as? PersonLoginEmail)?.email == email })!
+                    if (person.login.personLogin as! PersonLoginEmail).password == password.encrypted {
+                        Settings.shared.person = .init(id: person.id, name: person.personName, clubId: club.id, clubName: club.name, isCashier: person.isCashier)
                     } else {
-                        emailLoginErrorType = .notRegistriered
+                        emailLoginErrorType = .wrongPassword
                         emailLoginAlert = true
                     }
+                } else {
+                    emailLoginErrorType = .notRegistriered
+                    emailLoginAlert = true
                 }
             }.padding(.bottom, 50)
                 .alert(isPresented: $emailLoginAlert) {
@@ -164,11 +197,6 @@ struct LoginView: View {
                 }
             
         }.background(colorScheme.backgroundColor)
-        .onAppear {
-            ListData.club.fetch {
-                // TODO no internet connection
-            }
-        }
     }
 }
 

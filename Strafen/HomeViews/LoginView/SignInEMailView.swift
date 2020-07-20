@@ -166,7 +166,7 @@ struct SignInEMailView: View {
                                 } else {
                                     isFirstNameError = false
                                 }
-                            }.frame(width: 345, height: 50)
+                            }.frame(width: UIScreen.main.bounds.width * 0.95, height: 50)
                                 .padding(.top, 5)
                             
                             // Error Text
@@ -191,7 +191,7 @@ struct SignInEMailView: View {
                                 } else {
                                     isLastNameError = false
                                 }
-                            }.frame(width: 345, height: 50)
+                            }.frame(width: UIScreen.main.bounds.width * 0.95, height: 50)
                                 .padding(.top, 5)
                             
                             // Error Text
@@ -221,7 +221,7 @@ struct SignInEMailView: View {
                             // Text Field
                             CustomTextField("Email", text: $email, keyboardType: .emailAddress) {
                                 emailError.evaluate(email)
-                            }.frame(width: 345, height: 50)
+                            }.frame(width: UIScreen.main.bounds.width * 0.95, height: 50)
                                 .padding(.top, 5)
                             
                             // Error Text
@@ -251,7 +251,7 @@ struct SignInEMailView: View {
                             // Text Field
                             CustomSecureField(text: $password, placeholder: "Passwort", keyboardOnScreen: $isPasswordKeyboardShown) {
                                 passwordError.evaluate(password)
-                            }.frame(width: 345, height: 50)
+                            }.frame(width: UIScreen.main.bounds.width * 0.95, height: 50)
                                 .padding(.top, 5)
                             
                             
@@ -273,7 +273,7 @@ struct SignInEMailView: View {
                             // Text Field
                             CustomSecureField(text: $repeatPassword, placeholder: "Passwort Wiederholen", keyboardOnScreen: $isRepeatPasswordKeyboardShown) {
                                 repeatPasswordError.evaluate(password, repeatPassword: repeatPassword)
-                            }.frame(width: 345, height: 50)
+                            }.frame(width: UIScreen.main.bounds.width * 0.95, height: 50)
                                 .padding(.top, 5)
                             
                             // Error Text
@@ -311,14 +311,12 @@ struct SignInEMailView: View {
                         isErrorAlertAlreadyRegistered = false
                         showErrorAlert = true
                     } else {
-                        clubListData.dispatchGroup.notify(queue: .main) {
-                            if clubListData.list!.flatMap(\.allPersons).contains(where: { ($0.login.personLogin as? PersonLoginEmail)?.email == email }) {
-                                    isErrorAlertAlreadyRegistered = true
-                                    showErrorAlert = true
-                            } else {
-                                SendCodeMail.shared.sendMail(to: email)
-                                confirmButtonClicked = true
-                            }
+                        if clubListData.list!.flatMap(\.allPersons).contains(where: { ($0.login.personLogin as? PersonLoginEmail)?.email == email }) {
+                                isErrorAlertAlreadyRegistered = true
+                                showErrorAlert = true
+                        } else {
+                            SendCodeMail.shared.sendMail(to: email)
+                            confirmButtonClicked = true
                         }
                     }
                 }.padding(.bottom, 50)

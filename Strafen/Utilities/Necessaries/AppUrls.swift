@@ -21,9 +21,6 @@ struct AppUrls {
         
         /// for reason
         let reason: URL
-        
-        /// for all clubs
-        let allClubs: URL
     }
     
     /// Contains all changer urls
@@ -71,8 +68,7 @@ struct AppUrls {
         let personUrl = baseUrl.appendingPathComponent(codableAppUrls.lists.person)
         let fineUrl = baseUrl.appendingPathComponent(codableAppUrls.lists.fine)
         let reasonUrl = baseUrl.appendingPathComponent(codableAppUrls.lists.reason)
-        let allClubsUrl = baseUrl.appendingPathComponent(codableAppUrls.lists.allClubs)
-        return ListTypesUrls(person: personUrl, fine: fineUrl, reason: reasonUrl, allClubs: allClubsUrl)
+        return ListTypesUrls(person: personUrl, fine: fineUrl, reason: reasonUrl)
     }
     
     /// Url of person list of given clubId
@@ -140,6 +136,12 @@ struct AppUrls {
             FileManager.default.createFile(atPath: notesUrl.path, contents: "[]".data(using: .utf8))
         }
         return notesUrl
+    }
+    
+    /// Url for allClubs
+    var allClubsUrl: URL? {
+        let baseUrl = URL(string: codableAppUrls.baseUrl)!
+        return baseUrl.appendingPathComponent(codableAppUrls.lists.allClubs)
     }
 }
 

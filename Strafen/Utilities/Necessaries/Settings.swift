@@ -174,7 +174,7 @@ class Settings: ObservableObject {
         let data = FileManager.default.contents(atPath: AppUrls.shared.settingsUrl.path)!
         let setting = try! decoder.decode(CodableSettings.self, from: data)
         appearance = setting.appearance
-        style = .plain // TODO
+        style = setting.style
         person = setting.person
     }
     

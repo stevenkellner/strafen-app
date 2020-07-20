@@ -135,7 +135,7 @@ struct SignInEMailValidationView: View {
                         
                         // Code Text Field
                         CustomTextField("Bestätigungscode", text: $inputEmailCode, keyboardOnScreen: $emailCodeKeyboardOnScreen)
-                            .frame(width: 345, height: 50)
+                            .frame(width: UIScreen.main.bounds.width * 0.95, height: 50)
                             .padding(.top, 50)
                             .alert(isPresented: $showEmailCodeInputErrorAlert) {
                                 Alert(title: Text("Falscher Code"), message: Text("\(inputEmailCode) ist nicht der richtige Code."), dismissButton: .default(Text("Verstanden")))
@@ -160,10 +160,13 @@ struct SignInEMailValidationView: View {
                             .padding(.horizontal, 25)
                         
                         HStack(spacing: 0) {
+                            Spacer()
                         
                             // Club code text field
                             CustomTextField("Vereinscode", text: $inputClubCode, keyboardType: .numbersAndPunctuation)
-                                .frame(width: 245, height: 50)
+                                .frame(width: UIScreen.main.bounds.width * 0.675, height: 50)
+                            
+                            Spacer()
                             
                             // Paste Button
                             Button {
@@ -174,8 +177,9 @@ struct SignInEMailValidationView: View {
                                 Image(systemName: "doc.on.clipboard")
                                     .font(.system(size: 30, weight: .light))
                                     .foregroundColor(.textColor)
-                            }.padding(.leading, 15)
+                            }
                             
+                            Spacer()
                         }.padding(.top, 30)
                         
                         Spacer()
@@ -201,11 +205,10 @@ struct SignInEMailValidationView: View {
                                     .font(.text(20))
                                     .lineLimit(1)
                                 
-                            }.frame(width: 345, height: 50)
+                            }.frame(width: UIScreen.main.bounds.width * 0.95, height: 50)
                         }.padding(.top, 30)
                         
                         Spacer()
-                        
                     }.opacity(state == .joinClub ? 1 : 0)
                         .offset(y: state == .joinClub ? 0 : 100)
                     
@@ -224,17 +227,17 @@ struct SignInEMailValidationView: View {
                         }
                     case .joinClub:
                         if let clubId = UUID(uuidString: inputClubCode) {
-                            clubListData.dispatchGroup.notify(queue: .main) {
-                                if let club = clubListData.list?.first(where: { $0.id == clubId }) {
-                                    ListData.person.list = nil
-                                    ListData.person.fetch(from: AppUrls.shared.personListUrl(of: clubId)) {}
-                                    confirmButtonClicked = true
-                                    self.clubId = club.id
-                                    clubName = club.name
-                                } else {
-                                    clubCodeError = .doesntExist
-                                    showClubCodeInputErrorAlert = true
+                            if let club = clubListData.list?.first(where: { $0.id == clubId }) {
+                                ListData.person.list = nil
+                                ListData.person.fetch(from: AppUrls.shared.personListUrl(of: clubId)) {
+                                    // TODO no connection
                                 }
+                                confirmButtonClicked = true
+                                self.clubId = club.id
+                                clubName = club.name
+                            } else {
+                                clubCodeError = .doesntExist
+                                showClubCodeInputErrorAlert = true
                             }
                         } else {
                             clubCodeError = .noValidCode

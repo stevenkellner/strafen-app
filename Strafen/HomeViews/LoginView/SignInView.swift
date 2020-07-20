@@ -60,7 +60,7 @@ struct SignInView: View {
                             .lineLimit(1)
                             .padding(.horizontal, 15)
                         
-                    }.frame(width: 345, height: 50)
+                    }.frame(width: UIScreen.main.bounds.width * 0.95, height: 50)
                         .onTapGesture {
                             showSignInEMailSheet = true
                         }
@@ -73,7 +73,7 @@ struct SignInView: View {
                     
                     // TODO Sign in with Apple
                     Outline()
-                        .frame(width: 345, height: 50)
+                        .frame(width: UIScreen.main.bounds.width * 0.95, height: 50)
                         .padding(.top, 20)
                     
                     Spacer()

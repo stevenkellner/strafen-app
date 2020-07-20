@@ -92,7 +92,7 @@ struct SignInNewClubView: View {
                             
                             // Text Field
                             CustomTextField("Vereinsname", text: $clubName)
-                                .frame(width: 345, height: 50)
+                                .frame(width: UIScreen.main.bounds.width * 0.95, height: 50)
                                 .padding(.top, 5)
                             
                             // Error Text
@@ -105,7 +105,7 @@ struct SignInNewClubView: View {
                                     .padding(.top, 5)
                             }
                             
-                        }.padding(.top, 15)
+                        }.padding(.top, 35)
                         
                         // Club id
                         VStack(spacing: 0) {

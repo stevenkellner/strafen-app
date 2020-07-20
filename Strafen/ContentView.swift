@@ -21,7 +21,7 @@ struct ContentView: View {
             if settings.person != nil {
                 HomeTabsView()
             } else {
-                LoginView()
+                LoginEntryView()
                     .edgesIgnoringSafeArea(.all)
             }
         }.onAppear {
@@ -32,19 +32,6 @@ struct ContentView: View {
 
 /// View with all home tabs
 struct HomeTabsView: View {
-    
-    /// State of internet connection
-    enum ConnectionState {
-        
-        /// Still loading
-        case loading
-        
-        /// No connection
-        case failed
-        
-        /// All loaded
-        case passed
-    }
     
     /// Color scheme to get appearance of this device
     @Environment(\.colorScheme) var colorScheme
@@ -158,81 +145,15 @@ struct HomeTabsView: View {
     }
 }
 
-/// All available home tabs
-class HomeTabs: ObservableObject {
+/// State of internet connection
+enum ConnectionState {
     
-    /// All available tabs
-    enum Tabs {
-        
-        /// Profile detail
-        case profileDetail
-        
-        /// Person list
-        case personList
-        
-        /// Reason list
-        case reasonList
-        
-        /// Add new fine
-        case addNewFine
-        
-        /// Notes
-        case notes
-        
-        /// Settings
-        case settings
-        
-        /// System image name
-        var imageName: String {
-            switch self {
-            case .profileDetail:
-                return "person"
-            case .personList:
-                return "person.2"
-            case .reasonList:
-                return "list.dash"
-            case .addNewFine:
-                return "plus"
-            case .notes:
-                return "note.text"
-            case .settings:
-                return "gear"
-            }
-        }
-        
-        /// Title
-        var title: String {
-            switch self {
-            case .profileDetail:
-                return "Profil"
-            case .personList:
-                return "Personen"
-            case .reasonList:
-                return "Strafenkatalog"
-            case .addNewFine:
-                return "Strafe"
-            case .notes:
-                return "Notizen"
-            case .settings:
-                return "Einstellungen"
-            }
-        }
-    }
+    /// Still loading
+    case loading
     
-    /// Shared instance for singelton
-    static let shared = HomeTabs()
+    /// No connection
+    case failed
     
-    /// Private init for singleton
-    private init() {}
-    
-    /// Active home tabs
-    @Published var active: Tabs = .profileDetail
+    /// All loaded
+    case passed
 }
-
-#if DEBUG
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        ContentView()
-    }
-}
-#endif

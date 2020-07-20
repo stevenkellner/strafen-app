@@ -11,7 +11,7 @@ import Foundation
 struct Club: ListTypes {
     
     /// Url to list on server
-    static var serverListUrl = \AppUrls.listTypesUrls?.allClubs
+    static var serverListUrl = \AppUrls.allClubsUrl
     
     /// Person in club list
     struct ClubPerson: Decodable {
