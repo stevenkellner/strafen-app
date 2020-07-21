@@ -52,6 +52,11 @@ struct Euro {
 // Extenstion of Euro to confirm to CustomStringConvertible
 extension Euro: CustomStringConvertible {
     
+    /// Double value of amount
+    var doubleValue: Double {
+        Double(euro) + Double(cent) / 100
+    }
+    
     /// String value of amount
     var stringValue: String {
         if cent == 0 {

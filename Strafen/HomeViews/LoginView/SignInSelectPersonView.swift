@@ -40,6 +40,12 @@ struct SignInSelectPersonView: View {
     /// Person List Data
     @ObservedObject var personListData = ListData.person
     
+    /// State of send mail task connection
+    @State var connectionState: ConnectionState = .passed
+    
+    /// Indicates if no connection alert is shown
+    @State var noConnectionAlert = false
+    
     var body: some View {
         ZStack {
             
@@ -89,21 +95,34 @@ struct SignInSelectPersonView: View {
                 Spacer()
                 
                 // Confirm Button
-                ConfirmButton("Registrieren") {
-                    let personId = selectedPerson?.id ?? UUID()
-                    let person = RegisterPerson(clubId: clubId, personId: personId, personName: personName, login: personLogin)
-                    RegisterPersonChanger.shared.registerPerson(person)
-                    Settings.shared.person = .init(id: personId, name: selectedPerson?.personName ?? personName, clubId: clubId, clubName: clubName, isCashier: false)
-                    showSignInSheet = false
+                ConfirmButton("Registrieren", connectionState: $connectionState) {
+                    registerPerson()
                 }.padding(.bottom, 50)
+                    .alert(isPresented: $noConnectionAlert) {
+                        Alert(title: Text("Kein Internet"), message: Text("Für diese Aktion benötigst du eine Internetverbindung."), primaryButton: .destructive(Text("Abbrechen")), secondaryButton: .default(Text("Erneut versuchen"), action: registerPerson))
+                    }
                 
             }
         }.background(colorScheme.backgroundColor)
             .navigationTitle("title")
             .navigationBarHidden(true)
-            .onAppear {
-                ListData.person.fetch(from: AppUrls.shared.personListUrl(of: clubId)) {}
+    }
+    
+    /// Register new person
+    func registerPerson() {
+        let personId = selectedPerson?.id ?? UUID()
+        let person = RegisterPerson(clubId: clubId, personId: personId, personName: personName, login: personLogin)
+        connectionState = .loading
+        RegisterPersonChanger.shared.registerPerson(person) { taskState in
+            if taskState == .passed {
+                connectionState = .passed
+                Settings.shared.person = .init(id: personId, name: selectedPerson?.personName ?? personName, clubId: clubId, clubName: clubName, isCashier: false)
+                showSignInSheet = false
+            } else {
+                connectionState = .failed
+                noConnectionAlert = true
             }
+        }
     }
 }
 

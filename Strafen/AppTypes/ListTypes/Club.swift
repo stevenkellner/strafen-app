@@ -13,6 +13,15 @@ struct Club: ListTypes {
     /// Url to list on server
     static var serverListUrl = \AppUrls.allClubsUrl
     
+    /// List data of this server list type
+    static let listData = ListData.club
+    
+    /// Url to changer on server
+    static let changerUrl: KeyPath<AppUrls, URL>? = nil
+    
+    /// Parameters for POST method
+    var postParameters: [String : Any]? = nil
+    
     /// Person in club list
     struct ClubPerson: Decodable {
         

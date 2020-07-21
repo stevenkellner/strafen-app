@@ -10,6 +10,16 @@ import Foundation
 /// Used to register a new person on server
 struct RegisterPersonChanger {
     
+    /// State of data task
+    enum TaskState {
+        
+        /// Data task passed
+        case passed
+        
+        /// Data task failed
+        case failed
+    }
+    
     /// Shared instance for singelton
     static let shared = Self()
     
@@ -17,7 +27,7 @@ struct RegisterPersonChanger {
     private init() {}
     
     /// Create new club on server
-    func registerPerson(_ person: RegisterPerson) {
+    func registerPerson(_ person: RegisterPerson, completionHandler: @escaping (TaskState) -> ()) {
         
         // Get POST parameters
         var parameters = person.parameters
@@ -31,6 +41,10 @@ struct RegisterPersonChanger {
         request.cachePolicy = .reloadIgnoringLocalAndRemoteCacheData
         
         // Execute dataTask
-        URLSession.shared.dataTask(with: request) { _, _, _ in }.resume()
+        URLSession.shared.dataTask(with: request) { data, _, error in
+            guard error == nil else { return completionHandler(.failed) }
+            guard let data = data else { return completionHandler(.failed) }
+            completionHandler(String(data: data, encoding: .utf8) ?? "" == "success" ? .passed : .failed)
+        }.resume()
     }
 }

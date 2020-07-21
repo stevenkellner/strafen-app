@@ -10,6 +10,16 @@ import Foundation
 /// Used to send code mail
 struct SendCodeMail {
     
+    /// State of data task
+    enum TaskState {
+        
+        /// Data task passed
+        case passed
+        
+        /// Data task failed
+        case failed
+    }
+    
     /// Shared instance for singelton
     static var shared = Self()
     
@@ -20,7 +30,7 @@ struct SendCodeMail {
     var code: String?
     
     /// Send code mail
-    mutating func sendMail(to address: String) {
+    mutating func sendMail(to address: String, completionHandler: @escaping (TaskState) -> ()) {
         code = generatedCode
         
         // Get POST parameters
@@ -38,7 +48,11 @@ struct SendCodeMail {
         request.cachePolicy = .reloadIgnoringLocalAndRemoteCacheData
         
         // Execute dataTask
-        URLSession.shared.dataTask(with: request) { _, _, _ in }.resume()
+        URLSession.shared.dataTask(with: request) { data, _, error in
+            guard error == nil else { return completionHandler(.failed) }
+            guard let data = data else { return completionHandler(.failed) }
+            completionHandler(String(data: data, encoding: .utf8) ?? "" == "success" ? .passed : .failed)
+        }.resume()
     }
     
     /// Generates new code

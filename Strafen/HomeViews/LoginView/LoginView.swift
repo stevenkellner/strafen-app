@@ -20,24 +20,51 @@ struct LoginEntryView: View {
         VStack(spacing: 0) {
             switch connectionState {
             case .loading:
-                Text("Loading") // TODO
-                    .edgesIgnoringSafeArea(.all)
-                    .background(colorScheme.backgroundColor)
+                
+                // Loading
+                ZStack {
+                    colorScheme.backgroundColor
+                    ProgressView("Laden")
+                }.edgesIgnoringSafeArea(.all)
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
             case .failed:
-                Text("Failed") // TODO
-                    .edgesIgnoringSafeArea(.all)
-                    .background(colorScheme.backgroundColor)
+                
+                // No internet connection
+                ZStack {
+                    colorScheme.backgroundColor
+                    VStack(spacing: 30) {
+                        Spacer()
+                        Text("Keine Internetverbindung")
+                            .font(.text(25))
+                            .foregroundColor(.textColor)
+                            .padding(.horizontal, 15)
+                            .multilineTextAlignment(.center)
+                        Text("Erneut versuchen")
+                            .font(.text(25))
+                            .foregroundColor(Color.custom.red)
+                            .padding(.horizontal, 15)
+                            .multilineTextAlignment(.center)
+                            .onTapGesture(perform: fetchLists)
+                        Spacer()
+                    }
+                }.edgesIgnoringSafeArea(.all)
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
             case .passed:
                 LoginView()
             }
         }.onAppear {
-            ListData.club.fetch {
-                connectionState = .passed
-            } failedHandler: {
-                connectionState = .failed
-            }
+            fetchLists()
+        }
+    }
+    
+    /// Fetch all list data
+    func fetchLists() {
+        connectionState = .loading
+        ListData.club.list = nil
+        ListData.club.fetch {
+            connectionState = .passed
+        } failedHandler: {
+            connectionState = .failed
         }
     }
 }

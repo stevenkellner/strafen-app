@@ -10,6 +10,16 @@ import SwiftUI
 /// Used to change a club image on server
 struct ClubImageChanger {
     
+    /// State of data task
+    enum TaskState {
+        
+        /// Data task passed
+        case passed
+        
+        /// Data task failed
+        case failed
+    }
+    
     /// Change type of image change on server
     enum ChangeType {
         
@@ -69,7 +79,7 @@ struct ClubImageChanger {
     static let maxImageResolution: CGFloat = 720
     
     /// Create new club on server
-    func changeImage(_ changeType: ChangeType) {
+    func changeImage(_ changeType: ChangeType, completionHandler: @escaping (TaskState) -> ()) {
         
         // Scale image
         let image = changeType.image.scaledTo(ClubImageChanger.maxImageResolution)
@@ -110,6 +120,10 @@ struct ClubImageChanger {
         request.httpBody = body
         
         // Execute dataTask
-        URLSession.shared.dataTask(with: request) { _, _, _ in }.resume()
+        URLSession.shared.dataTask(with: request) { data, _, error in
+            guard error != nil else { return completionHandler(.failed) }
+            guard let data = data else { return completionHandler(.failed) }
+            completionHandler(String(data: data, encoding: .utf8) ?? "" == "success" ? .passed : .failed)
+        }.resume()
     }
 }

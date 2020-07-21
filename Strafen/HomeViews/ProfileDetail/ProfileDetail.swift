@@ -28,6 +28,9 @@ struct ProfileDetail: View {
     /// Person image
     @State var image: UIImage?
     
+    /// True if image detail is showed
+    @State var showImageDetail = false
+    
     var body: some View {
         NavigationView {
             ZStack {
@@ -52,7 +55,13 @@ struct ProfileDetail: View {
                                         .stroke(settings.style.strokeColor(colorScheme), lineWidth: settings.style.lineWidth)
                                         .frame(width: 100, height: 100)
                                 )
+                                .onTapGesture {
+                                    showImageDetail = true
+                                }
                                 .padding(.leading, 30)
+                                .sheet(isPresented: $showImageDetail) {
+                                    PersonDetail.ImageDetail(image: image, personName: settings.person!.name)
+                                }
                         } else {
                             Image(systemName: "person")
                                 .resizable()

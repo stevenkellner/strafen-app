@@ -13,6 +13,21 @@ struct Person: ListTypes, Identifiable {
     /// Url to list on server
     static var serverListUrl = \AppUrls.listTypesUrls?.person
     
+    /// List data of this server list type
+    static let listData = ListData.person
+    
+    /// Url to changer on server
+    static let changerUrl: KeyPath<AppUrls, URL>? = \AppUrls.changer.personList
+    
+    /// Parameters for POST method
+    var postParameters: [String : Any]? {
+        [
+            "id": id,
+            "firstName": firstName,
+            "lastName": lastName
+        ]
+    }
+    
     /// First name
     let firstName: String
     

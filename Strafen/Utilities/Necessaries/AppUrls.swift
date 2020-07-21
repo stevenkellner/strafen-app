@@ -38,12 +38,28 @@ struct AppUrls {
         /// for sending code mail
         let mailCode: URL
         
+        /// for changing person image
+        let personImage: URL
+        
+        /// for person list
+        let personList: URL
+        
+        /// for reason list
+        let reasonList: URL
+        
+        /// for fine list
+        let fineList: URL
+        
         init(_ appUrls: CodableAppUrls) {
             let baseUrl = URL(string: appUrls.baseUrl)!
             newClub = baseUrl.appendingPathComponent(appUrls.changer.newClub)
             clubImage = baseUrl.appendingPathComponent(appUrls.changer.clubImage)
             registerPerson = baseUrl.appendingPathComponent(appUrls.changer.registerPerson)
             mailCode = baseUrl.appendingPathComponent(appUrls.changer.mailCode)
+            personImage = baseUrl.appendingPathComponent(appUrls.changer.personImage)
+            personList = baseUrl.appendingPathComponent(appUrls.changer.personList)
+            reasonList = baseUrl.appendingPathComponent(appUrls.changer.reasonList)
+            fineList = baseUrl.appendingPathComponent(appUrls.changer.fineList)
         }
     }
     
@@ -178,6 +194,18 @@ struct CodableAppUrls: Decodable {
         
         /// for sending code mail
         let mailCode: String
+        
+        /// for changing person image
+        let personImage: String
+        
+        /// for person list
+        let personList: String
+        
+        /// for reason list
+        let reasonList: String
+        
+        /// for fine list
+        let fineList: String
     }
     
     /// Base url of server

@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import AVFoundation
 
 struct SignInNewClubView: View {
     
@@ -42,6 +41,12 @@ struct SignInNewClubView: View {
     
     /// Observed Object that contains all settings of the app of this device
     @ObservedObject var settings = Settings.shared
+    
+    /// State of send mail task connection
+    @State var connectionState: ConnectionState = .passed
+    
+    /// Indicates if no connection alert is shown
+    @State var noConnectionAlert = false
     
     var body: some View {
         ZStack {
@@ -131,8 +136,8 @@ struct SignInNewClubView: View {
                                 // Copy Button
                                 Button {
                                     UIPasteboard.general.string = clubId.uuidString
-                                    AudioServicesPlaySystemSoundWithCompletion(kSystemSoundID_Vibrate, nil)
-                                    
+                                    let generator = UINotificationFeedbackGenerator()
+                                    generator.notificationOccurred(.success)
                                 } label: {
                                     Image(systemName: "doc.on.doc")
                                         .font(.system(size: 30, weight: .light))
@@ -155,31 +160,60 @@ struct SignInNewClubView: View {
                         Spacer()
                     }.padding(.vertical, 10)
                 }.padding(.vertical, 10)
+                    .alert(isPresented: $noConnectionAlert) {
+                        Alert(title: Text("Kein Internet"), message: Text("Für diese Aktion benötigst du eine Internetverbindung."), primaryButton: .destructive(Text("Abbrechen")), secondaryButton: .default(Text("Erneut versuchen"), action: handleConfirmButton))
+                    }
                 
                 // Confirm Button
-                ConfirmButton("Erstellen") {
-                    isClubNameError = clubName == ""
-                    if !isClubNameError {
-                        let personId = UUID()
-                        let club = ChangerClub(clubId: clubId, clubName: clubName, personId: personId, personName: personName, login: personLogin)
-                        NewClubChanger.shared.createNewClub(club)
-                        if let image = image {
-                            ClubImageChanger.shared.changeImage(.add(image: image, clubId: clubId))
-                        }
-                        Settings.shared.person = Settings.CodableSettings.Person(id: personId, name: personName, clubId: clubId, clubName: clubName, isCashier: true)
-                        showSignInSheet = false
-                    } else {
-                        showErrorAlert = true
-                    }
+                ConfirmButton("Erstellen", connectionState: $connectionState) {
+                    handleConfirmButton()
                 }.padding(.bottom, 50)
-                .alert(isPresented: $showErrorAlert) {
-                    Alert(title: Text("Eingabefehler"), message: Text("Es gab ein Fehler in der Eingabe des Verseinsnamens."), dismissButton: .default(Text("Verstanden")))
-                }
+                    .alert(isPresented: $showErrorAlert) {
+                        Alert(title: Text("Eingabefehler"), message: Text("Es gab ein Fehler in der Eingabe des Verseinsnamens."), dismissButton: .default(Text("Verstanden")))
+                    }
 
             }
         }.background(colorScheme.backgroundColor)
             .navigationTitle("title")
             .navigationBarHidden(true)
+    }
+    
+    /// Handles confirm button clicked
+    func handleConfirmButton() {
+        isClubNameError = clubName == ""
+        if !isClubNameError {
+            let personId = UUID()
+            let club = ChangerClub(clubId: clubId, clubName: clubName, personId: personId, personName: personName, login: personLogin)
+            let dispatchGroup = DispatchGroup()
+            dispatchGroup.enter()
+            connectionState = .loading
+            NewClubChanger.shared.createNewClub(club) { taskState in
+                if taskState == .passed {
+                    dispatchGroup.leave()
+                } else {
+                    connectionState = .failed
+                    noConnectionAlert = true
+                }
+            }
+            if let image = image {
+                dispatchGroup.enter()
+                ClubImageChanger.shared.changeImage(.add(image: image, clubId: clubId)) { taskState in
+                    if taskState == .passed {
+                        dispatchGroup.leave()
+                    } else {
+                        connectionState = .failed
+                        noConnectionAlert = true
+                    }
+                }
+            }
+            dispatchGroup.notify(queue: .main) {
+                connectionState = .passed
+                Settings.shared.person = Settings.CodableSettings.Person(id: personId, name: personName, clubId: clubId, clubName: clubName, isCashier: true)
+                showSignInSheet = false
+            }
+        } else {
+            showErrorAlert = true
+        }
     }
 }
 

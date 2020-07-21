@@ -6,98 +6,107 @@
 //
 
 import SwiftUI
-import AVFoundation
 
 /// Setting View
 struct SettingsView: View {
+    
+    /// Color scheme to get appearance of this device
+    @Environment(\.colorScheme) var colorScheme
     
     /// Observed Object that contains all settings of the app of this device
     @ObservedObject var settings = Settings.shared
     
     var body: some View {
-        VStack(spacing: 0) {
+        ZStack {
             
-            // Header
-            Header("Einstellungen")
-                .padding(.top, 50)
+            // Background Color
+            colorScheme.backgroundColor
             
-            Spacer()
-            
-            // Club id
             VStack(spacing: 0) {
-                    
-                // Club id title
-                HStack(spacing: 0) {
-                    Text("Dein Vereinscode:")
-                        .foregroundColor(.textColor)
-                        .font(.text(20))
-                        .padding(.leading, 10)
-                    Spacer()
-                }
+                
+                // Header
+                Header("Einstellungen")
+                    .padding(.top, 50)
+                
+                Spacer()
                 
                 // Club id
-                HStack(spacing: 0) {
-                    Spacer()
-                    
-                    // Id
-                    Text(settings.person!.clubId.uuidString)
-                        .foregroundColor(.orange)
-                        .font(.text(17))
-                        .multilineTextAlignment(.center)
-                        .padding(.horizontal, 15)
-                    
-                    Spacer()
-                    
-                    // Copy Button
-                    Button {
-                        UIPasteboard.general.string = settings.person!.clubId.uuidString
-                        AudioServicesPlaySystemSoundWithCompletion(kSystemSoundID_Vibrate, nil)
+                VStack(spacing: 0) {
                         
-                    } label: {
-                        Image(systemName: "doc.on.doc")
-                            .font(.system(size: 25, weight: .light))
+                    // Club id title
+                    HStack(spacing: 0) {
+                        Text("Dein Vereinscode:")
                             .foregroundColor(.textColor)
-                    }.padding(.trailing, 15)
+                            .font(.text(20))
+                            .padding(.leading, 10)
+                        Spacer()
+                    }
                     
-                    Spacer()
-                }.padding(.top, 5)
+                    // Club id
+                    HStack(spacing: 0) {
+                        Spacer()
+                        
+                        // Id
+                        Text(settings.person!.clubId.uuidString)
+                            .foregroundColor(.orange)
+                            .font(.text(17))
+                            .multilineTextAlignment(.center)
+                            .padding(.horizontal, 15)
+                        
+                        Spacer()
+                        
+                        // Copy Button
+                        Button {
+                            UIPasteboard.general.string = settings.person!.clubId.uuidString
+                            let generator = UINotificationFeedbackGenerator()
+                            generator.notificationOccurred(.success)
+                            
+                        } label: {
+                            Image(systemName: "doc.on.doc")
+                                .font(.system(size: 25, weight: .light))
+                                .foregroundColor(.textColor)
+                        }.padding(.trailing, 15)
+                        
+                        Spacer()
+                    }.padding(.top, 5)
+                    
+                }
                 
-            }
-            
-            Spacer()
+                Spacer()
 
-            // Apearance Changer
-            AppearanceChanger()
-            
-            Spacer()
+                // Apearance Changer
+                AppearanceChanger()
+                
+                Spacer()
 
-            // Style Changer
-            StyleChanger()
-            
-            Spacer()
-            
-            HStack(spacing: 30) {
-                Text("Kassier")
-                    .font(.text(20))
-                    .foregroundColor(.textColor)
-                    .onTapGesture {
-                        var person = settings.person
-                        person?.isCashier = true
-                        settings.person = person
-                    }
-                Text("Kein Kassier")
-                    .font(.text(20))
-                    .foregroundColor(.textColor)
-                    .onTapGesture {
-                        var person = settings.person
-                        person?.isCashier = false
-                        settings.person = person
-                    }
+                // Style Changer
+                StyleChanger()
+                
+                Spacer()
+                
+                HStack(spacing: 30) {
+                    Text("Kassier")
+                        .font(.text(20))
+                        .foregroundColor(.textColor)
+                        .onTapGesture {
+                            var person = settings.person
+                            person?.isCashier = true
+                            settings.person = person
+                        }
+                    Text("Kein Kassier")
+                        .font(.text(20))
+                        .foregroundColor(.textColor)
+                        .onTapGesture {
+                            var person = settings.person
+                            person?.isCashier = false
+                            settings.person = person
+                        }
+                }
+                
+                // Log Out TODO
+                
+                Spacer()
             }
-            
-            // Log Out TODO
-            
-            Spacer()
         }
     }
     

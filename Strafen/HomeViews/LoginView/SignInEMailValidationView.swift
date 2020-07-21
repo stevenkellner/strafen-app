@@ -22,9 +22,6 @@ struct SignInEMailValidationView: View {
     /// Errors occurs on club code input
     enum ClubCodeError {
         
-        /// No Internet connection
-        case noInternet
-        
         /// Unable to create UUID from Code
         case noValidCode
         
@@ -85,6 +82,12 @@ struct SignInEMailValidationView: View {
     
     /// Observed Object that contains all settings of the app of this device
     @ObservedObject var settings = Settings.shared
+    
+    /// State of send mail task connection
+    @State var connectionState: ConnectionState = .passed
+    
+    /// Indicates if no connection alert is shown
+    @State var noConnectionAlert = false
     
     var body: some View {
         ZStack {
@@ -212,10 +215,12 @@ struct SignInEMailValidationView: View {
                     }.opacity(state == .joinClub ? 1 : 0)
                         .offset(y: state == .joinClub ? 0 : 100)
                     
-                }
+                }.alert(isPresented: $noConnectionAlert) {
+                        Alert(title: Text("Kein Internet"), message: Text("Für diese Aktion benötigst du eine Internetverbindung."), primaryButton: .destructive(Text("Abbrechen")), secondaryButton: .default(Text("Erneut versuchen"), action: handleJoinClub))
+                    }
                 
                 // Confirm Button
-                ConfirmButton("Weiter") {
+                ConfirmButton("Weiter", connectionState: $connectionState) {
                     switch state {
                     case .codeInput:
                         if inputEmailCode == SendCodeMail.shared.code {
@@ -226,31 +231,13 @@ struct SignInEMailValidationView: View {
                             showEmailCodeInputErrorAlert = true
                         }
                     case .joinClub:
-                        if let clubId = UUID(uuidString: inputClubCode) {
-                            if let club = clubListData.list?.first(where: { $0.id == clubId }) {
-                                ListData.person.list = nil
-                                ListData.person.fetch(from: AppUrls.shared.personListUrl(of: clubId)) {
-                                    // TODO no connection
-                                }
-                                confirmButtonClicked = true
-                                self.clubId = club.id
-                                clubName = club.name
-                            } else {
-                                clubCodeError = .doesntExist
-                                showClubCodeInputErrorAlert = true
-                            }
-                        } else {
-                            clubCodeError = .noValidCode
-                            showClubCodeInputErrorAlert = true
-                        }
+                        handleJoinClub()
                     }
                 }.padding(.bottom, 50)
                     .alert(isPresented: $showClubCodeInputErrorAlert) {
                         switch clubCodeError {
                         case .doesntExist:
                             return Alert(title: Text("Kein Verein gefunden"), message: Text("Es wurde kein Verein mit diesem Code gefunden."), dismissButton: .default(Text("Verstanden")))
-                        case .noInternet:
-                            return Alert(title: Text("Kein Internet"), message: Text("Es wird eine Internetverbindung benötigt um sich zu registrieren."), dismissButton: .default(Text("Verstanden")))
                         case .noValidCode:
                             return Alert(title: Text("Kein gültiger Code"), message: Text("Der eingegebene Code hat nicht das richtige Format."), dismissButton: .default(Text("Verstanden")))
                         }
@@ -260,6 +247,31 @@ struct SignInEMailValidationView: View {
         }.background(colorScheme.backgroundColor)
             .navigationTitle("title")
             .navigationBarHidden(true)
+    }
+    
+    /// Handles join club button clicked
+    func handleJoinClub() {
+        if let clubId = UUID(uuidString: inputClubCode) {
+            if let club = clubListData.list?.first(where: { $0.id == clubId }) {
+                connectionState = .loading
+                ListData.person.list = nil
+                ListData.person.fetch(from: AppUrls.shared.personListUrl(of: clubId)) {
+                    connectionState = .passed
+                    confirmButtonClicked = true
+                    self.clubId = club.id
+                    clubName = club.name
+                } failedHandler: {
+                    connectionState = .failed
+                    noConnectionAlert = true
+                }
+            } else {
+                clubCodeError = .doesntExist
+                showClubCodeInputErrorAlert = true
+            }
+        } else {
+            clubCodeError = .noValidCode
+            showClubCodeInputErrorAlert = true
+        }
     }
 }
 

@@ -13,6 +13,25 @@ struct Fine: Identifiable, ListTypes {
     /// Url to list on server
     static let serverListUrl = \AppUrls.listTypesUrls?.fine
     
+    /// List data of this server list type
+    static let listData = ListData.fine
+    
+    /// Url to changer on server
+    static let changerUrl: KeyPath<AppUrls, URL>? = \AppUrls.changer.fineList
+    
+    /// Parameters for POST method
+    var postParameters: [String : Any]? {
+        var parameters: [String : Any] = [
+            "id": id,
+            "personId": personId,
+            "payed": payed.string,
+            "number": number,
+            "date": date.formattedForPost
+        ]
+        parameters.merge(fineReason.postParameters) { firstValue, _ in firstValue }
+        return parameters
+    }
+    
     /// Importance of a fine
     enum Importance: Int, Decodable {
         
@@ -45,6 +64,18 @@ struct Fine: Identifiable, ListTypes {
                 self = .low
             default:
                 throw CodingError.unknownStringValue
+            }
+        }
+        
+        /// String value of importance
+        var string: String {
+            switch self {
+            case .high:
+                return "high"
+            case .medium:
+                return "medium"
+            case .low:
+                return "low"
             }
         }
         
@@ -85,6 +116,16 @@ struct Fine: Identifiable, ListTypes {
         /// True if is payed
         var boolValue: Bool {
             self == .payed
+        }
+        
+        /// String value of importance
+        var string: String {
+            switch self {
+            case .payed:
+                return "true"
+            case .unpayed:
+                return "false"
+            }
         }
     }
     
@@ -195,6 +236,9 @@ protocol FineReason {
     ///
     /// Use it only if reason list is fetched
     var importance: Fine.Importance { get }
+    
+    /// Parameters for POST method
+    var postParameters: [String : Any] { get }
 }
 
 /// Fine Reason for reason / amount / importance
@@ -208,6 +252,15 @@ struct FineReasonCustom: FineReason, Equatable {
     
     /// Importance
     let importance: Fine.Importance
+    
+    /// Parameters for POST method
+    var postParameters: [String : Any] {
+        [
+            "amount": amount.doubleValue,
+            "reason": reason,
+            "importance": importance.string
+        ]
+    }
 }
 
 /// Fine Reason for templateId
@@ -235,5 +288,12 @@ struct FineReasonTemplate: FineReason, Equatable {
     /// Use it only if reason list is fetched
     var importance: Fine.Importance {
         ListData.reason.list!.first(where: { $0.id == templateId })!.importance
+    }
+    
+    /// Parameters for POST method
+    var postParameters: [String : Any] {
+        [
+            "templateId": templateId
+        ]
     }
 }

@@ -50,15 +50,63 @@ struct HomeTabsView: View {
             
             switch connectionState {
             case .loading:
-                Text("Loading") // TODO
-                    .edgesIgnoringSafeArea(.all)
-                    .background(colorScheme.backgroundColor)
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                
+                // Loading
+                switch homeTabs.active {
+                case .notes:
+                    NoteList(dismissHandler: $dismissHandler)
+                        .edgesIgnoringSafeArea(.all)
+                        .background(colorScheme.backgroundColor)
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                case .settings:
+                    SettingsView()
+                        .edgesIgnoringSafeArea(.all)
+                        .background(colorScheme.backgroundColor)
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                default:
+                    ZStack {
+                        colorScheme.backgroundColor
+                        ProgressView("Laden")
+                    }.edgesIgnoringSafeArea(.all)
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                }
+                
             case .failed:
-                Text("Failed") // TODO
-                    .edgesIgnoringSafeArea(.all)
-                    .background(colorScheme.backgroundColor)
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                
+                // No internet connection
+                switch homeTabs.active {
+                case .notes:
+                    NoteList(dismissHandler: $dismissHandler)
+                        .edgesIgnoringSafeArea(.all)
+                        .background(colorScheme.backgroundColor)
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                case .settings:
+                    SettingsView()
+                        .edgesIgnoringSafeArea(.all)
+                        .background(colorScheme.backgroundColor)
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                default:
+                    ZStack {
+                        colorScheme.backgroundColor
+                        VStack(spacing: 30) {
+                            Spacer()
+                            Text("Keine Internetverbindung")
+                                .font(.text(25))
+                                .foregroundColor(.textColor)
+                                .padding(.horizontal, 15)
+                                .multilineTextAlignment(.center)
+                            Text("Erneut versuchen")
+                                .font(.text(25))
+                                .foregroundColor(Color.custom.red)
+                                .padding(.horizontal, 15)
+                                .multilineTextAlignment(.center)
+                                .onTapGesture(perform: fetchLists)
+                            Spacer()
+                        }
+                    }.edgesIgnoringSafeArea(.all)
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                }
+                
             case .passed:
                 
                 // Home tabs
@@ -72,8 +120,12 @@ struct HomeTabsView: View {
                     case .reasonList:
                         ReasonList()
                     case .addNewFine:
-                        AddNewFine()
-                            .padding(.top, 50)
+                        ZStack {
+                            colorScheme.backgroundColor
+                            AddNewFine()
+                                .padding(.top, 50)
+                        }.edgesIgnoringSafeArea(.all)
+                            .frame(maxWidth: .infinity, maxHeight: .infinity)
                     case .notes:
                         NoteList(dismissHandler: $dismissHandler)
                     case .settings:
@@ -92,6 +144,11 @@ struct HomeTabsView: View {
             
         }.frame(maxWidth: .infinity, maxHeight: .infinity)
             .onAppear {
+                
+                // Fetch note list
+                ListData.note.list = nil
+                ListData.note.fetch()
+                
                 fetchLists()
             }
     }
@@ -99,8 +156,9 @@ struct HomeTabsView: View {
     /// Fetch all list data
     func fetchLists() {
         
+        connectionState = .loading
+        
         // Reset lists
-        ListData.note.list = nil
         ListData.person.list = nil
         ListData.reason.list = nil
         ListData.fine.list = nil
@@ -110,12 +168,6 @@ struct HomeTabsView: View {
         dispatchGroup.enter()
         dispatchGroup.enter()
         dispatchGroup.enter()
-        dispatchGroup.enter()
-        
-        // Fetch note list
-        ListData.note.fetch {
-            dispatchGroup.leave()
-        }
         
         // Fetch person list
         ListData.person.fetch {

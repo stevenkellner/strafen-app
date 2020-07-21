@@ -27,6 +27,13 @@ struct FormattedDate: Equatable {
         formatter.locale = Locale(identifier: "de")
         return formatter.string(from: date)
     }
+    
+    /// Formatted for POST method
+    var formattedForPost: String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "dd.MM.yyyy"
+        return formatter.string(from: date)
+    }
 }
 
 // Extension of FormattedDate for init from decoder

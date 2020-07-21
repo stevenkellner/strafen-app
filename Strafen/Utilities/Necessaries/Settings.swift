@@ -176,6 +176,8 @@ class Settings: ObservableObject {
         appearance = setting.appearance
         style = setting.style
         person = setting.person
+        
+        // person = .init(id: UUID(uuidString: "ADB004F2-ACD2-42E2-8FB5-3591A43C6F9C")!, name: PersonName(firstName: "Steven", lastName: "Kellner"), clubId: UUID(uuidString: "38646570-1920-4E55-A870-C4970B700183")!, clubName: "SG Kleinsendelbach / Hetzles", isCashier: true)
     }
     
     /// Only use in preview

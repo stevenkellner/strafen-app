@@ -50,14 +50,18 @@ struct ConfirmButton: View {
     /// Text shown on the button
     let text: String
     
+    /// Shows a loading circle if state is loading
+    @Binding var connectionState: ConnectionState
+    
     /// Color scheme to get appearance of this device
     @Environment(\.colorScheme) var colorScheme
     
     /// Observed Object that contains all settings of the app of this device
     @ObservedObject var settings = Settings.shared
     
-    init(_ text: String = "Bestätigen", _ buttonHandler: @escaping () -> ()) {
+    init(_ text: String = "Bestätigen", connectionState: Binding<ConnectionState>? = nil, _ buttonHandler: @escaping () -> ()) {
         self.text = text
+        _connectionState = connectionState ?? .constant(.passed)
         self.buttonHandler = buttonHandler
     }
     
@@ -68,11 +72,22 @@ struct ConfirmButton: View {
             Outline()
                 .fillColor(settings.style.fillColor(colorScheme, defaultStyle: Color.custom.lightGreen))
             
-            // Text
-            Text(text)
-                .foregroundColor(settings.style == .default ? Color.custom.gray : Color.custom.lightGreen)
-                .font(.text(20))
-                .lineLimit(1)
+            // Inside
+            HStack(spacing: 0) {
+                
+                // Text
+                Text(text)
+                    .foregroundColor(settings.style == .default ? Color.custom.gray : Color.custom.lightGreen)
+                    .font(.text(20))
+                    .lineLimit(1)
+                
+                // Loading circle
+                if connectionState == .loading {
+                    ProgressView()
+                        .padding(.leading, 15)
+                }
+                
+            }
             
         }.frame(width: UIScreen.main.bounds.width * 0.7, height: 50)
             .onTapGesture(perform: buttonHandler)

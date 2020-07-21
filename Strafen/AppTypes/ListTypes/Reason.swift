@@ -13,6 +13,22 @@ struct Reason: ListTypes, Identifiable, Equatable {
     /// Url to list on server
     static let serverListUrl = \AppUrls.listTypesUrls?.reason
     
+    /// List data of this server list type
+    static let listData = ListData.reason
+    
+    /// Url to changer on server
+    static let changerUrl: KeyPath<AppUrls, URL>? = \AppUrls.changer.reasonList
+    
+    /// Parameters for POST method
+    var postParameters: [String : Any]? {
+        [
+            "id": id,
+            "reason": reason,
+            "amount": amount.doubleValue,
+            "importance": importance.string
+        ]
+    }
+    
     /// Reason
     let reason: String
     

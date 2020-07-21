@@ -108,6 +108,12 @@ struct SignInEMailView: View {
     /// Observed Object that contains all settings of the app of this device
     @ObservedObject var settings = Settings.shared
     
+    /// State of send mail task connection
+    @State var connectionState: ConnectionState = .passed
+    
+    /// Indicates if no connection alert is shown
+    @State var noConnectionAlert = false
+    
     var body: some View {
         ZStack {
             
@@ -161,11 +167,7 @@ struct SignInEMailView: View {
                             
                             // Text Field
                             CustomTextField("Vorname", text: $firstName) {
-                                if firstName == "" {
-                                    isFirstNameError = true
-                                } else {
-                                    isFirstNameError = false
-                                }
+                                isFirstNameError = firstName == ""
                             }.frame(width: UIScreen.main.bounds.width * 0.95, height: 50)
                                 .padding(.top, 5)
                             
@@ -186,11 +188,7 @@ struct SignInEMailView: View {
                             
                             // Text Field
                             CustomTextField("Nachname", text: $lastName) {
-                                if lastName == "" {
-                                    isLastNameError = true
-                                } else {
-                                    isLastNameError = false
-                                }
+                                isLastNameError = lastName == ""
                             }.frame(width: UIScreen.main.bounds.width * 0.95, height: 50)
                                 .padding(.top, 5)
                             
@@ -292,32 +290,24 @@ struct SignInEMailView: View {
                 }.padding(.vertical, 10)
                 
                 Spacer()
+                    .alert(isPresented: $noConnectionAlert) {
+                        Alert(title: Text("Kein Internet"), message: Text("Für diese Aktion benötigst du eine Internetverbindung."), primaryButton: .destructive(Text("Abbrechen")), secondaryButton: .default(Text("Erneut versuchen"), action: sendMail))
+                    }
                 
-                ConfirmButton("Weiter") {
-                    if firstName == "" {
-                        isFirstNameError = true
-                    } else {
-                        isFirstNameError = false
-                    }
-                    if lastName == "" {
-                        isLastNameError = true
-                    } else {
-                        isLastNameError = false
-                    }
+                ConfirmButton("Weiter", connectionState: $connectionState) {
+                    isFirstNameError = firstName == ""
+                    isLastNameError = lastName == ""
                     emailError.evaluate(email)
                     passwordError.evaluate(password)
                     repeatPasswordError.evaluate(password, repeatPassword: repeatPassword)
                     if isFirstNameError || isLastNameError || emailError != nil || passwordError != nil || repeatPasswordError != nil {
                         isErrorAlertAlreadyRegistered = false
                         showErrorAlert = true
+                    } else if clubListData.list!.flatMap(\.allPersons).contains(where: { ($0.login.personLogin as? PersonLoginEmail)?.email == email }) {
+                        isErrorAlertAlreadyRegistered = true
+                        showErrorAlert = true
                     } else {
-                        if clubListData.list!.flatMap(\.allPersons).contains(where: { ($0.login.personLogin as? PersonLoginEmail)?.email == email }) {
-                                isErrorAlertAlreadyRegistered = true
-                                showErrorAlert = true
-                        } else {
-                            SendCodeMail.shared.sendMail(to: email)
-                            confirmButtonClicked = true
-                        }
+                        sendMail()
                     }
                 }.padding(.bottom, 50)
                     .alert(isPresented: $showErrorAlert) {
@@ -333,6 +323,20 @@ struct SignInEMailView: View {
         }.background(colorScheme.backgroundColor)
             .navigationTitle("title")
             .navigationBarHidden(true)
+    }
+    
+    /// Send code mail
+    func sendMail() {
+        connectionState = .loading
+        SendCodeMail.shared.sendMail(to: email) { taskState in
+            if taskState == .passed {
+                connectionState = .passed
+                confirmButtonClicked = true
+            } else {
+                connectionState = .failed
+                noConnectionAlert = true
+            }
+        }
     }
 }
 

@@ -22,7 +22,11 @@ let appUrls = """
                 "newClub": "changer/newClub.php",
                 "clubImage": "changer/clubImageChanger.php",
                 "registerPerson": "changer/registerPerson.php",
-                "mailCode": "changer/codeMail.php"
+                "mailCode": "changer/codeMail.php",
+                "personImage": "changer/personImageChanger.php",
+                "personList": "changer/personChanger.php",
+                "reasonList": "changer/reasonChanger.php",
+                "fineList": "changer/fineChanger.php"
             },
             "authorization": "c3RldmVuOmZ5d3dlYi1yeWhrdU0tcXlneGU2",
             "key": "UM5fZEML22vzCQvMwyVN",

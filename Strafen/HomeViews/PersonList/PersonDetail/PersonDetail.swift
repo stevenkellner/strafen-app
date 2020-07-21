@@ -46,7 +46,7 @@ struct PersonDetail: View {
             VStack(spacing: 0) {
                 
                 // Image
-                PersonImage(image: $image)
+                PersonImage(image: $image, personName: person.personName)
                     .padding(.vertical, image == nil ? 20 : 10)
                 
                 // Name
@@ -141,6 +141,9 @@ struct PersonDetail: View {
         
         /// Image of the person
         @Binding var image: UIImage?
+        
+        /// Person name
+        let personName: PersonName
 
         /// Color scheme to get appearance of this device
         @Environment(\.colorScheme) var colorScheme
@@ -168,7 +171,7 @@ struct PersonDetail: View {
                             showImageDetail = true
                         }
                         .sheet(isPresented: $showImageDetail) {
-                            ImageDetail(image: image)
+                            ImageDetail(image: image, personName: personName)
                         }
                 } else {
                     Image(systemName: "person")
@@ -193,6 +196,9 @@ struct PersonDetail: View {
         
         /// Image
         let image: UIImage
+        
+        /// Person name
+        let personName: PersonName
 
         /// Color scheme to get appearance of this device
         @Environment(\.colorScheme) var colorScheme
@@ -224,7 +230,7 @@ struct PersonDetail: View {
                             Button(action: {
                                 presentationMode.wrappedValue.dismiss()
                                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                                    ActivityView.shared.shareImage(image)
+                                    ActivityView.shared.shareImage(image, title: personName.formatted)
                                 }
                             }) {
                                 Text("Bild speichern")
