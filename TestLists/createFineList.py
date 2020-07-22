@@ -30,7 +30,7 @@ def generateFine():
     fine = {}
     
     # Add id
-    fine['id'] = str(uuid.uuid1())
+    fine['id'] = str(uuid.uuid4())
     
     # Add personId
     fine['personId'] = random.choice(personIdList)

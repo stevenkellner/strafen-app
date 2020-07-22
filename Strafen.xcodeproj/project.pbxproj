@@ -52,6 +52,7 @@
 		B0619C1624C236C2008969A1 /* AddNewFinePerson.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0619C1524C236C2008969A1 /* AddNewFinePerson.swift */; };
 		B0619C1824C23911008969A1 /* AddNewFineReason.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0619C1724C23910008969A1 /* AddNewFineReason.swift */; };
 		B0619C1B24C363DE008969A1 /* NoteList.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0619C1A24C363DE008969A1 /* NoteList.swift */; };
+		B077B56924C7652F003844CE /* PersonImageChanger.swift in Sources */ = {isa = PBXBuildFile; fileRef = B077B56824C7652F003844CE /* PersonImageChanger.swift */; };
 		B07938D624BEF4C300F86E86 /* PersonFineDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = B07938D524BEF4C300F86E86 /* PersonFineDetail.swift */; };
 		B07938D824BF037900F86E86 /* PersonAddNew.swift in Sources */ = {isa = PBXBuildFile; fileRef = B07938D724BF037900F86E86 /* PersonAddNew.swift */; };
 		B09CB23A24C725FC0096C4F8 /* ListChanger.swift in Sources */ = {isa = PBXBuildFile; fileRef = B09CB23924C725FC0096C4F8 /* ListChanger.swift */; };
@@ -154,6 +155,7 @@
 		B0619C1524C236C2008969A1 /* AddNewFinePerson.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewFinePerson.swift; sourceTree = "<group>"; };
 		B0619C1724C23910008969A1 /* AddNewFineReason.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewFineReason.swift; sourceTree = "<group>"; };
 		B0619C1A24C363DE008969A1 /* NoteList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteList.swift; sourceTree = "<group>"; };
+		B077B56824C7652F003844CE /* PersonImageChanger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonImageChanger.swift; sourceTree = "<group>"; };
 		B07938D524BEF4C300F86E86 /* PersonFineDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonFineDetail.swift; sourceTree = "<group>"; };
 		B07938D724BF037900F86E86 /* PersonAddNew.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonAddNew.swift; sourceTree = "<group>"; };
 		B09CB23924C725FC0096C4F8 /* ListChanger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListChanger.swift; sourceTree = "<group>"; };
@@ -372,6 +374,7 @@
 				B020C7CF24B9E310008940FE /* SendCodeMail.swift */,
 				B0DE1CBA24C44D61006CCFE9 /* LocalListChanger.swift */,
 				B09CB23924C725FC0096C4F8 /* ListChanger.swift */,
+				B077B56824C7652F003844CE /* PersonImageChanger.swift */,
 			);
 			path = Changer;
 			sourceTree = "<group>";
@@ -808,6 +811,7 @@
 				B0619C1824C23911008969A1 /* AddNewFineReason.swift in Sources */,
 				B0DE1CBD24C48FB3006CCFE9 /* NoteDetail.swift in Sources */,
 				B0E0F82724A63E5800C82828 /* StrafenApp.swift in Sources */,
+				B077B56924C7652F003844CE /* PersonImageChanger.swift in Sources */,
 				B042D42E24BA21540029F2D5 /* ListTypes.swift in Sources */,
 				B020C7BC24AF1AE9008940FE /* ChangerClub.swift in Sources */,
 				B020C7CA24B1168F008940FE /* RegisterPerson.swift in Sources */,

@@ -13,6 +13,14 @@ struct PersonFineEditor: View {
     /// Edited fine
     let fine: Fine
     
+    /// Completion handler
+    let completionHandler: (Fine) -> ()
+    
+    init(fine: Fine, _ completionHandler: @escaping (Fine) -> ()) {
+        self.fine = fine
+        self.completionHandler = completionHandler
+    }
+    
     /// Presentation mode
     @Environment(\.presentationMode) var presentationMode
     
@@ -57,6 +65,18 @@ struct PersonFineEditor: View {
     
     /// Indicates if confirm button is pressed and shows the confirm alert
     @State var showConfirmAlert = false
+    
+    /// State of data task connection
+    @State var connectionStateDelete: ConnectionState = .passed
+    
+    /// Indicates if no connection alert is shown
+    @State var noConnectionAlertDelete = false
+    
+    /// State of data task connection
+    @State var connectionStateUpdate: ConnectionState = .passed
+    
+    /// Indicates if no connection alert is shown
+    @State var noConnectionAlertUpdate = false
     
     var body: some View {
         VStack(spacing: 0) {
@@ -108,10 +128,7 @@ struct PersonFineEditor: View {
                         .font(.text(25))
                         .lineLimit(1)
                 }.alert(isPresented: $showDeleteAlert) {
-                    Alert(title: Text("Strafe Löschen"), message: Text("Möchtest du diese Strafe wirklich löscehn?"), primaryButton: .cancel(Text("Abbrechen")), secondaryButton: .destructive(Text("Löschen"), action: {
-                        // TODO delete fine
-                        presentationMode.wrappedValue.dismiss()
-                    }))
+                    Alert(title: Text("Strafe Löschen"), message: Text("Möchtest du diese Strafe wirklich löscehn?"), primaryButton: .cancel(Text("Abbrechen")), secondaryButton: .destructive(Text("Löschen"), action: handleFineDelete))
                 }
                 
                 // Date
@@ -120,9 +137,11 @@ struct PersonFineEditor: View {
                     .foregroundColor(.textColor)
                     .lineLimit(1)
                     .padding(.top, 30)
-                
             
                 Spacer()
+                    .alert(isPresented: $noConnectionAlertDelete) {
+                        Alert(title: Text("Kein Internet"), message: Text("Für diese Aktion benötigst du eine Internetverbindung."), primaryButton: .destructive(Text("Abbrechen")), secondaryButton: .default(Text("Erneut versuchen"), action: handleFineDelete))
+                    }
             
                 // Advanced and template button
                 HStack(spacing: 0) {
@@ -182,10 +201,13 @@ struct PersonFineEditor: View {
                 }
                 
                 Spacer()
+                    .alert(isPresented: $noConnectionAlertUpdate) {
+                        Alert(title: Text("Kein Internet"), message: Text("Für diese Aktion benötigst du eine Internetverbindung."), primaryButton: .destructive(Text("Abbrechen")), secondaryButton: .default(Text("Erneut versuchen"), action: handleFineUpdate))
+                    }
             }
             
             // Delete / Confirm Button
-            DeleteConfirmButton {
+            DeleteConfirmButton(connectionStateDelete: $connectionStateDelete, connectionStateConfirm: $connectionStateUpdate) {
                 showDeleteAlert = true
             } confirmButtonHandler: {
                 var fineReason: FineReason = FineReasonCustom(reason: reason, amount: amount, importance: importance)
@@ -209,19 +231,7 @@ struct PersonFineEditor: View {
                     } else if amount == .zero {
                         return Alert(title: Text("Betrag ist Null"), message: Text("Bitte gebe einen Bertag ein, der nicht gleich Null ist."), dismissButton: .default(Text("Verstanden")))
                     }
-                    return Alert(title: Text("Strafe Ändern"), message: Text("Möchtest du diese Strafe wirklich ändern?"), primaryButton: .destructive(Text("Abbrechen")), secondaryButton: .default(Text("Bestätigen"), action: {
-                        var fineReason: FineReason = FineReasonCustom(reason: reason, amount: amount, importance: importance)
-                        if let templateId = templateId {
-                            if let template = ListData.reason.list?.first(where: { $0.id == templateId }) {
-                                if reason == template.reason && amount == template.amount && importance == template.importance {
-                                    fineReason = FineReasonTemplate(templateId: templateId)
-                                }
-                            }
-                        }
-                        let _ = Fine(personId: fine.personId, date: date.formattedDate, payed: fine.payed, number: number, id: fine.id, fineReason: fineReason)
-                        // TODO save fine
-                        presentationMode.wrappedValue.dismiss()
-                    }))
+                    return Alert(title: Text("Strafe Ändern"), message: Text("Möchtest du diese Strafe wirklich ändern?"), primaryButton: .destructive(Text("Abbrechen")), secondaryButton: .default(Text("Bestätigen"), action: handleFineUpdate))
                 }
             
         }.onAppear {
@@ -232,6 +242,44 @@ struct PersonFineEditor: View {
             templateId = (fine.fineReason as? FineReasonTemplate)?.templateId
             date = fine.date.date
             number = fine.number
+        }
+    }
+    
+    /// Hadles fine delete
+    func handleFineDelete() {
+        connectionStateDelete = .loading
+        ListChanger.shared.change(.delete, item: fine) { taskState in
+            if taskState == .passed {
+                connectionStateDelete = .passed
+                presentationMode.wrappedValue.dismiss()
+            } else {
+                connectionStateDelete = .failed
+                noConnectionAlertDelete = true
+            }
+        }
+    }
+    
+    /// Handle fine update
+    func handleFineUpdate() {
+        var fineReason: FineReason = FineReasonCustom(reason: reason, amount: amount, importance: importance)
+        if let templateId = templateId {
+            if let template = ListData.reason.list?.first(where: { $0.id == templateId }) {
+                if reason == template.reason && amount == template.amount && importance == template.importance {
+                    fineReason = FineReasonTemplate(templateId: templateId)
+                }
+            }
+        }
+        let editedFine = Fine(personId: fine.personId, date: date.formattedDate, payed: fine.payed, number: number, id: fine.id, fineReason: fineReason)
+        connectionStateUpdate = .loading
+        ListChanger.shared.change(.update, item: editedFine) { taskState in
+            if taskState == .passed {
+                connectionStateUpdate = .passed
+                completionHandler(editedFine)
+                presentationMode.wrappedValue.dismiss()
+            } else {
+                connectionStateUpdate = .failed
+                noConnectionAlertUpdate = true
+            }
         }
     }
 }

@@ -5,7 +5,7 @@
 //  Created by Steven on 21.07.20.
 //
 
-import Foundation
+import SwiftUI
 
 /// Changes server lists (person, reason, fine)
 struct ListChanger {
@@ -51,13 +51,17 @@ struct ListChanger {
     
     /// Change cached list
     private func changeCached<ListType>(_ changeType: ChangeType, item: ListType) where ListType: ListTypes {
-        switch changeType {
-        case .add:
-            ListType.listData.list!.append(item)
-        case .update:
-            ListType.listData.list!.mapped { $0.id == item.id ? item : $0 }
-        case .delete:
-            ListType.listData.list!.filtered { $0.id != item.id }
+        DispatchQueue.main.async {
+            withAnimation {
+                switch changeType {
+                case .add:
+                    ListType.listData.list!.append(item)
+                case .update:
+                    ListType.listData.list!.mapped { $0.id == item.id ? item : $0 }
+                case .delete:
+                    ListType.listData.list!.filtered { $0.id != item.id }
+                }
+            }
         }
     }
     

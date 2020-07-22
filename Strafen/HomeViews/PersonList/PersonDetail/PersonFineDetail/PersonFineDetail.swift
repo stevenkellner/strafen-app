@@ -34,6 +34,18 @@ struct PersonFineDetail: View {
     /// Indicates if to unpayed is pressed
     @State var showAlertToUnpayed = false
     
+    /// State of data task connection
+    @State var connectionStateToPayed: ConnectionState = .passed
+    
+    /// Indicates if no connection alert is shown
+    @State var noConnectionAlertToPayed = false
+    
+    /// State of data task connection
+    @State var connectionStateToUnpayed: ConnectionState = .passed
+    
+    /// Indicates if no connection alert is shown
+    @State var noConnectionAlertToUnpayed = false
+    
     var body: some View {
         ZStack {
             
@@ -42,7 +54,9 @@ struct PersonFineDetail: View {
             
             // Back and edit button
             BackAndEditButton {
-                PersonFineEditor(fine: fine)
+                PersonFineEditor(fine: fine) { newFine in
+                    fine = newFine
+                }
             }
             
             // Fine Detail
@@ -129,6 +143,10 @@ struct PersonFineDetail: View {
                 ZStack {
                     
                     HStack(spacing: 0) {
+                        Spacer()
+                            .alert(isPresented: $noConnectionAlertToPayed) {
+                                Alert(title: Text("Kein Internet"), message: Text("Für diese Aktion benötigst du eine Internetverbindung."), primaryButton: .destructive(Text("Abbrechen")), secondaryButton: .default(Text("Erneut versuchen"), action: handleSaveToPayed))
+                            }
                         
                         // Left of the divider
                         Outline(.left)
@@ -140,12 +158,7 @@ struct PersonFineDetail: View {
                                 }
                             }
                             .alert(isPresented: $showAlertToUnpayed) {
-                                Alert(title: Text("Strafe Ändern"), message: Text("Möchtest du diese Strafe wircklich als unbezahlt markieren?"), primaryButton: .destructive(Text("Abbrechen")), secondaryButton: .default(Text("Bestätigen"), action: {
-                                    withAnimation {
-                                        fine.payed = .unpayed
-                                    }
-                                    // TODO save payed change
-                                }))
+                                Alert(title: Text("Strafe Ändern"), message: Text("Möchtest du diese Strafe wircklich als unbezahlt markieren?"), primaryButton: .destructive(Text("Abbrechen")), secondaryButton: .default(Text("Bestätigen"), action: handleSaveToUnpayed))
                             }
                         
                         // Right of the divider
@@ -158,14 +171,13 @@ struct PersonFineDetail: View {
                                 }
                             }
                             .alert(isPresented: $showAlertToPayed) {
-                                Alert(title: Text("Strafe Ändern"), message: Text("Möchtest du diese Strafe wircklich als bezahlt markieren?"), primaryButton: .destructive(Text("Abbrechen")), secondaryButton: .default(Text("Bestätigen"), action: {
-                                    withAnimation {
-                                        fine.payed = .payed
-                                    }
-                                    // TODO save unpayed change
-                                }))
+                                Alert(title: Text("Strafe Ändern"), message: Text("Möchtest du diese Strafe wircklich als bezahlt markieren?"), primaryButton: .destructive(Text("Abbrechen")), secondaryButton: .default(Text("Bestätigen"), action: handleSaveToPayed))
                             }
                         
+                        Spacer()
+                            .alert(isPresented: $noConnectionAlertToUnpayed) {
+                                Alert(title: Text("Kein Internet"), message: Text("Für diese Aktion benötigst du eine Internetverbindung."), primaryButton: .destructive(Text("Abbrechen")), secondaryButton: .default(Text("Erneut versuchen"), action: handleSaveToUnpayed))
+                            }
                     }
                     
                     // Indicator
@@ -175,6 +187,18 @@ struct PersonFineDetail: View {
                         .radius(2.5)
                         .frame(width: 33, height: 2.5)
                         .offset(x: fine.payed == .payed ? 50 : -50)
+                    
+                    // Progress View of to unpayed
+                    if connectionStateToUnpayed == .loading {
+                        ProgressView()
+                            .offset(x: -50)
+                    }
+                    
+                    // Progress View of to payed
+                    if connectionStateToPayed == .loading {
+                        ProgressView()
+                            .offset(x: 50)
+                    }
                     
                 }
                 
@@ -190,5 +214,41 @@ struct PersonFineDetail: View {
                     presentationMode.wrappedValue.dismiss()
                 }
             }
+    }
+    
+    /// Handles save to payed
+    func handleSaveToPayed() {
+        connectionStateToPayed = .loading
+        var editedFine = fine
+        editedFine.payed = .payed
+        ListChanger.shared.change(.update, item: editedFine) { taskState in
+            if taskState == .passed {
+                connectionStateToPayed = .passed
+                withAnimation {
+                    fine.payed = .payed
+                }
+            } else {
+                connectionStateToPayed = .failed
+                noConnectionAlertToPayed = true
+            }
+        }
+    }
+    
+    /// Handles save to unpayed
+    func handleSaveToUnpayed() {
+        connectionStateToUnpayed = .loading
+        var editedFine = fine
+        editedFine.payed = .unpayed
+        ListChanger.shared.change(.update, item: editedFine) { taskState in
+            if taskState == .passed {
+                connectionStateToUnpayed = .passed
+                withAnimation {
+                    fine.payed = .unpayed
+                }
+            } else {
+                connectionStateToUnpayed = .failed
+                noConnectionAlertToUnpayed = true
+            }
+        }
     }
 }

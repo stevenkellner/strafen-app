@@ -162,9 +162,11 @@ struct HomeTabsView: View {
         ListData.person.list = nil
         ListData.reason.list = nil
         ListData.fine.list = nil
+        ListData.club.list = nil
         
         // Enter DispathGroup
         let dispatchGroup = DispatchGroup()
+        dispatchGroup.enter()
         dispatchGroup.enter()
         dispatchGroup.enter()
         dispatchGroup.enter()
@@ -190,6 +192,13 @@ struct HomeTabsView: View {
             connectionState = .failed
         }
         
+        // Fetch club list
+        ListData.club.fetch {
+            dispatchGroup.leave()
+        } failedHandler: {
+            connectionState = .failed
+        }
+        
         // Notify dispath group
         dispatchGroup.notify(queue: .main) {
             connectionState = .passed
@@ -198,7 +207,7 @@ struct HomeTabsView: View {
 }
 
 /// State of internet connection
-enum ConnectionState {
+enum ConnectionState: CustomStringConvertible {
     
     /// Still loading
     case loading
@@ -208,4 +217,16 @@ enum ConnectionState {
     
     /// All loaded
     case passed
+    
+    /// Description
+    var description: String {
+        switch self {
+        case .loading:
+            return "loading"
+        case .failed:
+            return "failed"
+        case .passed:
+            return "passed"
+        }
+    }
 }
