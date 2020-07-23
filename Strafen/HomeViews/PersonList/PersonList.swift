@@ -65,7 +65,7 @@ struct PersonList: View {
                     }
                     
                     // Search Bar and Person List
-                    ScrollView(showsIndicators: false) {
+                    ScrollView {
                         
                         // Search Bar
                         if !personListData.list!.isEmpty {

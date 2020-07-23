@@ -61,7 +61,7 @@ struct ReasonList: View {
                 }
                 
                 // Template List
-                ScrollView(showsIndicators: false) {
+                ScrollView {
                     LazyVStack(spacing: 15) {
                         ForEach(reasonListData.list!.sorted(by: \.reason.localizedUppercase)) { reason in
                             ReasonListRow(reason: reason)

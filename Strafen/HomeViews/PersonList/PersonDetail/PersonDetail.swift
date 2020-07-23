@@ -97,7 +97,7 @@ struct PersonDetail: View {
                 }
                 
                 // Fine List
-                ScrollView(showsIndicators: false) {
+                ScrollView {
                     LazyVStack(spacing: 15) {
                         ForEach(fineListData.list!.filter({ $0.personId == person.id }).sorted(by: \.fineReason.reason.localizedUppercase)) { fine in
                             NavigationLink(destination: PersonFineDetail(personName: person.personName, fine: fine, dismissHandler: $dismissHandler)) {

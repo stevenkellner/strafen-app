@@ -37,6 +37,12 @@ struct ReasonAddNew: View {
     /// Indicates if confirm button is pressed and shows the confirm alert
     @State var showConfirmAlert = false
     
+    /// State of data task connection
+    @State var connectionState: ConnectionState = .passed
+    
+    /// Indicates if no connection alert is shown
+    @State var noConnectionAlert = false
+    
     var body: some View {
         VStack(spacing: 0) {
             
@@ -57,6 +63,7 @@ struct ReasonAddNew: View {
             // Reason
             CustomTextField("Grund", text: $reason)
                 .frame(width: UIScreen.main.bounds.width * 0.95, height: 50)
+                .offset(y: isAmountKeyboardOnScreen ? -25 : 0)
             
             Spacer()
             
@@ -90,12 +97,15 @@ struct ReasonAddNew: View {
                         }
                 }
                 
-            }
+            }.offset(y: isAmountKeyboardOnScreen ? -50 : 0)
+                .alert(isPresented: $noConnectionAlert) {
+                    Alert(title: Text("Kein Internet"), message: Text("Für diese Aktion benötigst du eine Internetverbindung."), primaryButton: .destructive(Text("Abbrechen")), secondaryButton: .default(Text("Erneut versuchen"), action: handleSave))
+                }
             
             Spacer()
             
             // Cancel / Confirm button
-            CancelConfirmButton {
+            CancelConfirmButton(connectionState: $connectionState) {
                 presentationMode.wrappedValue.dismiss()
             } confirmButtonHandler: {
                 showConfirmAlert = true
@@ -106,13 +116,24 @@ struct ReasonAddNew: View {
                     } else if amount == .zero {
                         return Alert(title: Text("Betrag ist Null"), message: Text("Bitte gebe einen Bertag ein, der nicht gleich Null ist."), dismissButton: .default(Text("Verstanden")))
                     }
-                    return Alert(title: Text("Vorlage Hinzufügen"), message: Text("Möchtest du diese Vorlage wirklich hinzufügen?"), primaryButton: .destructive(Text("Abbrechen")), secondaryButton: .default(Text("Bestätigen"), action: {
-                        let _ = Reason(reason: reason, id: UUID(), amount: amount, importance: importance)
-                        // TODO save reason
-                        presentationMode.wrappedValue.dismiss()
-                    }))
+                    return Alert(title: Text("Vorlage Hinzufügen"), message: Text("Möchtest du diese Vorlage wirklich hinzufügen?"), primaryButton: .destructive(Text("Abbrechen")), secondaryButton: .default(Text("Bestätigen"), action: handleSave))
                 }
             
+        }
+    }
+    
+    /// Handles reason saving
+    func handleSave() {
+        connectionState = .loading
+        let newReason = Reason(reason: reason, id: UUID(), amount: amount, importance: importance)
+        ListChanger.shared.change(.add, item: newReason) { taskState in
+            if taskState == .passed {
+                connectionState = .passed
+                presentationMode.wrappedValue.dismiss()
+            } else {
+                connectionState = .failed
+                noConnectionAlert = true
+            }
         }
     }
 }

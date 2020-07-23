@@ -43,6 +43,18 @@ struct ReasonEditor: View {
     /// Indicates if confirm button is pressed and shows the confirm alert
     @State var showConfirmAlert = false
     
+    /// State of data task connection
+    @State var connectionStateDelete: ConnectionState = .passed
+    
+    /// Indicates if no connection alert is shown
+    @State var noConnectionAlertDelete = false
+    
+    /// State of data task connection
+    @State var connectionStateUpdate: ConnectionState = .passed
+    
+    /// Indicates if no connection alert is shown
+    @State var noConnectionAlertUpdate = false
+    
     var body: some View {
         VStack(spacing: 0) {
             
@@ -63,6 +75,9 @@ struct ReasonEditor: View {
             // Reason
             CustomTextField("Grund", text: $reason)
                 .frame(width: UIScreen.main.bounds.width * 0.95, height: 50)
+                .alert(isPresented: $noConnectionAlertUpdate) {
+                    Alert(title: Text("Kein Internet"), message: Text("Für diese Aktion benötigst du eine Internetverbindung."), primaryButton: .destructive(Text("Abbrechen")), secondaryButton: .default(Text("Erneut versuchen"), action: handleUpdate))
+                }
             
             Spacer()
             
@@ -97,6 +112,9 @@ struct ReasonEditor: View {
                 }
                 
             }
+                .alert(isPresented: $noConnectionAlertDelete) {
+                    Alert(title: Text("Kein Internet"), message: Text("Für diese Aktion benötigst du eine Internetverbindung."), primaryButton: .destructive(Text("Abbrechen")), secondaryButton: .default(Text("Erneut versuchen"), action: handleDelete))
+                }
             
             
             Spacer()
@@ -104,14 +122,11 @@ struct ReasonEditor: View {
                     if ListData.fine.list!.contains(where: { ($0.fineReason as? FineReasonTemplate)?.templateId == reasonToEdit.id }) {
                         return Alert(title: Text("Nicht Löschen"), message: Text("Die Vorlage kann nicht gelöscht werden, da es Strafen gibt, die diese Vorlage benutzt."), dismissButton: .default(Text("Verstanden")))
                     }
-                    return Alert(title: Text("Vorlage Löschen"), message: Text("Möchtest du diese Vorlage wirklich löschen?"), primaryButton: .cancel(Text("Abbrechen")), secondaryButton: .destructive(Text("Löschen"), action: {
-                        // TODO delete reason
-                        presentationMode.wrappedValue.dismiss()
-                    }))
+                    return Alert(title: Text("Vorlage Löschen"), message: Text("Möchtest du diese Vorlage wirklich löschen?"), primaryButton: .cancel(Text("Abbrechen")), secondaryButton: .destructive(Text("Löschen"), action: handleDelete))
                 }
             
             // Delete / Confirm button
-            DeleteConfirmButton {
+            DeleteConfirmButton(connectionStateDelete: $connectionStateDelete, connectionStateConfirm: $connectionStateUpdate) {
                 showDeleteAlert = true
             } confirmButtonHandler: {
                 let newReason = Reason(reason: reason, id: reasonToEdit.id, amount: amount, importance: importance)
@@ -127,11 +142,7 @@ struct ReasonEditor: View {
                     } else if amount == .zero {
                         return Alert(title: Text("Betrag ist Null"), message: Text("Bitte gebe einen Bertag ein, der nicht gleich Null ist."), dismissButton: .default(Text("Verstanden")))
                     }
-                    return Alert(title: Text("Vorlage Hinzufügen"), message: Text("Möchtest du diese Vorlage wirklich hinzufügen?"), primaryButton: .destructive(Text("Abbrechen")), secondaryButton: .default(Text("Bestätigen"), action: {
-                        let _ = Reason(reason: reason, id: reasonToEdit.id, amount: amount, importance: importance)
-                        // TODO update reason
-                        presentationMode.wrappedValue.dismiss()
-                    }))
+                    return Alert(title: Text("Vorlage Hinzufügen"), message: Text("Möchtest du diese Vorlage wirklich hinzufügen?"), primaryButton: .destructive(Text("Abbrechen")), secondaryButton: .default(Text("Bestätigen"), action: handleUpdate))
                 }
             
         }.onAppear {
@@ -139,6 +150,35 @@ struct ReasonEditor: View {
             amount = reasonToEdit.amount
             amountString = reasonToEdit.amount.stringValue
             importance = reasonToEdit.importance
+        }
+    }
+    
+    /// Handles reason deleting
+    func handleDelete() {
+        connectionStateDelete = .loading
+        ListChanger.shared.change(.delete, item: reasonToEdit) { taskState in
+            if taskState == .passed {
+                connectionStateDelete = .passed
+                presentationMode.wrappedValue.dismiss()
+            } else {
+                connectionStateDelete = .failed
+                noConnectionAlertDelete = true
+            }
+        }
+    }
+    
+    /// Handles reason updating
+    func handleUpdate() {
+        connectionStateUpdate = .loading
+        let editedReason = Reason(reason: reason, id: reasonToEdit.id, amount: amount, importance: importance)
+        ListChanger.shared.change(.update, item: editedReason) { taskState in
+            if taskState == .passed {
+                connectionStateUpdate = .passed
+                presentationMode.wrappedValue.dismiss()
+            } else {
+                connectionStateUpdate = .failed
+                noConnectionAlertUpdate = true
+            }
         }
     }
 }

@@ -46,6 +46,12 @@ struct AddNewFine: View {
     /// Indicates if confirm button is pressed and shows the confirm alert
     @State var showConfirmAlert = false
     
+    /// State of data task connection
+    @State var connectionState: ConnectionState = .passed
+    
+    /// Indicates if no connection alert is shown
+    @State var noConnectionAlert = false
+    
     var body: some View {
         VStack(spacing: 0) {
             
@@ -232,6 +238,8 @@ struct AddNewFine: View {
                 }
                 
                 Spacer()
+            }.alert(isPresented: $noConnectionAlert) {
+                Alert(title: Text("Kein Internet"), message: Text("Für diese Aktion benötigst du eine Internetverbindung."), primaryButton: .destructive(Text("Abbrechen")), secondaryButton: .default(Text("Erneut versuchen"), action: handleSave))
             }
             
             CancelConfirmButton {
@@ -249,18 +257,31 @@ struct AddNewFine: View {
                     } else if fineReason == nil {
                         return Alert(title: Text("Keine Strafe Angegeben"), message: Text("Bitte gebe einen Grund für diese Strafe ein."), dismissButton: .default(Text("Verstanden")))
                     }
-                    return Alert(title: Text("Strafe Hinzufügen"), message: Text("Möchtest du diese Strafe wirklich hinzufügen?"), primaryButton: .destructive(Text("Abbrechen")), secondaryButton: .default(Text("Bestätigen"), action: {
-                        let _ = Fine(personId: personId!, date: date.formattedDate, payed: .unpayed, number: number, id: UUID(), fineReason: fineReason!)
-                        // TODO save fine
-                        personId = nil
-                        fineReason = nil
-                        date = Date()
-                        number = 1
-                        homeTabs.active = .personList
-                        presentationMode.wrappedValue.dismiss()
-                    }))
+                    return Alert(title: Text("Strafe Hinzufügen"), message: Text("Möchtest du diese Strafe wirklich hinzufügen?"), primaryButton: .destructive(Text("Abbrechen")), secondaryButton: .default(Text("Bestätigen"), action: handleSave))
                 }
 
+        }
+    }
+    
+    /// Handles fine saving
+    func handleSave() {
+        connectionState = .loading
+        let newFine = Fine(personId: personId!, date: date.formattedDate, payed: .unpayed, number: number, id: UUID(), fineReason: fineReason!)
+        ListChanger.shared.change(.add, item: newFine) { taskState in
+            if taskState == .passed {
+                connectionState = .passed
+                personId = nil
+                fineReason = nil
+                date = Date()
+                number = 1
+                DispatchQueue.main.async {
+                    homeTabs.active = .personList
+                }
+                presentationMode.wrappedValue.dismiss()
+            } else {
+                connectionState = .failed
+                noConnectionAlert = true
+            }
         }
     }
 }

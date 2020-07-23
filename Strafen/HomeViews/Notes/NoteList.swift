@@ -53,7 +53,7 @@ struct NoteList: View {
                     }
                     
                     // Note List
-                    ScrollView(showsIndicators: false) {
+                    ScrollView {
                         LazyVStack(spacing: 15) {
                             ForEach(noteListData.list!.sorted(by: \.subject.localizedUppercase)) { note in
                                 NavigationLink(destination: NoteDetail(note: note, dismissHandler: $dismissHandler)) {

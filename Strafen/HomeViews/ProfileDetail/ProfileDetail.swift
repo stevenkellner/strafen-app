@@ -251,7 +251,7 @@ struct ProfileDetail: View {
                     }.padding(.top, 5)
                     
                     // Empty List Text
-                    if fineListData.list!.isEmpty {
+                    if fineListData.list!.filter({ $0.personId == settings.person!.id }).isEmpty {
                         Text("Du hast keine Strafen.")
                             .font(.text(25))
                             .foregroundColor(.textColor)
@@ -261,7 +261,7 @@ struct ProfileDetail: View {
                     }
                     
                     // Fine list
-                    ScrollView(showsIndicators: false) {
+                    ScrollView {
                         LazyVStack(spacing: 15) {
                             ForEach(fineListData.list!.filter({ $0.personId == settings.person!.id }).sorted(by: \.fineReason.reason.localizedUppercase)) { fine in
                                 NavigationLink(destination: PersonFineDetail(personName: settings.person!.name, fine: fine, dismissHandler: $dismissHandler)) {

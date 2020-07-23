@@ -49,7 +49,7 @@ struct PersonFineTemplate: View {
             }
             
             // List of reasons
-            ScrollView(showsIndicators: false) {
+            ScrollView {
                 LazyVStack(spacing: 15) {
                     ForEach(reasonListData.list!.sorted(by: \.reason.localizedUppercase)) { reason in
                         PersonFineTemplateRow(reason: reason)

@@ -49,7 +49,7 @@ struct AddNewFinePerson: View {
             }
             
             // List of reasons
-            ScrollView(showsIndicators: false) {
+            ScrollView {
                 LazyVStack(spacing: 15) {
                     ForEach(personListData.list!.sorted(by: \.personName.formatted)) { person in
                         AddNewFinePersonRow(person: person)
