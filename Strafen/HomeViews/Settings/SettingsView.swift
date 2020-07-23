@@ -84,24 +84,13 @@ struct SettingsView: View {
                 
                 Spacer()
                 
-                HStack(spacing: 30) {
-                    Text("Kassier")
-                        .font(.text(20))
-                        .foregroundColor(.textColor)
-                        .onTapGesture {
-                            var person = settings.person
-                            person?.isCashier = true
-                            settings.person = person
-                        }
-                    Text("Kein Kassier")
-                        .font(.text(20))
-                        .foregroundColor(.textColor)
-                        .onTapGesture {
-                            var person = settings.person
-                            person?.isCashier = false
-                            settings.person = person
-                        }
-                }
+                Text(settings.person?.isCashier ?? false ? "Zu kein Kassier" : "Zu Kassier") // TODO remove
+                    .font(.text(20))
+                    .foregroundColor(.textColor)
+                    .frame(height: 50)
+                    .onTapGesture {
+                        settings.person?.isCashier.toggle()
+                    }
                 
                 // Log Out TODO
                 

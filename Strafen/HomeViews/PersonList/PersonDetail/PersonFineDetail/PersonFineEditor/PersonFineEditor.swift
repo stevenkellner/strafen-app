@@ -99,6 +99,9 @@ struct PersonFineEditor: View {
                 // Reason
                 CustomTextField("Grund", text: $reason)
                     .frame(width: 345, height: 50)
+                    .alert(isPresented: $noConnectionAlertDelete) {
+                        Alert(title: Text("Kein Internet"), message: Text("Für diese Aktion benötigst du eine Internetverbindung."), primaryButton: .destructive(Text("Abbrechen")), secondaryButton: .default(Text("Erneut versuchen"), action: handleFineDelete))
+                    }
                 
                 Spacer()
                 
@@ -127,6 +130,19 @@ struct PersonFineEditor: View {
                         .foregroundColor(.textColor)
                         .font(.text(25))
                         .lineLimit(1)
+                    
+                    // Done button
+                    if isAmountKeyboardOnScreen {
+                        Text("Fertig")
+                            .foregroundColor(Color.custom.darkGreen)
+                            .font(.text(25))
+                            .lineLimit(1)
+                            .padding(.leading, 15)
+                            .onTapGesture {
+                                UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+                            }
+                    }
+                    
                 }.alert(isPresented: $showDeleteAlert) {
                     Alert(title: Text("Strafe Löschen"), message: Text("Möchtest du diese Strafe wirklich löscehn?"), primaryButton: .cancel(Text("Abbrechen")), secondaryButton: .destructive(Text("Löschen"), action: handleFineDelete))
                 }
@@ -139,9 +155,6 @@ struct PersonFineEditor: View {
                     .padding(.top, 30)
             
                 Spacer()
-                    .alert(isPresented: $noConnectionAlertDelete) {
-                        Alert(title: Text("Kein Internet"), message: Text("Für diese Aktion benötigst du eine Internetverbindung."), primaryButton: .destructive(Text("Abbrechen")), secondaryButton: .default(Text("Erneut versuchen"), action: handleFineDelete))
-                    }
             
                 // Advanced and template button
                 HStack(spacing: 0) {
@@ -198,12 +211,11 @@ struct PersonFineEditor: View {
                         }
                     
                     Spacer()
+                }.alert(isPresented: $noConnectionAlertUpdate) {
+                    Alert(title: Text("Kein Internet"), message: Text("Für diese Aktion benötigst du eine Internetverbindung."), primaryButton: .destructive(Text("Abbrechen")), secondaryButton: .default(Text("Erneut versuchen"), action: handleFineUpdate))
                 }
                 
                 Spacer()
-                    .alert(isPresented: $noConnectionAlertUpdate) {
-                        Alert(title: Text("Kein Internet"), message: Text("Für diese Aktion benötigst du eine Internetverbindung."), primaryButton: .destructive(Text("Abbrechen")), secondaryButton: .default(Text("Erneut versuchen"), action: handleFineUpdate))
-                    }
             }
             
             // Delete / Confirm Button
