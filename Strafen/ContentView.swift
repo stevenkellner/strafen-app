@@ -25,8 +25,8 @@ struct ContentView: View {
                     .edgesIgnoringSafeArea(.all)
             }
         }.onAppear {
-                Settings.shared.applySettings()
-            }
+            Settings.shared.applySettings()
+        }
     }
 }
 
@@ -207,7 +207,7 @@ struct HomeTabsView: View {
 }
 
 /// State of internet connection
-enum ConnectionState: CustomStringConvertible {
+enum ConnectionState {
     
     /// Still loading
     case loading
@@ -217,16 +217,4 @@ enum ConnectionState: CustomStringConvertible {
     
     /// All loaded
     case passed
-    
-    /// Description
-    var description: String {
-        switch self {
-        case .loading:
-            return "loading"
-        case .failed:
-            return "failed"
-        case .passed:
-            return "passed"
-        }
-    }
 }

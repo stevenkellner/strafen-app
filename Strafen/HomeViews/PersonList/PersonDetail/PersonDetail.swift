@@ -39,7 +39,9 @@ struct PersonDetail: View {
             
             // Back and edit button
             BackAndEditButton {
-                PersonEditor(person: person)
+                PersonEditor(person: person) { image in
+                    self.image = image
+                }
             }
             
             // Person info and fine list
