@@ -103,13 +103,17 @@ struct CancelConfirmButton: View {
     /// Handler by cofirm button clicked
     let confirmButtonHandler: () -> ()
     
+    /// Shows a loading circle if state is loading
+    @Binding var connectionState: ConnectionState
+    
     /// Color scheme to get appearance of this device
     @Environment(\.colorScheme) var colorScheme
     
     /// Observed Object that contains all settings of the app of this device
     @ObservedObject var settings = Settings.shared
     
-    init(_ cancelButtonHandler: @escaping () -> (), confirmButtonHandler: @escaping () -> ()) {
+    init(connectionState: Binding<ConnectionState>? = nil,_ cancelButtonHandler: @escaping () -> (), confirmButtonHandler: @escaping () -> ()) {
+        _connectionState = connectionState ?? .constant(.passed)
         self.cancelButtonHandler = cancelButtonHandler
         self.confirmButtonHandler = confirmButtonHandler
     }
@@ -139,11 +143,22 @@ struct CancelConfirmButton: View {
                 // Outline
                 Outline(.right)
                 
-                // Text
-                Text("Bestätigen")
-                    .foregroundColor(Color.textColor)
-                    .font(.text(20))
-                    .lineLimit(1)
+                // Inside
+                HStack(spacing: 0) {
+                    
+                    // Text
+                    Text("Bestätigen")
+                        .foregroundColor(Color.textColor)
+                        .font(.text(20))
+                        .lineLimit(1)
+                    
+                    // Loading circle
+                    if connectionState == .loading {
+                        ProgressView()
+                            .padding(.leading, 15)
+                    }
+                    
+                }
                 
             }.frame(width: UIScreen.main.bounds.width * 0.475, height: 50)
                 .onTapGesture(perform: confirmButtonHandler)

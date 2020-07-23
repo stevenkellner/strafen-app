@@ -54,12 +54,14 @@ struct ListChanger {
         DispatchQueue.main.async {
             withAnimation {
                 switch changeType {
-                case .add:
+                case .add where !ListType.listData.list!.contains(where: { $0.id == item.id }):
                     ListType.listData.list!.append(item)
                 case .update:
                     ListType.listData.list!.mapped { $0.id == item.id ? item : $0 }
                 case .delete:
                     ListType.listData.list!.filtered { $0.id != item.id }
+                default:
+                    break
                 }
             }
         }

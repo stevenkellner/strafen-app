@@ -43,6 +43,15 @@ struct PersonAddNew: View {
     /// Indicates if cofirm button is pressed and the alert is shown
     @State var confirmAlertShown = false
     
+    /// State of data task connection
+    @State var connectionState: ConnectionState = .passed
+    
+    /// Indicates if no connection alert is shown
+    @State var noConnectionAlert = false
+    
+    /// PersonId
+    let personId = UUID()
+    
     var body: some View {
         VStack(spacing: 0) {
             
@@ -116,9 +125,12 @@ struct PersonAddNew: View {
                 
             }.clipped()
                 .padding(.top, 10)
-                .offset(y: isFirstNameKeyboardShown ? -25 : isLastNameKeyboardShown ? -100 : 0)
+                .offset(y: isFirstNameKeyboardShown ? -50 : isLastNameKeyboardShown ? -125 : 0)
+                .alert(isPresented: $noConnectionAlert) {
+                    Alert(title: Text("Kein Internet"), message: Text("Für diese Aktion benötigst du eine Internetverbindung."), primaryButton: .destructive(Text("Abbrechen")), secondaryButton: .default(Text("Erneut versuchen"), action: handleSave))
+                }
             
-            CancelConfirmButton {
+            CancelConfirmButton(connectionState: $connectionState) {
                 presentationMode.wrappedValue.dismiss()
             } confirmButtonHandler: {
                 isFirstNameError = firstName == ""
@@ -129,16 +141,39 @@ struct PersonAddNew: View {
                     if isFirstNameError || isLastNameError {
                         return Alert(title: Text("Eingabefehler"), message: Text("Es gab ein Fehler in der Eingabe des Namens."), dismissButton: .default(Text("Verstanden")))
                     }
-                    return Alert(title: Text("Person Hinzufügen"), message: Text("Möchtest du diese Person wirklich hinzufügen?"), primaryButton: .destructive(Text("Abbrechen")), secondaryButton: .default(Text("Bestätigen"), action: {
-                        
-    //                    let personId = UUID()
-    //                    TODO save person
-    //                    if let image = image {
-    //                        TODO save image
-    //                    }
-                    }))
+                    return Alert(title: Text("Person Hinzufügen"), message: Text("Möchtest du diese Person wirklich hinzufügen?"), primaryButton: .destructive(Text("Abbrechen")), secondaryButton: .default(Text("Bestätigen"), action: handleSave))
                 }
 
         }.background(colorScheme.backgroundColor)
+    }
+    
+    /// Handles person and image saving
+    func handleSave() {
+        connectionState = .loading
+        let dispathGroup = DispatchGroup()
+        dispathGroup.enter()
+        ListChanger.shared.change(.add, item:Person(firstName: firstName, lastName: lastName, id: personId)) { taskState in
+            if taskState == .passed {
+                dispathGroup.leave()
+            } else {
+                connectionState = .failed
+                noConnectionAlert = true
+            }
+        }
+        if let image = image {
+            dispathGroup.enter()
+            PersonImageChanger.shared.changeImage(.add(image: image, personId: personId)) { taskState in
+                if taskState == .passed {
+                    dispathGroup.leave()
+                } else {
+                    connectionState = .failed
+                    noConnectionAlert = true
+                }
+            }
+        }
+        dispathGroup.notify(queue: .main) {
+            connectionState = .passed
+            presentationMode.wrappedValue.dismiss()
+        }
     }
 }
