@@ -130,8 +130,8 @@ struct AppUrls {
     
     /// Url for settings file
     var settingsUrl: URL {
-        let documentDirecory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
-        let settingsUrl = documentDirecory.appendingPathComponent(codableAppUrls.settings)
+        let archiveUrl = FileManager.default.sharedContainerUrl
+        let settingsUrl = archiveUrl.appendingPathComponent(codableAppUrls.settings)
         
         // Create settings file if it doesn't exist
         if !FileManager.default.fileExists(atPath: settingsUrl.path) {

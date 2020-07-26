@@ -30,14 +30,17 @@
 		B042D43024BA42EB0029F2D5 /* TabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B042D42F24BA42EB0029F2D5 /* TabBar.swift */; };
 		B042D43324BB19E10029F2D5 /* ProfileDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = B042D43224BB19E10029F2D5 /* ProfileDetail.swift */; };
 		B042D43524BB1B040029F2D5 /* Euro.swift in Sources */ = {isa = PBXBuildFile; fileRef = B042D43424BB1B040029F2D5 /* Euro.swift */; };
-		B042D43724BB1CCA0029F2D5 /* Reason.swift in Sources */ = {isa = PBXBuildFile; fileRef = B042D43624BB1CCA0029F2D5 /* Reason.swift */; };
-		B042D43924BB1DDD0029F2D5 /* Fine.swift in Sources */ = {isa = PBXBuildFile; fileRef = B042D43824BB1DDD0029F2D5 /* Fine.swift */; };
 		B042D43B24BB27EF0029F2D5 /* FormattedDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B042D43A24BB27EF0029F2D5 /* FormattedDate.swift */; };
 		B042D43D24BB2BBD0029F2D5 /* Array.swift in Sources */ = {isa = PBXBuildFile; fileRef = B042D43C24BB2BBD0029F2D5 /* Array.swift */; };
 		B042D44024BB5B420029F2D5 /* PersonList.swift in Sources */ = {isa = PBXBuildFile; fileRef = B042D43F24BB5B420029F2D5 /* PersonList.swift */; };
 		B042D44224BB61810029F2D5 /* SearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B042D44124BB61810029F2D5 /* SearchBar.swift */; };
 		B042D44524BCD80C0029F2D5 /* PersonDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = B042D44424BCD80B0029F2D5 /* PersonDetail.swift */; };
 		B042D44724BDAB280029F2D5 /* ActivityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B042D44624BDAB280029F2D5 /* ActivityView.swift */; };
+		B061752E24CB471600382D9C /* SmallWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = B061752D24CB471600382D9C /* SmallWidget.swift */; };
+		B061753024CB472300382D9C /* MediumWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = B061752F24CB472300382D9C /* MediumWidget.swift */; };
+		B061753224CB473200382D9C /* LargeWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = B061753124CB473200382D9C /* LargeWidget.swift */; };
+		B061754124CC639400382D9C /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B061754024CC639400382D9C /* Extensions.swift */; };
+		B061754424CC658200382D9C /* WidgetUrls.swift in Sources */ = {isa = PBXBuildFile; fileRef = B061754324CC658200382D9C /* WidgetUrls.swift */; };
 		B0619BFB24C0B62B008969A1 /* PersonEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0619BFA24C0B62B008969A1 /* PersonEditor.swift */; };
 		B0619BFE24C0B999008969A1 /* PersonFineEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0619BFD24C0B999008969A1 /* PersonFineEditor.swift */; };
 		B0619C0024C0BD16008969A1 /* ImportanceChanger.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0619BFF24C0BD16008969A1 /* ImportanceChanger.swift */; };
@@ -53,6 +56,18 @@
 		B0619C1824C23911008969A1 /* AddNewFineReason.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0619C1724C23910008969A1 /* AddNewFineReason.swift */; };
 		B0619C1B24C363DE008969A1 /* NoteList.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0619C1A24C363DE008969A1 /* NoteList.swift */; };
 		B077B56924C7652F003844CE /* PersonImageChanger.swift in Sources */ = {isa = PBXBuildFile; fileRef = B077B56824C7652F003844CE /* PersonImageChanger.swift */; };
+		B077B57224CAC652003844CE /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B077B57124CAC652003844CE /* WidgetKit.framework */; };
+		B077B57424CAC652003844CE /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B077B57324CAC652003844CE /* SwiftUI.framework */; };
+		B077B57724CAC652003844CE /* StrafenWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = B077B57624CAC652003844CE /* StrafenWidget.swift */; };
+		B077B57A24CAC655003844CE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B077B57924CAC655003844CE /* Assets.xcassets */; };
+		B077B57C24CAC655003844CE /* StrafenWidget.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = B077B57824CAC652003844CE /* StrafenWidget.intentdefinition */; };
+		B077B57D24CAC655003844CE /* StrafenWidget.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = B077B57824CAC652003844CE /* StrafenWidget.intentdefinition */; };
+		B077B58024CAC655003844CE /* StrafenWidgetExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = B077B57024CAC652003844CE /* StrafenWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		B077B58A24CACEEB003844CE /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0C1C51F24A79328007B584B /* Constants.swift */; };
+		B077B58E24CB0714003844CE /* Provider.swift in Sources */ = {isa = PBXBuildFile; fileRef = B077B58C24CB06FE003844CE /* Provider.swift */; };
+		B077B59524CB0790003844CE /* PlaceholderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B077B59324CB0785003844CE /* PlaceholderView.swift */; };
+		B077B59824CB0804003844CE /* WidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B077B59624CB0801003844CE /* WidgetView.swift */; };
+		B077B59A24CB0A7E003844CE /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0C1C51824A78C90007B584B /* Color.swift */; };
 		B07938D624BEF4C300F86E86 /* PersonFineDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = B07938D524BEF4C300F86E86 /* PersonFineDetail.swift */; };
 		B07938D824BF037900F86E86 /* PersonAddNew.swift in Sources */ = {isa = PBXBuildFile; fileRef = B07938D724BF037900F86E86 /* PersonAddNew.swift */; };
 		B09CB23A24C725FC0096C4F8 /* ListChanger.swift in Sources */ = {isa = PBXBuildFile; fileRef = B09CB23924C725FC0096C4F8 /* ListChanger.swift */; };
@@ -83,11 +98,27 @@
 		B0E0F82E24A63E5A00C82828 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B0E0F82D24A63E5A00C82828 /* Preview Assets.xcassets */; };
 		B0E0F83924A63E5A00C82828 /* StrafenTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E0F83824A63E5A00C82828 /* StrafenTests.swift */; };
 		B0E0F84424A63E5A00C82828 /* StrafenUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E0F84324A63E5A00C82828 /* StrafenUITests.swift */; };
+		B0E2C19424CC6620009E3666 /* Fine.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E2C19024CC661F009E3666 /* Fine.swift */; };
+		B0E2C19524CC6620009E3666 /* Reason.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E2C19124CC6620009E3666 /* Reason.swift */; };
+		B0E2C19D24CC66C2009E3666 /* WidgetListTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E2C18D24CC65F9009E3666 /* WidgetListTypes.swift */; };
+		B0E2C1A124CC67F3009E3666 /* PersonName.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0C1C52124A7A021007B584B /* PersonName.swift */; };
+		B0E2C1A424CC6828009E3666 /* WidgetReason.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E2C1A224CC6815009E3666 /* WidgetReason.swift */; };
+		B0E2C1A524CC6859009E3666 /* Euro.swift in Sources */ = {isa = PBXBuildFile; fileRef = B042D43424BB1B040029F2D5 /* Euro.swift */; };
+		B0E2C1A824CC6884009E3666 /* WidgetFine.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E2C1A624CC6872009E3666 /* WidgetFine.swift */; };
+		B0E2C1A924CC6919009E3666 /* FormattedDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B042D43A24BB27EF0029F2D5 /* FormattedDate.swift */; };
+		B0E2C1AC24CC6C2D009E3666 /* WidgetListFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E2C1AA24CC6C15009E3666 /* WidgetListFetcher.swift */; };
 		B0E5C71024C377F70004E758 /* NoteAddNew.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E5C70F24C377F70004E758 /* NoteAddNew.swift */; };
 		EF23B482BE1B8F69206DAA9F /* Pods_StrafenTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 085A35B45E057FA1E93DE8FF /* Pods_StrafenTests.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		B077B57E24CAC655003844CE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B0E0F81B24A63E5800C82828 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = B077B56F24CAC652003844CE;
+			remoteInfo = StrafenWidgetExtension;
+		};
 		B0E0F83524A63E5A00C82828 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = B0E0F81B24A63E5800C82828 /* Project object */;
@@ -103,6 +134,20 @@
 			remoteInfo = Strafen;
 		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		B077B58424CAC655003844CE /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				B077B58024CAC655003844CE /* StrafenWidgetExtension.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		023B8104CAAD7D690BBF2A74 /* Pods_Strafen_StrafenUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Strafen_StrafenUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -133,14 +178,17 @@
 		B042D42F24BA42EB0029F2D5 /* TabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBar.swift; sourceTree = "<group>"; };
 		B042D43224BB19E10029F2D5 /* ProfileDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileDetail.swift; sourceTree = "<group>"; };
 		B042D43424BB1B040029F2D5 /* Euro.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Euro.swift; sourceTree = "<group>"; };
-		B042D43624BB1CCA0029F2D5 /* Reason.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reason.swift; sourceTree = "<group>"; };
-		B042D43824BB1DDD0029F2D5 /* Fine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fine.swift; sourceTree = "<group>"; };
 		B042D43A24BB27EF0029F2D5 /* FormattedDate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormattedDate.swift; sourceTree = "<group>"; };
 		B042D43C24BB2BBD0029F2D5 /* Array.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Array.swift; sourceTree = "<group>"; };
 		B042D43F24BB5B420029F2D5 /* PersonList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonList.swift; sourceTree = "<group>"; };
 		B042D44124BB61810029F2D5 /* SearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBar.swift; sourceTree = "<group>"; };
 		B042D44424BCD80B0029F2D5 /* PersonDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonDetail.swift; sourceTree = "<group>"; };
 		B042D44624BDAB280029F2D5 /* ActivityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityView.swift; sourceTree = "<group>"; };
+		B061752D24CB471600382D9C /* SmallWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmallWidget.swift; sourceTree = "<group>"; };
+		B061752F24CB472300382D9C /* MediumWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediumWidget.swift; sourceTree = "<group>"; };
+		B061753124CB473200382D9C /* LargeWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LargeWidget.swift; sourceTree = "<group>"; };
+		B061754024CC639400382D9C /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		B061754324CC658200382D9C /* WidgetUrls.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetUrls.swift; sourceTree = "<group>"; };
 		B0619BFA24C0B62B008969A1 /* PersonEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonEditor.swift; sourceTree = "<group>"; };
 		B0619BFD24C0B999008969A1 /* PersonFineEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonFineEditor.swift; sourceTree = "<group>"; };
 		B0619BFF24C0BD16008969A1 /* ImportanceChanger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportanceChanger.swift; sourceTree = "<group>"; };
@@ -156,6 +204,18 @@
 		B0619C1724C23910008969A1 /* AddNewFineReason.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewFineReason.swift; sourceTree = "<group>"; };
 		B0619C1A24C363DE008969A1 /* NoteList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteList.swift; sourceTree = "<group>"; };
 		B077B56824C7652F003844CE /* PersonImageChanger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonImageChanger.swift; sourceTree = "<group>"; };
+		B077B57024CAC652003844CE /* StrafenWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = StrafenWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		B077B57124CAC652003844CE /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
+		B077B57324CAC652003844CE /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
+		B077B57624CAC652003844CE /* StrafenWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StrafenWidget.swift; sourceTree = "<group>"; };
+		B077B57824CAC652003844CE /* StrafenWidget.intentdefinition */ = {isa = PBXFileReference; lastKnownFileType = file.intentdefinition; path = StrafenWidget.intentdefinition; sourceTree = "<group>"; };
+		B077B57924CAC655003844CE /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		B077B57B24CAC655003844CE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B077B58824CAC9E9003844CE /* Strafen.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Strafen.entitlements; sourceTree = "<group>"; };
+		B077B58924CACA78003844CE /* StrafenWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = StrafenWidgetExtension.entitlements; sourceTree = "<group>"; };
+		B077B58C24CB06FE003844CE /* Provider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Provider.swift; sourceTree = "<group>"; };
+		B077B59324CB0785003844CE /* PlaceholderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceholderView.swift; sourceTree = "<group>"; };
+		B077B59624CB0801003844CE /* WidgetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetView.swift; sourceTree = "<group>"; };
 		B07938D524BEF4C300F86E86 /* PersonFineDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonFineDetail.swift; sourceTree = "<group>"; };
 		B07938D724BF037900F86E86 /* PersonAddNew.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonAddNew.swift; sourceTree = "<group>"; };
 		B09CB23924C725FC0096C4F8 /* ListChanger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListChanger.swift; sourceTree = "<group>"; };
@@ -192,12 +252,27 @@
 		B0E0F83F24A63E5A00C82828 /* StrafenUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = StrafenUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B0E0F84324A63E5A00C82828 /* StrafenUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StrafenUITests.swift; sourceTree = "<group>"; };
 		B0E0F84524A63E5A00C82828 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B0E2C18D24CC65F9009E3666 /* WidgetListTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetListTypes.swift; sourceTree = "<group>"; };
+		B0E2C19024CC661F009E3666 /* Fine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Fine.swift; sourceTree = "<group>"; };
+		B0E2C19124CC6620009E3666 /* Reason.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reason.swift; sourceTree = "<group>"; };
+		B0E2C1A224CC6815009E3666 /* WidgetReason.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetReason.swift; sourceTree = "<group>"; };
+		B0E2C1A624CC6872009E3666 /* WidgetFine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetFine.swift; sourceTree = "<group>"; };
+		B0E2C1AA24CC6C15009E3666 /* WidgetListFetcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetListFetcher.swift; sourceTree = "<group>"; };
 		B0E5C70F24C377F70004E758 /* NoteAddNew.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteAddNew.swift; sourceTree = "<group>"; };
 		C48AEE77D98866AC072A2AD1 /* Pods-Strafen-StrafenUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Strafen-StrafenUITests.debug.xcconfig"; path = "Target Support Files/Pods-Strafen-StrafenUITests/Pods-Strafen-StrafenUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		E4A36A38D3FB33CF3F264FBB /* Pods-Strafen.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Strafen.release.xcconfig"; path = "Target Support Files/Pods-Strafen/Pods-Strafen.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		B077B56D24CAC652003844CE /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B077B57424CAC652003844CE /* SwiftUI.framework in Frameworks */,
+				B077B57224CAC652003844CE /* WidgetKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		B0E0F82024A63E5800C82828 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -244,6 +319,8 @@
 				28520CB35F7960A3527C91CA /* Pods_Strafen.framework */,
 				023B8104CAAD7D690BBF2A74 /* Pods_Strafen_StrafenUITests.framework */,
 				085A35B45E057FA1E93DE8FF /* Pods_StrafenTests.framework */,
+				B077B57124CAC652003844CE /* WidgetKit.framework */,
+				B077B57324CAC652003844CE /* SwiftUI.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -272,8 +349,8 @@
 				B042D42D24BA21540029F2D5 /* ListTypes.swift */,
 				B020C7CB24B87653008940FE /* Club.swift */,
 				B020C7BF24AF7CC6008940FE /* Person.swift */,
-				B042D43624BB1CCA0029F2D5 /* Reason.swift */,
-				B042D43824BB1DDD0029F2D5 /* Fine.swift */,
+				B0E2C19124CC6620009E3666 /* Reason.swift */,
+				B0E2C19024CC661F009E3666 /* Fine.swift */,
 				B016578924C369850012B6AC /* Note.swift */,
 			);
 			path = ListTypes;
@@ -315,6 +392,39 @@
 			path = PersonDetail;
 			sourceTree = "<group>";
 		};
+		B061752C24CB46FF00382D9C /* WidgetViews */ = {
+			isa = PBXGroup;
+			children = (
+				B077B59624CB0801003844CE /* WidgetView.swift */,
+				B061752D24CB471600382D9C /* SmallWidget.swift */,
+				B061752F24CB472300382D9C /* MediumWidget.swift */,
+				B061753124CB473200382D9C /* LargeWidget.swift */,
+				B077B59324CB0785003844CE /* PlaceholderView.swift */,
+			);
+			path = WidgetViews;
+			sourceTree = "<group>";
+		};
+		B061753324CB4A1600382D9C /* ListTypes */ = {
+			isa = PBXGroup;
+			children = (
+				B0E2C18D24CC65F9009E3666 /* WidgetListTypes.swift */,
+				B0E2C1A224CC6815009E3666 /* WidgetReason.swift */,
+				B0E2C1A624CC6872009E3666 /* WidgetFine.swift */,
+			);
+			path = ListTypes;
+			sourceTree = "<group>";
+		};
+		B061753C24CB4A8600382D9C /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				B077B58C24CB06FE003844CE /* Provider.swift */,
+				B061754324CC658200382D9C /* WidgetUrls.swift */,
+				B0E2C1AA24CC6C15009E3666 /* WidgetListFetcher.swift */,
+				B061754024CC639400382D9C /* Extensions.swift */,
+			);
+			path = Utilities;
+			sourceTree = "<group>";
+		};
 		B0619BFC24C0B981008969A1 /* PersonFineEditor */ = {
 			isa = PBXGroup;
 			children = (
@@ -354,6 +464,29 @@
 				B0E5C70F24C377F70004E758 /* NoteAddNew.swift */,
 			);
 			path = Notes;
+			sourceTree = "<group>";
+		};
+		B077B57524CAC652003844CE /* StrafenWidget */ = {
+			isa = PBXGroup;
+			children = (
+				B077B58B24CAE7A2003844CE /* Controller */,
+				B077B57624CAC652003844CE /* StrafenWidget.swift */,
+				B061752C24CB46FF00382D9C /* WidgetViews */,
+				B061753324CB4A1600382D9C /* ListTypes */,
+				B061753C24CB4A8600382D9C /* Utilities */,
+			);
+			path = StrafenWidget;
+			sourceTree = "<group>";
+		};
+		B077B58B24CAE7A2003844CE /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				B077B57824CAC652003844CE /* StrafenWidget.intentdefinition */,
+				B077B58924CACA78003844CE /* StrafenWidgetExtension.entitlements */,
+				B077B57924CAC655003844CE /* Assets.xcassets */,
+				B077B57B24CAC655003844CE /* Info.plist */,
+			);
+			path = Controller;
 			sourceTree = "<group>";
 		};
 		B07938D424BEF4AF00F86E86 /* PersonFineDetail */ = {
@@ -476,6 +609,7 @@
 				B0E0F82524A63E5800C82828 /* Strafen */,
 				B0E0F83724A63E5A00C82828 /* StrafenTests */,
 				B0E0F84224A63E5A00C82828 /* StrafenUITests */,
+				B077B57524CAC652003844CE /* StrafenWidget */,
 				B0E0F82424A63E5800C82828 /* Products */,
 				2894790FDA740B7584F98E3A /* Pods */,
 				34A98CC1D11C4E2F86F36E33 /* Frameworks */,
@@ -488,6 +622,7 @@
 				B0E0F82324A63E5800C82828 /* Strafen.app */,
 				B0E0F83424A63E5A00C82828 /* StrafenTests.xctest */,
 				B0E0F83F24A63E5A00C82828 /* StrafenUITests.xctest */,
+				B077B57024CAC652003844CE /* StrafenWidgetExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -540,6 +675,7 @@
 				B0E0F82624A63E5800C82828 /* StrafenApp.swift */,
 				B0E0F82A24A63E5A00C82828 /* Assets.xcassets */,
 				B0E0F82F24A63E5A00C82828 /* Info.plist */,
+				B077B58824CAC9E9003844CE /* Strafen.entitlements */,
 				B0E0F82C24A63E5A00C82828 /* Preview Content */,
 			);
 			path = Controller;
@@ -548,6 +684,23 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		B077B56F24CAC652003844CE /* StrafenWidgetExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B077B58124CAC655003844CE /* Build configuration list for PBXNativeTarget "StrafenWidgetExtension" */;
+			buildPhases = (
+				B077B56C24CAC652003844CE /* Sources */,
+				B077B56D24CAC652003844CE /* Frameworks */,
+				B077B56E24CAC652003844CE /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = StrafenWidgetExtension;
+			productName = StrafenWidgetExtension;
+			productReference = B077B57024CAC652003844CE /* StrafenWidgetExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 		B0E0F82224A63E5800C82828 /* Strafen */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = B0E0F84824A63E5A00C82828 /* Build configuration list for PBXNativeTarget "Strafen" */;
@@ -557,10 +710,12 @@
 				B0E0F82024A63E5800C82828 /* Frameworks */,
 				B0E0F82124A63E5800C82828 /* Resources */,
 				AF25B3318BD62E66FB5F7A00 /* [CP] Embed Pods Frameworks */,
+				B077B58424CAC655003844CE /* Embed App Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				B077B57F24CAC655003844CE /* PBXTargetDependency */,
 			);
 			name = Strafen;
 			productName = Strafen;
@@ -615,6 +770,9 @@
 				LastSwiftUpdateCheck = 1200;
 				LastUpgradeCheck = 1200;
 				TargetAttributes = {
+					B077B56F24CAC652003844CE = {
+						CreatedOnToolsVersion = 12.0;
+					};
 					B0E0F82224A63E5800C82828 = {
 						CreatedOnToolsVersion = 12.0;
 					};
@@ -644,11 +802,20 @@
 				B0E0F82224A63E5800C82828 /* Strafen */,
 				B0E0F83324A63E5A00C82828 /* StrafenTests */,
 				B0E0F83E24A63E5A00C82828 /* StrafenUITests */,
+				B077B56F24CAC652003844CE /* StrafenWidgetExtension */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		B077B56E24CAC652003844CE /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B077B57A24CAC655003844CE /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		B0E0F82124A63E5800C82828 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -778,6 +945,32 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		B077B56C24CAC652003844CE /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B0E2C1A924CC6919009E3666 /* FormattedDate.swift in Sources */,
+				B077B58E24CB0714003844CE /* Provider.swift in Sources */,
+				B061752E24CB471600382D9C /* SmallWidget.swift in Sources */,
+				B077B59824CB0804003844CE /* WidgetView.swift in Sources */,
+				B077B57C24CAC655003844CE /* StrafenWidget.intentdefinition in Sources */,
+				B077B57724CAC652003844CE /* StrafenWidget.swift in Sources */,
+				B061754424CC658200382D9C /* WidgetUrls.swift in Sources */,
+				B0E2C1A124CC67F3009E3666 /* PersonName.swift in Sources */,
+				B0E2C1A824CC6884009E3666 /* WidgetFine.swift in Sources */,
+				B061753224CB473200382D9C /* LargeWidget.swift in Sources */,
+				B077B58A24CACEEB003844CE /* Constants.swift in Sources */,
+				B0E2C1AC24CC6C2D009E3666 /* WidgetListFetcher.swift in Sources */,
+				B0E2C1A424CC6828009E3666 /* WidgetReason.swift in Sources */,
+				B0E2C1A524CC6859009E3666 /* Euro.swift in Sources */,
+				B077B59A24CB0A7E003844CE /* Color.swift in Sources */,
+				B0E2C19D24CC66C2009E3666 /* WidgetListTypes.swift in Sources */,
+				B061754124CC639400382D9C /* Extensions.swift in Sources */,
+				B061753024CB472300382D9C /* MediumWidget.swift in Sources */,
+				B077B59524CB0790003844CE /* PlaceholderView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		B0E0F81F24A63E5800C82828 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -785,8 +978,8 @@
 				B02EF27024C497CC00E4CEBC /* NoteEditor.swift in Sources */,
 				B0A385B024ABC21C00628038 /* SignInEMailValidationView.swift in Sources */,
 				B020C7B724AE7204008940FE /* ListFetcher.swift in Sources */,
+				B0E2C19524CC6620009E3666 /* Reason.swift in Sources */,
 				B0C1C51524A78BD7007B584B /* LoginView.swift in Sources */,
-				B042D43724BB1CCA0029F2D5 /* Reason.swift in Sources */,
 				B0B799D124AE50060027727E /* ClubImageChanger.swift in Sources */,
 				B0E5C71024C377F70004E758 /* NoteAddNew.swift in Sources */,
 				B0C1C51924A78C90007B584B /* Color.swift in Sources */,
@@ -804,8 +997,10 @@
 				B07938D624BEF4C300F86E86 /* PersonFineDetail.swift in Sources */,
 				B020C7C824B11649008940FE /* RegisterPersonChanger.swift in Sources */,
 				B020C7C624B0C8BE008940FE /* ImageData.swift in Sources */,
+				B077B57D24CAC655003844CE /* StrafenWidget.intentdefinition in Sources */,
 				B020C7C224B0B9D0008940FE /* PersonRowImage.swift in Sources */,
 				B042D43D24BB2BBD0029F2D5 /* Array.swift in Sources */,
+				B0E2C19424CC6620009E3666 /* Fine.swift in Sources */,
 				B042D44024BB5B420029F2D5 /* PersonList.swift in Sources */,
 				B0B799D324AE64770027727E /* SignInSelectPersonView.swift in Sources */,
 				B0619C1824C23911008969A1 /* AddNewFineReason.swift in Sources */,
@@ -826,7 +1021,6 @@
 				B0619C0A24C1E62C008969A1 /* PersonFineAdvanced.swift in Sources */,
 				B042D44524BCD80C0029F2D5 /* PersonDetail.swift in Sources */,
 				B0619C0824C1CAB9008969A1 /* CustomDatePicker.swift in Sources */,
-				B042D43924BB1DDD0029F2D5 /* Fine.swift in Sources */,
 				B006920624C615D500AE2EF0 /* HomeTabs.swift in Sources */,
 				B0619C0F24C20EAA008969A1 /* ReasonAddNew.swift in Sources */,
 				B0B4822224A8D61300CB7A1A /* CustomTextField.swift in Sources */,
@@ -875,6 +1069,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		B077B57F24CAC655003844CE /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = B077B56F24CAC652003844CE /* StrafenWidgetExtension */;
+			targetProxy = B077B57E24CAC655003844CE /* PBXContainerItemProxy */;
+		};
 		B0E0F83624A63E5A00C82828 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = B0E0F82224A63E5800C82828 /* Strafen */;
@@ -888,6 +1087,50 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		B077B58224CAC655003844CE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_ENTITLEMENTS = StrafenWidget/Controller/StrafenWidgetExtension.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = K7NTJ83ZF8;
+				INFOPLIST_FILE = StrafenWidget/Controller/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = stevenkellner.Strafen.StrafenWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		B077B58324CAC655003844CE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_ENTITLEMENTS = StrafenWidget/Controller/StrafenWidgetExtension.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = K7NTJ83ZF8;
+				INFOPLIST_FILE = StrafenWidget/Controller/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = stevenkellner.Strafen.StrafenWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 		B0E0F84624A63E5A00C82828 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1008,8 +1251,10 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 88841E0B0F47B91B56AC1E05 /* Pods-Strafen.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Strafen/Controller/Strafen.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"Strafen/Controller/Preview Content\"";
 				DEVELOPMENT_TEAM = K7NTJ83ZF8;
@@ -1031,8 +1276,10 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = E4A36A38D3FB33CF3F264FBB /* Pods-Strafen.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Strafen/Controller/Strafen.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"Strafen/Controller/Preview Content\"";
 				DEVELOPMENT_TEAM = K7NTJ83ZF8;
@@ -1141,6 +1388,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		B077B58124CAC655003844CE /* Build configuration list for PBXNativeTarget "StrafenWidgetExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B077B58224CAC655003844CE /* Debug */,
+				B077B58324CAC655003844CE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		B0E0F81E24A63E5800C82828 /* Build configuration list for PBXProject "Strafen" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
