@@ -5,7 +5,7 @@
 //  Created by Steven on 24.07.20.
 //
 
-import Foundation
+import SwiftUI
 
 /// Contains all urls for the widget
 struct WidgetUrls {
@@ -24,7 +24,7 @@ struct WidgetUrls {
     }
     
     /// Shared instance for singelton
-    static let shared = Self()
+    static var shared = Self()
     
     /// Private init for singleton
     private init() {
@@ -34,9 +34,12 @@ struct WidgetUrls {
         let settingsUrl = archiveUrl.appendingPathComponent(codableWidgetUrls.settings)
         let settingsData = FileManager.default.contents(atPath: settingsUrl.path)
         if let settingsData = settingsData {
-            person = try! decoder.decode(CodableSettings.self, from: settingsData).person
+            let settings = try! decoder.decode(CodableSettings.self, from: settingsData)
+            person = settings.person
+            style = settings.style
         } else {
             person = nil
+            style = nil
         }
     }
     
@@ -62,7 +65,7 @@ struct WidgetUrls {
         codableWidgetUrls.authorization
     }
     
-    /// Codable Settings to get logged in person
+    /// Codable Settings to get logged in person and style
     struct CodableSettings: Decodable {
         
         /// Logged in person
@@ -84,12 +87,91 @@ struct WidgetUrls {
             var isCashier: Bool
         }
         
+        /// Style of the widget (default / plain)
+        enum Style: String, Codable, CaseIterable {
+            
+            /// Default style
+            case `default`
+            
+            /// Plain style
+            case plain
+            
+            /// Rounded Corners fillColor
+            func fillColor(_ colorScheme: ColorScheme, defaultStyle: Color? = nil) -> Color {
+                switch self {
+                case .default:
+                    if let defaultStyle = defaultStyle {
+                        return defaultStyle
+                    }
+                    if colorScheme == .dark {
+                        return Color.custom.darkGray
+                    } else {
+                        return .white
+                    }
+                case .plain:
+                    return Color.plain.backgroundColor(colorScheme)
+                }
+            }
+            
+            /// Rounded Corners strokeColor
+            func strokeColor(_ colorScheme: ColorScheme) -> Color {
+                switch self {
+                case .default:
+                    return Color.custom.gray
+                case .plain:
+                    return Color.plain.strokeColor(colorScheme)
+                }
+            }
+            
+            /// Rounded Corners radius
+            var radius: CGFloat {
+                switch self {
+                case .default:
+                    return 10
+                case .plain:
+                    return 5
+                }
+            }
+            
+            /// Rounded Corners lineWWidth
+            var lineWidth: CGFloat {
+                switch self {
+                case .default:
+                    return 2
+                case .plain:
+                    return 0.5
+                }
+            }
+         }
+        
         /// Person that is logged in
         let person: Person?
+        
+        /// Style of the widget
+        let style: Style
     }
     
     /// Logged in person
-    let person: CodableSettings.Person?
+    var person: CodableSettings.Person?
+    
+    /// Style of the widget
+    var style: CodableSettings.Style?
+    
+    /// Reload setting properties
+    mutating func reloadSettings() {
+        let decoder = JSONDecoder()
+        let archiveUrl = FileManager.default.sharedContainerUrl
+        let settingsUrl = archiveUrl.appendingPathComponent(codableWidgetUrls.settings)
+        let settingsData = FileManager.default.contents(atPath: settingsUrl.path)
+        if let settingsData = settingsData {
+            let settings = try! decoder.decode(CodableSettings.self, from: settingsData)
+            person = settings.person
+            style = settings.style
+        } else {
+            person = nil
+            style = nil
+        }
+    }
 }
 
 /// Used to decode app urls from json

@@ -1,5 +1,5 @@
 //
-//  SmallWidget.swift
+//  MediumWidget.swift
 //  StrafenWidgetExtension
 //
 //  Created by Steven on 24.07.20.
@@ -7,8 +7,8 @@
 
 import SwiftUI
 
-/// Small widget view of Strafen Widget
-struct SmallWidget: View {
+/// Medium widget view of Strafen Widget
+struct MediumWidget: View {
     
     /// Widget entry
     var entry: Provider.Entry
@@ -17,11 +17,11 @@ struct SmallWidget: View {
         Group {
             switch entry.widgetEntryType {
             case .success(person: let person, fineList: let fineList):
-                EmptyView()
+                MediumWidgetSuccess(person: person, style: entry.style, fineList: fineList)
             case .noConnection:
-                EmptyView()
+                MediumWidgetNoConnection(style: entry.style)
             case .noPersonLoggedIn:
-                EmptyView()
+                MediumWidgetNoPersonLoggedIn(style: entry.style)
             }
         }
     }

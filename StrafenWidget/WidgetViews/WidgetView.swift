@@ -22,9 +22,9 @@ struct WidgetView: View {
             case .systemSmall:
                 SmallWidget(entry: entry)
             case .systemMedium:
-                MediumWidget()
+                MediumWidget(entry: entry)
             case .systemLarge:
-                LargeWidget()
+                LargeWidget(entry: entry)
             @unknown default:
                 Text("Not available!")
             }

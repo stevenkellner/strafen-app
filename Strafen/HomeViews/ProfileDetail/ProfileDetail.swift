@@ -264,9 +264,7 @@ struct ProfileDetail: View {
                     ScrollView {
                         LazyVStack(spacing: 15) {
                             ForEach(fineListData.list!.filter({ $0.personId == settings.person!.id }).sorted(by: \.fineReason.reason.localizedUppercase)) { fine in
-                                NavigationLink(destination: PersonFineDetail(personName: settings.person!.name, fine: fine, dismissHandler: $dismissHandler)) {
-                                    PersonDetailRow(fine: fine)
-                                }.buttonStyle(PlainButtonStyle())
+                                ProfileDetailRow(fine: fine, dismissHandler: $dismissHandler)
                             }
                         }.padding(.bottom, 20)
                             .padding(.top, 5)
@@ -274,6 +272,7 @@ struct ProfileDetail: View {
                     
                     Spacer()
                 }
+                
             }.edgesIgnoringSafeArea(.all)
                 .navigationBarTitle("Title")
                 .navigationBarHidden(true)
@@ -282,5 +281,32 @@ struct ProfileDetail: View {
                 self.image = image
             }
         }
+    }
+}
+
+/// Row of fine of profile detail
+struct ProfileDetailRow: View {
+    
+    /// Fine
+    let fine: Fine
+    
+    ///Dismiss handler
+    @Binding var dismissHandler: (() -> ())?
+    
+    /// Observed Object that contains all settings of the app of this device
+    @ObservedObject var settings = Settings.shared
+    
+    /// Indicates if navigation link is active
+    @State var isNavigationLinkActive = false
+    
+    var body: some View {
+        NavigationLink(
+            destination: PersonFineDetail(personName: settings.person!.name, fine: fine, dismissHandler: $dismissHandler),
+            isActive: $isNavigationLinkActive) {
+            PersonDetailRow(fine: fine)
+        }.buttonStyle(PlainButtonStyle())
+            .onOpenURL { url in
+                isNavigationLinkActive = url.lastPathComponent == fine.id.uuidString
+            }
     }
 }

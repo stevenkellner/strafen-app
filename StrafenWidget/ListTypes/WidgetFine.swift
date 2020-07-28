@@ -14,7 +14,7 @@ struct WidgetFine: WidgetListTypes {
     static let serverListUrl = \WidgetUrls.ListTypesUrls.fine
     
     /// Importance of a fine
-    enum Importance: Int, Decodable {
+    enum Importance: Int, Decodable, CaseIterable {
         
         /// High importance
         case high = 2
@@ -67,7 +67,7 @@ struct WidgetFine: WidgetListTypes {
     }
     
     /// Fine payed
-    enum Payed: Decodable {
+    enum Payed: Decodable, CaseIterable {
         
         /// payed
         case payed
@@ -103,7 +103,7 @@ struct WidgetFine: WidgetListTypes {
 }
 
 /// Contains all data to display of a fine (no template)
-struct WidgetFineNoTemplate {
+struct WidgetFineNoTemplate: Identifiable {
     
     /// Date this fine was issued
     let date: FormattedDate

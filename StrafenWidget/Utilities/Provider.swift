@@ -23,14 +23,15 @@ struct Provider: TimelineProvider {
     
     /// Creates a snapshot of the widget
     func snapshot(with context: Context, completion: @escaping (WidgetEntry) -> ()) {
-        completion(WidgetEntry(date: Date(), widgetEntryType: .noConnection))
+        completion(WidgetEntry(date: Date(), widgetEntryType: .success(person: .default, fineList: .random), style: .plain))
     }
     
     /// Creates a timeline of the widget
     func timeline(with context: Context, completion: @escaping (Timeline<WidgetEntry>) -> ()) {
         
         // Check if person is logged in
-        if let person = WidgetUrls.shared.person {
+        WidgetUrls.shared.reloadSettings()
+        if let person = WidgetUrls.shared.person, let style = WidgetUrls.shared.style {
             
             // Enter dispatch group to fetch person- / reason- and finelist
             let dispatchGroup = DispatchGroup()
@@ -69,7 +70,7 @@ struct Provider: TimelineProvider {
                     // Get timeline
                     let dateForNextTimelineRequest = Date(timeIntervalSinceNow: timeIntervalToUpdate)
                     let widgetEntryType: WidgetEntryType = .success(person: person, fineList: fineNoTemplateList)
-                    let entry = WidgetEntry(date: dateForNextTimelineRequest, widgetEntryType: widgetEntryType)
+                    let entry = WidgetEntry(date: dateForNextTimelineRequest, widgetEntryType: widgetEntryType, style: style)
                     let timeline = Timeline(entries: [entry], policy: .atEnd)
                     completion(timeline)
                 } else {
@@ -77,7 +78,7 @@ struct Provider: TimelineProvider {
                     // No internet connection
                     let dateForNextTimelineRequest = Date(timeIntervalSinceNow: timeIntervalToUpdateNoconnection)
                     let widgetEntryType: WidgetEntryType = .noConnection
-                    let entry = WidgetEntry(date: dateForNextTimelineRequest, widgetEntryType: widgetEntryType)
+                    let entry = WidgetEntry(date: dateForNextTimelineRequest, widgetEntryType: widgetEntryType, style: style)
                     let timeline = Timeline(entries: [entry], policy: .atEnd)
                     completion(timeline)
                 }
@@ -87,7 +88,7 @@ struct Provider: TimelineProvider {
             // No person is logged in
             let dateForNextTimelineRequest = Date(timeIntervalSinceNow: timeIntervalToUpdateNoconnection)
             let widgetEntryType: WidgetEntryType = .noPersonLoggedIn
-            let entry = WidgetEntry(date: dateForNextTimelineRequest, widgetEntryType: widgetEntryType)
+            let entry = WidgetEntry(date: dateForNextTimelineRequest, widgetEntryType: widgetEntryType, style: .default)
             let timeline = Timeline(entries: [entry], policy: .atEnd)
             completion(timeline)
         }
@@ -102,6 +103,9 @@ struct WidgetEntry: TimelineEntry {
     
     /// Widget entry type
     let widgetEntryType: WidgetEntryType
+    
+    /// Widget style
+    let style: WidgetUrls.CodableSettings.Style
 }
 
 /// Type of Widget entry

@@ -13,10 +13,10 @@ struct StrafenWidget: Widget {
     private let kind: String = "StrafenWidget"
 
     public var body: some WidgetConfiguration {
-        StaticConfiguration(kind: kind, provider: Provider(), placeholder: PlaceholderView()) { entry in
+        StaticConfiguration(kind: kind, provider: Provider()) { entry in
             WidgetView(entry: entry)
         }
-        .configurationDisplayName(Text("Strafen Widget")) // TODO
+        .configurationDisplayName(Text("Strafen Widget"))
         .description(Text("Zeigt deine Strafen und deinen offenen Betrag."))
         .supportedFamilies([.systemSmall, .systemMedium, .systemLarge])
     }

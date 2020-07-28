@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import WidgetKit
 
 /// Contains all settings of the app of this device
 class Settings: ObservableObject {
@@ -147,6 +148,7 @@ class Settings: ObservableObject {
     @Published var style: CodableSettings.Style {
             didSet {
                 try! codableSettings.jsonData.write(to: AppUrls.shared.settingsUrl, options: .atomic)
+                WidgetCenter.shared.reloadTimelines(ofKind: "StrafenWidget")
             }
         }
     
@@ -154,6 +156,7 @@ class Settings: ObservableObject {
     @Published var person: CodableSettings.Person? {
            didSet {
                try! codableSettings.jsonData.write(to: AppUrls.shared.settingsUrl, options: .atomic)
+                WidgetCenter.shared.reloadTimelines(ofKind: "StrafenWidget")
            }
        }
     
