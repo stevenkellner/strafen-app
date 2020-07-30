@@ -461,11 +461,11 @@
 		B061753C24CB4A8600382D9C /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
-				B077B58C24CB06FE003844CE /* Provider.swift */,
-				B061754324CC658200382D9C /* WidgetUrls.swift */,
-				B0E2C1AA24CC6C15009E3666 /* WidgetListFetcher.swift */,
 				B061754024CC639400382D9C /* Extensions.swift */,
+				B077B58C24CB06FE003844CE /* Provider.swift */,
 				B04B71EA24CE18560038B02F /* TestContent.swift */,
+				B0E2C1AA24CC6C15009E3666 /* WidgetListFetcher.swift */,
+				B061754324CC658200382D9C /* WidgetUrls.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";

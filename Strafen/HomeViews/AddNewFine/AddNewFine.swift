@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import WidgetKit
 
 /// View to add a new fine
 struct AddNewFine: View {
@@ -247,6 +248,7 @@ struct AddNewFine: View {
                 fineReason = nil
                 date = Date()
                 number = 1
+                homeTabs.active = .personList
                 presentationMode.wrappedValue.dismiss()
             } confirmButtonHandler: {
                 showConfirmAlert = true

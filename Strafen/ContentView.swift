@@ -151,6 +151,9 @@ struct HomeTabsView: View {
                 
                 fetchLists()
             }
+            .onOpenURL { url in
+                homeTabs.active = url.pathComponents.first == "profileDetail" ? .profileDetail : homeTabs.active
+            }
     }
     
     /// Fetch all list data

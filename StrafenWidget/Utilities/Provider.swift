@@ -93,6 +93,11 @@ struct Provider: TimelineProvider {
             completion(timeline)
         }
     }
+    
+    /// Creates a placeholder of the widget
+    func placeholder(with: Context) -> WidgetEntry {
+        WidgetEntry(date: Date(), widgetEntryType: .success(person: .default, fineList: .random), style: .plain)
+    }
 }
 
 /// Entry of timeline of Strafen Widget

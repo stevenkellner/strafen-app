@@ -15,6 +15,7 @@ struct StrafenWidget: Widget {
     public var body: some WidgetConfiguration {
         StaticConfiguration(kind: kind, provider: Provider()) { entry in
             WidgetView(entry: entry)
+                .widgetURL(URL(string: "profileDetail")!)
         }
         .configurationDisplayName(Text("Strafen Widget"))
         .description(Text("Zeigt deine Strafen und deinen offenen Betrag."))

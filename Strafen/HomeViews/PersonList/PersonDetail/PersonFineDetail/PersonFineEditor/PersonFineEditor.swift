@@ -144,7 +144,7 @@ struct PersonFineEditor: View {
                     }
                     
                 }.alert(isPresented: $showDeleteAlert) {
-                    Alert(title: Text("Strafe Löschen"), message: Text("Möchtest du diese Strafe wirklich löscehn?"), primaryButton: .cancel(Text("Abbrechen")), secondaryButton: .destructive(Text("Löschen"), action: handleFineDelete))
+                    Alert(title: Text("Strafe Löschen"), message: Text("Möchtest du diese Strafe wirklich löschen?"), primaryButton: .cancel(Text("Abbrechen")), secondaryButton: .destructive(Text("Löschen"), action: handleFineDelete))
                 }
                 
                 // Date
