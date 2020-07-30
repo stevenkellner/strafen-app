@@ -93,123 +93,131 @@ struct PersonEditor: View {
     /// Indicates if no connection alert is shown
     @State var noConnectionAlertUpdate = false
     
+    /// Screen size
+    @State var screenSize: CGSize?
+    
     var body: some View {
-        VStack(spacing: 0) {
-            
-            // Bar to wipe sheet down
-            SheetBar()
-            
-            // Title
-            Header("Person Ändern")
-                .alert(isPresented: $noConnectionAlertUpdate) {
-                    Alert(title: Text("Kein Internet"), message: Text("Für diese Aktion benötigst du eine Internetverbindung."), primaryButton: .destructive(Text("Abbrechen")), secondaryButton: .default(Text("Erneut versuchen"), action: handlePersonUpdate))
-                }
-            
-            // Image and Name
+        GeometryReader { geometry in
             VStack(spacing: 0) {
-                Spacer()
                 
-                // Image
-                ImageSelector(image: $image)
-                    .frame(width: 120, height: 120)
+                // Bar to wipe sheet down
+                SheetBar()
                 
-                Spacer()
+                // Title
+                Header("Person Ändern")
+                    .alert(isPresented: $noConnectionAlertUpdate) {
+                        Alert(title: Text("Kein Internet"), message: Text("Für diese Aktion benötigst du eine Internetverbindung."), primaryButton: .destructive(Text("Abbrechen")), secondaryButton: .default(Text("Erneut versuchen"), action: handlePersonUpdate))
+                    }
                 
-                // First Name
+                // Image and Name
                 VStack(spacing: 0) {
+                    Spacer()
                     
-                    // Title
-                    HStack(spacing: 0) {
-                        Text("Name:")
-                            .foregroundColor(.textColor)
-                            .font(.text(20))
-                            .padding(.leading, 10)
-                        Spacer()
-                    }
+                    // Image
+                    ImageSelector(image: $image)
+                        .frame(width: 120, height: 120)
                     
-                    // Text Field
-                    CustomTextField("Vorname", text: $firstName, keyboardOnScreen: $isFirstNameKeyboardShown) {
-                        isFirstNameError = firstName == ""
-                    }.frame(width: 345, height: 50)
-                        .padding(.top, 5)
+                    Spacer()
                     
-                    // Error Text
-                    if isFirstNameError {
-                        Text("Dieses Feld darf nicht leer sein!")
-                            .foregroundColor(Color.custom.red)
-                            .font(.text(20))
-                            .lineLimit(1)
-                            .padding(.horizontal, 15)
+                    // First Name
+                    VStack(spacing: 0) {
+                        
+                        // Title
+                        HStack(spacing: 0) {
+                            Text("Name:")
+                                .foregroundColor(.textColor)
+                                .font(.text(20))
+                                .padding(.leading, 10)
+                            Spacer()
+                        }
+                        
+                        // Text Field
+                        CustomTextField("Vorname", text: $firstName, keyboardOnScreen: $isFirstNameKeyboardShown) {
+                            isFirstNameError = firstName == ""
+                        }.frame(width: 345, height: 50)
                             .padding(.top, 5)
-                    }
-                }
-                
-                // Last Name
-                VStack(spacing: 0) {
-                    
-                    // Text Field
-                    CustomTextField("Nachname", text: $lastName, keyboardOnScreen: $isLastNameKeyboardShown) {
-                        isLastNameError = lastName == ""
-                    }.frame(width: 345, height: 50)
-                        .padding(.top, 5)
-                    
-                    // Error Text
-                    if isLastNameError {
-                        Text("Dieses Feld darf nicht leer sein!")
-                            .foregroundColor(Color.custom.red)
-                            .font(.text(20))
-                            .lineLimit(1)
-                            .padding(.horizontal, 15)
-                            .padding(.top, 5)
-                    }
-                    
-                }.padding(.top, 10)
-                
-                Spacer()
-                
-            }.clipped()
-                .padding(.top, 10)
-                .offset(y: isFirstNameKeyboardShown ? -50 : isLastNameKeyboardShown ? -125 : 0)
-                .alert(isPresented: $noConnectionAlertDelete) {
-                    Alert(title: Text("Kein Internet"), message: Text("Für diese Aktion benötigst du eine Internetverbindung."), primaryButton: .destructive(Text("Abbrechen")), secondaryButton: .default(Text("Erneut versuchen"), action: handlePersonDelete))
-                }
-            
-            DeleteConfirmButton(connectionStateDelete: $connectionStateDelete, connectionStateConfirm: $connectionStateUpdate) {
-                if clubListData.list!.first(where: { $0.id == Settings.shared.person!.clubId })!.allPersons.contains(where: { $0.id == person.id }) {
-                    alertType = .alreadySignIn
-                } else {
-                    alertType = .delete
-                }
-            } confirmButtonHandler: {
-                connectionStateUpdate = .loading
-                ImageFetcher.shared.fetch(of: person.id) { oldImage in
-                    connectionStateUpdate = .passed
-                    if person.firstName == firstName && person.lastName == lastName && oldImage?.pngData() == image?.scaledTo(PersonImageChanger.maxImageResolution).pngData() {
-                        presentationMode.wrappedValue.dismiss()
-                    } else {
-                        isFirstNameError = firstName == ""
-                        isLastNameError = lastName == ""
-                        if isFirstNameError || isLastNameError {
-                            alertType = .inputError
-                        } else {
-                            alertType = .confirm
+                        
+                        // Error Text
+                        if isFirstNameError {
+                            Text("Dieses Feld darf nicht leer sein!")
+                                .foregroundColor(Color.custom.red)
+                                .font(.text(20))
+                                .lineLimit(1)
+                                .padding(.horizontal, 15)
+                                .padding(.top, 5)
                         }
                     }
-                }
-            }.padding(.bottom, 50)
-                .alert(item: $alertType) { alertType in
-                    switch alertType {
-                    case .alreadySignIn:
-                        return Alert(title: Text("Nicht löschbar"), message: Text("Diese Person kann nicht gelöschet werden, da sie bereits registriert ist."), dismissButton: .default(Text("Verstanden")))
-                    case .delete:
-                        return Alert(title: Text("Person Löschen"), message: Text("Möchtest du diese Person wirklich löschen?"), primaryButton: .cancel(Text("Abbrechen")), secondaryButton: .destructive(Text("Löschen"), action: handlePersonDelete))
-                    case .confirm:
-                        return Alert(title: Text("Person Ändern"), message: Text("Möchtest du diese Person wirklich ändern?"), primaryButton: .destructive(Text("Abbrechen")), secondaryButton: .default(Text("Bestätigen"), action: handlePersonUpdate))
-                    case .inputError:
-                        return Alert(title: Text("Eingabefehler"), message: Text("Es gab ein Fehler in der Eingabe des Namens."), dismissButton: .default(Text("Verstanden")))
+                    
+                    // Last Name
+                    VStack(spacing: 0) {
+                        
+                        // Text Field
+                        CustomTextField("Nachname", text: $lastName, keyboardOnScreen: $isLastNameKeyboardShown) {
+                            isLastNameError = lastName == ""
+                        }.frame(width: 345, height: 50)
+                            .padding(.top, 5)
+                        
+                        // Error Text
+                        if isLastNameError {
+                            Text("Dieses Feld darf nicht leer sein!")
+                                .foregroundColor(Color.custom.red)
+                                .font(.text(20))
+                                .lineLimit(1)
+                                .padding(.horizontal, 15)
+                                .padding(.top, 5)
+                        }
+                        
+                    }.padding(.top, 10)
+                    
+                    Spacer()
+                    
+                }.offset(y: isFirstNameKeyboardShown ? -50 : isLastNameKeyboardShown ? -125 : 0)
+                    .clipped()
+                    .padding(.top, 10)
+                    .alert(isPresented: $noConnectionAlertDelete) {
+                        Alert(title: Text("Kein Internet"), message: Text("Für diese Aktion benötigst du eine Internetverbindung."), primaryButton: .destructive(Text("Abbrechen")), secondaryButton: .default(Text("Erneut versuchen"), action: handlePersonDelete))
                     }
+                
+                DeleteConfirmButton(connectionStateDelete: $connectionStateDelete, connectionStateConfirm: $connectionStateUpdate) {
+                    if clubListData.list!.first(where: { $0.id == Settings.shared.person!.clubId })!.allPersons.contains(where: { $0.id == person.id }) {
+                        alertType = .alreadySignIn
+                    } else {
+                        alertType = .delete
+                    }
+                } confirmButtonHandler: {
+                    connectionStateUpdate = .loading
+                    ImageFetcher.shared.fetch(of: person.id) { oldImage in
+                        connectionStateUpdate = .passed
+                        if person.firstName == firstName && person.lastName == lastName && oldImage?.pngData() == image?.scaledTo(PersonImageChanger.maxImageResolution).pngData() {
+                            presentationMode.wrappedValue.dismiss()
+                        } else {
+                            isFirstNameError = firstName == ""
+                            isLastNameError = lastName == ""
+                            if isFirstNameError || isLastNameError {
+                                alertType = .inputError
+                            } else {
+                                alertType = .confirm
+                            }
+                        }
+                    }
+                }.padding(.bottom, 50)
+                    .alert(item: $alertType) { alertType in
+                        switch alertType {
+                        case .alreadySignIn:
+                            return Alert(title: Text("Nicht löschbar"), message: Text("Diese Person kann nicht gelöschet werden, da sie bereits registriert ist."), dismissButton: .default(Text("Verstanden")))
+                        case .delete:
+                            return Alert(title: Text("Person Löschen"), message: Text("Möchtest du diese Person wirklich löschen?"), primaryButton: .cancel(Text("Abbrechen")), secondaryButton: .destructive(Text("Löschen"), action: handlePersonDelete))
+                        case .confirm:
+                            return Alert(title: Text("Person Ändern"), message: Text("Möchtest du diese Person wirklich ändern?"), primaryButton: .destructive(Text("Abbrechen")), secondaryButton: .default(Text("Bestätigen"), action: handlePersonUpdate))
+                        case .inputError:
+                            return Alert(title: Text("Eingabefehler"), message: Text("Es gab ein Fehler in der Eingabe des Namens."), dismissButton: .default(Text("Verstanden")))
+                        }
+                    }
+            }.frame(size: screenSize ?? geometry.size)
+                .onAppear {
+                    screenSize = geometry.size
                 }
-
+            
         }.background(colorScheme.backgroundColor)
             .onAppear {
                 firstName = person.firstName

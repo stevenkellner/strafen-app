@@ -139,3 +139,12 @@ extension FileManager {
         FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: "group.stevenkellner.Strafen.settings")!
     }
 }
+
+// Extension of View to set frame from CGSize
+extension View {
+    
+    /// Sets frame from CGSize
+    func frame(size: CGSize, alignment: Alignment = .center) -> some View {
+        frame(width: size.width, height: size.height, alignment: alignment)
+    }
+}
