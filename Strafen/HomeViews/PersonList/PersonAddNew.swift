@@ -52,98 +52,105 @@ struct PersonAddNew: View {
     /// PersonId
     let personId = UUID()
     
+    /// Screen size
+    @State var screenSize: CGSize?
+    
     var body: some View {
-        VStack(spacing: 0) {
-            
-            // Bar to wipe sheet down
-            SheetBar()
-            
-            // Title
-            Header("Person Hinzufügen")
-            
-            // Image and Name
+        GeometryReader { geometry in
             VStack(spacing: 0) {
-                Spacer()
                 
-                // Image
-                ImageSelector(image: $image)
-                    .frame(width: 120, height: 120)
+                // Bar to wipe sheet down
+                SheetBar()
                 
-                Spacer()
+                // Title
+                Header("Person Hinzufügen")
                 
-                // First Name
+                // Image and Name
                 VStack(spacing: 0) {
+                    Spacer()
                     
-                    // Title
-                    HStack(spacing: 0) {
-                        Text("Name:")
-                            .foregroundColor(.textColor)
-                            .font(.text(20))
-                            .padding(.leading, 10)
-                        Spacer()
-                    }
+                    // Image
+                    ImageSelector(image: $image)
+                        .frame(width: 120, height: 120)
                     
-                    // Text Field
-                    CustomTextField("Vorname", text: $firstName, keyboardOnScreen: $isFirstNameKeyboardShown) {
-                        isFirstNameError = firstName == ""
-                    }.frame(width: UIScreen.main.bounds.width * 0.95, height: 50)
-                        .padding(.top, 5)
+                    Spacer()
                     
-                    // Error Text
-                    if isFirstNameError {
-                        Text("Dieses Feld darf nicht leer sein!")
-                            .foregroundColor(Color.custom.red)
-                            .font(.text(20))
-                            .lineLimit(1)
-                            .padding(.horizontal, 15)
+                    // First Name
+                    VStack(spacing: 0) {
+                        
+                        // Title
+                        HStack(spacing: 0) {
+                            Text("Name:")
+                                .foregroundColor(.textColor)
+                                .font(.text(20))
+                                .padding(.leading, 10)
+                            Spacer()
+                        }
+                        
+                        // Text Field
+                        CustomTextField("Vorname", text: $firstName, keyboardOnScreen: $isFirstNameKeyboardShown) {
+                            isFirstNameError = firstName == ""
+                        }.frame(width: UIScreen.main.bounds.width * 0.95, height: 50)
                             .padding(.top, 5)
+                        
+                        // Error Text
+                        if isFirstNameError {
+                            Text("Dieses Feld darf nicht leer sein!")
+                                .foregroundColor(Color.custom.red)
+                                .font(.text(20))
+                                .lineLimit(1)
+                                .padding(.horizontal, 15)
+                                .padding(.top, 5)
+                        }
                     }
-                }
-                
-                // Last Name
-                VStack(spacing: 0) {
                     
-                    // Text Field
-                    CustomTextField("Nachname", text: $lastName, keyboardOnScreen: $isLastNameKeyboardShown) {
-                        isLastNameError = lastName == ""
-                    }.frame(width: UIScreen.main.bounds.width * 0.95, height: 50)
-                        .padding(.top, 5)
-                    
-                    // Error Text
-                    if isLastNameError {
-                        Text("Dieses Feld darf nicht leer sein!")
-                            .foregroundColor(Color.custom.red)
-                            .font(.text(20))
-                            .lineLimit(1)
-                            .padding(.horizontal, 15)
+                    // Last Name
+                    VStack(spacing: 0) {
+                        
+                        // Text Field
+                        CustomTextField("Nachname", text: $lastName, keyboardOnScreen: $isLastNameKeyboardShown) {
+                            isLastNameError = lastName == ""
+                        }.frame(width: UIScreen.main.bounds.width * 0.95, height: 50)
                             .padding(.top, 5)
-                    }
+                        
+                        // Error Text
+                        if isLastNameError {
+                            Text("Dieses Feld darf nicht leer sein!")
+                                .foregroundColor(Color.custom.red)
+                                .font(.text(20))
+                                .lineLimit(1)
+                                .padding(.horizontal, 15)
+                                .padding(.top, 5)
+                        }
+                        
+                    }.padding(.top, 10)
                     
-                }.padding(.top, 10)
-                
-                Spacer()
-                
-            }.clipped()
-                .padding(.top, 10)
-                .offset(y: isFirstNameKeyboardShown ? -50 : isLastNameKeyboardShown ? -125 : 0)
-                .alert(isPresented: $noConnectionAlert) {
-                    Alert(title: Text("Kein Internet"), message: Text("Für diese Aktion benötigst du eine Internetverbindung."), primaryButton: .destructive(Text("Abbrechen")), secondaryButton: .default(Text("Erneut versuchen"), action: handleSave))
-                }
-            
-            CancelConfirmButton(connectionState: $connectionState) {
-                presentationMode.wrappedValue.dismiss()
-            } confirmButtonHandler: {
-                isFirstNameError = firstName == ""
-                isLastNameError = lastName == ""
-                confirmAlertShown = true
-            }.padding(.bottom, 50)
-                .alert(isPresented: $confirmAlertShown) {
-                    if isFirstNameError || isLastNameError {
-                        return Alert(title: Text("Eingabefehler"), message: Text("Es gab ein Fehler in der Eingabe des Namens."), dismissButton: .default(Text("Verstanden")))
+                    Spacer()
+                    
+                }.offset(y: isFirstNameKeyboardShown ? -50 : isLastNameKeyboardShown ? -125 : 0)
+                    .clipped()
+                    .padding(.top, 10)
+                    .alert(isPresented: $noConnectionAlert) {
+                        Alert(title: Text("Kein Internet"), message: Text("Für diese Aktion benötigst du eine Internetverbindung."), primaryButton: .destructive(Text("Abbrechen")), secondaryButton: .default(Text("Erneut versuchen"), action: handleSave))
                     }
-                    return Alert(title: Text("Person Hinzufügen"), message: Text("Möchtest du diese Person wirklich hinzufügen?"), primaryButton: .destructive(Text("Abbrechen")), secondaryButton: .default(Text("Bestätigen"), action: handleSave))
+                
+                CancelConfirmButton(connectionState: $connectionState) {
+                    presentationMode.wrappedValue.dismiss()
+                } confirmButtonHandler: {
+                    isFirstNameError = firstName == ""
+                    isLastNameError = lastName == ""
+                    confirmAlertShown = true
+                }.padding(.bottom, 50)
+                    .alert(isPresented: $confirmAlertShown) {
+                        if isFirstNameError || isLastNameError {
+                            return Alert(title: Text("Eingabefehler"), message: Text("Es gab ein Fehler in der Eingabe des Namens."), dismissButton: .default(Text("Verstanden")))
+                        }
+                        return Alert(title: Text("Person Hinzufügen"), message: Text("Möchtest du diese Person wirklich hinzufügen?"), primaryButton: .destructive(Text("Abbrechen")), secondaryButton: .default(Text("Bestätigen"), action: handleSave))
+                    }
+            }.frame(size: screenSize ?? geometry.size)
+                .onAppear {
+                    screenSize = geometry.size
                 }
-
         }.background(colorScheme.backgroundColor)
     }
     
