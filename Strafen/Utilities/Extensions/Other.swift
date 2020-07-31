@@ -148,3 +148,12 @@ extension View {
         frame(width: size.width, height: size.height, alignment: alignment)
     }
 }
+
+// Extension of UIApplication to dismiss keyboard
+extension UIApplication {
+    
+    /// Dismisses keyboard
+    func dismissKeyboard() {
+        sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+    }
+}
