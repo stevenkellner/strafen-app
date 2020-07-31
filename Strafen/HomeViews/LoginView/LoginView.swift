@@ -106,6 +106,9 @@ struct LoginView: View {
     /// Observed Object that contains all settings of the app of this device
     @ObservedObject var settings = Settings.shared
     
+    /// Active home tab
+    @ObservedObject var homeTabs = HomeTabs.shared
+    
     var body: some View {
         VStack(spacing: 0) {
             
@@ -204,6 +207,7 @@ struct LoginView: View {
                     let person = club.allPersons.first(where: { ($0.login.personLogin as? PersonLoginEmail)?.email == email })!
                     if (person.login.personLogin as! PersonLoginEmail).password == password.encrypted {
                         Settings.shared.person = .init(id: person.id, name: person.personName, clubId: club.id, clubName: club.name, isCashier: person.isCashier)
+                        homeTabs.active = .profileDetail
                     } else {
                         emailLoginErrorType = .wrongPassword
                         emailLoginAlert = true

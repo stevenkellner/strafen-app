@@ -47,7 +47,7 @@ struct SettingsView: View {
                         Spacer()
                         
                         // Id
-                        Text(settings.person!.clubId.uuidString)
+                        Text(settings.person?.clubId.uuidString ?? "")
                             .foregroundColor(.orange)
                             .font(.text(17))
                             .multilineTextAlignment(.center)
@@ -82,17 +82,24 @@ struct SettingsView: View {
                 // Style Changer
                 StyleChanger()
                 
-                Spacer()
-                
                 Text(settings.person?.isCashier ?? false ? "Zu kein Kassier" : "Zu Kassier") // TODO remove
                     .font(.text(20))
                     .foregroundColor(.textColor)
                     .frame(height: 50)
+                    .padding(.top, 15)
                     .onTapGesture {
                         settings.person?.isCashier.toggle()
                     }
                 
                 // Log Out TODO
+                Text("Abmelden")
+                    .font(.text(20))
+                    .foregroundColor(.textColor)
+                    .frame(height: 50)
+                    .padding(.top, 15)
+                    .onTapGesture {
+                        settings.person = nil
+                    }
                 
                 Spacer()
             }
