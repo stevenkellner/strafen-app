@@ -45,103 +45,110 @@ struct HomeTabsView: View {
     /// State of internet connection
     @State var connectionState: ConnectionState = .loading
     
+    /// Screen size
+    @State var screenSize: CGSize?
+    
     var body: some View {
-        VStack(spacing: 0) {
-            
-            switch connectionState {
-            case .loading:
+        GeometryReader { geometry in
+            VStack(spacing: 0) {
                 
-                // Loading
-                switch homeTabs.active {
-                case .notes:
-                    NoteList(dismissHandler: $dismissHandler)
-                        .edgesIgnoringSafeArea(.all)
-                        .background(colorScheme.backgroundColor)
-                        .frame(maxWidth: .infinity, maxHeight: .infinity)
-                case .settings:
-                    SettingsView()
-                        .edgesIgnoringSafeArea(.all)
-                        .background(colorScheme.backgroundColor)
-                        .frame(maxWidth: .infinity, maxHeight: .infinity)
-                default:
-                    ZStack {
-                        colorScheme.backgroundColor
-                        ProgressView("Laden")
-                    }.edgesIgnoringSafeArea(.all)
-                        .frame(maxWidth: .infinity, maxHeight: .infinity)
-                }
-                
-            case .failed:
-                
-                // No internet connection
-                switch homeTabs.active {
-                case .notes:
-                    NoteList(dismissHandler: $dismissHandler)
-                        .edgesIgnoringSafeArea(.all)
-                        .background(colorScheme.backgroundColor)
-                        .frame(maxWidth: .infinity, maxHeight: .infinity)
-                case .settings:
-                    SettingsView()
-                        .edgesIgnoringSafeArea(.all)
-                        .background(colorScheme.backgroundColor)
-                        .frame(maxWidth: .infinity, maxHeight: .infinity)
-                default:
-                    ZStack {
-                        colorScheme.backgroundColor
-                        VStack(spacing: 30) {
-                            Spacer()
-                            Text("Keine Internetverbindung")
-                                .font(.text(25))
-                                .foregroundColor(.textColor)
-                                .padding(.horizontal, 15)
-                                .multilineTextAlignment(.center)
-                            Text("Erneut versuchen")
-                                .font(.text(25))
-                                .foregroundColor(Color.custom.red)
-                                .padding(.horizontal, 15)
-                                .multilineTextAlignment(.center)
-                                .onTapGesture(perform: fetchLists)
-                            Spacer()
-                        }
-                    }.edgesIgnoringSafeArea(.all)
-                        .frame(maxWidth: .infinity, maxHeight: .infinity)
-                }
-                
-            case .passed:
-                
-                // Home tabs
-                HStack(spacing: 0) {
+                switch connectionState {
+                case .loading:
                     
+                    // Loading
                     switch homeTabs.active {
-                    case .profileDetail:
-                        ProfileDetail(dismissHandler: $dismissHandler)
-                    case .personList:
-                        PersonList(dismissHandler: $dismissHandler)
-                    case .reasonList:
-                        ReasonList()
-                    case .addNewFine:
-                        ZStack {
-                            colorScheme.backgroundColor
-                            AddNewFine()
-                                .padding(.top, 50)
-                        }.edgesIgnoringSafeArea(.all)
-                            .frame(maxWidth: .infinity, maxHeight: .infinity)
                     case .notes:
                         NoteList(dismissHandler: $dismissHandler)
+                            .edgesIgnoringSafeArea(.all)
+                            .background(colorScheme.backgroundColor)
+                            .frame(maxWidth: .infinity, maxHeight: .infinity)
                     case .settings:
                         SettingsView()
+                            .edgesIgnoringSafeArea(.all)
+                            .background(colorScheme.backgroundColor)
+                            .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    default:
+                        ZStack {
+                            colorScheme.backgroundColor
+                            ProgressView("Laden")
+                        }.edgesIgnoringSafeArea(.all)
+                            .frame(maxWidth: .infinity, maxHeight: .infinity)
                     }
                     
-                }.edgesIgnoringSafeArea(.all)
-                    .background(colorScheme.backgroundColor)
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                case .failed:
+                    
+                    // No internet connection
+                    switch homeTabs.active {
+                    case .notes:
+                        NoteList(dismissHandler: $dismissHandler)
+                            .edgesIgnoringSafeArea(.all)
+                            .background(colorScheme.backgroundColor)
+                            .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    case .settings:
+                        SettingsView()
+                            .edgesIgnoringSafeArea(.all)
+                            .background(colorScheme.backgroundColor)
+                            .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    default:
+                        ZStack {
+                            colorScheme.backgroundColor
+                            VStack(spacing: 30) {
+                                Spacer()
+                                Text("Keine Internetverbindung")
+                                    .font(.text(25))
+                                    .foregroundColor(.textColor)
+                                    .padding(.horizontal, 15)
+                                    .multilineTextAlignment(.center)
+                                Text("Erneut versuchen")
+                                    .font(.text(25))
+                                    .foregroundColor(Color.custom.red)
+                                    .padding(.horizontal, 15)
+                                    .multilineTextAlignment(.center)
+                                    .onTapGesture(perform: fetchLists)
+                                Spacer()
+                            }
+                        }.edgesIgnoringSafeArea(.all)
+                            .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    }
+                    
+                case .passed:
+                    
+                    // Home tabs
+                    HStack(spacing: 0) {
+                        
+                        switch homeTabs.active {
+                        case .profileDetail:
+                            ProfileDetail(dismissHandler: $dismissHandler)
+                        case .personList:
+                            PersonList(dismissHandler: $dismissHandler)
+                        case .reasonList:
+                            ReasonList()
+                        case .addNewFine:
+                            ZStack {
+                                colorScheme.backgroundColor
+                                AddNewFine()
+                                    .padding(.top, 50)
+                            }.edgesIgnoringSafeArea(.all)
+                                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                        case .notes:
+                            NoteList(dismissHandler: $dismissHandler)
+                        case .settings:
+                            SettingsView()
+                        }
+                        
+                    }.edgesIgnoringSafeArea(.all)
+                        .background(colorScheme.backgroundColor)
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    
+                }
                 
-            }
-            
-            // Tab bar
-            TabBar(dismissHandler: $dismissHandler)
-                .edgesIgnoringSafeArea([.horizontal, .top])
-            
+                // Tab bar
+                TabBar(dismissHandler: $dismissHandler)
+                    .edgesIgnoringSafeArea([.horizontal, .top])
+            }.frame(size: screenSize ?? geometry.size)
+                .onAppear {
+                    screenSize = geometry.size
+                }
         }.frame(maxWidth: .infinity, maxHeight: .infinity)
             .onAppear {
                 

@@ -109,124 +109,132 @@ struct LoginView: View {
     /// Active home tab
     @ObservedObject var homeTabs = HomeTabs.shared
     
+    /// Screen size
+    @State var screenSize: CGSize?
+    
     var body: some View {
-        VStack(spacing: 0) {
-            
-            // Header
-            Header("Anmelden")
-                .padding(.top, 50)
-            
-            Spacer()
-            
-            // Email
+        GeometryReader { geometry in
             VStack(spacing: 0) {
                 
-                // Title
-                HStack(spacing: 0) {
-                    Text("Email:")
-                        .foregroundColor(Color.textColor)
-                        .font(.text(20))
-                        .padding(.leading, 10)
-                    Spacer()
+                // Header
+                Header("Anmelden")
+                    .padding(.top, 50)
+                
+                Spacer()
+                
+                // Email
+                VStack(spacing: 0) {
+                    
+                    // Title
+                    HStack(spacing: 0) {
+                        Text("Email:")
+                            .foregroundColor(Color.textColor)
+                            .font(.text(20))
+                            .padding(.leading, 10)
+                        Spacer()
+                    }
+                    
+                    // Text Field
+                    CustomTextField("Email", text: $email, keyboardType: .emailAddress)
+                        .frame(width: UIScreen.main.bounds.width * 0.95, height: 50)
+                        .padding(.top, 5)
                 }
                 
-                // Text Field
-                CustomTextField("Email", text: $email, keyboardType: .emailAddress)
-                    .frame(width: UIScreen.main.bounds.width * 0.95, height: 50)
-                    .padding(.top, 5)
-            }
-            
-            // Password
-            VStack(spacing: 0) {
+                // Password
+                VStack(spacing: 0) {
+                    
+                    // Title
+                    HStack(spacing: 0) {
+                        Text("Passwort:")
+                            .foregroundColor(Color.textColor)
+                            .font(.text(20))
+                            .padding(.leading, 10)
+                        Spacer()
+                    }
+                    
+                    // Text Field
+                    CustomSecureField(text: $password, placeholder: "Passwort")
+                        .frame(width: UIScreen.main.bounds.width * 0.95, height: 50)
+                        .padding(.top, 5)
+                }.padding(.top, 20)
                 
-                // Title
-                HStack(spacing: 0) {
-                    Text("Passwort:")
-                        .foregroundColor(Color.textColor)
-                        .font(.text(20))
-                        .padding(.leading, 10)
-                    Spacer()
-                }
-                
-                // Text Field
-                CustomSecureField(text: $password, placeholder: "Passwort")
-                    .frame(width: UIScreen.main.bounds.width * 0.95, height: 50)
-                    .padding(.top, 5)
-            }.padding(.top, 20)
-            
-            // "oder" Text
-            Text("oder")
-                .foregroundColor(.textColor)
-                .font(.text(20))
-                .padding(.top, 20)
-            
-            // TODO Login with Apple Button
-            Outline()
-                .frame(width: UIScreen.main.bounds.width * 0.95, height: 50)
-                .padding(.top, 20)
-            
-            // SignIn Button
-            HStack(spacing: 0) {
-                
-                // "Stattdessen" text
-                Text("Stattdessen")
+                // "oder" Text
+                Text("oder")
                     .foregroundColor(.textColor)
                     .font(.text(20))
+                    .padding(.top, 20)
+                
+                // TODO Login with Apple Button
+                Outline()
+                    .frame(width: UIScreen.main.bounds.width * 0.95, height: 50)
+                    .padding(.top, 20)
                 
                 // SignIn Button
-                ZStack {
+                HStack(spacing: 0) {
                     
-                    // Outline
-                    RoundedCorners()
-                        .radius(settings.style == .default ? 5 : 2.5)
-                        .lineWidth(settings.style.lineWidth)
-                        .fillColor(settings.style.fillColor(colorScheme))
-                        .strokeColor(settings.style.strokeColor(colorScheme))
-                    
-                    // Text
-                    Text("Registrieren")
+                    // "Stattdessen" text
+                    Text("Stattdessen")
                         .foregroundColor(.textColor)
                         .font(.text(20))
                     
-                }.frame(width: 150, height: 30)
-                    .padding(.leading, 10)
-                    .onTapGesture {
-                        showSignInSheet = true
-                    }
-                    .sheet(isPresented: $showSignInSheet) {
-                        SignInView(showSignInSheet: $showSignInSheet)
-                    }
+                    // SignIn Button
+                    ZStack {
+                        
+                        // Outline
+                        RoundedCorners()
+                            .radius(settings.style == .default ? 5 : 2.5)
+                            .lineWidth(settings.style.lineWidth)
+                            .fillColor(settings.style.fillColor(colorScheme))
+                            .strokeColor(settings.style.strokeColor(colorScheme))
+                        
+                        // Text
+                        Text("Registrieren")
+                            .foregroundColor(.textColor)
+                            .font(.text(20))
+                        
+                    }.frame(width: 150, height: 30)
+                        .padding(.leading, 10)
+                        .onTapGesture {
+                            showSignInSheet = true
+                        }
+                        .sheet(isPresented: $showSignInSheet) {
+                            SignInView(showSignInSheet: $showSignInSheet)
+                        }
+                    
+                }.padding(.top, 20)
                 
-            }.padding(.top, 20)
-            
-            Spacer()
-            
-            // Confirm Button
-            ConfirmButton("Anmelden") {
-                if let club = clubListData.list!.first(where: { $0.allPersons.contains(where: { ($0.login.personLogin as? PersonLoginEmail)?.email == email }) }) {
-                    let person = club.allPersons.first(where: { ($0.login.personLogin as? PersonLoginEmail)?.email == email })!
-                    if (person.login.personLogin as! PersonLoginEmail).password == password.encrypted {
-                        Settings.shared.person = .init(id: person.id, name: person.personName, clubId: club.id, clubName: club.name, isCashier: person.isCashier)
-                        homeTabs.active = .profileDetail
+                Spacer()
+                
+                // Confirm Button
+                ConfirmButton("Anmelden") { // TODO progressView
+                    if let club = clubListData.list!.first(where: { $0.allPersons.contains(where: { ($0.login.personLogin as? PersonLoginEmail)?.email == email }) }) {
+                        let person = club.allPersons.first(where: { ($0.login.personLogin as? PersonLoginEmail)?.email == email })!
+                        if (person.login.personLogin as! PersonLoginEmail).password == password.encrypted {
+                            Settings.shared.person = .init(id: person.id, name: person.personName, clubId: club.id, clubName: club.name, isCashier: person.isCashier)
+                            homeTabs.active = .profileDetail
+                        } else {
+                            emailLoginErrorType = .wrongPassword
+                            emailLoginAlert = true
+                        }
                     } else {
-                        emailLoginErrorType = .wrongPassword
+                        emailLoginErrorType = .notRegistriered
                         emailLoginAlert = true
                     }
-                } else {
-                    emailLoginErrorType = .notRegistriered
-                    emailLoginAlert = true
-                }
-            }.padding(.bottom, 50)
-                .alert(isPresented: $emailLoginAlert) {
-                    switch emailLoginErrorType {
-                    case .wrongPassword:
-                        return
-                            Alert(title: Text("Falsches Passwort"), message: Text("Das Passwort ist falsch."), dismissButton: .default(Text("Verstanden")))
-                    case .notRegistriered:
-                        return Alert(title: Text("Email Nicht Registriert"), message: Text("Diese Email ist nicht registriert."), dismissButton: .default(Text("Verstanden")))
+                }.padding(.bottom, 50)
+                    .alert(isPresented: $emailLoginAlert) {
+                        switch emailLoginErrorType {
+                        case .wrongPassword:
+                            return
+                                Alert(title: Text("Falsches Passwort"), message: Text("Das Passwort ist falsch."), dismissButton: .default(Text("Verstanden")))
+                        case .notRegistriered:
+                            return Alert(title: Text("Email Nicht Registriert"), message: Text("Diese Email ist nicht registriert."), dismissButton: .default(Text("Verstanden")))
+                        }
                     }
+                
+            }.frame(size: screenSize ?? geometry.size)
+                .onAppear {
+                    screenSize = geometry.size
                 }
-            
         }.background(colorScheme.backgroundColor)
     }
 }
