@@ -48,6 +48,9 @@ struct SignInNewClubView: View {
     /// Indicates if no connection alert is shown
     @State var noConnectionAlert = false
     
+    /// Screen size
+    @State var screenSize: CGSize?
+    
     var body: some View {
         ZStack {
             
@@ -66,112 +69,119 @@ struct SignInNewClubView: View {
                 Spacer()
             }
             
-            VStack(spacing: 0) {
-                
-                // Bar to wipe sheet down
-                SheetBar()
-                
-                // Header
-                Header("Neuer Verein")
-                    .padding(.top, 30)
-                
-                ScrollView(showsIndicators: false) {
-                    VStack(spacing: 0) {
-                        
-                        // Image
-                        ImageSelector(image: $image)
-                            .frame(width: 150, height: 150)
-                            .padding(.top, 35)
-                        
-                        // Club name
+            GeometryReader { geometry in
+                VStack(spacing: 0) {
+                    
+                    // Bar to wipe sheet down
+                    SheetBar()
+                    
+                    // Header
+                    Header("Neuer Verein")
+                        .padding(.top, 30)
+                    
+                    ScrollView(showsIndicators: false) {
                         VStack(spacing: 0) {
                             
-                            // Title
-                            HStack(spacing: 0) {
-                                Text("Vereinsname:")
-                                    .foregroundColor(Color.textColor)
-                                    .font(.text(20))
-                                    .padding(.leading, 10)
-                                Spacer()
-                            }
+                            // Image
+                            ImageSelector(image: $image)
+                                .frame(width: 150, height: 150)
+                                .padding(.top, 35)
                             
-                            // Text Field
-                            CustomTextField("Vereinsname", text: $clubName)
-                                .frame(width: UIScreen.main.bounds.width * 0.95, height: 50)
-                                .padding(.top, 5)
-                            
-                            // Error Text
-                            if isClubNameError {
-                                Text("Dieses Feld darf nicht leer sein!")
-                                    .foregroundColor(Color.custom.red)
-                                    .font(.text(20))
-                                    .lineLimit(1)
-                                    .padding(.horizontal, 15)
+                            // Club name
+                            VStack(spacing: 0) {
+                                
+                                // Title
+                                HStack(spacing: 0) {
+                                    Text("Vereinsname:")
+                                        .foregroundColor(Color.textColor)
+                                        .font(.text(20))
+                                        .padding(.leading, 10)
+                                    Spacer()
+                                }
+                                
+                                // Text Field
+                                CustomTextField("Vereinsname", text: $clubName)
+                                    .frame(width: UIScreen.main.bounds.width * 0.95, height: 50)
                                     .padding(.top, 5)
-                            }
+                                
+                                // Error Text
+                                if isClubNameError {
+                                    Text("Dieses Feld darf nicht leer sein!")
+                                        .foregroundColor(Color.custom.red)
+                                        .font(.text(20))
+                                        .lineLimit(1)
+                                        .padding(.horizontal, 15)
+                                        .padding(.top, 5)
+                                }
+                                
+                            }.padding(.top, 35)
                             
-                        }.padding(.top, 35)
-                        
-                        // Club id
-                        VStack(spacing: 0) {
-                            
-                            // Text
-                            Text("Dein Vereinscode:")
-                                .foregroundColor(.textColor)
-                                .font(.text(25))
-                            
-                            // Id
-                            HStack(spacing: 0) {
-                                Spacer()
+                            // Club id
+                            VStack(spacing: 0) {
+                                
+                                // Text
+                                Text("Dein Vereinscode:")
+                                    .foregroundColor(.textColor)
+                                    .font(.text(25))
                                 
                                 // Id
-                                Text(clubId.uuidString)
-                                    .foregroundColor(.orange)
+                                HStack(spacing: 0) {
+                                    Spacer()
+                                    
+                                    // Id
+                                    Text(clubId.uuidString)
+                                        .foregroundColor(.orange)
+                                        .font(.text(20))
+                                        .multilineTextAlignment(.center)
+                                        .padding(.horizontal, 15)
+                                    
+                                    Spacer()
+                                    
+                                    // Copy Button
+                                    Button {
+                                        UIPasteboard.general.string = clubId.uuidString
+                                        let generator = UINotificationFeedbackGenerator()
+                                        generator.notificationOccurred(.success)
+                                    } label: {
+                                        Image(systemName: "doc.on.doc")
+                                            .font(.system(size: 30, weight: .light))
+                                            .foregroundColor(.textColor)
+                                    }
+                                    
+                                    Spacer()
+                                }.padding(.top, 10)
+                                
+                                // Text
+                                Text("Benutze ihn um andere Spieler hinzuzufügen.")
+                                    .foregroundColor(.textColor)
                                     .font(.text(20))
                                     .multilineTextAlignment(.center)
                                     .padding(.horizontal, 15)
+                                    .padding(.top, 10)
                                 
-                                Spacer()
-                                
-                                // Copy Button
-                                Button {
-                                    UIPasteboard.general.string = clubId.uuidString
-                                    let generator = UINotificationFeedbackGenerator()
-                                    generator.notificationOccurred(.success)
-                                } label: {
-                                    Image(systemName: "doc.on.doc")
-                                        .font(.system(size: 30, weight: .light))
-                                        .foregroundColor(.textColor)
-                                }
-                                
-                                Spacer()
-                            }.padding(.top, 10)
+                            }.padding(.top, 35)
                             
-                            // Text
-                            Text("Benutze ihn um andere Spieler hinzuzufügen.")
-                                .foregroundColor(.textColor)
-                                .font(.text(20))
-                                .multilineTextAlignment(.center)
-                                .padding(.horizontal, 15)
-                                .padding(.top, 10)
-                            
-                        }.padding(.top, 35)
-                        
-                        Spacer()
+                            Spacer()
+                        }.padding(.vertical, 10)
                     }.padding(.vertical, 10)
-                }.padding(.vertical, 10)
-                    .alert(isPresented: $noConnectionAlert) {
-                        Alert(title: Text("Kein Internet"), message: Text("Für diese Aktion benötigst du eine Internetverbindung."), primaryButton: .destructive(Text("Abbrechen")), secondaryButton: .default(Text("Erneut versuchen"), action: handleConfirmButton))
-                    }
-                
-                // Confirm Button
-                ConfirmButton("Erstellen", connectionState: $connectionState) {
-                    handleConfirmButton()
-                }.padding(.bottom, 50)
-                    .alert(isPresented: $showErrorAlert) {
-                        Alert(title: Text("Eingabefehler"), message: Text("Es gab ein Fehler in der Eingabe des Verseinsnamens."), dismissButton: .default(Text("Verstanden")))
-                    }
+                        .alert(isPresented: $noConnectionAlert) {
+                            Alert(title: Text("Kein Internet"), message: Text("Für diese Aktion benötigst du eine Internetverbindung."), primaryButton: .destructive(Text("Abbrechen")), secondaryButton: .default(Text("Erneut versuchen"), action: handleConfirmButton))
+                        }
+                    
+                    // Confirm Button
+                    ConfirmButton("Erstellen", connectionState: $connectionState) {
+                        handleConfirmButton()
+                    }.padding(.bottom, 50)
+                        .alert(isPresented: $showErrorAlert) {
+                            Alert(title: Text("Eingabefehler"), message: Text("Es gab ein Fehler in der Eingabe des Verseinsnamens."), dismissButton: .default(Text("Verstanden")))
+                        }
 
+                }.frame(size: screenSize ?? geometry.size)
+                    .onAppear {
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                            screenSize = geometry.size
+                        }
+                    }
             }
         }.background(colorScheme.backgroundColor)
             .navigationTitle("title")
