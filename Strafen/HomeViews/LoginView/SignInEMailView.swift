@@ -52,19 +52,19 @@ struct SignInEMailView: View {
     @Binding var showSignInSheet: Bool
     
     /// Input first Name
-    @State var firstName = "Steven" // TODO
+    @State var firstName = ""
     
     /// Input last Name
-    @State var lastName = "Kellner"
+    @State var lastName = ""
     
     /// Input email
-    @State var email = "steven.kellner@web.de"
+    @State var email = ""
     
     /// Input password
-    @State var password = "Aa123456"
+    @State var password = ""
     
     /// Input repeat password
-    @State var repeatPassword = "Aa123456"
+    @State var repeatPassword = ""
     
     /// Indicate whether confirm button is clicked or not
     @State var confirmButtonClicked = false

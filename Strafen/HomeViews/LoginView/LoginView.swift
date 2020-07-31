@@ -109,6 +109,9 @@ struct LoginView: View {
     /// Active home tab
     @ObservedObject var homeTabs = HomeTabs.shared
     
+    /// State of internet connection
+    @State var connectionState: ConnectionState = .passed
+    
     /// Screen size
     @State var screenSize: CGSize?
     
@@ -206,17 +209,21 @@ struct LoginView: View {
                 Spacer()
                 
                 // Confirm Button
-                ConfirmButton("Anmelden") { // TODO progressView
+                ConfirmButton("Anmelden", connectionState: $connectionState) {
+                    connectionState = .loading
                     if let club = clubListData.list!.first(where: { $0.allPersons.contains(where: { ($0.login.personLogin as? PersonLoginEmail)?.email == email }) }) {
                         let person = club.allPersons.first(where: { ($0.login.personLogin as? PersonLoginEmail)?.email == email })!
                         if (person.login.personLogin as! PersonLoginEmail).password == password.encrypted {
+                            connectionState = .passed
                             Settings.shared.person = .init(id: person.id, name: person.personName, clubId: club.id, clubName: club.name, isCashier: person.isCashier)
                             homeTabs.active = .profileDetail
                         } else {
+                            connectionState = .failed
                             emailLoginErrorType = .wrongPassword
                             emailLoginAlert = true
                         }
                     } else {
+                        connectionState = .failed
                         emailLoginErrorType = .notRegistriered
                         emailLoginAlert = true
                     }

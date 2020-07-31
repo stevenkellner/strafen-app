@@ -227,7 +227,7 @@ struct SignInEMailValidationView: View {
                     ConfirmButton("Weiter", connectionState: $connectionState) {
                         switch state {
                         case .codeInput:
-                            if inputEmailCode == SendCodeMail.shared.code || true { // TODO
+                            if inputEmailCode == SendCodeMail.shared.code {
                                 withAnimation {
                                     state = .joinClub
                                 }
