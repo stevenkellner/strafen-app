@@ -39,11 +39,16 @@ extension String {
 // Extension of String to check if this String contains a substring
 extension String {
     
-    /// Checks if thsi string contains a substring
+    /// Checks if this string contains a substring
     func hasSubstring(_ substring: String) -> Bool {
         let stringToTest = filter({ !$0.isWhitespace }).lowercased()
         let substring = substring.filter({ !$0.isWhitespace }).lowercased()
         return stringToTest.contains(substring)
+    }
+    
+    /// Checks if seachText is empty or this string contains the searchText
+    func searchFor(_ searchText: String) -> Bool {
+        searchText == "" || hasSubstring(searchText)
     }
 }
 

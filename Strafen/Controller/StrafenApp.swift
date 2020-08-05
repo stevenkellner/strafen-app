@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+
 @main
 struct StrafenApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate

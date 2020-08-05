@@ -75,11 +75,7 @@ struct PersonList: View {
                         
                         // Person List
                         LazyVStack(spacing: 15) {
-                            ForEach(personListData.list!.filter({ searchText == "" || $0.personName.formatted.hasSubstring(searchText) }).sorted(by: {
-                                if $0.id == settings.person!.id { return true
-                                } else if $1.id == settings.person!.id { return false }
-                                return $0.personName.formatted < $1.personName.formatted
-                            })) { person in
+                            ForEach(personListData.list!.filter(for: searchText, at: \.personName.formatted).sorted(for: settings.person!)) { person in
                                 NavigationLink(destination: PersonDetail(person: person, dismissHandler: $dismissHandler)) {
                                     PersonListRow(person: person)
                                         .animation(.none)

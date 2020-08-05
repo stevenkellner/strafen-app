@@ -94,3 +94,41 @@ extension Array {
         self = try filter(isIncluded)
     }
 }
+
+/// Extension of Array to filter for a search text
+extension Array {
+    
+    /// Filter Array for a search text
+    func filter(for searchText: String, at keyPath: KeyPath<Element, String>) -> [Element] {
+        filter { element in
+            element[keyPath: keyPath].searchFor(searchText)
+        }
+    }
+}
+
+/// Extension of Array to filter for a search text for String with deafult keyPath
+extension Array where Element == String {
+    
+    /// Filter Array for a search text
+    func filter(for searchText: String, at keyPath: KeyPath<Element, String> = \.self) -> [Element] {
+        filter { element in
+            element[keyPath: keyPath].searchFor(searchText)
+        }
+    }
+}
+
+/// Extension of Array to sort person list so that the logged in person is at start
+extension Array where Element == Person {
+    
+    /// Sort Array so that the logged in person is at start
+    func sorted(for loggedInPerson: Settings.CodableSettings.Person) -> [Element] {
+        sorted { firstPerson, secondPerson in
+            if firstPerson.id == loggedInPerson.id {
+                return true
+            } else if secondPerson.id == loggedInPerson.id {
+                return false
+            }
+            return firstPerson.personName.formatted < secondPerson.personName.formatted
+        }
+    }
+}

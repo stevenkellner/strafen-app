@@ -218,7 +218,7 @@ struct SignInNewClubView: View {
             }
             dispatchGroup.notify(queue: .main) {
                 connectionState = .passed
-                Settings.shared.person = Settings.CodableSettings.Person(id: personId, name: personName, clubId: clubId, clubName: clubName, isCashier: true)
+                Settings.shared.person = .init(id: personId, name: personName, clubId: clubId, clubName: clubName, isCashier: true)
                 showSignInSheet = false
             }
         } else {
