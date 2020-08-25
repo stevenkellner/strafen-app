@@ -22,12 +22,12 @@ struct Provider: TimelineProvider {
     let timeIntervalToUpdateNoconnection: TimeInterval = 300
     
     /// Creates a snapshot of the widget
-    func snapshot(with context: Context, completion: @escaping (WidgetEntry) -> ()) {
+    func getSnapshot(in context: Context, completion: @escaping (WidgetEntry) -> Void) {
         completion(WidgetEntry(date: Date(), widgetEntryType: .success(person: .default, fineList: .random), style: .plain, isPlaceholder: false))
     }
     
     /// Creates a timeline of the widget
-    func timeline(with context: Context, completion: @escaping (Timeline<WidgetEntry>) -> ()) {
+    func getTimeline(in context: Context, completion: @escaping (Timeline<WidgetEntry>) -> Void) {
         
         // Check if person is logged in
         WidgetUrls.shared.reloadSettings()
@@ -95,7 +95,7 @@ struct Provider: TimelineProvider {
     }
     
     /// Creates a placeholder of the widget
-    func placeholder(with: Context) -> WidgetEntry {
+    func placeholder(in context: Context) -> WidgetEntry {
         WidgetEntry(date: Date(), widgetEntryType: .success(person: .default, fineList: .random), style: .plain, isPlaceholder: true)
     }
 }

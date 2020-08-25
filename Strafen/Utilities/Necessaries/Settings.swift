@@ -166,7 +166,7 @@ class Settings: ObservableObject {
     }
     
     /// Deafulf setting for first apply
-    static let `default` = CodableSettings(appearance: .system, style: CodableSettings.Style.allCases.randomElement()!, person: nil)
+    static let `default` = CodableSettings(appearance: .system, style: .plain, person: nil)
     
     /// Shared instance for singelton
     static let shared = Settings()

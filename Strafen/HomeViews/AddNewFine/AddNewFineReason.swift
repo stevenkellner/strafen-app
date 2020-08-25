@@ -120,8 +120,13 @@ struct AddNewFineReason: View {
                     HStack(spacing: 0) {
                         Spacer()
                         Spacer()
-                        Spacer()
-                        Spacer()
+                        
+                        Text("Bevorzugt:")
+                            .foregroundColor(.textColor)
+                            .font(.text(20))
+                            .lineLimit(1)
+                            .padding(.trailing, 15)
+                            .frame(height: 35)
                         
                         // Template button
                         ZStack {
