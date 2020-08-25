@@ -262,7 +262,7 @@ struct AddNewFine: View {
                     return Alert(title: Text("Strafe Hinzufügen"), message: Text("Möchtest du diese Strafe wirklich hinzufügen?"), primaryButton: .destructive(Text("Abbrechen")), secondaryButton: .default(Text("Bestätigen"), action: handleSave))
                 }
 
-        }
+        }.animation(.none)
     }
     
     /// Handles fine saving
