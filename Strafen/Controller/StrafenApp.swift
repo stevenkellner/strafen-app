@@ -16,7 +16,7 @@ struct StrafenApp: App {
             ContentView()
         }.onChange(of: scenePhase) { phase in
             if phase == .background {
-                ImageData.shared.personImage = []
+                ImageData.shared.personImage.removeAll()
             }
         }
     }

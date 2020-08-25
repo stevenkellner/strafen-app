@@ -93,11 +93,11 @@ struct PersonImageChanger {
         DispatchQueue.main.async {
             switch changeType {
             case .add(image: let image, personId: let personId) where !ImageData.shared.personImage.contains(where: { $0.personId == personId }):
-                ImageData.shared.personImage.append(.init(personId: personId, image: image))
+                ImageData.shared.personImage.append(image: image, of: personId)
             case .update(image: let image, personId: let personId):
-                ImageData.shared.personImage.mapped { $0.personId == personId ? .init(personId: personId, image: image) : $0 }
+                ImageData.shared.personImage.updateImage(of: personId, new: image)
             case .delete(personId: let personId):
-                ImageData.shared.personImage.filtered { $0.personId != personId }
+                ImageData.shared.personImage.deleteImage(of: personId)
             default:
                 break
             }
