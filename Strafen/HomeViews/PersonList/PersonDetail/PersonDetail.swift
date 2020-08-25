@@ -110,6 +110,7 @@ struct PersonDetail: View {
                 
                 Spacer()
             }.padding(.top, 60)
+                .animation(.none)
             
             // Add New fine button
             AddNewListItemButton(list: $fineListData.list, listFilter: { $0.personId == person.id }) {

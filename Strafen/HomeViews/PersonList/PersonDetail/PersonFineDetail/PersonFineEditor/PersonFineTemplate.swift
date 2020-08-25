@@ -19,57 +19,76 @@ struct PersonFineTemplate: View {
     /// Reason List Data
     @ObservedObject var reasonListData = ListData.reason
     
+    /// Text searched in search bar
+    @State var searchText = ""
+    
+    /// Screen size
+    @State var screenSize: CGSize?
+    
     init(completionHandler: @escaping (Reason) -> ()) {
         self.completionHandler = completionHandler
     }
     
     var body: some View {
-        VStack(spacing: 0) {
-            
-            // Bar to wipe sheet down
-            SheetBar()
-            
-            // Title
-            Header("Strafe Auswählen")
-            
-            // Empty List Text
-            if reasonListData.list!.isEmpty {
-                Text("Es sind keine Strafen verfügbar.")
-                    .font(.text(25))
-                    .foregroundColor(.textColor)
-                    .padding(.horizontal, 15)
-                    .multilineTextAlignment(.center)
-                    .padding(.top, 50)
-                Text("Lege erst eine Neue im Strafenkatalog an.")
-                    .font(.text(25))
-                    .foregroundColor(.textColor)
-                    .padding(.horizontal, 15)
-                    .multilineTextAlignment(.center)
-                    .padding(.top, 20)
-            }
-            
-            // List of reasons
-            ScrollView {
-                LazyVStack(spacing: 15) {
-                    ForEach(reasonListData.list!.sorted(by: \.reason.localizedUppercase)) { reason in
-                        PersonFineTemplateRow(reason: reason)
-                            .onTapGesture {
-                                completionHandler(reason)
-                                presentationMode.wrappedValue.dismiss()
-                            }
+        GeometryReader { geometry in
+            VStack(spacing: 0) {
+                
+                // Bar to wipe sheet down
+                SheetBar()
+                
+                // Title
+                Header("Strafe Auswählen")
+                
+                // Empty List Text
+                if reasonListData.list!.isEmpty {
+                    Text("Es sind keine Strafen verfügbar.")
+                        .font(.text(25))
+                        .foregroundColor(.textColor)
+                        .padding(.horizontal, 15)
+                        .multilineTextAlignment(.center)
+                        .padding(.top, 50)
+                    Text("Lege erst eine Neue im Strafenkatalog an.")
+                        .font(.text(25))
+                        .foregroundColor(.textColor)
+                        .padding(.horizontal, 15)
+                        .multilineTextAlignment(.center)
+                        .padding(.top, 20)
+                }
+                
+                // Search Bar and List of reasons
+                ScrollView {
+                    
+                    // Search Bar
+                    if !reasonListData.list!.isEmpty {
+                        SearchBar(searchText: $searchText)
+                            .frame(width: UIScreen.main.bounds.width * 0.95 + 15)
                     }
-                }.padding(.bottom, 20)
-                    .padding(.top, 5)
-            }.padding(.top, 10)
-            
-            Spacer()
-            
-            // Cancel Button
-            CancelButton {
-                presentationMode.wrappedValue.dismiss()
-            }.padding(.bottom, 30)
-                .padding(.top, 15)
-            
+                    
+                    LazyVStack(spacing: 15) {
+                        ForEach(reasonListData.list!.filter(for: searchText, at: \.reason).sorted(by: \.reason.localizedUppercase)) { reason in
+                            PersonFineTemplateRow(reason: reason)
+                                .onTapGesture {
+                                    completionHandler(reason)
+                                    presentationMode.wrappedValue.dismiss()
+                                }
+                        }.animation(.none)
+                    }.padding(.bottom, 20)
+                        .padding(.top, 5)
+                        .animation(.default)
+                }.padding(.top, 10)
+                
+                Spacer()
+                
+                // Cancel Button
+                CancelButton {
+                    presentationMode.wrappedValue.dismiss()
+                }.padding(.bottom, 30)
+                    .padding(.top, 15)
+                
+            }.frame(size: screenSize ?? geometry.size)
+                .onAppear {
+                    screenSize = geometry.size
+                }
         }
     }
 }

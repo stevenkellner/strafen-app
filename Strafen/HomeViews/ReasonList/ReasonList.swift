@@ -22,63 +22,79 @@ struct ReasonList: View {
     /// Text searched in search bar
     @State var searchText = ""
     
+    /// Screen size
+    @State var screenSize: CGSize?
+    
     var body: some View {
-        ZStack {
-            
-            // Background color
-            colorScheme.backgroundColor
-            
-            // Header and list
-            VStack(spacing: 0) {
+        GeometryReader { geometry in
+            ZStack {
                 
-                // Header
-                Header("Verfügbare Strafen")
-                    .padding(.top, 50)
+                // Background color
+                colorScheme.backgroundColor
                 
-                // Empty List Text
-                if reasonListData.list!.isEmpty  {
-                    if settings.person!.isCashier {
-                        Text("Du hast noch keine Strafe erstellt.")
-                            .font(.text(25))
-                            .foregroundColor(.textColor)
-                            .padding(.horizontal, 15)
-                            .multilineTextAlignment(.center)
-                            .padding(.top, 50)
-                        Text("Füge eine Neue mit der Taste unten rechts hinzu.")
-                            .font(.text(25))
-                            .foregroundColor(.textColor)
-                            .padding(.horizontal, 15)
-                            .multilineTextAlignment(.center)
-                            .padding(.top, 20)
-                    } else {
-                        Text("Es gibt keine verfügbare Strafen.")
-                            .font(.text(25))
-                            .foregroundColor(.textColor)
-                            .padding(.horizontal, 15)
-                            .multilineTextAlignment(.center)
-                            .padding(.top, 50)
+                // Header and list
+                VStack(spacing: 0) {
+                    
+                    // Header
+                    Header("Verfügbare Strafen")
+                        .padding(.top, 50)
+                    
+                    // Empty List Text
+                    if reasonListData.list!.isEmpty  {
+                        if settings.person!.isCashier {
+                            Text("Du hast noch keine Strafe erstellt.")
+                                .font(.text(25))
+                                .foregroundColor(.textColor)
+                                .padding(.horizontal, 15)
+                                .multilineTextAlignment(.center)
+                                .padding(.top, 50)
+                            Text("Füge eine Neue mit der Taste unten rechts hinzu.")
+                                .font(.text(25))
+                                .foregroundColor(.textColor)
+                                .padding(.horizontal, 15)
+                                .multilineTextAlignment(.center)
+                                .padding(.top, 20)
+                        } else {
+                            Text("Es gibt keine verfügbare Strafen.")
+                                .font(.text(25))
+                                .foregroundColor(.textColor)
+                                .padding(.horizontal, 15)
+                                .multilineTextAlignment(.center)
+                                .padding(.top, 50)
+                        }
                     }
+                    
+                    // SearchBar and Template List
+                    ScrollView {
+                        
+                        // Search Bar
+                        if !reasonListData.list!.isEmpty {
+                            SearchBar(searchText: $searchText)
+                                .frame(width: UIScreen.main.bounds.width * 0.95 + 15)
+                        }
+                        
+                        // Template List
+                        LazyVStack(spacing: 15) {
+                            ForEach(reasonListData.list!.filter(for: searchText, at: \.reason).sorted(by: \.reason.localizedUppercase)) { reason in
+                                ReasonListRow(reason: reason)
+                            }.animation(.none)
+                        }.padding(.bottom, 20)
+                            .padding(.top, 5)
+                            .animation(.default)
+                        
+                    }.padding(.top, 10)
+                    
+                    Spacer()
                 }
                 
-                // Template List
-                ScrollView {
-                    LazyVStack(spacing: 15) {
-                        ForEach(reasonListData.list!.sorted(by: \.reason.localizedUppercase)) { reason in
-                            ReasonListRow(reason: reason)
-                        }
-                    }.padding(.bottom, 20)
-                        .padding(.top, 5)
-                    
-                }.padding(.top, 10)
-                
-                Spacer()
-            }
-            
-            // Add New Reason Button
-            AddNewListItemButton(list: $reasonListData.list) {
-                ReasonAddNew()
-            }
-            
+                // Add New Reason Button
+                AddNewListItemButton(list: $reasonListData.list) {
+                    ReasonAddNew()
+                }
+            }.frame(size: screenSize ?? geometry.size)
+                .onAppear {
+                    screenSize = geometry.size
+                }
         }.edgesIgnoringSafeArea(.all)
     }
 }
@@ -149,4 +165,3 @@ struct ReasonListRow: View {
             }
     }
 }
-

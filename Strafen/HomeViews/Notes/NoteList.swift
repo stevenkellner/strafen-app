@@ -22,6 +22,9 @@ struct NoteList: View {
     /// Note List Data
     @ObservedObject var noteListData = ListData.note
     
+    /// Text searched in search bar
+    @State var searchText = ""
+    
     var body: some View {
         NavigationView {
             ZStack {
@@ -52,16 +55,25 @@ struct NoteList: View {
                             .padding(.top, 20)
                     }
                     
-                    // Note List
+                    // Search Bar and Note List
                     ScrollView {
+                        
+                        // Search Bar
+                        if !noteListData.list!.isEmpty {
+                            SearchBar(searchText: $searchText)
+                                .frame(width: UIScreen.main.bounds.width * 0.95 + 15)
+                        }
+                        
+                        // Note List
                         LazyVStack(spacing: 15) {
-                            ForEach(noteListData.list!.sorted(by: \.subject.localizedUppercase)) { note in
+                            ForEach(noteListData.list!.filter(for: searchText, at: \.subject).sorted(by: \.subject.localizedUppercase)) { note in
                                 NavigationLink(destination: NoteDetail(note: note, dismissHandler: $dismissHandler)) {
                                         NoteListRow(note: note)
                                 }.buttonStyle(PlainButtonStyle())
-                            }
+                            }.animation(.none)
                         }.padding(.bottom, 20)
                             .padding(.top, 5)
+                            .animation(.default)
                         
                     }.padding(.top, 10)
                     

@@ -46,6 +46,12 @@ struct SignInSelectPersonView: View {
     /// Indicates if no connection alert is shown
     @State var noConnectionAlert = false
     
+    /// Text searched in search bar
+    @State var searchText = ""
+    
+    /// Screen size
+    @State var screenSize: CGSize?
+    
     var body: some View {
         ZStack {
             
@@ -64,44 +70,57 @@ struct SignInSelectPersonView: View {
                 Spacer()
             }
             
-            VStack(spacing: 0) {
-                
-                // Bar to wipe sheet down
-                SheetBar()
-                
-                // Header
-                Header("Person Auswählen")
-                    .padding(.top, 30)
-                
-                // Text
-                Text("Wähle dein Namen aus, wenn er nicht vorhanden ist, drücke auf 'Registrieren'.")
-                    .font(.text(20))
-                    .foregroundColor(.textColor)
-                    .padding(.horizontal, 15)
-                    .multilineTextAlignment(.center)
-                    .padding(.top, 30)
-                
-                // List
-                if let personList = personListData.list?.sorted(by: \.personName.formatted) {
-                    ScrollView(showsIndicators: false) {
-                        LazyVStack(spacing: 15) {
-                            ForEach(personList) { person in
-                                SignInSelectPersonRow(person: person, clubId: clubId, selectedPerson: $selectedPerson)
-                            }
+            GeometryReader { geometry in
+                VStack(spacing: 0) {
+                    
+                    // Bar to wipe sheet down
+                    SheetBar()
+                    
+                    // Header
+                    Header("Person Auswählen")
+                        .padding(.top, 30)
+                    
+                    // Text
+                    Text("Wähle dein Namen aus, wenn er nicht vorhanden ist, drücke auf 'Registrieren'.")
+                        .font(.text(20))
+                        .foregroundColor(.textColor)
+                        .padding(.horizontal, 15)
+                        .multilineTextAlignment(.center)
+                        .padding(.top, 30)
+                    
+                    // Search bar and List
+                    if let personList = personListData.list?.sorted(by: \.personName.formatted) {
+                        ScrollView(showsIndicators: false) {
+                            
+                            // Search Bar
+                            SearchBar(searchText: $searchText)
+                                .frame(width: UIScreen.main.bounds.width * 0.95 + 15)
+                            
+                            LazyVStack(spacing: 15) {
+                                ForEach(personList.filter(for: searchText, at: \.personName.formatted)) { person in
+                                    SignInSelectPersonRow(person: person, clubId: clubId, selectedPerson: $selectedPerson)
+                                }.animation(.none)
+                            }.padding(.vertical, 10)
+                                .animation(.default)
                         }.padding(.vertical, 10)
-                    }.padding(.vertical, 10)
-                }
-                
-                Spacer()
-                
-                // Confirm Button
-                ConfirmButton("Registrieren", connectionState: $connectionState) {
-                    registerPerson()
-                }.padding(.bottom, 50)
-                    .alert(isPresented: $noConnectionAlert) {
-                        Alert(title: Text("Kein Internet"), message: Text("Für diese Aktion benötigst du eine Internetverbindung."), primaryButton: .destructive(Text("Abbrechen")), secondaryButton: .default(Text("Erneut versuchen"), action: registerPerson))
                     }
-                
+                    
+                    Spacer()
+                    
+                    // Confirm Button
+                    ConfirmButton("Registrieren", connectionState: $connectionState) {
+                        registerPerson()
+                    }.padding(.bottom, 50)
+                        .alert(isPresented: $noConnectionAlert) {
+                            Alert(title: Text("Kein Internet"), message: Text("Für diese Aktion benötigst du eine Internetverbindung."), primaryButton: .destructive(Text("Abbrechen")), secondaryButton: .default(Text("Erneut versuchen"), action: registerPerson))
+                        }
+                    
+                }.frame(size: screenSize ?? geometry.size)
+                    .onAppear {
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                            screenSize = geometry.size
+                        }
+                    }
             }
         }.background(colorScheme.backgroundColor)
             .navigationTitle("title")
@@ -183,8 +202,6 @@ struct SignInSelectPersonRow: View {
                 }
             }
             .onTapGesture {
-                print(clubListData.list?.flatMap(\.allPersons) as Any)
-                print(person.id)
                 if clubListData.list?.flatMap(\.allPersons).contains(where: { $0.id == person.id }) ?? true {
                     showAlert = true
                 } else if selectedPerson?.id != person.id {

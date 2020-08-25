@@ -25,51 +25,70 @@ struct AddNewFinePerson: View {
     /// Person List Data
     @ObservedObject var personListData = ListData.person
     
+    /// Text searched in search bar
+    @State var searchText = ""
+    
+    /// Screen size
+    @State var screenSize: CGSize?
+    
     init(completionHandler: @escaping (UUID) -> ()) {
         self.completionHandler = completionHandler
     }
     
     var body: some View {
-        VStack(spacing: 0) {
-            
-            // Bar to wipe sheet down
-            SheetBar()
-            
-            // Title
-            Header("Person Auswählen")
-            
-            // Empty List Text
-            if personListData.list!.isEmpty {
-                Text("Es sind keine Personen registriert.")
-                    .font(.text(25))
-                    .foregroundColor(.textColor)
-                    .padding(.horizontal, 15)
-                    .multilineTextAlignment(.center)
-                    .padding(.top, 50)
-            }
-            
-            // List of reasons
-            ScrollView {
-                LazyVStack(spacing: 15) {
-                    ForEach(personListData.list!.sorted(by: \.personName.formatted)) { person in
-                        AddNewFinePersonRow(person: person)
-                            .onTapGesture {
-                                completionHandler(person.id)
-                                presentationMode.wrappedValue.dismiss()
-                            }
+        GeometryReader { geometry in
+            VStack(spacing: 0) {
+                
+                // Bar to wipe sheet down
+                SheetBar()
+                
+                // Title
+                Header("Person Auswählen")
+                
+                // Empty List Text
+                if personListData.list!.isEmpty {
+                    Text("Es sind keine Personen registriert.")
+                        .font(.text(25))
+                        .foregroundColor(.textColor)
+                        .padding(.horizontal, 15)
+                        .multilineTextAlignment(.center)
+                        .padding(.top, 50)
+                }
+                
+                // Search Bar and List of reasons
+                ScrollView {
+                    
+                    // Search Bar
+                    if !personListData.list!.isEmpty {
+                        SearchBar(searchText: $searchText)
+                            .frame(width: UIScreen.main.bounds.width * 0.95 + 15)
                     }
-                }.padding(.bottom, 20)
-                    .padding(.top, 5)
-            }.padding(.top, 10)
-            
-            Spacer()
-            
-            // Cancel Button
-            CancelButton {
-                presentationMode.wrappedValue.dismiss()
-            }.padding(.bottom, 30)
-                .padding(.top, 15)
-            
+                    
+                    LazyVStack(spacing: 15) {
+                        ForEach(personListData.list!.filter(for: searchText, at: \.personName.formatted).sorted(by: \.personName.formatted)) { person in
+                            AddNewFinePersonRow(person: person)
+                                .onTapGesture {
+                                    completionHandler(person.id)
+                                    presentationMode.wrappedValue.dismiss()
+                                }
+                        }.animation(.none)
+                    }.padding(.bottom, 20)
+                        .padding(.top, 5)
+                        .animation(.default)
+                }.padding(.top, 10)
+                
+                Spacer()
+                
+                // Cancel Button
+                CancelButton {
+                    presentationMode.wrappedValue.dismiss()
+                }.padding(.bottom, 30)
+                    .padding(.top, 15)
+                
+            }.frame(size: screenSize ?? geometry.size)
+                .onAppear {
+                    screenSize = geometry.size
+                }
         }
     }
 }
