@@ -16,6 +16,9 @@ struct SettingsView: View {
     /// Observed Object that contains all settings of the app of this device
     @ObservedObject var settings = Settings.shared
     
+    /// Indicates if log out alert is shown
+    @State var isLogOutAlertShown = false
+    
     var body: some View {
         ZStack {
             
@@ -82,24 +85,24 @@ struct SettingsView: View {
                 // Style Changer
                 StyleChanger()
                 
-                Text(settings.person?.isCashier ?? false ? "Zu kein Kassier" : "Zu Kassier") // TODO remove
-                    .font(.text(20))
-                    .foregroundColor(.textColor)
-                    .frame(height: 50)
-                    .padding(.top, 15)
-                    .onTapGesture {
-                        settings.person?.isCashier.toggle()
-                    }
+                Spacer()
                 
-                // Log Out TODO
-                Text("Abmelden")
-                    .font(.text(20))
-                    .foregroundColor(.textColor)
-                    .frame(height: 50)
-                    .padding(.top, 15)
-                    .onTapGesture {
-                        settings.person = nil
-                    }
+                // Log Out Button
+                ZStack {
+                    Outline()
+                        .fillColor(Color.custom.red, onlyDefault: false)
+                    Text("Abmelden")
+                        .font(.text(20))
+                        .foregroundColor(.textColor)
+                        .onTapGesture {
+                            isLogOutAlertShown = true
+                        }
+                        .alert(isPresented: $isLogOutAlertShown) {
+                            Alert(title: Text("Abmelden"), message: Text("Möchtest du wirklich abgemldet werden?"), primaryButton: .destructive(Text("Abbrechen")), secondaryButton: .default(Text("Abmelden"), action: {
+                                settings.person = nil
+                            }))
+                        }
+                }.frame(width: UIScreen.main.bounds.width * 0.95, height: 50)
                 
                 Spacer()
             }
