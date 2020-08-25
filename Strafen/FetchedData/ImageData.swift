@@ -62,11 +62,7 @@ struct PersonImages {
     }
     
     /// List of all person images
-    var images = [PersonImage]() {
-        didSet {
-            print(images.count)
-        }
-    }
+    var images = [PersonImage]()
     
     /// Gets image with personId
     func image(of personId: UUID) -> UIImage? {
