@@ -100,9 +100,9 @@ struct ImagePicker: UIViewControllerRepresentable {
     @Binding var image: UIImage?
     
     /// Completion handler
-    let completionHandler: ((UIImage) -> ())?
+    let completionHandler: ((UIImage, Bool) -> ())?
     
-    init(_ image: Binding<UIImage?>, completionHandler: ((UIImage) -> ())? = nil) {
+    init(_ image: Binding<UIImage?>, completionHandler: ((UIImage, Bool) -> ())? = nil) {
         self._image = image
         self.completionHandler = completionHandler
     }
@@ -114,9 +114,9 @@ struct ImagePicker: UIViewControllerRepresentable {
         let parent: ImagePicker
         
         /// Completion handler
-        let completionHandler: ((UIImage) -> ())?
+        let completionHandler: ((UIImage, Bool) -> ())?
         
-        init(_ parent: ImagePicker, completionHandler: ((UIImage) -> ())?) {
+        init(_ parent: ImagePicker, completionHandler: ((UIImage, Bool) -> ())?) {
             self.parent = parent
             self.completionHandler = completionHandler
         }
@@ -124,8 +124,9 @@ struct ImagePicker: UIViewControllerRepresentable {
         /// delegation function
         func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
             if let uiImage = info[.originalImage] as? UIImage {
+                let isFirstImage = parent.image == nil
                 parent.image = uiImage
-                if let completionHandler = completionHandler { completionHandler(uiImage) }
+                if let completionHandler = completionHandler { completionHandler(uiImage, isFirstImage) }
             }
             parent.presentationMode.wrappedValue.dismiss()
         }
