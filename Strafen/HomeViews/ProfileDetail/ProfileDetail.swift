@@ -98,8 +98,8 @@ struct ProfileDetail: View {
                                 showImagePicker = true
                             }
                             .sheet(isPresented: self.$showImagePicker) {
-                                ImagePicker($image) { image in
-                                    // TODO save image
+                                ImagePicker($image) { image, isFirstImage in
+                                    PersonImageChanger.shared.changeImage(isFirstImage ? . add(image: image, personId: settings.person!.id) : .update(image: image, personId: settings.person!.id)) { _ in }
                                 }
                             }
                         
