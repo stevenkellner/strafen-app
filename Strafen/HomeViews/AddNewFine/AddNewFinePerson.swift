@@ -10,8 +10,14 @@ import SwiftUI
 /// View to select person for new fine
 struct AddNewFinePerson: View {
     
+    /// Indicates if this view is for selecting several persons
+    let forSeveralPersons: Bool
+    
+    /// Ids of selected persons
+    @State var personIds: [UUID]
+    
     /// Handles person selection
-    let completionHandler: (UUID) -> ()
+    let completionHandler: ([UUID]) -> ()
     
     /// Presentation mode
     @Environment(\.presentationMode) var presentationMode
@@ -30,10 +36,6 @@ struct AddNewFinePerson: View {
     
     /// Screen size
     @State var screenSize: CGSize?
-    
-    init(completionHandler: @escaping (UUID) -> ()) {
-        self.completionHandler = completionHandler
-    }
     
     var body: some View {
         GeometryReader { geometry in
@@ -66,10 +68,18 @@ struct AddNewFinePerson: View {
                     
                     LazyVStack(spacing: 15) {
                         ForEach(personListData.list!.filter(for: searchText, at: \.personName.formatted).sorted(by: \.personName.formatted)) { person in
-                            AddNewFinePersonRow(person: person)
+                            AddNewFinePersonRow(person: person, personIds: $personIds)
                                 .onTapGesture {
-                                    completionHandler(person.id)
-                                    presentationMode.wrappedValue.dismiss()
+                                    if forSeveralPersons {
+                                        if personIds.contains(person.id) {
+                                            personIds.filtered { $0 != person.id }
+                                        } else {
+                                            personIds.append(person.id)
+                                        }
+                                    } else {
+                                        completionHandler([person.id])
+                                        presentationMode.wrappedValue.dismiss()
+                                    }
                                 }
                         }.animation(.none)
                     }.padding(.bottom, 20)
@@ -79,11 +89,27 @@ struct AddNewFinePerson: View {
                 
                 Spacer()
                 
-                // Cancel Button
-                CancelButton {
-                    presentationMode.wrappedValue.dismiss()
-                }.padding(.bottom, 30)
+                // Cancel and Cofirm Button
+                if forSeveralPersons {
+                    
+                    // Cancel and Cofirm Button
+                    CancelConfirmButton {
+                        presentationMode.wrappedValue.dismiss()
+                    } confirmButtonHandler: {
+                        completionHandler(personIds)
+                        presentationMode.wrappedValue.dismiss()
+                    }.padding(.bottom, 30)
                     .padding(.top, 15)
+
+                } else {
+                    
+                    
+                    // Cancel Button
+                    CancelButton {
+                        presentationMode.wrappedValue.dismiss()
+                    }.padding(.bottom, 30)
+                        .padding(.top, 15)
+                }
                 
             }.frame(size: screenSize ?? geometry.size)
                 .onAppear {
@@ -98,15 +124,25 @@ struct AddNewFinePersonRow: View {
     
     /// Person of this row
     let person: Person
+
+    /// Ids of selected persons
+    @Binding var personIds: [UUID]
     
     /// Image of the person
     @State var image: UIImage?
+    
+    /// Color scheme to get appearance of this device
+    @Environment(\.colorScheme) var colorScheme
+    
+    /// Observed Object that contains all settings of the app of this device
+    @ObservedObject var settings = Settings.shared
     
     var body: some View {
         ZStack {
             
             // Outline
             Outline()
+                .fillColor(personIds.contains(person.id) ? Color.custom.lightGreen : settings.style.fillColor(colorScheme))
             
             // Inside
             HStack(spacing: 0) {
@@ -117,7 +153,7 @@ struct AddNewFinePersonRow: View {
                 // Name
                 Text(person.personName.formatted)
                     .font(.text(20))
-                    .foregroundColor(.textColor)
+                    .foregroundColor(settings.style == .default || !personIds.contains(person.id) ? .textColor : Color.custom.lightGreen)
                     .lineLimit(1)
                     .padding(.horizontal, 15)
                 

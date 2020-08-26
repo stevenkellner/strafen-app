@@ -26,8 +26,8 @@ struct AddNewFine: View {
     /// Person List Data
     @ObservedObject var personListData = ListData.person
     
-    /// Id of associated person
-    @State var personId: UUID?
+    /// Ids of associated persons
+    @State var personIds = [UUID]()
     
     /// Fine Reason
     @State var fineReason: FineReason?
@@ -75,18 +75,63 @@ struct AddNewFine: View {
                     }
                     
                     // Person Field
-                    ZStack {
+                    Group {
                         
-                        // Outline
-                        Outline()
-                        
-                        // Text
-                        Text(personId == nil ? "Person auswählen" : personListData.list!.first(where: { $0.id == personId! })!.personName.formatted)
-                            .foregroundColor(.textColor)
-                            .font(.text(20))
-                            .lineLimit(1)
-                            .padding(.horizontal, 15)
-                            .opacity(personId == nil ? 0.5 : 1)
+                        if let firstPersonId = personIds.first {
+                            
+                            // At least one person selected
+                            HStack(spacing: 0) {
+                                
+                                // Left of Divider
+                                ZStack {
+                                    
+                                    // Outline
+                                    Outline(.left)
+                                    
+                                    // Text
+                                    Text(personListData.list!.first(where: { $0.id == firstPersonId })!.personName.formatted)
+                                        .foregroundColor(.textColor)
+                                        .font(.text(20))
+                                        .lineLimit(1)
+                                        .padding(.horizontal, 15)
+                                    
+                                }.frame(width: UIScreen.main.bounds.width * 0.65)
+                                
+                                // Right of Divider
+                                ZStack {
+                                    
+                                    // Outline
+                                    Outline(.right)
+                                        .fillColor(settings.style == .default ? Color.custom.lightGreen : Color.plain.lightGray, onlyDefault: false)
+                                    
+                                    // Text
+                                    Text(personIds.count == 1 ? "Weitere Auswählen" : "\(personIds.count - 1) Weitere Ausgewählt")
+                                        .foregroundColor(.textColor)
+                                        .font(.text(15))
+                                        .lineLimit(2)
+                                        .multilineTextAlignment(.center)
+                                        .padding(.horizontal, 15)
+                                }.frame(width: UIScreen.main.bounds.width * 0.3)
+                                
+                            }
+                            
+                        } else {
+                            
+                            // No person selected
+                            ZStack {
+                                    
+                                // Outline
+                                Outline()
+                                
+                                // Text
+                                Text("Person auswählen")
+                                    .foregroundColor(.textColor)
+                                    .font(.text(20))
+                                    .lineLimit(1)
+                                    .padding(.horizontal, 15)
+                                    .opacity(0.5)
+                            }
+                        }
                         
                     }.frame(width: UIScreen.main.bounds.width * 0.95, height: 50)
                         .padding(.top, 5)
@@ -94,8 +139,8 @@ struct AddNewFine: View {
                             showPersonSelectorSheet = true
                         }
                         .sheet(isPresented: $showPersonSelectorSheet) {
-                            AddNewFinePerson { personId in
-                                self.personId = personId
+                            AddNewFinePerson(forSeveralPersons: !personIds.isEmpty, personIds: personIds) { personIds in
+                                self.personIds = personIds
                             }
                         }
                     
@@ -244,7 +289,7 @@ struct AddNewFine: View {
             }
             
             CancelConfirmButton {
-                personId = nil
+                personIds = []
                 fineReason = nil
                 date = Date()
                 number = 1
@@ -254,7 +299,7 @@ struct AddNewFine: View {
                 showConfirmAlert = true
             }.padding(.bottom, 30)
                 .alert(isPresented: $showConfirmAlert) {
-                    if personId == nil {
+                    if personIds.isEmpty {
                         return Alert(title: Text("Keine zugehörige Person"), message: Text("Bitte gebe eine zugehörige Person für diese Strafe ein."), dismissButton: .default(Text("Verstanden")))
                     } else if fineReason == nil {
                         return Alert(title: Text("Keine Strafe Angegeben"), message: Text("Bitte gebe einen Grund für diese Strafe ein."), dismissButton: .default(Text("Verstanden")))
@@ -268,22 +313,29 @@ struct AddNewFine: View {
     /// Handles fine saving
     func handleSave() {
         connectionState = .loading
-        let newFine = Fine(personId: personId!, date: date.formattedDate, payed: .unpayed, number: number, id: UUID(), fineReason: fineReason!)
-        ListChanger.shared.change(.add, item: newFine) { taskState in
-            if taskState == .passed {
-                connectionState = .passed
-                personId = nil
-                fineReason = nil
-                date = Date()
-                number = 1
-                DispatchQueue.main.async {
-                    homeTabs.active = .personList
+        let dispatchGroup = DispatchGroup()
+        for personId in personIds {
+            let newFine = Fine(personId: personId, date: date.formattedDate, payed: .unpayed, number: number, id: UUID(), fineReason: fineReason!)
+            dispatchGroup.enter()
+            ListChanger.shared.change(.add, item: newFine) { taskState in
+                if taskState == .passed {
+                    personIds.filtered { $0 != personId }
+                    dispatchGroup.leave()
+                } else {
+                    connectionState = .failed
+                    noConnectionAlert = true
                 }
-                presentationMode.wrappedValue.dismiss()
-            } else {
-                connectionState = .failed
-                noConnectionAlert = true
             }
+        }
+        dispatchGroup.notify(queue: .main) {
+            connectionState = .passed
+            fineReason = nil
+            date = Date()
+            number = 1
+            DispatchQueue.main.async {
+                homeTabs.active = .personList
+            }
+            presentationMode.wrappedValue.dismiss()
         }
     }
 }

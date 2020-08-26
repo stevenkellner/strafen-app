@@ -120,7 +120,7 @@ struct PersonDetail: View {
                     SheetBar()
                     
                     // Content
-                    AddNewFine(personId: person.id)
+                    AddNewFine(personIds: [person.id])
                     
                 }
             }
