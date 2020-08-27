@@ -60,6 +60,7 @@ struct PersonDetail: View {
                 
                 // Amount Display
                 AmountDisplay(personId: person.id)
+                    .animation(.default)
                     .padding(.top, 15)
                 
                 // Top Underline
