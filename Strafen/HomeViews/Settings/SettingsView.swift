@@ -98,7 +98,7 @@ struct SettingsView: View {
                             isLogOutAlertShown = true
                         }
                         .alert(isPresented: $isLogOutAlertShown) {
-                            Alert(title: Text("Abmelden"), message: Text("Möchtest du wirklich abgemldet werden?"), primaryButton: .destructive(Text("Abbrechen")), secondaryButton: .default(Text("Abmelden"), action: {
+                            Alert(title: Text("Abmelden"), message: Text("Möchtest du wirklich abgemldet werden?"), primaryButton: .default(Text("Abbrechen")), secondaryButton: .destructive(Text("Abmelden"), action: {
                                 settings.person = nil
                             }))
                         }
