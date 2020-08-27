@@ -289,7 +289,7 @@ struct SignInEMailView: View {
                             }
                         
                         }.padding(.vertical, 10)
-                            .offset(y: isPasswordKeyboardShown ? -50 : isRepeatPasswordKeyboardShown ? -150 : 0)
+                            .offset(y: isPasswordKeyboardShown || isRepeatPasswordKeyboardShown ? -150 : 0)
                     }.padding(.vertical, 10)
                     
                     Spacer()
