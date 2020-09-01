@@ -184,7 +184,9 @@ struct PersonListRow: View {
             }
                 .onTapGesture {
                     UIApplication.shared.dismissKeyboard()
-                    isLinkActive = true
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                        isLinkActive = true
+                    }
                 }
             
         }.frame(width: UIScreen.main.bounds.width * 0.95, height: 50)
