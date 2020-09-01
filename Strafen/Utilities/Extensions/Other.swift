@@ -172,3 +172,12 @@ extension UINavigationController: UIGestureRecognizerDelegate {
         viewControllers.count > 1
     }
 }
+
+extension PersonNameComponents {
+    var personName: PersonName? {
+        guard let givenName = givenName, let familyName = familyName else {
+            return nil
+        }
+        return PersonName(firstName: givenName, lastName: familyName)
+    }
+}

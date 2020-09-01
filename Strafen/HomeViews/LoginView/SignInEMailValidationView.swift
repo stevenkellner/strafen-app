@@ -33,10 +33,10 @@ struct SignInEMailValidationView: View {
     @Binding var email: String
     
     /// Contains first and last name of a person
-    let personName: PersonName
+    @State var personName: PersonName
     
     /// Contains all properties for the login
-    let personLogin: PersonLogin
+    @State var personLogin: PersonLogin
     
     /// Used to indicate whether signIn sheet is displayed or not
     @Binding var showSignInSheet: Bool
@@ -54,7 +54,7 @@ struct SignInEMailValidationView: View {
     @State var clubName: String?
     
     /// States of SignInEMailValidationView
-    @State var state: PageState = .codeInput
+    @State var state: PageState
     
     /// Indicate whether confirm button is clicked or not
     @State var confirmButtonClicked = false
@@ -252,6 +252,11 @@ struct SignInEMailValidationView: View {
                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
                             screenSize = geometry.size
                         }
+//                        if let appleIdentifier = appleIdentifier, let personName = personNameApple {
+//                            self.personName = personName
+//                            personLogin = PersonLoginApple(appleIdentifier: appleIdentifier)
+//                            state = .joinClub
+//                        }
                     }
             }
         }.background(colorScheme.backgroundColor)
@@ -284,12 +289,3 @@ struct SignInEMailValidationView: View {
         }
     }
 }
-
-#if DEBUG
-struct SignInEMailValidationView_Previews: PreviewProvider {
-    static var previews: some View {
-        SignInEMailValidationView(email: .constant(""), personName: PersonName(firstName: "", lastName: ""), personLogin: PersonLoginEmail(email: "", password: ""), showSignInSheet: .constant(false))
-            .edgesIgnoringSafeArea(.all)
-    }
-}
-#endif

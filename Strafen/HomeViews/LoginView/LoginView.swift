@@ -73,13 +73,16 @@ struct LoginEntryView: View {
 struct LoginView: View {
     
     /// Types of email login error
-    enum EmailLoginErrorType {
+    enum LoginErrorType {
         
         /// Wrong password
         case wrongPassword
         
         /// Person not registriered
         case notRegistriered
+        
+        /// Person not with apple registriered
+        case notRegistrieredApple
     }
     
     /// Input email
@@ -95,7 +98,7 @@ struct LoginView: View {
     @State var emailLoginAlert = false
     
     /// Type of email login error
-    @State var emailLoginErrorType: EmailLoginErrorType = .wrongPassword
+    @State var emailLoginErrorType: LoginErrorType = .wrongPassword
     
     /// Club list data
     @ObservedObject var clubListData = ListData.club
@@ -168,8 +171,19 @@ struct LoginView: View {
                     .padding(.top, 20)
                 
                 // TODO Login with Apple Button
-                Outline()
-                    .frame(width: UIScreen.main.bounds.width * 0.95, height: 50)
+                SignInWithApple(type: .logIn, alsoForAutomatedLogIn: true) { userId, _ in
+                    connectionState = .loading
+                    if let club = clubListData.list!.first(where: { $0.allPersons.contains(where: { ($0.login.personLogin as? PersonLoginApple)?.appleIdentifier == userId }) }) {
+                        let person = club.allPersons.first(where: { ($0.login.personLogin as? PersonLoginApple)?.appleIdentifier == userId })!
+                        connectionState = .passed
+                        Settings.shared.person = .init(id: person.id, name: person.personName, clubId: club.id, clubName: club.name, isCashier: person.isCashier)
+                        homeTabs.active = .profileDetail
+                    } else {
+                        connectionState = .failed
+                        emailLoginErrorType = .notRegistrieredApple
+                        emailLoginAlert = true
+                    }
+                }.frame(width: UIScreen.main.bounds.width * 0.95, height: 50)
                     .padding(.top, 20)
                 
                 // SignIn Button
@@ -235,6 +249,8 @@ struct LoginView: View {
                                 Alert(title: Text("Falsches Passwort"), message: Text("Das Passwort ist falsch."), dismissButton: .default(Text("Verstanden")))
                         case .notRegistriered:
                             return Alert(title: Text("Email Nicht Registriert"), message: Text("Diese Email ist nicht registriert."), dismissButton: .default(Text("Verstanden")))
+                        case .notRegistrieredApple:
+                            return Alert(title: Text("Apple-ID Nicht Registriert"), message: Text("Deine Apple-ID ist nicht registriert"), dismissButton: .default(Text("Verstanden")))
                         }
                     }
                 
