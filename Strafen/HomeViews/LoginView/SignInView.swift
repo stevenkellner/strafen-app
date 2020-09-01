@@ -25,6 +25,9 @@ struct SignInView: View {
     /// Observed Object that contains all settings of the app of this device
     @ObservedObject var settings = Settings.shared
     
+    /// Club list data
+    @ObservedObject var clubListData = ListData.club
+    
     /// Idetifier for sign in with apple
     @State var appleIdentifier: String?
     
@@ -49,6 +52,9 @@ struct SignInView: View {
     /// True if empty String in last name field
     @State var isLastNameError = false
     
+    /// Indicate whether the error alert is for 'appleId already registered' or 'error in text fields'
+    @State var isErrorAlertAlreadyRegistered = false
+    
     /// Inidcate whether the error alert is shown
     @State var showErrorAlert = false
     
@@ -68,9 +74,11 @@ struct SignInView: View {
                 }.frame(width: 0, height: 0)
                 
                 // Navigation Link for sign in with apple
-                NavigationLink(destination: SignInEMailValidationView(personName: personName, appleIdentifier: appleIdentifier, showSignInSheet: $showSignInSheet), isActive: $isSignInWithAppleNavigationLinkActive) {
-                    EmptyView()
-                }.frame(size: .zero)
+                if let personName = personName, let appleIdentifier = appleIdentifier {
+                    NavigationLink(destination: SignInEMailValidationView(email: .constant(""), personName: personName, personLogin: PersonLoginApple(appleIdentifier: appleIdentifier), showSignInSheet: $showSignInSheet, state: .joinClub), isActive: $isSignInWithAppleNavigationLinkActive) {
+                        EmptyView()
+                    }.frame(size: .zero)
+                }
                 
                 // Content
                 GeometryReader { geometry in
@@ -116,15 +124,20 @@ struct SignInView: View {
                                 
                                 // Sign in with Apple
                                 SignInWithApple(type: .signIn, alsoForAutomatedLogIn: false) { userId, personNameComponents in
-                                    appleIdentifier = userId
-                                    if let personName = personNameComponents?.personName {
-                                        self.personName = personName
-                                        isSignInWithAppleNavigationLinkActive = true
+                                    if clubListData.list!.flatMap(\.allPersons).contains(where: { ($0.login.personLogin as? PersonLoginApple)?.appleIdentifier == userId }) {
+                                        isErrorAlertAlreadyRegistered = true
+                                        showErrorAlert = true
                                     } else {
-                                        firstName = personNameComponents?.givenName ?? ""
-                                        lastName = personNameComponents?.familyName ?? ""
-                                        withAnimation {
-                                            showPersonNameInput = true
+                                        appleIdentifier = userId
+                                        if let personName = personNameComponents?.personName {
+                                            self.personName = personName
+                                            isSignInWithAppleNavigationLinkActive = true
+                                        } else {
+                                            firstName = personNameComponents?.givenName ?? ""
+                                            lastName = personNameComponents?.familyName ?? ""
+                                            withAnimation {
+                                                showPersonNameInput = true
+                                            }
                                         }
                                     }
                                 }.frame(width: UIScreen.main.bounds.width * 0.95, height: 50)
@@ -192,6 +205,12 @@ struct SignInView: View {
                                 .offset(y: showPersonNameInput ? nameKeyboardOnScreen ? -100 : 0 : 100)
                                 .clipShape(Rectangle())
                                 .padding(.vertical, 5)
+                        }.alert(isPresented: $showErrorAlert) {
+                            if isErrorAlertAlreadyRegistered {
+                                return Alert(title: Text("Apple-ID existiert bereit"), message: Text("Es ist bereits eine Person unter dieser Apple-ID registriert."), dismissButton: .default(Text("Verstanden")))
+                            } else {
+                                return Alert(title: Text("Eingabefehler"), message: Text("Es gab ein Fehler in der Eingabe des Namens."), dismissButton: .default(Text("Verstanden")))
+                            }
                         }
                         
                         // Cancel and Confirm Button
@@ -204,15 +223,13 @@ struct SignInView: View {
                                 isFirstNameError = firstName == ""
                                 isLastNameError = lastName == ""
                                 if isFirstNameError || isLastNameError {
+                                    isErrorAlertAlreadyRegistered = false
                                     showErrorAlert = true
                                 } else {
                                     personName = PersonName(firstName: firstName, lastName: lastName)
                                     isSignInWithAppleNavigationLinkActive = true
                                 }
                             }.padding(.bottom, 50)
-                                .alert(isPresented: $showErrorAlert) {
-                                    Alert(title: Text("Eingabefehler"), message: Text("Es gab ein Fehler in der Eingabe des Namens."), dismissButton: .default(Text("Verstanden")))
-                                }
                             
                         } else {
                             
@@ -232,6 +249,11 @@ struct SignInView: View {
             }.background(colorScheme.backgroundColor)
                 .navigationTitle("title")
                 .navigationBarHidden(true)
+                .onAppear {
+                    firstName = ""
+                    lastName = ""
+                    showPersonNameInput = false
+                }
         }
     }
 }

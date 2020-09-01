@@ -33,10 +33,10 @@ struct SignInEMailValidationView: View {
     @Binding var email: String
     
     /// Contains first and last name of a person
-    @State var personName = PersonName(firstName: "", lastName: "")
+    @State var personName: PersonName
     
     /// Contains all properties for the login
-    @State var personLogin: PersonLogin = PersonLoginApple(appleIdentifier: "")
+    @State var personLogin: PersonLogin
     
     /// Used to indicate whether signIn sheet is displayed or not
     @Binding var showSignInSheet: Bool
@@ -54,7 +54,7 @@ struct SignInEMailValidationView: View {
     @State var clubName: String?
     
     /// States of SignInEMailValidationView
-    @State var state: PageState = .codeInput
+    @State var state: PageState
     
     /// Indicate whether confirm button is clicked or not
     @State var confirmButtonClicked = false
@@ -91,26 +91,6 @@ struct SignInEMailValidationView: View {
     
     /// Screen size
     @State var screenSize: CGSize?
-    
-    var appleIdentifier: String? = nil
-    
-    var personNameApple: PersonName? = nil
-    
-    /// Init from SignInEMailView
-    init(email: Binding<String>, personName: PersonName, personLogin: PersonLogin, showSignInSheet: Binding<Bool>) {
-        _email = email
-        _showSignInSheet = showSignInSheet
-        self.personName = personName
-        self.personLogin = personLogin
-    }
-    
-    /// Init from sign in with apple
-    init(personName: PersonName?, appleIdentifier: String?, showSignInSheet: Binding<Bool>) {
-        _email = .constant("")
-        self.appleIdentifier = appleIdentifier
-        personNameApple = personName
-        _showSignInSheet = showSignInSheet
-    }
     
     var body: some View {
         ZStack {
@@ -272,12 +252,11 @@ struct SignInEMailValidationView: View {
                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
                             screenSize = geometry.size
                         }
-                        if let appleIdentifier = appleIdentifier, let personName = personNameApple {
-                            self.personName = personName
-                            personLogin = PersonLoginApple(appleIdentifier: appleIdentifier)
-                            print(personName)
-                            state = .joinClub
-                        }
+//                        if let appleIdentifier = appleIdentifier, let personName = personNameApple {
+//                            self.personName = personName
+//                            personLogin = PersonLoginApple(appleIdentifier: appleIdentifier)
+//                            state = .joinClub
+//                        }
                     }
             }
         }.background(colorScheme.backgroundColor)
@@ -310,12 +289,3 @@ struct SignInEMailValidationView: View {
         }
     }
 }
-
-#if DEBUG
-struct SignInEMailValidationView_Previews: PreviewProvider {
-    static var previews: some View {
-        SignInEMailValidationView(email: .constant(""), personName: PersonName(firstName: "", lastName: ""), personLogin: PersonLoginEmail(email: "", password: ""), showSignInSheet: .constant(false))
-            .edgesIgnoringSafeArea(.all)
-    }
-}
-#endif

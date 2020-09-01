@@ -108,9 +108,8 @@ struct SignInSelectPersonView: View {
                     Spacer()
                     
                     // Confirm Button
-                    ConfirmButton("Registrieren", connectionState: $connectionState) {
-                        registerPerson()
-                    }.padding(.bottom, 50)
+                    ConfirmButton("Registrieren", connectionState: $connectionState, registerPerson)
+                        .padding(.bottom, 50)
                         .alert(isPresented: $noConnectionAlert) {
                             Alert(title: Text("Kein Internet"), message: Text("Für diese Aktion benötigst du eine Internetverbindung."), primaryButton: .destructive(Text("Abbrechen")), secondaryButton: .default(Text("Erneut versuchen"), action: registerPerson))
                         }
@@ -135,8 +134,10 @@ struct SignInSelectPersonView: View {
         RegisterPersonChanger.shared.registerPerson(person) { taskState in
             if taskState == .passed {
                 connectionState = .passed
-                Settings.shared.person = .init(id: personId, name: selectedPerson?.personName ?? personName, clubId: clubId, clubName: clubName, isCashier: false)
-                showSignInSheet = false
+                DispatchQueue.main.async {
+                    Settings.shared.person = .init(id: personId, name: selectedPerson?.personName ?? personName, clubId: clubId, clubName: clubName, isCashier: false)
+                    showSignInSheet = false
+                }
             } else {
                 connectionState = .failed
                 noConnectionAlert = true
