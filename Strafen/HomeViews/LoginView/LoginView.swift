@@ -168,7 +168,9 @@ struct LoginView: View {
                     .padding(.top, 20)
                 
                 // TODO Login with Apple Button
-                Outline()
+                SignInWithApple(type: .logIn, alsoForAutomatedLogIn: true) { userId, _ in
+                    
+                }
                     .frame(width: UIScreen.main.bounds.width * 0.95, height: 50)
                     .padding(.top, 20)
                 

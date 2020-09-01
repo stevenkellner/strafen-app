@@ -33,10 +33,10 @@ struct SignInEMailValidationView: View {
     @Binding var email: String
     
     /// Contains first and last name of a person
-    let personName: PersonName
+    @State var personName = PersonName(firstName: "", lastName: "")
     
     /// Contains all properties for the login
-    let personLogin: PersonLogin
+    @State var personLogin: PersonLogin = PersonLoginApple(appleIdentifier: "")
     
     /// Used to indicate whether signIn sheet is displayed or not
     @Binding var showSignInSheet: Bool
@@ -91,6 +91,26 @@ struct SignInEMailValidationView: View {
     
     /// Screen size
     @State var screenSize: CGSize?
+    
+    var appleIdentifier: String? = nil
+    
+    var personNameApple: PersonName? = nil
+    
+    /// Init from SignInEMailView
+    init(email: Binding<String>, personName: PersonName, personLogin: PersonLogin, showSignInSheet: Binding<Bool>) {
+        _email = email
+        _showSignInSheet = showSignInSheet
+        self.personName = personName
+        self.personLogin = personLogin
+    }
+    
+    /// Init from sign in with apple
+    init(personName: PersonName?, appleIdentifier: String?, showSignInSheet: Binding<Bool>) {
+        _email = .constant("")
+        self.appleIdentifier = appleIdentifier
+        personNameApple = personName
+        _showSignInSheet = showSignInSheet
+    }
     
     var body: some View {
         ZStack {
@@ -251,6 +271,12 @@ struct SignInEMailValidationView: View {
                     .onAppear {
                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
                             screenSize = geometry.size
+                        }
+                        if let appleIdentifier = appleIdentifier, let personName = personNameApple {
+                            self.personName = personName
+                            personLogin = PersonLoginApple(appleIdentifier: appleIdentifier)
+                            print(personName)
+                            state = .joinClub
                         }
                     }
             }

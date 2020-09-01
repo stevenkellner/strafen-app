@@ -78,6 +78,7 @@
 		B07938D824BF037900F86E86 /* PersonAddNew.swift in Sources */ = {isa = PBXBuildFile; fileRef = B07938D724BF037900F86E86 /* PersonAddNew.swift */; };
 		B09CB23A24C725FC0096C4F8 /* ListChanger.swift in Sources */ = {isa = PBXBuildFile; fileRef = B09CB23924C725FC0096C4F8 /* ListChanger.swift */; };
 		B0A385B024ABC21C00628038 /* SignInEMailValidationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0A385AF24ABC21C00628038 /* SignInEMailValidationView.swift */; };
+		B0B117CC24FA962C006A22F2 /* SignInWithApple.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0B117CB24FA962C006A22F2 /* SignInWithApple.swift */; };
 		B0B4822024A8D46B00CB7A1A /* Header.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0B4821F24A8D46B00CB7A1A /* Header.swift */; };
 		B0B4822224A8D61300CB7A1A /* CustomTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0B4822124A8D61300CB7A1A /* CustomTextField.swift */; };
 		B0B4822424A8D69E00CB7A1A /* Buttons.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0B4822324A8D69E00CB7A1A /* Buttons.swift */; };
@@ -238,6 +239,7 @@
 		B07938D724BF037900F86E86 /* PersonAddNew.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonAddNew.swift; sourceTree = "<group>"; };
 		B09CB23924C725FC0096C4F8 /* ListChanger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListChanger.swift; sourceTree = "<group>"; };
 		B0A385AF24ABC21C00628038 /* SignInEMailValidationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInEMailValidationView.swift; sourceTree = "<group>"; };
+		B0B117CB24FA962C006A22F2 /* SignInWithApple.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInWithApple.swift; sourceTree = "<group>"; };
 		B0B4821F24A8D46B00CB7A1A /* Header.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Header.swift; sourceTree = "<group>"; };
 		B0B4822124A8D61300CB7A1A /* CustomTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextField.swift; sourceTree = "<group>"; };
 		B0B4822324A8D69E00CB7A1A /* Buttons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Buttons.swift; sourceTree = "<group>"; };
@@ -588,6 +590,7 @@
 				B0C1C51A24A78CC2007B584B /* Settings.swift */,
 				B0C1C51C24A7910F007B584B /* AppUrls.swift */,
 				B006920524C615D500AE2EF0 /* HomeTabs.swift */,
+				B0B117CB24FA962C006A22F2 /* SignInWithApple.swift */,
 			);
 			path = Necessaries;
 			sourceTree = "<group>";
@@ -1098,6 +1101,7 @@
 				B042D43324BB19E10029F2D5 /* ProfileDetail.swift in Sources */,
 				B0619C0A24C1E62C008969A1 /* PersonFineAdvanced.swift in Sources */,
 				B042D44524BCD80C0029F2D5 /* PersonDetail.swift in Sources */,
+				B0B117CC24FA962C006A22F2 /* SignInWithApple.swift in Sources */,
 				B0619C0824C1CAB9008969A1 /* CustomDatePicker.swift in Sources */,
 				B006920624C615D500AE2EF0 /* HomeTabs.swift in Sources */,
 				B0619C0F24C20EAA008969A1 /* ReasonAddNew.swift in Sources */,
