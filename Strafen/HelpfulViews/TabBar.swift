@@ -134,7 +134,9 @@ struct TabBar: View {
                         }
                         
                         // Settings Button
-                        ButtonContent(tab: .settings, size: geometry.size, tabHandler: nil)
+                        ButtonContent(tab: .settings, size: geometry.size) {
+                            if let dismissHandler = dismissHandler { dismissHandler() }
+                        }
         
                     }
                     

@@ -10,101 +10,109 @@ import SwiftUI
 /// Setting View
 struct SettingsView: View {
     
+    ///Dismiss handler
+    @Binding var dismissHandler: (() -> ())?
+    
     /// Color scheme to get appearance of this device
     @Environment(\.colorScheme) var colorScheme
     
     /// Observed Object that contains all settings of the app of this device
     @ObservedObject var settings = Settings.shared
     
-    /// Indicates if log out alert is shown
-    @State var isLogOutAlertShown = false
-    
     var body: some View {
-        ZStack {
-            
-            // Background Color
-            colorScheme.backgroundColor
-            
+        NavigationView {
+            ZStack {
+                
+                // Background Color
+                colorScheme.backgroundColor
+                
+                VStack(spacing: 0) {
+                    
+                    // Header
+                    Header("Einstellungen")
+                        .padding(.top, 50)
+                    
+                    // Settings
+                    ScrollView(showsIndicators: true) {
+                        VStack(spacing: 20) {
+                            
+                            // Club id
+                            ClubId()
+                            
+                            // Apearance Changer
+                            AppearanceChanger()
+
+                            // Style Changer
+                            StyleChanger()
+                            
+                            // Fines Formatter
+                            if settings.person?.isCashier ?? false {
+                                FinesFormatter(dismissHandler: $dismissHandler)
+                            }
+                            
+                            // Log out button
+                            LogOutButton()
+                            
+                        }.padding(.vertical, 20)
+                        
+                        Spacer()
+                    }.padding(.vertical, 10)
+                }
+            }.edgesIgnoringSafeArea(.all)
+                .navigationTitle("title")
+                .navigationBarHidden(true)
+        }
+    }
+    
+    /// Club id
+    struct ClubId: View {
+        
+        /// Observed Object that contains all settings of the app of this device
+        @ObservedObject var settings = Settings.shared
+        
+        var body: some View {
             VStack(spacing: 0) {
-                
-                // Header
-                Header("Einstellungen")
-                    .padding(.top, 50)
-                
-                Spacer()
+                    
+                // Title
+                Title("Dein Vereinscode")
                 
                 // Club id
-                VStack(spacing: 0) {
-                        
-                    // Club id title
-                    HStack(spacing: 0) {
-                        Text("Dein Vereinscode:")
-                            .foregroundColor(.textColor)
-                            .font(.text(20))
-                            .padding(.leading, 10)
-                        Spacer()
-                    }
+                HStack(spacing: 0) {
                     
                     // Club id
-                    HStack(spacing: 0) {
-                        Spacer()
+                    ZStack {
+                        
+                        // Outline
+                        Outline(.left)
                         
                         // Id
                         Text(settings.person?.clubId.uuidString ?? "")
-                            .foregroundColor(.orange)
+                            .foregroundColor(.textColor)
                             .font(.text(17))
                             .multilineTextAlignment(.center)
-                            .padding(.horizontal, 15)
+                            .padding(.horizontal, 10)
+                    }.frame(width: UIScreen.main.bounds.width * 0.75, height: 50)
+                    
+                    // Copy button
+                    ZStack {
                         
-                        Spacer()
+                        // Outline
+                        Outline(.right)
+                            .fillColor(Color.custom.lightGreen, onlyDefault: false)
                         
-                        // Copy Button
+                        // Copy button
                         Button {
                             UIPasteboard.general.string = settings.person!.clubId.uuidString
                             let generator = UINotificationFeedbackGenerator()
                             generator.notificationOccurred(.success)
-                            
                         } label: {
                             Image(systemName: "doc.on.doc")
                                 .font(.system(size: 25, weight: .light))
                                 .foregroundColor(.textColor)
-                        }.padding(.trailing, 15)
-                        
-                        Spacer()
-                    }.padding(.top, 5)
-                    
+                        }
+                    }.frame(width: UIScreen.main.bounds.width * 0.2, height: 50)
                 }
                 
-                Spacer()
-
-                // Apearance Changer
-                AppearanceChanger()
-                
-                Spacer()
-
-                // Style Changer
-                StyleChanger()
-                
-                Spacer()
-                
-                // Log Out Button
-                ZStack {
-                    Outline()
-                        .fillColor(Color.custom.red, onlyDefault: false)
-                    Text("Abmelden")
-                        .font(.text(20))
-                        .foregroundColor(.textColor)
-                        .onTapGesture {
-                            isLogOutAlertShown = true
-                        }
-                        .alert(isPresented: $isLogOutAlertShown) {
-                            Alert(title: Text("Abmelden"), message: Text("Möchtest du wirklich abgemldet werden?"), primaryButton: .default(Text("Abbrechen")), secondaryButton: .destructive(Text("Abmelden"), action: {
-                                settings.person = nil
-                            }))
-                        }
-                }.frame(width: UIScreen.main.bounds.width * 0.95, height: 50)
-                
-                Spacer()
             }
         }
     }
@@ -122,13 +130,7 @@ struct SettingsView: View {
             VStack(spacing: 0) {
                 
                 // Title
-                HStack(spacing: 0) {
-                    Text("Aussehen:")
-                        .foregroundColor(.textColor)
-                        .font(.text(20))
-                        .padding(.leading, 10)
-                    Spacer()
-                }
+                Title("Aussehen")
                 
                 // Changer
                 ZStack {
@@ -198,7 +200,7 @@ struct SettingsView: View {
                         .offset(x: settings.appearance == .dark ? -UIScreen.main.bounds.width * 0.3187 : (settings.appearance == .system ? UIScreen.main.bounds.width * 0.3187 : 0))
                         .animation(.default)
                     
-                }.padding(.top, 5)
+                }
             }
         }
     }
@@ -216,13 +218,7 @@ struct SettingsView: View {
             VStack(spacing: 0) {
                 
                 // Title
-                HStack(spacing: 0) {
-                    Text("Design:")
-                        .foregroundColor(.textColor)
-                        .font(.text(20))
-                        .padding(.leading, 10)
-                    Spacer()
-                }
+                Title("Design")
                 
                 // Changer
                 ZStack {
@@ -292,8 +288,111 @@ struct SettingsView: View {
                         .offset(x: settings.style == .default ? -UIScreen.main.bounds.width * 0.2375 : UIScreen.main.bounds.width * 0.2375)
                         .animation(.default)
                     
-                }.padding(.top, 5)
+                }
             }
         }
+    }
+    
+    /// Fines Formatter
+    struct FinesFormatter: View {
+        
+        ///Dismiss handler
+        @Binding var dismissHandler: (() -> ())?
+        
+        var body: some View {
+            VStack(spacing: 0) {
+                
+                // Title
+                Title("Strafen teilen")
+                
+                NavigationLink(destination: FinesFormatterView(dismissHandler: $dismissHandler)) {
+                    HStack(spacing: 0) {
+                        
+                        // Text
+                        ZStack {
+                            
+                            // Outline
+                            Outline(.left)
+                            
+                            // Text
+                            Text("Strafen Teilen")
+                                .foregroundColor(.textColor)
+                                .font(.text(20))
+                                .lineLimit(1)
+                                .padding(.leading, 10)
+                            
+                        }.frame(width: UIScreen.main.bounds.width * 0.75, height: 50)
+                        
+                        // Arrow
+                        ZStack {
+                            
+                            // Outline
+                            Outline(.right)
+                                .fillColor(Color.custom.lightGreen, onlyDefault: false)
+                            
+                            // Arrow
+                            Image(systemName: "arrowshape.turn.up.left.2")
+                                .rotation3DEffect(.radians(.pi), axis: (x: 0, y: 1, z: 0))
+                                .font(.system(size: 25, weight: .light))
+                                .foregroundColor(.textColor)
+                                .padding(.leading, 15)
+                                .padding(.trailing, 10)
+                            
+                        }.frame(width: UIScreen.main.bounds.width * 0.2, height: 50)
+                    }
+                }
+            }
+        }
+    }
+    
+    /// Log out button
+    struct LogOutButton: View {
+        
+        /// Settings
+        @ObservedObject var settings = Settings.shared
+        
+        /// Indicates if log out alert is shown
+        @State var isLogOutAlertShown = false
+        
+        var body: some View {
+            VStack(spacing: 0) {
+                Title("Abmelden")
+                ZStack {
+                    Outline()
+                        .fillColor(Color.custom.red, onlyDefault: false)
+                    Text("Abmelden")
+                        .font(.text(20))
+                        .foregroundColor(.textColor)
+                        .onTapGesture {
+                            isLogOutAlertShown = true
+                        }
+                        .alert(isPresented: $isLogOutAlertShown) {
+                            Alert(title: Text("Abmelden"), message: Text("Möchtest du wirklich abgemldet werden?"), primaryButton: .default(Text("Abbrechen")), secondaryButton: .destructive(Text("Abmelden"), action: {
+                                settings.person = nil
+                            }))
+                        }
+                }.frame(width: UIScreen.main.bounds.width * 0.95, height: 50)
+            }
+        }
+    }
+    
+    /// Title of a setting
+    struct Title: View {
+        
+        /// Title
+        var title: String
+        
+        init(_ title: String) {
+            self.title = title
+        }
+        
+        var body: some View {
+            HStack(spacing: 0) {
+                Text("\(title):")
+                    .foregroundColor(.textColor)
+                    .font(.text(20))
+                    .padding(.leading, 10)
+                Spacer()
+            }.padding(.bottom, 5)}
     }
 }
