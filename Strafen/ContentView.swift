@@ -63,7 +63,7 @@ struct HomeTabsView: View {
                             .background(colorScheme.backgroundColor)
                             .frame(maxWidth: .infinity, maxHeight: .infinity)
                     case .settings:
-                        SettingsView()
+                        SettingsView(dismissHandler: $dismissHandler)
                             .edgesIgnoringSafeArea(.all)
                             .background(colorScheme.backgroundColor)
                             .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -85,7 +85,7 @@ struct HomeTabsView: View {
                             .background(colorScheme.backgroundColor)
                             .frame(maxWidth: .infinity, maxHeight: .infinity)
                     case .settings:
-                        SettingsView()
+                        SettingsView(dismissHandler: $dismissHandler)
                             .edgesIgnoringSafeArea(.all)
                             .background(colorScheme.backgroundColor)
                             .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -133,7 +133,7 @@ struct HomeTabsView: View {
                         case .notes:
                             NoteList(dismissHandler: $dismissHandler)
                         case .settings:
-                            SettingsView()
+                            SettingsView(dismissHandler: $dismissHandler)
                         }
                         
                     }.edgesIgnoringSafeArea(.all)

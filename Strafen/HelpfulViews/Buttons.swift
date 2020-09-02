@@ -309,6 +309,33 @@ struct BackAndEditButton<EditSheetContent>: View where EditSheetContent: View {
     }
 }
 
+/// Back  button
+struct BackButton: View {
+    
+    /// Presentation mode
+    @Environment(\.presentationMode) var presentationMode
+
+    var body: some View {
+        VStack(spacing: 0) {
+            HStack(spacing: 0) {
+                
+                // Back Button
+                Text("Zurück")
+                    .foregroundColor(.textColor)
+                    .font(.text(25))
+                    .padding(.leading, 10)
+                    .padding(.top, 35)
+                    .onTapGesture {
+                        presentationMode.wrappedValue.dismiss()
+                    }
+                Spacer()
+            }
+            Spacer()
+        }
+    }
+}
+
+
 
 // Add New List Item Button
 struct AddNewListItemButton<ListType, AddNewSheetContent>: View where AddNewSheetContent: View {

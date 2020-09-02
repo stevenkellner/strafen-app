@@ -28,6 +28,14 @@ struct FormattedDate: Equatable {
         return formatter.string(from: date)
     }
     
+    /// Formatted only date
+    var shortFormatted: String {
+        let formatter = DateFormatter()
+        formatter.setLocalizedDateFormatFromTemplate("dMyy")
+        formatter.locale = Locale(identifier: "de")
+        return formatter.string(from: date)
+    }
+    
     /// Formatted for POST method
     var formattedForPost: String {
         let formatter = DateFormatter()
