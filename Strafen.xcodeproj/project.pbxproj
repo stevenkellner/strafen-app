@@ -129,6 +129,7 @@
 		B0E6E86D24CDD36000D467AC /* RoundedCorners.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0C1C52424A8BC14007B584B /* RoundedCorners.swift */; };
 		B0E6E86F24CDD38500D467AC /* OutlineAndSheetBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E6E86E24CDD38500D467AC /* OutlineAndSheetBar.swift */; };
 		B0E6E87324CDD3ED00D467AC /* Outline.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E6E87124CDD3CC00D467AC /* Outline.swift */; };
+		B0F4331D2502CA7500B0AAA7 /* HomeViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0F4331C2502CA7500B0AAA7 /* HomeViews.swift */; };
 		EF23B482BE1B8F69206DAA9F /* Pods_StrafenTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 085A35B45E057FA1E93DE8FF /* Pods_StrafenTests.framework */; };
 /* End PBXBuildFile section */
 
@@ -300,6 +301,7 @@
 		B0E5C70F24C377F70004E758 /* NoteAddNew.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteAddNew.swift; sourceTree = "<group>"; };
 		B0E6E86E24CDD38500D467AC /* OutlineAndSheetBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutlineAndSheetBar.swift; sourceTree = "<group>"; };
 		B0E6E87124CDD3CC00D467AC /* Outline.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Outline.swift; sourceTree = "<group>"; };
+		B0F4331C2502CA7500B0AAA7 /* HomeViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViews.swift; sourceTree = "<group>"; };
 		C48AEE77D98866AC072A2AD1 /* Pods-Strafen-StrafenUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Strafen-StrafenUITests.debug.xcconfig"; path = "Target Support Files/Pods-Strafen-StrafenUITests/Pods-Strafen-StrafenUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		E4A36A38D3FB33CF3F264FBB /* Pods-Strafen.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Strafen.release.xcconfig"; path = "Target Support Files/Pods-Strafen/Pods-Strafen.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -661,6 +663,7 @@
 		B0D343FF24A9260B003C8831 /* HomeViews */ = {
 			isa = PBXGroup;
 			children = (
+				B0F4331C2502CA7500B0AAA7 /* HomeViews.swift */,
 				B0D3440024A92612003C8831 /* LoginView */,
 				B042D43124BB19CC0029F2D5 /* ProfileDetail */,
 				B042D43E24BB5B290029F2D5 /* PersonList */,
@@ -1137,6 +1140,7 @@
 				B042D43324BB19E10029F2D5 /* ProfileDetail.swift in Sources */,
 				B0619C0A24C1E62C008969A1 /* PersonFineAdvanced.swift in Sources */,
 				B042D44524BCD80C0029F2D5 /* PersonDetail.swift in Sources */,
+				B0F4331D2502CA7500B0AAA7 /* HomeViews.swift in Sources */,
 				B0B117CC24FA962C006A22F2 /* SignInWithApple.swift in Sources */,
 				B0619C0824C1CAB9008969A1 /* CustomDatePicker.swift in Sources */,
 				B006920624C615D500AE2EF0 /* HomeTabs.swift in Sources */,

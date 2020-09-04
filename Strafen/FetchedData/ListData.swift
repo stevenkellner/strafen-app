@@ -78,3 +78,26 @@ struct ListData {
     /// Private init for singleton
     private init() {}
 }
+
+/// State of internet connection
+enum ConnectionState {
+    
+    /// Still loading
+    case loading
+    
+    /// No connection
+    case failed
+    
+    /// All loaded
+    case passed
+}
+
+/// State of data task
+enum TaskState {
+    
+    /// Data task passed
+    case passed
+    
+    /// Data task failed
+    case failed
+}
