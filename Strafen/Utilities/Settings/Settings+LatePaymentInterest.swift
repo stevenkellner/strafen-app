@@ -110,7 +110,7 @@ extension Settings {
         
         /// Description
         var description: String {
-            "\(interestRate)% / \(interestPeriod.value) \(interestPeriod.value == 1 ? interestPeriod.unit.singular : interestPeriod.unit.plural)"
+            "\(String(interestRate).replacingOccurrences(of: ".", with: ","))% / \(interestPeriod.value) \(interestPeriod.value == 1 ? interestPeriod.unit.singular : interestPeriod.unit.plural)"
         }
         
         /// POST parameters
