@@ -10,16 +10,6 @@ import SwiftUI
 /// Used to change a club image on server
 struct ClubImageChanger {
     
-    /// State of data task
-    enum TaskState {
-        
-        /// Data task passed
-        case passed
-        
-        /// Data task failed
-        case failed
-    }
-    
     /// Change type of image change on server
     enum ChangeType {
         

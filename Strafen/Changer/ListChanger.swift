@@ -10,16 +10,6 @@ import SwiftUI
 /// Changes server lists (person, reason, fine)
 struct ListChanger {
     
-    /// State of data task
-    enum TaskState {
-        
-        /// Data task passed
-        case passed
-        
-        /// Data task failed
-        case failed
-    }
-    
     /// Type ot the change
     enum ChangeType: String {
         

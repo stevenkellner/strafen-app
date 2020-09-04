@@ -173,6 +173,25 @@ extension UINavigationController: UIGestureRecognizerDelegate {
     }
 }
 
+// Extension of Int to confirm to Identifiable
+extension Int: Identifiable {
+    public var id: Int {
+        self
+    }
+}
+
+// Extension of Double to get string value
+extension Double {
+    
+    /// String value
+    var stringValue: String {
+        if Double(Int(self)) == self {
+            return String(Int(self))
+        }
+        return String(self).replacingOccurrences(of: ".", with: ",")
+    }
+}
+
 extension PersonNameComponents {
     var personName: PersonName? {
         guard let givenName = givenName, let familyName = familyName else {

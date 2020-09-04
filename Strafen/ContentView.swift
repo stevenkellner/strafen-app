@@ -211,6 +211,9 @@ struct HomeTabsView: View {
         
         // Notify dispath group
         dispatchGroup.notify(queue: .main) {
+            Settings.shared.latePaymentInterest = ListData.club.list?.first(where: { club in
+                Settings.shared.person?.clubId == club.id
+            })?.latePaymentInterest
             connectionState = .passed
         }
     }
@@ -227,4 +230,14 @@ enum ConnectionState {
     
     /// All loaded
     case passed
+}
+
+/// State of data task
+enum TaskState {
+    
+    /// Data task passed
+    case passed
+    
+    /// Data task failed
+    case failed
 }

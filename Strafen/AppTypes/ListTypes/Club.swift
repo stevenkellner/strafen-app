@@ -76,6 +76,9 @@ struct Club: ListTypes {
         
         /// all persons in this club
         case allPersons
+        
+        /// Late payment interest
+        case latePaymentInterest
     }
     
     /// Club id
@@ -86,4 +89,7 @@ struct Club: ListTypes {
     
     /// All persons in this club
     let allPersons: [ClubPerson]
+    
+    /// Late payment interest
+    let latePaymentInterest: Settings.LatePaymentInterest?
 }

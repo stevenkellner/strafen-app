@@ -170,7 +170,6 @@ struct LoginView: View {
                     .font(.text(20))
                     .padding(.top, 20)
                 
-                // TODO Login with Apple Button
                 SignInWithApple(type: .logIn, alsoForAutomatedLogIn: true) { userId, _ in
                     connectionState = .loading
                     if let club = clubListData.list!.first(where: { $0.allPersons.contains(where: { ($0.login.personLogin as? PersonLoginApple)?.appleIdentifier == userId }) }) {

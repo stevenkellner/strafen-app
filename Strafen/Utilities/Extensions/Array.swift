@@ -121,7 +121,7 @@ extension Array where Element == String {
 extension Array where Element == Person {
     
     /// Sort Array so that the logged in person is at start
-    func sorted(for loggedInPerson: Settings.CodableSettings.Person) -> [Element] {
+    func sorted(for loggedInPerson: Settings.Person) -> [Element] {
         sorted { firstPerson, secondPerson in
             if firstPerson.id == loggedInPerson.id {
                 return true
