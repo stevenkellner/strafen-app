@@ -50,6 +50,9 @@ struct AppUrls {
         /// for fine list
         let fineList: URL
         
+        /// for late payment interest
+        let latePaymentInterest: URL
+        
         init(_ appUrls: CodableAppUrls) {
             let baseUrl = URL(string: appUrls.baseUrl)!
             newClub = baseUrl.appendingPathComponent(appUrls.changer.newClub)
@@ -60,6 +63,7 @@ struct AppUrls {
             personList = baseUrl.appendingPathComponent(appUrls.changer.personList)
             reasonList = baseUrl.appendingPathComponent(appUrls.changer.reasonList)
             fineList = baseUrl.appendingPathComponent(appUrls.changer.fineList)
+            latePaymentInterest = baseUrl.appendingPathComponent(appUrls.changer.latePaymentInterest)
         }
     }
     
@@ -206,6 +210,9 @@ struct CodableAppUrls: Decodable {
         
         /// for fine list
         let fineList: String
+        
+        /// for late payment interest
+        let latePaymentInterest: String
     }
     
     /// Base url of server

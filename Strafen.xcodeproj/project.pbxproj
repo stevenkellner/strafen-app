@@ -25,6 +25,7 @@
 		B020C7CC24B87653008940FE /* Club.swift in Sources */ = {isa = PBXBuildFile; fileRef = B020C7CB24B87653008940FE /* Club.swift */; };
 		B020C7D024B9E310008940FE /* SendCodeMail.swift in Sources */ = {isa = PBXBuildFile; fileRef = B020C7CF24B9E310008940FE /* SendCodeMail.swift */; };
 		B026766D24BDD346005E79C1 /* AmountDisplay.swift in Sources */ = {isa = PBXBuildFile; fileRef = B026766C24BDD346005E79C1 /* AmountDisplay.swift */; };
+		B0280AB424FFB9D30049202D /* LatePaymentInterestChangerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0280AB324FFB9D30049202D /* LatePaymentInterestChangerView.swift */; };
 		B02B891524BDFDA9004562B9 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B02B891424BDFDA9004562B9 /* SettingsView.swift */; };
 		B02EF27024C497CC00E4CEBC /* NoteEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = B02EF26F24C497CC00E4CEBC /* NoteEditor.swift */; };
 		B042D42E24BA21540029F2D5 /* ListTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = B042D42D24BA21540029F2D5 /* ListTypes.swift */; };
@@ -88,6 +89,11 @@
 		B0B799CF24ACEA0C0027727E /* NewClubChanger.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0B799CE24ACEA0C0027727E /* NewClubChanger.swift */; };
 		B0B799D124AE50060027727E /* ClubImageChanger.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0B799D024AE50060027727E /* ClubImageChanger.swift */; };
 		B0B799D324AE64770027727E /* SignInSelectPersonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0B799D224AE64770027727E /* SignInSelectPersonView.swift */; };
+		B0B81DC12502520E00249447 /* CodableSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0B81DC02502520E00249447 /* CodableSettings.swift */; };
+		B0B81DC32502522600249447 /* Settings+Style.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0B81DC22502522600249447 /* Settings+Style.swift */; };
+		B0B81DC52502523100249447 /* Settings+Appereance.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0B81DC42502523100249447 /* Settings+Appereance.swift */; };
+		B0B81DC72502524000249447 /* Settings+Person.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0B81DC62502524000249447 /* Settings+Person.swift */; };
+		B0B81DC92502525500249447 /* Settings+LatePaymentInterest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0B81DC82502525500249447 /* Settings+LatePaymentInterest.swift */; };
 		B0BE62D524AB50FF0018604C /* SignInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0BE62D424AB50FF0018604C /* SignInView.swift */; };
 		B0BE62D724AB58AE0018604C /* SignInEMailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0BE62D624AB58AE0018604C /* SignInEMailView.swift */; };
 		B0C1C51524A78BD7007B584B /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0C1C51424A78BD7007B584B /* LoginView.swift */; };
@@ -106,6 +112,7 @@
 		B0E0F82E24A63E5A00C82828 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B0E0F82D24A63E5A00C82828 /* Preview Assets.xcassets */; };
 		B0E0F83924A63E5A00C82828 /* StrafenTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E0F83824A63E5A00C82828 /* StrafenTests.swift */; };
 		B0E0F84424A63E5A00C82828 /* StrafenUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E0F84324A63E5A00C82828 /* StrafenUITests.swift */; };
+		B0E10AA82502677100A5803B /* LatePaymentInterestChanger.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E10AA72502677100A5803B /* LatePaymentInterestChanger.swift */; };
 		B0E2C19424CC6620009E3666 /* Fine.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E2C19024CC661F009E3666 /* Fine.swift */; };
 		B0E2C19524CC6620009E3666 /* Reason.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E2C19124CC6620009E3666 /* Reason.swift */; };
 		B0E2C19D24CC66C2009E3666 /* WidgetListTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E2C18D24CC65F9009E3666 /* WidgetListTypes.swift */; };
@@ -187,6 +194,7 @@
 		B020C7CB24B87653008940FE /* Club.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Club.swift; sourceTree = "<group>"; };
 		B020C7CF24B9E310008940FE /* SendCodeMail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendCodeMail.swift; sourceTree = "<group>"; };
 		B026766C24BDD346005E79C1 /* AmountDisplay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmountDisplay.swift; sourceTree = "<group>"; };
+		B0280AB324FFB9D30049202D /* LatePaymentInterestChangerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LatePaymentInterestChangerView.swift; sourceTree = "<group>"; };
 		B02B891424BDFDA9004562B9 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		B02EF26F24C497CC00E4CEBC /* NoteEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteEditor.swift; sourceTree = "<group>"; };
 		B042D42D24BA21540029F2D5 /* ListTypes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListTypes.swift; sourceTree = "<group>"; };
@@ -250,6 +258,11 @@
 		B0B799CE24ACEA0C0027727E /* NewClubChanger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewClubChanger.swift; sourceTree = "<group>"; };
 		B0B799D024AE50060027727E /* ClubImageChanger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubImageChanger.swift; sourceTree = "<group>"; };
 		B0B799D224AE64770027727E /* SignInSelectPersonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInSelectPersonView.swift; sourceTree = "<group>"; };
+		B0B81DC02502520E00249447 /* CodableSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodableSettings.swift; sourceTree = "<group>"; };
+		B0B81DC22502522600249447 /* Settings+Style.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Settings+Style.swift"; sourceTree = "<group>"; };
+		B0B81DC42502523100249447 /* Settings+Appereance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Settings+Appereance.swift"; sourceTree = "<group>"; };
+		B0B81DC62502524000249447 /* Settings+Person.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Settings+Person.swift"; sourceTree = "<group>"; };
+		B0B81DC82502525500249447 /* Settings+LatePaymentInterest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Settings+LatePaymentInterest.swift"; sourceTree = "<group>"; };
 		B0BE62D424AB50FF0018604C /* SignInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInView.swift; sourceTree = "<group>"; };
 		B0BE62D624AB58AE0018604C /* SignInEMailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInEMailView.swift; sourceTree = "<group>"; };
 		B0C1C51424A78BD7007B584B /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
@@ -274,6 +287,7 @@
 		B0E0F83F24A63E5A00C82828 /* StrafenUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = StrafenUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B0E0F84324A63E5A00C82828 /* StrafenUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StrafenUITests.swift; sourceTree = "<group>"; };
 		B0E0F84524A63E5A00C82828 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B0E10AA72502677100A5803B /* LatePaymentInterestChanger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LatePaymentInterestChanger.swift; sourceTree = "<group>"; };
 		B0E2C18D24CC65F9009E3666 /* WidgetListTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetListTypes.swift; sourceTree = "<group>"; };
 		B0E2C19024CC661F009E3666 /* Fine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Fine.swift; sourceTree = "<group>"; };
 		B0E2C19124CC6620009E3666 /* Reason.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reason.swift; sourceTree = "<group>"; };
@@ -387,6 +401,7 @@
 			isa = PBXGroup;
 			children = (
 				B02B891424BDFDA9004562B9 /* SettingsView.swift */,
+				B0280AB324FFB9D30049202D /* LatePaymentInterestChangerView.swift */,
 				B02019D324FE779000C660B9 /* SettingsFinesFormatterView.swift */,
 			);
 			path = Settings;
@@ -552,13 +567,14 @@
 		B0B799CD24ACE9EF0027727E /* Changer */ = {
 			isa = PBXGroup;
 			children = (
-				B0B799CE24ACEA0C0027727E /* NewClubChanger.swift */,
-				B020C7C724B11649008940FE /* RegisterPersonChanger.swift */,
 				B0B799D024AE50060027727E /* ClubImageChanger.swift */,
-				B020C7CF24B9E310008940FE /* SendCodeMail.swift */,
-				B0DE1CBA24C44D61006CCFE9 /* LocalListChanger.swift */,
+				B0E10AA72502677100A5803B /* LatePaymentInterestChanger.swift */,
 				B09CB23924C725FC0096C4F8 /* ListChanger.swift */,
+				B0DE1CBA24C44D61006CCFE9 /* LocalListChanger.swift */,
+				B0B799CE24ACEA0C0027727E /* NewClubChanger.swift */,
 				B077B56824C7652F003844CE /* PersonImageChanger.swift */,
+				B020C7C724B11649008940FE /* RegisterPersonChanger.swift */,
+				B020C7CF24B9E310008940FE /* SendCodeMail.swift */,
 			);
 			path = Changer;
 			sourceTree = "<group>";
@@ -577,9 +593,23 @@
 			path = AppTypes;
 			sourceTree = "<group>";
 		};
+		B0B81DBF250251F900249447 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				B0C1C51A24A78CC2007B584B /* Settings.swift */,
+				B0B81DC02502520E00249447 /* CodableSettings.swift */,
+				B0B81DC42502523100249447 /* Settings+Appereance.swift */,
+				B0B81DC22502522600249447 /* Settings+Style.swift */,
+				B0B81DC62502524000249447 /* Settings+Person.swift */,
+				B0B81DC82502525500249447 /* Settings+LatePaymentInterest.swift */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
 		B0C1C51624A78C56007B584B /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				B0B81DBF250251F900249447 /* Settings */,
 				B0C1C51724A78C69007B584B /* Necessaries */,
 				B0C1C51E24A791B7007B584B /* Extensions */,
 				B0C1C51F24A79328007B584B /* Constants.swift */,
@@ -590,7 +620,6 @@
 		B0C1C51724A78C69007B584B /* Necessaries */ = {
 			isa = PBXGroup;
 			children = (
-				B0C1C51A24A78CC2007B584B /* Settings.swift */,
 				B0C1C51C24A7910F007B584B /* AppUrls.swift */,
 				B006920524C615D500AE2EF0 /* HomeTabs.swift */,
 				B0B117CB24FA962C006A22F2 /* SignInWithApple.swift */,
@@ -1061,6 +1090,7 @@
 				B02EF27024C497CC00E4CEBC /* NoteEditor.swift in Sources */,
 				B0A385B024ABC21C00628038 /* SignInEMailValidationView.swift in Sources */,
 				B020C7B724AE7204008940FE /* ListFetcher.swift in Sources */,
+				B0B81DC72502524000249447 /* Settings+Person.swift in Sources */,
 				B0E2C19524CC6620009E3666 /* Reason.swift in Sources */,
 				B0C1C51524A78BD7007B584B /* LoginView.swift in Sources */,
 				B0B799D124AE50060027727E /* ClubImageChanger.swift in Sources */,
@@ -1068,6 +1098,7 @@
 				B0C1C51924A78C90007B584B /* Color.swift in Sources */,
 				B0619C0224C0C1E2008969A1 /* String.swift in Sources */,
 				B07938D824BF037900F86E86 /* PersonAddNew.swift in Sources */,
+				B0B81DC12502520E00249447 /* CodableSettings.swift in Sources */,
 				B0E0F82924A63E5800C82828 /* ContentView.swift in Sources */,
 				B0619C0024C0BD16008969A1 /* ImportanceChanger.swift in Sources */,
 				B0B799CC24ACA1990027727E /* ImageSelector.swift in Sources */,
@@ -1082,6 +1113,7 @@
 				B020C7C624B0C8BE008940FE /* ImageData.swift in Sources */,
 				B077B57D24CAC655003844CE /* StrafenWidget.intentdefinition in Sources */,
 				B020C7C224B0B9D0008940FE /* PersonRowImage.swift in Sources */,
+				B0280AB424FFB9D30049202D /* LatePaymentInterestChangerView.swift in Sources */,
 				B042D43D24BB2BBD0029F2D5 /* Array.swift in Sources */,
 				B0E2C19424CC6620009E3666 /* Fine.swift in Sources */,
 				B042D44024BB5B420029F2D5 /* PersonList.swift in Sources */,
@@ -1094,6 +1126,7 @@
 				B042D42E24BA21540029F2D5 /* ListTypes.swift in Sources */,
 				B020C7BC24AF1AE9008940FE /* ChangerClub.swift in Sources */,
 				B020C7CA24B1168F008940FE /* RegisterPerson.swift in Sources */,
+				B0B81DC92502525500249447 /* Settings+LatePaymentInterest.swift in Sources */,
 				B0619C1424C21958008969A1 /* AddNewFine.swift in Sources */,
 				B0B4822024A8D46B00CB7A1A /* Header.swift in Sources */,
 				B042D44724BDAB280029F2D5 /* ActivityView.swift in Sources */,
@@ -1113,11 +1146,14 @@
 				B0BE62D724AB58AE0018604C /* SignInEMailView.swift in Sources */,
 				B020C7C024AF7CC6008940FE /* Person.swift in Sources */,
 				B0619C0D24C20C4B008969A1 /* ReasonList.swift in Sources */,
+				B0B81DC52502523100249447 /* Settings+Appereance.swift in Sources */,
 				B0C1C52524A8BC14007B584B /* RoundedCorners.swift in Sources */,
 				B0BE62D524AB50FF0018604C /* SignInView.swift in Sources */,
 				B0C1C52724A8BEE6007B584B /* Other.swift in Sources */,
 				B0B799CF24ACEA0C0027727E /* NewClubChanger.swift in Sources */,
 				B0619C1B24C363DE008969A1 /* NoteList.swift in Sources */,
+				B0B81DC32502522600249447 /* Settings+Style.swift in Sources */,
+				B0E10AA82502677100A5803B /* LatePaymentInterestChanger.swift in Sources */,
 				B0B799CA24AC96560027727E /* SignInNewClubView.swift in Sources */,
 				B042D43B24BB27EF0029F2D5 /* FormattedDate.swift in Sources */,
 				B09CB23A24C725FC0096C4F8 /* ListChanger.swift in Sources */,

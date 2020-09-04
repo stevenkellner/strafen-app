@@ -108,3 +108,48 @@ extension String {
         return .zero
     }
 }
+
+// Extension of String for formatted as a positive integer
+extension String {
+    
+    /// Formatted as a positive integer
+    var positiveInt: Int {
+        var newString = ""
+        
+        // Filter all invalid characters out
+        let validCharacters = Array(0..<11).map({ $0 != 10 ? Character(String($0)) : "," })
+        for char in self where validCharacters.contains(char) {
+            if char == "," {
+                break
+            }
+            newString.append(char)
+        }
+        return Int(newString) ?? .zero
+    }
+}
+
+// Extension of String for formatted as interest rate
+extension String {
+    
+    /// Formatted as interest rate
+    var interestRateValue: Double {
+        
+        var commaPassed = false
+        var newString = ""
+        
+        // Filter all invalid characters out
+        let validCharacters = Array(0..<11).map({ $0 != 10 ? Character(String($0)) : "," })
+        for char in self where validCharacters.contains(char) {
+            if char == "," {
+                if !commaPassed {
+                    commaPassed = true
+                    newString.append(".")
+                }
+                continue
+            }
+            newString.append(char)
+        }
+        
+        return min(Double(newString) ?? .zero, 100)
+    }
+}

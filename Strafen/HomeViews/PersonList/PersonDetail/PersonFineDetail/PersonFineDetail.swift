@@ -110,22 +110,36 @@ struct PersonFineDetail: View {
                 Spacer()
                 
                 // Amount
-                HStack(spacing: 0) {
-                    if fine.number != 1 {
-                        Text("\(fine.number) *")
+                VStack(spacing: 0) {
+                    
+                    // Original Amount
+                    HStack(spacing: 0) {
+                        if fine.number != 1 {
+                            Text("\(fine.number) *")
+                                .foregroundColor(.textColor)
+                                .font(.text(50))
+                                .padding(.leading, 25)
+                                .padding(.top, 20)
+                                .lineLimit(1)
+                        }
+                        
+                        Text(String(describing: fine.fineReason.amount))
                             .foregroundColor(.textColor)
                             .font(.text(50))
-                            .padding(.leading, 25)
+                            .padding(.horizontal, 25)
                             .padding(.top, 20)
                             .lineLimit(1)
                     }
                     
-                    Text(String(describing: fine.fineReason.amount))
-                        .foregroundColor(.textColor)
-                        .font(.text(50))
-                        .padding(.horizontal, 25)
-                        .padding(.top, 20)
-                        .lineLimit(1)
+                    // Late payment interest
+                    if let latePaymentInterest = fine.latePaymentInterest, latePaymentInterest != .zero {
+                        Text("+ \(String(describing: latePaymentInterest)) Verzugszinsen")
+                            .font(.text(25))
+                            .foregroundColor(.textColor)
+                            .lineLimit(1)
+                            .padding(.top, 5)
+                    }
+                    
                 }
                 
                 Spacer()
@@ -153,7 +167,7 @@ struct PersonFineDetail: View {
                             .fillColor(fine.fineReason.importance.color, onlyDefault: false)
                             .frame(width: 100, height: 50)
                             .onTapGesture {
-                                if settings.person!.isCashier && fine.payed == .payed {
+                                if settings.person!.isCashier && fine.payed.boolValue {
                                     showAlertToUnpayed = true
                                 }
                             }
@@ -186,7 +200,7 @@ struct PersonFineDetail: View {
                         .lineWidth(2.5)
                         .radius(2.5)
                         .frame(width: 33, height: 2.5)
-                        .offset(x: fine.payed == .payed ? 50 : -50)
+                        .offset(x: fine.payed.boolValue ? 50 : -50)
                     
                     // Progress View of to unpayed
                     if connectionStateToUnpayed == .loading {
@@ -220,12 +234,13 @@ struct PersonFineDetail: View {
     func handleSaveToPayed() {
         connectionStateToPayed = .loading
         var editedFine = fine
-        editedFine.payed = .payed
+        let date = Date()
+        editedFine.payed = .payed(date: date)
         ListChanger.shared.change(.update, item: editedFine) { taskState in
             if taskState == .passed {
                 connectionStateToPayed = .passed
                 withAnimation {
-                    fine.payed = .payed
+                    fine.payed = .payed(date: date)
                 }
             } else {
                 connectionStateToPayed = .failed

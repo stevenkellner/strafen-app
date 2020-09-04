@@ -10,16 +10,6 @@ import Foundation
 /// Used to register a new person on server
 struct RegisterPersonChanger {
     
-    /// State of data task
-    enum TaskState {
-        
-        /// Data task passed
-        case passed
-        
-        /// Data task failed
-        case failed
-    }
-    
     /// Shared instance for singelton
     static let shared = Self()
     

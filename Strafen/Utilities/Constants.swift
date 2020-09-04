@@ -26,7 +26,8 @@ let appUrls = """
                 "personImage": "changer/personImageChanger.php",
                 "personList": "changer/personChanger.php",
                 "reasonList": "changer/reasonChanger.php",
-                "fineList": "changer/fineChanger.php"
+                "fineList": "changer/fineChanger.php",
+                "latePaymentInterest": "changer/latePaymentInterestChanger.php"
             },
             "authorization": "c3RldmVuOmZ5d3dlYi1yeWhrdU0tcXlneGU2",
             "key": "UM5fZEML22vzCQvMwyVN",

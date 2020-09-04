@@ -39,6 +39,10 @@ struct SettingsView: View {
                             // Club id
                             ClubId()
                             
+                            if settings.person?.isCashier ?? false {
+                                LatePaymentInterestChanger(dismissHandler: $dismissHandler)
+                            }
+                            
                             // Apearance Changer
                             AppearanceChanger()
 
@@ -113,6 +117,49 @@ struct SettingsView: View {
                     }.frame(width: UIScreen.main.bounds.width * 0.2, height: 50)
                 }
                 
+            }
+        }
+    }
+    
+    /// Late payment interest changer
+    struct LatePaymentInterestChanger: View {
+        
+        ///Dismiss handler
+        @Binding var dismissHandler: (() -> ())?
+        
+        /// Observed Object that contains all settings of the app of this device
+        @ObservedObject var settings = Settings.shared
+        
+        var body: some View {
+            VStack(spacing: 0) {
+                
+                // Title
+                Title("Verzugszinsen")
+                
+                NavigationLink(destination: LatePaymentInterestChangerView(dismissHandler: $dismissHandler)) {
+                    HStack(spacing: 0) {
+                        
+                        // Text
+                        ZStack {
+                            
+                            // Outline
+                            Outline(.left)
+                            
+                            // Text
+                            Text(settings.latePaymentInterest?.description ?? "Verzugszinsen")
+                                .foregroundColor(.textColor)
+                                .font(.text(20))
+                                .lineLimit(1)
+                                .padding(.leading, 10)
+                            
+                        }.frame(width: UIScreen.main.bounds.width * 0.75, height: 50)
+                        
+                        // Outline
+                        Outline(.right)
+                            .fillColor(settings.latePaymentInterest == nil ? Color.custom.red : Color.custom.lightGreen, onlyDefault: false)
+                            .frame(width: UIScreen.main.bounds.width * 0.2, height: 50)
+                    }
+                }
             }
         }
     }

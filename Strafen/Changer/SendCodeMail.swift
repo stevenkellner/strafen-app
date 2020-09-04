@@ -10,16 +10,6 @@ import Foundation
 /// Used to send code mail
 struct SendCodeMail {
     
-    /// State of data task
-    enum TaskState {
-        
-        /// Data task passed
-        case passed
-        
-        /// Data task failed
-        case failed
-    }
-    
     /// Shared instance for singelton
     static var shared = Self()
     
