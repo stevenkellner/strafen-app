@@ -98,31 +98,48 @@ struct Fine: Identifiable, ListTypes {
     }
     
     /// Fine payed
-    enum Payed: Decodable {
+    enum Payed: Decodable, Equatable {
         
         /// payed
-        case payed
+        case payed(date: Date)
         
         /// unpayed
         case unpayed
         
+        /// Coding Error
+        enum CodingError: Error {
+            
+            /// Payed but no date
+            case payedNoDate
+        }
+        
         /// Init from decoder
         init(from decoder: Decoder) throws {
             let container = try decoder.singleValueContainer()
-            let rawPayed = try container.decode(Bool.self)
-            self = rawPayed ? .payed : .unpayed
+            do {
+                let rawPayed = try container.decode(Bool.self)
+                if rawPayed {
+                    throw CodingError.payedNoDate
+                }
+                self = .unpayed
+            } catch CodingError.payedNoDate {
+                throw CodingError.payedNoDate
+            } catch {
+                let date = try container.decode(FormattedDate.self)
+                self = .payed(date: date.date)
+            }
         }
         
         /// True if is payed
         var boolValue: Bool {
-            self == .payed
+            self != .unpayed
         }
         
         /// String value of importance
         var string: String {
             switch self {
-            case .payed:
-                return "true"
+            case .payed(date: let date):
+                return FormattedDate(date: date).formattedForPost
             case .unpayed:
                 return "false"
             }
@@ -295,5 +312,48 @@ struct FineReasonTemplate: FineReason, Equatable {
         [
             "templateId": templateId
         ]
+    }
+}
+
+/// Extension of Fine to calculate the late payment interest
+extension Fine {
+    
+    /// Late payment interest
+    func latePaymentInterest(with latePaymentInterest: Settings.LatePaymentInterest) -> Euro {
+        
+        // Get start date
+        let calender = Calendar.current
+        var startDate = calender.startOfDay(for: date.date)
+        startDate = calender.date(byAdding: latePaymentInterest.interestFreePeriod.unit.dateComponentFlag, value: latePaymentInterest.interestFreePeriod.value, to: startDate) ?? startDate
+        
+        // Get end date
+        var endDate = Date()
+        if case .payed(date: let paymentDate) = payed {
+            endDate = paymentDate
+        }
+        
+        // Return .zero if start date is greater than the end date
+        guard startDate <= endDate else {
+            return .zero
+        }
+        
+        // Get number of components between start and end date
+        let numberBetweenDates = latePaymentInterest.interestPeriod.unit.numberBetweenDates(start: startDate, end: endDate) / latePaymentInterest.interestPeriod.value
+        
+        // Original amount
+        let originalAmount = fineReason.amount * number
+        
+        // Return late payment interest
+        if latePaymentInterest.compoundInterest {
+            return originalAmount * (pow(1 + latePaymentInterest.interestRate / 100, Double(numberBetweenDates)) - 1)
+        } else {
+            return originalAmount * (latePaymentInterest.interestRate / 100 * Double(numberBetweenDates))
+        }
+    }
+    
+    /// Late payment interest
+    var latePaymentInterest: Euro? {
+        guard let interest = Settings.shared.latePaymentInterest else { return nil }
+        return latePaymentInterest(with: interest)
     }
 }

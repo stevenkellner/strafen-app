@@ -294,7 +294,7 @@ struct PersonDetailRow: View {
                     .fillColor(fine.payed.boolValue ? Color.custom.lightGreen : fine.fineReason.importance.color)
                 
                 // Inside
-                Text(String(describing: fine.fineReason.amount * fine.number))
+                Text(String(describing: fine.fineReason.amount * fine.number + (fine.latePaymentInterest ?? .zero)))
                     .foregroundColor(settings.style == .default ? .textColor : fine.payed.boolValue ? Color.custom.lightGreen : fine.fineReason.importance.color)
                     .font(.text(20))
                     .lineLimit(1)

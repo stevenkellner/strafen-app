@@ -13,9 +13,9 @@ extension Array where Element == Fine {
     /// Payed amount sum of given person
     func payedAmountSum(of personId: UUID) -> Euro {
         filter {
-            $0.personId == personId && $0.payed == .payed
+            $0.personId == personId && $0.payed.boolValue
         }.reduce(Euro.zero) { result, fine in
-            result + fine.fineReason.amount * fine.number
+            result + fine.fineReason.amount * fine.number + (fine.latePaymentInterest ?? .zero)
         }
     }
     
@@ -24,25 +24,25 @@ extension Array where Element == Fine {
         filter {
             $0.personId == personId && $0.payed == .unpayed
         }.reduce(Euro.zero) { result, fine in
-            result + fine.fineReason.amount * fine.number
+            result + fine.fineReason.amount * fine.number + (fine.latePaymentInterest ?? .zero)
         }
     }
     
     /// Medium amount sum of given person
     func mediumAmountSum(of personId: UUID) -> Euro {
         filter {
-            $0.personId == personId && $0.payed == .unpayed
+            $0.personId == personId && $0.payed == .unpayed && ($0.fineReason.importance == .high || $0.fineReason.importance == .medium)
         }.reduce(Euro.zero) { result, fine in
-            result + ((fine.fineReason.importance == .high || fine.fineReason.importance == .medium) ? fine.fineReason.amount * fine.number : .zero)
+            result + fine.fineReason.amount * fine.number + (fine.latePaymentInterest ?? .zero)
         }
     }
     
     /// High amount sum of given person
     func highAmountSum(of personId: UUID) -> Euro {
         filter {
-            $0.personId == personId && $0.payed == .unpayed
+            $0.personId == personId && $0.payed == .unpayed && $0.fineReason.importance == .high
         }.reduce(Euro.zero) { result, fine in
-            result + (fine.fineReason.importance == .high ? fine.fineReason.amount * fine.number : .zero)
+            result + fine.fineReason.amount * fine.number + (fine.latePaymentInterest ?? .zero)
         }
     }
     
@@ -51,7 +51,7 @@ extension Array where Element == Fine {
         filter {
             $0.personId == personId
         }.reduce(Euro.zero) { result, fine in
-            result + fine.fineReason.amount * fine.number
+            result + fine.fineReason.amount * fine.number + (fine.latePaymentInterest ?? .zero)
         }
     }
 }

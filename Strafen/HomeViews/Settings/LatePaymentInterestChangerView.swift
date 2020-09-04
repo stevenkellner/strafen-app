@@ -10,7 +10,7 @@ import SwiftUI
 /// Changes late payment interest
 struct LatePaymentInterestChangerView: View {
     
-    typealias DateComponents = Settings.LatePaymentInterest.DateComponents
+    typealias DateComponents = Settings.LatePaymentInterest.DateComponent
     
     typealias TimePeriod = Settings.LatePaymentInterest.TimePeriod
     

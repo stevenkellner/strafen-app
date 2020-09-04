@@ -87,6 +87,14 @@ extension Euro: Equatable {
         return Euro(euro: euro, cent: cent)
     }
     
+    static func *(amount: Euro, multiplier: Double) -> Euro {
+        let doubleValue = (Double(amount.euro) + Double(amount.cent) / 100) * multiplier
+        let euroCent = UInt(round(abs(doubleValue) * 100))
+        let euro = UInt(abs(doubleValue))
+        let cent = euroCent - euro * 100
+        return Euro(euro: euro, cent: cent)
+    }
+    
     static func +(lhs: Euro, rhs: Euro) -> Euro {
         let cent = (lhs.cent + rhs.cent) % 100
         let euro = lhs.euro + rhs.euro + UInt((lhs.cent + rhs.cent) / 100)

@@ -13,7 +13,7 @@ extension Settings {
     struct LatePaymentInterest: Codable, Equatable {
         
         /// Compontents of date (day / month / year)
-        enum DateComponents: String, CaseIterable, Identifiable, Codable {
+        enum DateComponent: String, CaseIterable, Identifiable, Codable {
             
             /// Day
             case day
@@ -52,6 +52,38 @@ extension Settings {
                     return "Jahre"
                 }
             }
+            
+            /// Date component flag
+            var dateComponentFlag: Calendar.Component {
+                switch self {
+                case .day:
+                    return .day
+                case .month:
+                    return .month
+                case .year:
+                    return .year
+                }
+            }
+            
+            /// Keypath from DateComponent
+            var dateComponentKeyPath: KeyPath<DateComponents, Int?> {
+                switch self {
+                case .day:
+                    return \.day
+                case .month:
+                    return \.month
+                case .year:
+                    return \.year
+                }
+            }
+            
+            func numberBetweenDates(start startDate: Date, end endDate: Date) -> Int {
+                let calender = Calendar.current
+                let startDate = calender.startOfDay(for: startDate)
+                let endDate = calender.startOfDay(for: endDate)
+                let components = calender.dateComponents([dateComponentFlag], from: startDate, to: endDate)
+                return components[keyPath: dateComponentKeyPath] ?? 0
+            }
         }
         
         /// Contains value and unit of a time period
@@ -61,7 +93,7 @@ extension Settings {
             var value: Int
             
             /// Unit
-            var unit: DateComponents
+            var unit: DateComponent
         }
         
         /// Interest free period
