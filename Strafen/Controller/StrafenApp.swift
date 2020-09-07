@@ -9,33 +9,30 @@ import SwiftUI
 
 @main
 struct StrafenApp: App {
+    
+    /// App Delegate
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
+    
+    /// Scene Phase
     @Environment(\.scenePhase) private var scenePhase
+    
     var body: some Scene {
         WindowGroup {
             ContentView()
-        }.onChange(of: scenePhase) { phase in
-            if phase == .background {
-                ImageData.shared.personImage.removeAll()
-            }
-        }
+        }.onChange(of: scenePhase, perform: handleScenePhaseChange)
     }
-}
-
-class AppDelegate: UIResponder, UIApplicationDelegate {
-    func application(_ application: UIApplication, configurationForConnecting connectingSceneSession: UISceneSession, options: UIScene.ConnectionOptions) -> UISceneConfiguration {
-        if let shortcutItem = options.shortcutItem {
-            switch shortcutItem.type {
-            case "profileDetail":
-                HomeTabs.shared.active = .profileDetail
-            case "personList":
-                HomeTabs.shared.active = .personList
-            case "reasonList":
-                HomeTabs.shared.active = .reasonList
-            default:
-                break
-            }
+    
+    /// Handles change of scene phase
+    func handleScenePhaseChange(to phase: ScenePhase) {
+        switch phase {
+        case .active:
+            UIApplication.shared.applicationIconBadgeNumber = 0
+        case .inactive:
+            break
+        case .background:
+            ImageData.shared.personImage.removeAll()
+        @unknown default:
+            break
         }
-        return UISceneConfiguration(name: "Default Configuration", sessionRole: connectingSceneSession.role)
     }
 }

@@ -104,6 +104,8 @@
 		B0C1C52224A7A021007B584B /* PersonName.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0C1C52124A7A021007B584B /* PersonName.swift */; };
 		B0C1C52524A8BC14007B584B /* RoundedCorners.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0C1C52424A8BC14007B584B /* RoundedCorners.swift */; };
 		B0C1C52724A8BEE6007B584B /* Other.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0C1C52624A8BEE6007B584B /* Other.swift */; };
+		B0C554052505646400BA3E26 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0C554042505646400BA3E26 /* AppDelegate.swift */; };
+		B0C5540725056A0F00BA3E26 /* ExecuteOnlyOnce.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0C5540625056A0F00BA3E26 /* ExecuteOnlyOnce.swift */; };
 		B0DE1CBB24C44D61006CCFE9 /* LocalListChanger.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0DE1CBA24C44D61006CCFE9 /* LocalListChanger.swift */; };
 		B0DE1CBD24C48FB3006CCFE9 /* NoteDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0DE1CBC24C48FB3006CCFE9 /* NoteDetail.swift */; };
 		B0E0F82724A63E5800C82828 /* StrafenApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E0F82624A63E5800C82828 /* StrafenApp.swift */; };
@@ -274,6 +276,8 @@
 		B0C1C52124A7A021007B584B /* PersonName.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonName.swift; sourceTree = "<group>"; };
 		B0C1C52424A8BC14007B584B /* RoundedCorners.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedCorners.swift; sourceTree = "<group>"; };
 		B0C1C52624A8BEE6007B584B /* Other.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Other.swift; sourceTree = "<group>"; };
+		B0C554042505646400BA3E26 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		B0C5540625056A0F00BA3E26 /* ExecuteOnlyOnce.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExecuteOnlyOnce.swift; sourceTree = "<group>"; };
 		B0DE1CBA24C44D61006CCFE9 /* LocalListChanger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalListChanger.swift; sourceTree = "<group>"; };
 		B0DE1CBC24C48FB3006CCFE9 /* NoteDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteDetail.swift; sourceTree = "<group>"; };
 		B0E0F82324A63E5800C82828 /* Strafen.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Strafen.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -625,6 +629,7 @@
 				B0C1C51C24A7910F007B584B /* AppUrls.swift */,
 				B006920524C615D500AE2EF0 /* HomeTabs.swift */,
 				B0B117CB24FA962C006A22F2 /* SignInWithApple.swift */,
+				B0C5540625056A0F00BA3E26 /* ExecuteOnlyOnce.swift */,
 			);
 			path = Necessaries;
 			sourceTree = "<group>";
@@ -660,10 +665,19 @@
 			path = HelpfulViews;
 			sourceTree = "<group>";
 		};
-		B0D343FF24A9260B003C8831 /* HomeViews */ = {
+		B0C554032505641900BA3E26 /* Necessaries */ = {
 			isa = PBXGroup;
 			children = (
 				B0F4331C2502CA7500B0AAA7 /* HomeViews.swift */,
+				B0C554042505646400BA3E26 /* AppDelegate.swift */,
+			);
+			path = Necessaries;
+			sourceTree = "<group>";
+		};
+		B0D343FF24A9260B003C8831 /* HomeViews */ = {
+			isa = PBXGroup;
+			children = (
+				B0C554032505641900BA3E26 /* Necessaries */,
 				B0D3440024A92612003C8831 /* LoginView */,
 				B042D43124BB19CC0029F2D5 /* ProfileDetail */,
 				B042D43E24BB5B290029F2D5 /* PersonList */,
@@ -1110,6 +1124,7 @@
 				B0619BFB24C0B62B008969A1 /* PersonEditor.swift in Sources */,
 				B0B4822424A8D69E00CB7A1A /* Buttons.swift in Sources */,
 				B0C1C52224A7A021007B584B /* PersonName.swift in Sources */,
+				B0C554052505646400BA3E26 /* AppDelegate.swift in Sources */,
 				B020C7C424B0C5E6008940FE /* ImageFetcher.swift in Sources */,
 				B07938D624BEF4C300F86E86 /* PersonFineDetail.swift in Sources */,
 				B020C7C824B11649008940FE /* RegisterPersonChanger.swift in Sources */,
@@ -1149,6 +1164,7 @@
 				B0619BFE24C0B999008969A1 /* PersonFineEditor.swift in Sources */,
 				B0BE62D724AB58AE0018604C /* SignInEMailView.swift in Sources */,
 				B020C7C024AF7CC6008940FE /* Person.swift in Sources */,
+				B0C5540725056A0F00BA3E26 /* ExecuteOnlyOnce.swift in Sources */,
 				B0619C0D24C20C4B008969A1 /* ReasonList.swift in Sources */,
 				B0B81DC52502523100249447 /* Settings+Appereance.swift in Sources */,
 				B0C1C52524A8BC14007B584B /* RoundedCorners.swift in Sources */,
