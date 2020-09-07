@@ -23,7 +23,7 @@ struct Provider: TimelineProvider {
     
     /// Creates a snapshot of the widget
     func getSnapshot(in context: Context, completion: @escaping (WidgetEntry) -> Void) {
-        completion(WidgetEntry(date: Date(), widgetEntryType: .success(person: .default, fineList: .random), style: .plain, isPlaceholder: false))
+        completion(WidgetEntry(date: Date(), widgetEntryType: .success(person: .default, latePaymentInterest: nil, fineList: .random), style: .plain, isPlaceholder: false))
     }
     
     /// Creates a timeline of the widget
@@ -69,7 +69,7 @@ struct Provider: TimelineProvider {
                     
                     // Get timeline
                     let dateForNextTimelineRequest = Date(timeIntervalSinceNow: timeIntervalToUpdate)
-                    let widgetEntryType: WidgetEntryType = .success(person: person, fineList: fineNoTemplateList)
+                    let widgetEntryType: WidgetEntryType = .success(person: person, latePaymentInterest: WidgetUrls.shared.latePaymentInterest, fineList: fineNoTemplateList)
                     let entry = WidgetEntry(date: dateForNextTimelineRequest, widgetEntryType: widgetEntryType, style: style, isPlaceholder: false)
                     let timeline = Timeline(entries: [entry], policy: .atEnd)
                     completion(timeline)
@@ -96,7 +96,7 @@ struct Provider: TimelineProvider {
     
     /// Creates a placeholder of the widget
     func placeholder(in context: Context) -> WidgetEntry {
-        WidgetEntry(date: Date(), widgetEntryType: .success(person: .default, fineList: .random), style: .plain, isPlaceholder: true)
+        WidgetEntry(date: Date(), widgetEntryType: .success(person: .default, latePaymentInterest: nil, fineList: .random), style: .plain, isPlaceholder: true)
     }
 }
 
@@ -120,7 +120,7 @@ struct WidgetEntry: TimelineEntry {
 enum WidgetEntryType {
     
     /// Widget entry type with success
-    case success(person: WidgetUrls.CodableSettings.Person, fineList: [WidgetFineNoTemplate])
+    case success(person: WidgetUrls.CodableSettings.Person, latePaymentInterest: WidgetUrls.CodableSettings.LatePaymentInterest?, fineList: [WidgetFineNoTemplate])
     
     /// Widget entry type with no connection
     case noConnection

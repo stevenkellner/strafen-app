@@ -16,8 +16,8 @@ struct SmallWidget: View {
     var body: some View {
         Group {
             switch entry.widgetEntryType {
-            case .success(person: let person, fineList: let fineList):
-                SmallWidgetSuccess(person: person, style: entry.style, fineList: fineList)
+            case .success(person: let person, latePaymentInterest: let latePaymentInterest, fineList: let fineList):
+                SmallWidgetSuccess(person: person, latePaymentInterest: latePaymentInterest, style: entry.style, fineList: fineList)
             case .noConnection:
                 SmallWidgetNoConnection(style: entry.style)
             case .noPersonLoggedIn:

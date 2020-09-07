@@ -16,8 +16,8 @@ struct MediumWidget: View {
     var body: some View {
         Group {
             switch entry.widgetEntryType {
-            case .success(person: let person, fineList: let fineList):
-                MediumWidgetSuccess(person: person, style: entry.style, fineList: fineList)
+            case .success(person: let person, latePaymentInterest: let latePaymentInterest, fineList: let fineList):
+                MediumWidgetSuccess(person: person, latePaymentInterest: latePaymentInterest, style: entry.style, fineList: fineList)
             case .noConnection:
                 MediumWidgetNoConnection(style: entry.style)
             case .noPersonLoggedIn:

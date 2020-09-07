@@ -14,6 +14,9 @@ struct MediumWidgetSuccess: View {
     /// Logged in person
     let person: WidgetUrls.CodableSettings.Person
     
+    /// Late payment interest
+    let latePaymentInterest: WidgetUrls.CodableSettings.LatePaymentInterest?
+    
     /// Widget Style
     let style: WidgetUrls.CodableSettings.Style
     
@@ -71,7 +74,7 @@ struct MediumWidgetSuccess: View {
                                     .fillColor(style.fillColor(colorScheme, defaultStyle: Color.custom.lightGreen))
                                 
                                 // Amount
-                                Text(String(describing: fineList.payedAmountSum))
+                                Text(String(describing: fineList.payedAmountSum(with: latePaymentInterest)))
                                     .foregroundColor(style == .default ? .textColor : Color.custom.lightGreen)
                                     .font(.text(15))
                                     .lineLimit(1)
@@ -114,7 +117,7 @@ struct MediumWidgetSuccess: View {
                                     .fillColor(style.fillColor(colorScheme, defaultStyle: Color.custom.red))
                                 
                                 // Amount
-                                Text(String(describing: fineList.unpayedAmountSum))
+                                Text(String(describing: fineList.unpayedAmountSum(with: latePaymentInterest)))
                                     .foregroundColor(style == .default ? .textColor : Color.custom.red)
                                     .font(.text(15))
                                     .lineLimit(1)
@@ -171,11 +174,11 @@ struct MediumWidgetSuccess: View {
                                             // Outline
                                             Outline(style: style, .right)
                                                 .radius(10)
-                                                .fillColor(style.fillColor(colorScheme, defaultStyle: fine.payed == .payed ? Color.custom.lightGreen : fine.fineReason.importance.color))
+                                                .fillColor(style.fillColor(colorScheme, defaultStyle: fine.payed.boolValue ? Color.custom.lightGreen : fine.fineReason.importance.color))
                                             
                                             // Amount
-                                            Text(String(describing: fine.fineReason.amount * fine.number))
-                                                .foregroundColor(style == .default ? .textColor : fine.payed == .payed ? Color.custom.lightGreen : fine.fineReason.importance.color)
+                                            Text(String(describing: fine.fineReason.amount * fine.number + (fine.latePaymentInterest(with: latePaymentInterest) ?? .zero)))
+                                                .foregroundColor(style == .default ? .textColor : fine.payed.boolValue ? Color.custom.lightGreen : fine.fineReason.importance.color)
                                                 .font(.text(15))
                                                 .lineLimit(1)
                                                 .padding(.horizontal, 2)
@@ -211,7 +214,7 @@ struct MediumWidgetSuccess_Previews: PreviewProvider {
     static var previews: some View {
         Group {
             ForEach(styleColorSchemPermutations, id: \.offset) {
-                MediumWidgetSuccess(person: .default, style: $0.element.style, fineList: .random)
+                MediumWidgetSuccess(person: .default, latePaymentInterest: nil, style: $0.element.style, fineList: .random)
                     .previewContext(WidgetPreviewContext(family: .systemMedium))
                     .environment(\.colorScheme, $0.element.colorScheme)
 //                    .redacted(reason: .placeholder)

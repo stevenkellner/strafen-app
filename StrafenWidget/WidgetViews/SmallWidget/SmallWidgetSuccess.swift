@@ -14,6 +14,9 @@ struct SmallWidgetSuccess: View {
     /// Logged in person
     let person: WidgetUrls.CodableSettings.Person
     
+    /// Late payment interest
+    let latePaymentInterest: WidgetUrls.CodableSettings.LatePaymentInterest?
+    
     /// Widget Style
     let style: WidgetUrls.CodableSettings.Style
     
@@ -67,7 +70,7 @@ struct SmallWidgetSuccess: View {
                             .fillColor(style.fillColor(colorScheme, defaultStyle: Color.custom.lightGreen))
                         
                         // Amount
-                        Text(String(describing: fineList.payedAmountSum))
+                        Text(String(describing: fineList.payedAmountSum(with: latePaymentInterest)))
                             .foregroundColor(style == .default ? .textColor : Color.custom.lightGreen)
                             .font(.text(15))
                             .lineLimit(1)
@@ -110,7 +113,7 @@ struct SmallWidgetSuccess: View {
                             .fillColor(style.fillColor(colorScheme, defaultStyle: Color.custom.red))
                         
                         // Amount
-                        Text(String(describing: fineList.unpayedAmountSum))
+                        Text(String(describing: fineList.unpayedAmountSum(with: latePaymentInterest)))
                             .foregroundColor(style == .default ? .textColor : Color.custom.red)
                             .font(.text(15))
                             .lineLimit(1)
@@ -135,7 +138,7 @@ struct SmallWidgetSuccess_Previews: PreviewProvider {
     static var previews: some View {
         Group {
             ForEach(styleColorSchemPermutations, id: \.offset) {
-                SmallWidgetSuccess(person: .default, style: $0.element.style, fineList: .random)
+                SmallWidgetSuccess(person: .default, latePaymentInterest: nil, style: $0.element.style, fineList: .random)
                     .previewContext(WidgetPreviewContext(family: .systemSmall))
                     .environment(\.colorScheme, $0.element.colorScheme)
 //                    .redacted(reason: .placeholder)
