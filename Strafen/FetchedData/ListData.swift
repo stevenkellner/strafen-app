@@ -22,15 +22,15 @@ class ListDataListType<ListType>: ObservableObject where ListType: ListTypes {
         
         // Fetch list from server
         ListFetcher.shared.fetch(from: url) { [self] (fetchedList: [ListType]?)  in
-            if let fetchedList = fetchedList {
-                DispatchQueue.main.async {
+            DispatchQueue.main.async {
+                if let fetchedList = fetchedList {
                     if list == nil {
                         list = fetchedList
                         if let completionHandler = completionHandler { completionHandler() }
                     }
+                } else {
+                    failedHandler()
                 }
-            } else {
-                failedHandler()
             }
         }
     }
@@ -58,7 +58,7 @@ class ListDataLocalListType<LocalListType>: ObservableObject where LocalListType
 }
 
 /// Data of all list types
-struct ListData {
+class ListData: ObservableObject {
     
     /// List data of club list
     static let club = ListDataListType<Club>()
@@ -74,9 +74,70 @@ struct ListData {
     
     /// List data of notes list
     static let note = ListDataLocalListType<Note>()
+    
+    /// Shared instace for singleton
+    static let shared = ListData()
 
     /// Private init for singleton
     private init() {}
+    
+    /// Connection state for list fetching
+    @Published var connectionState: ConnectionState = .loading
+    
+    /// Fetch all list data
+    func fetchLists() {
+        
+        connectionState = .loading
+        
+        // Reset lists
+        ListData.person.list = nil
+        ListData.reason.list = nil
+        ListData.fine.list = nil
+        ListData.club.list = nil
+        
+        // Enter DispathGroup
+        let dispatchGroup = DispatchGroup()
+        dispatchGroup.enter()
+        dispatchGroup.enter()
+        dispatchGroup.enter()
+        dispatchGroup.enter()
+        
+        // Fetch person list
+        ListData.person.fetch {
+            dispatchGroup.leave()
+        } failedHandler: {
+            self.connectionState = .failed
+        }
+        
+        // Fetch reason list
+        ListData.reason.fetch {
+            dispatchGroup.leave()
+        } failedHandler: {
+            self.connectionState = .failed
+        }
+        
+        // Fetch fine list
+        ListData.fine.fetch {
+            dispatchGroup.leave()
+        } failedHandler: {
+            self.connectionState = .failed
+        }
+        
+        // Fetch club list
+        ListData.club.fetch {
+            dispatchGroup.leave()
+        } failedHandler: {
+            self.connectionState = .failed
+        }
+        
+        // Notify dispath group
+        dispatchGroup.notify(queue: .main) {
+            Settings.shared.latePaymentInterest = ListData.club.list?.first(where: { club in
+                Settings.shared.person?.clubId == club.id
+            })?.latePaymentInterest
+            self.connectionState = .passed
+        }
+    }
 }
 
 /// State of internet connection

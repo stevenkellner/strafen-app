@@ -192,7 +192,21 @@ extension Double {
     }
 }
 
+// Extension of UISceneConfiguration to get a default configuration
+extension UISceneConfiguration {
+    
+    /// Default configuration
+    static func `default`(session: UISceneSession) -> UISceneConfiguration {
+        UISceneConfiguration(name: "Default Configuration", sessionRole: session.role)
+    }
+}
+
+// Extension of PersonNameComponents to formatt it to PersonName
 extension PersonNameComponents {
+    
+    /// Formatted as PersonName
+    ///
+    /// Is nil, if PersonNameComponents has no given or family name
     var personName: PersonName? {
         guard let givenName = givenName, let familyName = familyName else {
             return nil
