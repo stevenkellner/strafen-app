@@ -31,8 +31,6 @@ extension EnumRandom {
     }
 }
 
-extension WidgetFine.Payed: EnumRandom {}
-
 extension Date {
     static func random(since startDate: Date = Date(timeIntervalSince1970: 0), till endDate: Date = Date()) -> Date {
         let interval = endDate.timeIntervalSince(startDate)
@@ -92,7 +90,20 @@ extension FineReasonCustom {
 
 extension WidgetFineNoTemplate {
     static var random: WidgetFineNoTemplate {
-        WidgetFineNoTemplate(date: FormattedDate(date: .random()), payed: .random, number: (1...5).randomElement()!, id: UUID(), fineReason: .random)
+        let randomPayed: WidgetFine.Payed
+        if Bool.random() {
+            randomPayed = .unpayed
+        } else {
+            var dateComponents = DateComponents()
+            dateComponents.year = 2019
+            dateComponents.month = 1
+            dateComponents.day = 1
+            let userCalendar = Calendar.current
+            let startDate = userCalendar.date(from: dateComponents)
+            let randomDate = Date.random(since: startDate ?? Date(timeIntervalSince1970: 1545264000), till: Date())
+            randomPayed = .payed(date: randomDate)
+        }
+        return WidgetFineNoTemplate(date: FormattedDate(date: .random()), payed: randomPayed, number: (1...5).randomElement()!, id: UUID(), fineReason: .random)
     }
 }
 

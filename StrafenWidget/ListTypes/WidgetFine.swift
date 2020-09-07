@@ -67,19 +67,40 @@ struct WidgetFine: WidgetListTypes {
     }
     
     /// Fine payed
-    enum Payed: Decodable, CaseIterable {
+    enum Payed: Decodable, Equatable {
         
         /// payed
-        case payed
+        case payed(date: Date)
         
         /// unpayed
         case unpayed
         
+        /// Coding Error
+        enum CodingError: Error {
+            
+            /// Payed but no date
+            case payedNoDate
+        }
+        
         /// Init from decoder
         init(from decoder: Decoder) throws {
             let container = try decoder.singleValueContainer()
-            let rawPayed = try container.decode(Bool.self)
-            self = rawPayed ? .payed : .unpayed
+            do {
+                let rawPayed = try container.decode(Bool.self)
+                if rawPayed {
+                    throw CodingError.payedNoDate
+                }
+                self = .unpayed
+            } catch CodingError.payedNoDate {
+                throw CodingError.payedNoDate
+            } catch {
+                let date = try container.decode(FormattedDate.self)
+                self = .payed(date: date.date)
+            }
+        }
+        
+        var boolValue: Bool {
+            self != .unpayed
         }
     }
     
@@ -251,5 +272,45 @@ struct FineReasonTemplate: FineReason {
     /// Fine reason with no template
     func fineReasonCustom(reasonList: [WidgetReason]) -> FineReasonCustom {
         FineReasonCustom(reason: reason(reasonList: reasonList), amount: amount(reasonList: reasonList), importance: importance(reasonList: reasonList))
+    }
+}
+
+/// Extension of WidgetFine to calculate the late payment interest
+extension WidgetFineNoTemplate {
+    
+    /// Late payment interest
+    func latePaymentInterest(with latePaymentInterest: WidgetUrls.CodableSettings.LatePaymentInterest?) -> Euro? {
+        guard let latePaymentInterest = latePaymentInterest else {
+            return nil
+        }
+        
+        // Get start date
+        let calender = Calendar.current
+        var startDate = calender.startOfDay(for: date.date)
+        startDate = calender.date(byAdding: latePaymentInterest.interestFreePeriod.unit.dateComponentFlag, value: latePaymentInterest.interestFreePeriod.value, to: startDate) ?? startDate
+        
+        // Get end date
+        var endDate = Date()
+        if case .payed(date: let paymentDate) = payed {
+            endDate = paymentDate
+        }
+        
+        // Return .zero if start date is greater than the end date
+        guard startDate <= endDate else {
+            return .zero
+        }
+        
+        // Get number of components between start and end date
+        let numberBetweenDates = latePaymentInterest.interestPeriod.unit.numberBetweenDates(start: startDate, end: endDate) / latePaymentInterest.interestPeriod.value
+        
+        // Original amount
+        let originalAmount = fineReason.amount * number
+        
+        // Return late payment interest
+        if latePaymentInterest.compoundInterest {
+            return originalAmount * (pow(1 + latePaymentInterest.interestRate / 100, Double(numberBetweenDates)) - 1)
+        } else {
+            return originalAmount * (latePaymentInterest.interestRate / 100 * Double(numberBetweenDates))
+        }
     }
 }

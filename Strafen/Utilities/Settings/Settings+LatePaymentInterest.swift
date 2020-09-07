@@ -77,6 +77,7 @@ extension Settings {
                 }
             }
             
+            /// Number between dates
             func numberBetweenDates(start startDate: Date, end endDate: Date) -> Int {
                 let calender = Calendar.current
                 let startDate = calender.startOfDay(for: startDate)

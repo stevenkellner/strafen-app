@@ -20,27 +20,27 @@ extension FileManager {
 extension Array where Element == WidgetFineNoTemplate {
     
     /// Payed amount sum
-    var payedAmountSum: Euro {
+    func payedAmountSum(with latePaymentInterest: WidgetUrls.CodableSettings.LatePaymentInterest?) -> Euro {
         filter { fine in
-            fine.payed == .payed
+            fine.payed.boolValue
         }.reduce(.zero) { result, fine in
-            result + fine.fineReason.amount * fine.number
+            result + fine.fineReason.amount * fine.number + (fine.latePaymentInterest(with: latePaymentInterest) ?? .zero)
         }
     }
     
     /// Unpayed amount sum
-    var unpayedAmountSum: Euro {
+    func unpayedAmountSum(with latePaymentInterest: WidgetUrls.CodableSettings.LatePaymentInterest?) -> Euro {
         filter { fine in
-            fine.payed == .unpayed
+            !fine.payed.boolValue
         }.reduce(.zero) { result, fine in
-            result + fine.fineReason.amount * fine.number
+            result + fine.fineReason.amount * fine.number + (fine.latePaymentInterest(with: latePaymentInterest) ?? .zero)
         }
     }
     
     /// Total amount sum
-    var totalAmountSum: Euro {
+    func totalAmountSum(with latePaymentInterest: WidgetUrls.CodableSettings.LatePaymentInterest?) -> Euro {
         reduce(.zero) { result, fine in
-            result + fine.fineReason.amount * fine.number
+            result + fine.fineReason.amount * fine.number + (fine.latePaymentInterest(with: latePaymentInterest) ?? .zero)
         }
     }
 }
