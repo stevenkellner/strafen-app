@@ -41,6 +41,10 @@ This repo is used to create an app for iOS 14+ which can be used to display the 
 ## Bug Report and Feature Request
 - To report a bug of the app, you can use the Feedback option in TestFlight or create a new issue under [Github Issues](https://github.com/stevenkellner/strafen/issues).
 - To request a new feature, also create a new issue under [Github Issues](https://github.com/stevenkellner/strafen/issues).
+    * If you create an issue with Github Issues please assign it to @stevenkellner and select our projects `Strafen App`.
+    
+## Notes
+- This app also supports the new iOS 14 widgets for lock screen and home screen in all three different sizes (small / medium / large). These widgets are used to show the total of your paid and unpaid fines. The medium and large widgets also show details about any your fines.
 
 
 -- german version - deutsche Version --
@@ -85,3 +89,7 @@ Diese Repo wird genutzt um eine App für iOS 14+ zu bauen, welche den Strafenkat
 ## Fehlerbericht und Featureanfrage
 - Um einen Fehler der App zu melden, kannst du die Feedback Option in TestFlight benutzen oder erstelle einen neuen Issue in [Github Issues](https://github.com/stevenkellner/strafen/issues).
 - Um eine neue Feature anzuforden, kannst du ebenfalls einen neuen Issue in [Github Issues](https://github.com/stevenkellner/strafen/issues) erstellen.
+    * Wenn du ein Problem unter bei Gihub Issues erstellst, bitte ordne es @stevenkellner zu und wähle `Strafen App`unter Projects aus.
+    
+## Sonstiges
+- Die App unterstützt ebenfalls die neuen iOS 14 Widgets für den Start- und Sperrbildschirm in allen drei verschiedenen Größen (klein / mittel / groß). Diese Widgets zeigen deine gesamten gezahlten und ausstehenden Strafen. Die mittleren und großen Widgets zeigen sogar Details zu all deinen Strafen.
