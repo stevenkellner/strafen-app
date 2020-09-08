@@ -55,7 +55,7 @@ Diese Repo wird genutzt um eine App für iOS 14+ zu bauen, welche den Strafenkat
 ## Voraussetzungen
 - Für die App Installation (Eine der Möglichkeiten):
   + iOS 14+
-  + iOS 14+ beta: Lade das Profil vaon der [Apple Beta Webseite](https://beta.apple.com/sp/de/betaprogram/guide?locale=de) und befolge die beschriebenen Schritte.
+  + iOS 14+ beta: Lade das Profil von der [Apple Beta Webseite](https://beta.apple.com/sp/de/betaprogram/guide?locale=de#ios) und befolge die beschriebenen Schritte.
 - Für die Entwicklung:
   + Swift 5.3+
 
