@@ -49,9 +49,14 @@ struct SettingsView: View {
                             // Style Changer
                             StyleChanger()
                             
-                            // Fines Formatter
                             if settings.person?.isCashier ?? false {
+                                
+                                // Fines Formatter
                                 FinesFormatter(dismissHandler: $dismissHandler)
+                                
+                                // Force Sign out button
+                                ForceSignOutButton(dismissHandler: $dismissHandler)
+                                
                             }
                             
                             // Log out button
@@ -106,7 +111,8 @@ struct SettingsView: View {
                         
                         // Copy button
                         Button {
-                            UIPasteboard.general.string = settings.person!.clubId.uuidString
+                            guard let id = settings.person?.clubId.uuidString else { return }
+                            UIPasteboard.general.string = id
                             let generator = UINotificationFeedbackGenerator()
                             generator.notificationOccurred(.success)
                         } label: {
@@ -388,6 +394,28 @@ struct SettingsView: View {
                         }.frame(width: UIScreen.main.bounds.width * 0.2, height: 50)
                     }
                 }
+            }
+        }
+    }
+    
+    /// Force sign out button
+    struct ForceSignOutButton: View {
+        
+        ///Dismiss handler
+        @Binding var dismissHandler: (() -> ())?
+        
+        var body: some View {
+            VStack(spacing: 0) {
+                Title("Abmelden Anderer Erzwingen")
+                NavigationLink(destination: SettingsForceSignOut(dismissHandler: $dismissHandler)) {
+                    ZStack {
+                        Outline()
+                        Text("Abmelden Anderer Erzwingen")
+                            .lineLimit(1)
+                            .font(.text(20))
+                            .foregroundColor(.textColor)
+                    }
+                }.frame(width: UIScreen.main.bounds.width * 0.95, height: 50)
             }
         }
     }

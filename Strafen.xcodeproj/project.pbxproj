@@ -105,7 +105,6 @@
 		B0C1C52524A8BC14007B584B /* RoundedCorners.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0C1C52424A8BC14007B584B /* RoundedCorners.swift */; };
 		B0C1C52724A8BEE6007B584B /* Other.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0C1C52624A8BEE6007B584B /* Other.swift */; };
 		B0C554052505646400BA3E26 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0C554042505646400BA3E26 /* AppDelegate.swift */; };
-		B0C5540725056A0F00BA3E26 /* ExecuteOnlyOnce.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0C5540625056A0F00BA3E26 /* ExecuteOnlyOnce.swift */; };
 		B0DE1CBB24C44D61006CCFE9 /* LocalListChanger.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0DE1CBA24C44D61006CCFE9 /* LocalListChanger.swift */; };
 		B0DE1CBD24C48FB3006CCFE9 /* NoteDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0DE1CBC24C48FB3006CCFE9 /* NoteDetail.swift */; };
 		B0E0F82724A63E5800C82828 /* StrafenApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E0F82624A63E5800C82828 /* StrafenApp.swift */; };
@@ -132,6 +131,9 @@
 		B0E6E86F24CDD38500D467AC /* OutlineAndSheetBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E6E86E24CDD38500D467AC /* OutlineAndSheetBar.swift */; };
 		B0E6E87324CDD3ED00D467AC /* Outline.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E6E87124CDD3CC00D467AC /* Outline.swift */; };
 		B0F4331D2502CA7500B0AAA7 /* HomeViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0F4331C2502CA7500B0AAA7 /* HomeViews.swift */; };
+		B0F881AA25065B92008304A8 /* ForceSignedOutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0F881A925065B92008304A8 /* ForceSignedOutView.swift */; };
+		B0F881AC2506874C008304A8 /* SettingsForceSignOut.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0F881AB2506874C008304A8 /* SettingsForceSignOut.swift */; };
+		B0F881AE2506B50A008304A8 /* ForceSignOutChanger.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0F881AD2506B50A008304A8 /* ForceSignOutChanger.swift */; };
 		EF23B482BE1B8F69206DAA9F /* Pods_StrafenTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 085A35B45E057FA1E93DE8FF /* Pods_StrafenTests.framework */; };
 /* End PBXBuildFile section */
 
@@ -306,6 +308,9 @@
 		B0E6E86E24CDD38500D467AC /* OutlineAndSheetBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutlineAndSheetBar.swift; sourceTree = "<group>"; };
 		B0E6E87124CDD3CC00D467AC /* Outline.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Outline.swift; sourceTree = "<group>"; };
 		B0F4331C2502CA7500B0AAA7 /* HomeViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViews.swift; sourceTree = "<group>"; };
+		B0F881A925065B92008304A8 /* ForceSignedOutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForceSignedOutView.swift; sourceTree = "<group>"; };
+		B0F881AB2506874C008304A8 /* SettingsForceSignOut.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsForceSignOut.swift; sourceTree = "<group>"; };
+		B0F881AD2506B50A008304A8 /* ForceSignOutChanger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForceSignOutChanger.swift; sourceTree = "<group>"; };
 		C48AEE77D98866AC072A2AD1 /* Pods-Strafen-StrafenUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Strafen-StrafenUITests.debug.xcconfig"; path = "Target Support Files/Pods-Strafen-StrafenUITests/Pods-Strafen-StrafenUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		E4A36A38D3FB33CF3F264FBB /* Pods-Strafen.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Strafen.release.xcconfig"; path = "Target Support Files/Pods-Strafen/Pods-Strafen.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -409,6 +414,7 @@
 				B02B891424BDFDA9004562B9 /* SettingsView.swift */,
 				B0280AB324FFB9D30049202D /* LatePaymentInterestChangerView.swift */,
 				B02019D324FE779000C660B9 /* SettingsFinesFormatterView.swift */,
+				B0F881AB2506874C008304A8 /* SettingsForceSignOut.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -574,6 +580,7 @@
 			isa = PBXGroup;
 			children = (
 				B0B799D024AE50060027727E /* ClubImageChanger.swift */,
+				B0F881AD2506B50A008304A8 /* ForceSignOutChanger.swift */,
 				B0E10AA72502677100A5803B /* LatePaymentInterestChanger.swift */,
 				B09CB23924C725FC0096C4F8 /* ListChanger.swift */,
 				B0DE1CBA24C44D61006CCFE9 /* LocalListChanger.swift */,
@@ -670,6 +677,7 @@
 			children = (
 				B0F4331C2502CA7500B0AAA7 /* HomeViews.swift */,
 				B0C554042505646400BA3E26 /* AppDelegate.swift */,
+				B0F881A925065B92008304A8 /* ForceSignedOutView.swift */,
 			);
 			path = Necessaries;
 			sourceTree = "<group>";
@@ -1107,12 +1115,14 @@
 				B02EF27024C497CC00E4CEBC /* NoteEditor.swift in Sources */,
 				B0A385B024ABC21C00628038 /* SignInEMailValidationView.swift in Sources */,
 				B020C7B724AE7204008940FE /* ListFetcher.swift in Sources */,
+				B0F881AA25065B92008304A8 /* ForceSignedOutView.swift in Sources */,
 				B0B81DC72502524000249447 /* Settings+Person.swift in Sources */,
 				B0E2C19524CC6620009E3666 /* Reason.swift in Sources */,
 				B0C1C51524A78BD7007B584B /* LoginView.swift in Sources */,
 				B0B799D124AE50060027727E /* ClubImageChanger.swift in Sources */,
 				B0E5C71024C377F70004E758 /* NoteAddNew.swift in Sources */,
 				B0C1C51924A78C90007B584B /* Color.swift in Sources */,
+				B0F881AC2506874C008304A8 /* SettingsForceSignOut.swift in Sources */,
 				B0619C0224C0C1E2008969A1 /* String.swift in Sources */,
 				B07938D824BF037900F86E86 /* PersonAddNew.swift in Sources */,
 				B0B81DC12502520E00249447 /* CodableSettings.swift in Sources */,
@@ -1157,6 +1167,7 @@
 				B042D44524BCD80C0029F2D5 /* PersonDetail.swift in Sources */,
 				B0F4331D2502CA7500B0AAA7 /* HomeViews.swift in Sources */,
 				B0B117CC24FA962C006A22F2 /* SignInWithApple.swift in Sources */,
+				B0F881AE2506B50A008304A8 /* ForceSignOutChanger.swift in Sources */,
 				B0619C0824C1CAB9008969A1 /* CustomDatePicker.swift in Sources */,
 				B006920624C615D500AE2EF0 /* HomeTabs.swift in Sources */,
 				B0619C0F24C20EAA008969A1 /* ReasonAddNew.swift in Sources */,
@@ -1164,7 +1175,6 @@
 				B0619BFE24C0B999008969A1 /* PersonFineEditor.swift in Sources */,
 				B0BE62D724AB58AE0018604C /* SignInEMailView.swift in Sources */,
 				B020C7C024AF7CC6008940FE /* Person.swift in Sources */,
-				B0C5540725056A0F00BA3E26 /* ExecuteOnlyOnce.swift in Sources */,
 				B0619C0D24C20C4B008969A1 /* ReasonList.swift in Sources */,
 				B0B81DC52502523100249447 /* Settings+Appereance.swift in Sources */,
 				B0C1C52524A8BC14007B584B /* RoundedCorners.swift in Sources */,

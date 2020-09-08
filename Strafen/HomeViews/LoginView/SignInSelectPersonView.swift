@@ -43,6 +43,9 @@ struct SignInSelectPersonView: View {
     /// State of send mail task connection
     @State var connectionState: ConnectionState = .passed
     
+    /// List data
+    @ObservedObject var listData = ListData.shared
+    
     /// Indicates if no connection alert is shown
     @State var noConnectionAlert = false
     
@@ -135,6 +138,7 @@ struct SignInSelectPersonView: View {
             if taskState == .passed {
                 connectionState = .passed
                 DispatchQueue.main.async {
+                    listData.connectionState = .loading
                     Settings.shared.person = .init(id: personId, name: selectedPerson?.personName ?? personName, clubId: clubId, clubName: clubName, isCashier: false)
                     showSignInSheet = false
                 }

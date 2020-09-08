@@ -146,7 +146,7 @@ struct ProfileDetail: View {
                                     .fillColor(settings.style.fillColor(colorScheme, defaultStyle: Color.custom.lightGreen))
                                 
                                 // Amount
-                                Text((fineListData.list?.payedAmountSum(of: settings.person!.id)).text)
+                                Text(String(describing: fineListData.list!.payedAmountSum(of: settings.person!.id)))
                                     .foregroundColor(settings.style == .default ? .textColor : Color.custom.lightGreen)
                                     .font(.text(16))
                                     .lineLimit(1)
@@ -183,7 +183,7 @@ struct ProfileDetail: View {
                                     .fillColor(settings.style.fillColor(colorScheme, defaultStyle: Color.custom.red))
                                 
                                 // Amount
-                                Text((fineListData.list?.unpayedAmountSum(of: settings.person!.id)).text)
+                                Text(String(describing: fineListData.list!.unpayedAmountSum(of: settings.person!.id)))
                                     .foregroundColor(settings.style == .default ? .textColor : Color.custom.red)
                                     .font(.text(16))
                                     .lineLimit(1)
@@ -223,7 +223,7 @@ struct ProfileDetail: View {
                                     .fillColor(settings.style.fillColor(colorScheme, defaultStyle: Color.custom.blue))
                                 
                                 // Amount
-                                Text((fineListData.list?.totalAmountSum(of: settings.person!.id)).text)
+                                Text(String(describing: fineListData.list!.totalAmountSum(of: settings.person!.id)))
                                     .foregroundColor(settings.style == .default ? .textColor : Color.custom.blue)
                                     .font(.text(16))
                                     .lineLimit(1)

@@ -27,7 +27,8 @@ let appUrls = """
                 "personList": "changer/personChanger.php",
                 "reasonList": "changer/reasonChanger.php",
                 "fineList": "changer/fineChanger.php",
-                "latePaymentInterest": "changer/latePaymentInterestChanger.php"
+                "latePaymentInterest": "changer/latePaymentInterestChanger.php",
+                "forceSignOut": "changer/forceSignOutChanger.php"
             },
             "authorization": "c3RldmVuOmZ5d3dlYi1yeWhrdU0tcXlneGU2",
             "key": "UM5fZEML22vzCQvMwyVN",

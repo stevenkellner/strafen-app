@@ -23,7 +23,7 @@ struct Club: ListTypes {
     var postParameters: [String : Any]? = nil
     
     /// Person in club list
-    struct ClubPerson: Decodable {
+    struct ClubPerson: Decodable, Identifiable {
         
         /// Coding Key for Decoding Json
         enum CodingKeys: String, CodingKey {
@@ -88,7 +88,7 @@ struct Club: ListTypes {
     let name: String
     
     /// All persons in this club
-    let allPersons: [ClubPerson]
+    var allPersons: [ClubPerson]
     
     /// Late payment interest
     let latePaymentInterest: Settings.LatePaymentInterest?
