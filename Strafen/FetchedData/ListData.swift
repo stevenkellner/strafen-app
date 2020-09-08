@@ -84,6 +84,9 @@ class ListData: ObservableObject {
     /// Connection state for list fetching
     @Published var connectionState: ConnectionState = .loading
     
+    /// Person is force signed out
+    @Published var forceSignedOut = false
+    
     /// Fetch all list data
     func fetchLists() {
         
@@ -132,6 +135,10 @@ class ListData: ObservableObject {
         
         // Notify dispath group
         dispatchGroup.notify(queue: .main) {
+            let person = Settings.shared.person
+            guard ListData.club.list!.first(where: { $0.id == person?.clubId })?.allPersons.contains(where: { $0.id == person?.id }) ?? false else {
+                return self.forceSignedOut = true
+            }
             Settings.shared.latePaymentInterest = ListData.club.list?.first(where: { club in
                 Settings.shared.person?.clubId == club.id
             })?.latePaymentInterest

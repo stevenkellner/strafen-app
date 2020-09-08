@@ -172,7 +172,7 @@ struct PersonFineDetail: View {
                                 }
                             }
                             .alert(isPresented: $showAlertToUnpayed) {
-                                Alert(title: Text("Strafe Ändern"), message: Text("Möchtest du diese Strafe wircklich als unbezahlt markieren?"), primaryButton: .destructive(Text("Abbrechen")), secondaryButton: .default(Text("Bestätigen"), action: handleSaveToUnpayed))
+                                Alert(title: Text("Strafe Ändern"), message: Text("Möchtest du diese Strafe wirklich als unbezahlt markieren?"), primaryButton: .destructive(Text("Abbrechen")), secondaryButton: .default(Text("Bestätigen"), action: handleSaveToUnpayed))
                             }
                         
                         // Right of the divider

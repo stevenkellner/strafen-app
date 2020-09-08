@@ -335,8 +335,6 @@ struct BackButton: View {
     }
 }
 
-
-
 // Add New List Item Button
 struct AddNewListItemButton<ListType, AddNewSheetContent>: View where AddNewSheetContent: View {
     

@@ -48,6 +48,9 @@ struct SignInNewClubView: View {
     /// Indicates if no connection alert is shown
     @State var noConnectionAlert = false
     
+    /// List data
+    @ObservedObject var listData = ListData.shared
+    
     /// Screen size
     @State var screenSize: CGSize?
     
@@ -218,6 +221,7 @@ struct SignInNewClubView: View {
             }
             dispatchGroup.notify(queue: .main) {
                 connectionState = .passed
+                listData.connectionState = .loading
                 Settings.shared.person = .init(id: personId, name: personName, clubId: clubId, clubName: clubName, isCashier: true)
                 showSignInSheet = false
             }

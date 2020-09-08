@@ -53,6 +53,9 @@ struct AppUrls {
         /// for late payment interest
         let latePaymentInterest: URL
         
+        /// for force sign out
+        let forceSignOut: URL
+        
         init(_ appUrls: CodableAppUrls) {
             let baseUrl = URL(string: appUrls.baseUrl)!
             newClub = baseUrl.appendingPathComponent(appUrls.changer.newClub)
@@ -64,6 +67,7 @@ struct AppUrls {
             reasonList = baseUrl.appendingPathComponent(appUrls.changer.reasonList)
             fineList = baseUrl.appendingPathComponent(appUrls.changer.fineList)
             latePaymentInterest = baseUrl.appendingPathComponent(appUrls.changer.latePaymentInterest)
+            forceSignOut = baseUrl.appendingPathComponent(appUrls.changer.forceSignOut)
         }
     }
     
@@ -213,6 +217,9 @@ struct CodableAppUrls: Decodable {
         
         /// for late payment interest
         let latePaymentInterest: String
+        
+        /// for force Sign Out
+        let forceSignOut: String
     }
     
     /// Base url of server

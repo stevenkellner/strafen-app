@@ -112,6 +112,9 @@ struct LoginView: View {
     /// Active home tab
     @ObservedObject var homeTabs = HomeTabs.shared
     
+    /// List data
+    @ObservedObject var listData = ListData.shared
+    
     /// State of internet connection
     @State var connectionState: ConnectionState = .passed
     
@@ -175,6 +178,7 @@ struct LoginView: View {
                     if let club = clubListData.list!.first(where: { $0.allPersons.contains(where: { ($0.login.personLogin as? PersonLoginApple)?.appleIdentifier == userId }) }) {
                         let person = club.allPersons.first(where: { ($0.login.personLogin as? PersonLoginApple)?.appleIdentifier == userId })!
                         connectionState = .passed
+                        listData.connectionState = .loading
                         Settings.shared.person = .init(id: person.id, name: person.personName, clubId: club.id, clubName: club.name, isCashier: person.isCashier)
                         homeTabs.active = .profileDetail
                     } else {
@@ -228,6 +232,7 @@ struct LoginView: View {
                         let person = club.allPersons.first(where: { ($0.login.personLogin as? PersonLoginEmail)?.email == email })!
                         if (person.login.personLogin as! PersonLoginEmail).password == password.encrypted {
                             connectionState = .passed
+                            listData.connectionState = .loading
                             Settings.shared.person = .init(id: person.id, name: person.personName, clubId: club.id, clubName: club.name, isCashier: person.isCashier)
                             homeTabs.active = .profileDetail
                         } else {

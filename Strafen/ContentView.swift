@@ -19,6 +19,9 @@ struct ContentView: View {
     /// Color scheme to get appearance of this device
     @Environment(\.colorScheme) var colorScheme
     
+    /// List data
+    @ObservedObject var listData = ListData.shared
+    
     /// Active home tab
     @ObservedObject var homeTabs = HomeTabs.shared
     
@@ -31,7 +34,13 @@ struct ContentView: View {
             // Activity View
             ActivityView.shared
             
-            if settings.person != nil {
+            if listData.forceSignedOut {
+                ZStack {
+                    colorScheme.backgroundColor
+                    ForceSignedOutView()
+                }.edgesIgnoringSafeArea(.all)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+            } else if settings.person != nil {
                 GeometryReader { geometry in
                     VStack(spacing: 0) {
                         
