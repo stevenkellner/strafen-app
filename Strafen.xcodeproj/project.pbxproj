@@ -69,8 +69,6 @@
 		B077B57424CAC652003844CE /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B077B57324CAC652003844CE /* SwiftUI.framework */; };
 		B077B57724CAC652003844CE /* StrafenWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = B077B57624CAC652003844CE /* StrafenWidget.swift */; };
 		B077B57A24CAC655003844CE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B077B57924CAC655003844CE /* Assets.xcassets */; };
-		B077B57C24CAC655003844CE /* StrafenWidget.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = B077B57824CAC652003844CE /* StrafenWidget.intentdefinition */; };
-		B077B57D24CAC655003844CE /* StrafenWidget.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = B077B57824CAC652003844CE /* StrafenWidget.intentdefinition */; };
 		B077B58024CAC655003844CE /* StrafenWidgetExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = B077B57024CAC652003844CE /* StrafenWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		B077B58A24CACEEB003844CE /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0C1C51F24A79328007B584B /* Constants.swift */; };
 		B077B58E24CB0714003844CE /* Provider.swift in Sources */ = {isa = PBXBuildFile; fileRef = B077B58C24CB06FE003844CE /* Provider.swift */; };
@@ -78,7 +76,6 @@
 		B077B59A24CB0A7E003844CE /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0C1C51824A78C90007B584B /* Color.swift */; };
 		B07938D624BEF4C300F86E86 /* PersonFineDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = B07938D524BEF4C300F86E86 /* PersonFineDetail.swift */; };
 		B07938D824BF037900F86E86 /* PersonAddNew.swift in Sources */ = {isa = PBXBuildFile; fileRef = B07938D724BF037900F86E86 /* PersonAddNew.swift */; };
-		B0967E47250CFB70004B4335 /* Intents.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = B0967E49250CFB70004B4335 /* Intents.intentdefinition */; };
 		B09CB23A24C725FC0096C4F8 /* ListChanger.swift in Sources */ = {isa = PBXBuildFile; fileRef = B09CB23924C725FC0096C4F8 /* ListChanger.swift */; };
 		B0A385B024ABC21C00628038 /* SignInEMailValidationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0A385AF24ABC21C00628038 /* SignInEMailValidationView.swift */; };
 		B0B117CC24FA962C006A22F2 /* SignInWithApple.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0B117CB24FA962C006A22F2 /* SignInWithApple.swift */; };
@@ -244,7 +241,6 @@
 		B077B57124CAC652003844CE /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		B077B57324CAC652003844CE /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 		B077B57624CAC652003844CE /* StrafenWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StrafenWidget.swift; sourceTree = "<group>"; };
-		B077B57824CAC652003844CE /* StrafenWidget.intentdefinition */ = {isa = PBXFileReference; lastKnownFileType = file.intentdefinition; path = StrafenWidget.intentdefinition; sourceTree = "<group>"; };
 		B077B57924CAC655003844CE /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B077B57B24CAC655003844CE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B077B58824CAC9E9003844CE /* Strafen.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Strafen.entitlements; sourceTree = "<group>"; };
@@ -253,9 +249,6 @@
 		B077B59624CB0801003844CE /* WidgetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetView.swift; sourceTree = "<group>"; };
 		B07938D524BEF4C300F86E86 /* PersonFineDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonFineDetail.swift; sourceTree = "<group>"; };
 		B07938D724BF037900F86E86 /* PersonAddNew.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonAddNew.swift; sourceTree = "<group>"; };
-		B0967E48250CFB70004B4335 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.intentdefinition; name = Base; path = Base.lproj/Intents.intentdefinition; sourceTree = "<group>"; };
-		B0967E4B250CFB74004B4335 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = "../../../../../../Library/Mobile Documents/com~apple~CloudDocs/.Trash/Intents.strings"; sourceTree = "<group>"; };
-		B0967E4D250CFB77004B4335 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Intents.strings; sourceTree = "<group>"; };
 		B09CB23924C725FC0096C4F8 /* ListChanger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListChanger.swift; sourceTree = "<group>"; };
 		B0A385AF24ABC21C00628038 /* SignInEMailValidationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInEMailValidationView.swift; sourceTree = "<group>"; };
 		B0B117CB24FA962C006A22F2 /* SignInWithApple.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInWithApple.swift; sourceTree = "<group>"; };
@@ -563,7 +556,6 @@
 		B077B58B24CAE7A2003844CE /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				B077B57824CAC652003844CE /* StrafenWidget.intentdefinition */,
 				B077B58924CACA78003844CE /* StrafenWidgetExtension.entitlements */,
 				B077B57924CAC655003844CE /* Assets.xcassets */,
 				B077B57B24CAC655003844CE /* Info.plist */,
@@ -787,7 +779,6 @@
 				B0E0F82A24A63E5A00C82828 /* Assets.xcassets */,
 				B0E0F82F24A63E5A00C82828 /* Info.plist */,
 				B077B58824CAC9E9003844CE /* Strafen.entitlements */,
-				B0967E49250CFB70004B4335 /* Intents.intentdefinition */,
 				B0E0F82C24A63E5A00C82828 /* Preview Content */,
 			);
 			path = Controller;
@@ -1086,7 +1077,6 @@
 				B0E6E86D24CDD36000D467AC /* RoundedCorners.swift in Sources */,
 				B061752E24CB471600382D9C /* SmallWidget.swift in Sources */,
 				B077B59824CB0804003844CE /* WidgetView.swift in Sources */,
-				B077B57C24CAC655003844CE /* StrafenWidget.intentdefinition in Sources */,
 				B077B57724CAC652003844CE /* StrafenWidget.swift in Sources */,
 				B061754424CC658200382D9C /* WidgetUrls.swift in Sources */,
 				B0E6E87324CDD3ED00D467AC /* Outline.swift in Sources */,
@@ -1131,7 +1121,6 @@
 				B0619C0224C0C1E2008969A1 /* String.swift in Sources */,
 				B07938D824BF037900F86E86 /* PersonAddNew.swift in Sources */,
 				B0B81DC12502520E00249447 /* CodableSettings.swift in Sources */,
-				B0967E47250CFB70004B4335 /* Intents.intentdefinition in Sources */,
 				B0E0F82924A63E5800C82828 /* ContentView.swift in Sources */,
 				B0619C0024C0BD16008969A1 /* ImportanceChanger.swift in Sources */,
 				B0B799CC24ACA1990027727E /* ImageSelector.swift in Sources */,
@@ -1145,7 +1134,6 @@
 				B07938D624BEF4C300F86E86 /* PersonFineDetail.swift in Sources */,
 				B020C7C824B11649008940FE /* RegisterPersonChanger.swift in Sources */,
 				B020C7C624B0C8BE008940FE /* ImageData.swift in Sources */,
-				B077B57D24CAC655003844CE /* StrafenWidget.intentdefinition in Sources */,
 				B020C7C224B0B9D0008940FE /* PersonRowImage.swift in Sources */,
 				B0280AB424FFB9D30049202D /* LatePaymentInterestChangerView.swift in Sources */,
 				B042D43D24BB2BBD0029F2D5 /* Array.swift in Sources */,
@@ -1244,19 +1232,6 @@
 		};
 /* End PBXTargetDependency section */
 
-/* Begin PBXVariantGroup section */
-		B0967E49250CFB70004B4335 /* Intents.intentdefinition */ = {
-			isa = PBXVariantGroup;
-			children = (
-				B0967E48250CFB70004B4335 /* Base */,
-				B0967E4B250CFB74004B4335 /* en */,
-				B0967E4D250CFB77004B4335 /* en */,
-			);
-			name = Intents.intentdefinition;
-			sourceTree = "<group>";
-		};
-/* End PBXVariantGroup section */
-
 /* Begin XCBuildConfiguration section */
 		B077B58224CAC655003844CE /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -1265,6 +1240,7 @@
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
 				CODE_SIGN_ENTITLEMENTS = StrafenWidget/Controller/StrafenWidgetExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 7;
 				DEVELOPMENT_TEAM = K7NTJ83ZF8;
 				INFOPLIST_FILE = StrafenWidget/Controller/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1287,6 +1263,7 @@
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
 				CODE_SIGN_ENTITLEMENTS = StrafenWidget/Controller/StrafenWidgetExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 7;
 				DEVELOPMENT_TEAM = K7NTJ83ZF8;
 				INFOPLIST_FILE = StrafenWidget/Controller/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1427,7 +1404,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Strafen/Controller/Strafen.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 7;
 				DEVELOPMENT_ASSET_PATHS = "\"Strafen/Controller/Preview Content\"";
 				DEVELOPMENT_TEAM = K7NTJ83ZF8;
 				ENABLE_PREVIEWS = YES;
@@ -1453,7 +1430,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Strafen/Controller/Strafen.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 7;
 				DEVELOPMENT_ASSET_PATHS = "\"Strafen/Controller/Preview Content\"";
 				DEVELOPMENT_TEAM = K7NTJ83ZF8;
 				ENABLE_PREVIEWS = YES;
