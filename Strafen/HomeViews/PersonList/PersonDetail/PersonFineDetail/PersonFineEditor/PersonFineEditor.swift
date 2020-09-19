@@ -267,14 +267,13 @@ struct PersonFineEditor: View {
     /// Hadles fine delete
     func handleFineDelete() {
         connectionStateDelete = .loading
-        ListChanger.shared.change(.delete, item: fine) { taskState in
-            if taskState == .passed {
-                connectionStateDelete = .passed
-                presentationMode.wrappedValue.dismiss()
-            } else {
-                connectionStateDelete = .failed
-                noConnectionAlertDelete = true
-            }
+        let changeItem = ServerListChange(changeType: .delete, item: fine)
+        Changer.shared.change(changeItem) {
+            connectionStateDelete = .passed
+            presentationMode.wrappedValue.dismiss()
+        } failedHandler: {
+            connectionStateDelete = .failed
+            noConnectionAlertDelete = true
         }
     }
     
@@ -290,15 +289,14 @@ struct PersonFineEditor: View {
         }
         let editedFine = Fine(personId: fine.personId, date: date.formattedDate, payed: fine.payed, number: number, id: fine.id, fineReason: fineReason)
         connectionStateUpdate = .loading
-        ListChanger.shared.change(.update, item: editedFine) { taskState in
-            if taskState == .passed {
-                connectionStateUpdate = .passed
-                completionHandler(editedFine)
-                presentationMode.wrappedValue.dismiss()
-            } else {
-                connectionStateUpdate = .failed
-                noConnectionAlertUpdate = true
-            }
+        let changeItem = ServerListChange(changeType: .update, item: editedFine)
+        Changer.shared.change(changeItem) {
+            connectionStateUpdate = .passed
+            completionHandler(editedFine)
+            presentationMode.wrappedValue.dismiss()
+        } failedHandler: {
+            connectionStateUpdate = .failed
+            noConnectionAlertUpdate = true
         }
     }
 }

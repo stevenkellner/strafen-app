@@ -200,23 +200,21 @@ struct SignInNewClubView: View {
             let dispatchGroup = DispatchGroup()
             dispatchGroup.enter()
             connectionState = .loading
-            NewClubChanger.shared.createNewClub(club) { taskState in
-                if taskState == .passed {
-                    dispatchGroup.leave()
-                } else {
-                    connectionState = .failed
-                    noConnectionAlert = true
-                }
+            let changeItem = NewClubChange(club: club)
+            Changer.shared.change(changeItem) {
+                dispatchGroup.leave()
+            } failedHandler: {
+                connectionState = .failed
+                noConnectionAlert = true
             }
             if let image = image {
                 dispatchGroup.enter()
-                ClubImageChanger.shared.changeImage(.add(image: image, clubId: clubId)) { taskState in
-                    if taskState == .passed {
-                        dispatchGroup.leave()
-                    } else {
-                        connectionState = .failed
-                        noConnectionAlert = true
-                    }
+                let changeItem = ClubImageChange(changeType: .add, image: image, clubId: clubId)
+                Changer.shared.change(changeItem) {
+                    dispatchGroup.leave()
+                } failedHandler: {
+                    connectionState = .failed
+                    noConnectionAlert = true
                 }
             }
             dispatchGroup.notify(queue: .main) {

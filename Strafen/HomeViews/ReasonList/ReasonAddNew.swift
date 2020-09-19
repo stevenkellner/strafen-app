@@ -134,14 +134,13 @@ struct ReasonAddNew: View {
     func handleSave() {
         connectionState = .loading
         let newReason = Reason(reason: reason, id: UUID(), amount: amount, importance: importance)
-        ListChanger.shared.change(.add, item: newReason) { taskState in
-            if taskState == .passed {
-                connectionState = .passed
-                presentationMode.wrappedValue.dismiss()
-            } else {
-                connectionState = .failed
-                noConnectionAlert = true
-            }
+        let changeItem = ServerListChange(changeType: .add, item: newReason)
+        Changer.shared.change(changeItem) {
+            connectionState = .passed
+            presentationMode.wrappedValue.dismiss()
+        } failedHandler: {
+            connectionState = .failed
+            noConnectionAlert = true
         }
     }
 }

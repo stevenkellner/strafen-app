@@ -236,16 +236,15 @@ struct PersonFineDetail: View {
         var editedFine = fine
         let date = Date()
         editedFine.payed = .payed(date: date)
-        ListChanger.shared.change(.update, item: editedFine) { taskState in
-            if taskState == .passed {
-                connectionStateToPayed = .passed
-                withAnimation {
-                    fine.payed = .payed(date: date)
-                }
-            } else {
-                connectionStateToPayed = .failed
-                noConnectionAlertToPayed = true
+        let changeItem = ServerListChange(changeType: .update, item: editedFine)
+        Changer.shared.change(changeItem) {
+            connectionStateToPayed = .passed
+            withAnimation {
+                fine.payed = .payed(date: date)
             }
+        } failedHandler: {
+            connectionStateToPayed = .failed
+            noConnectionAlertToPayed = true
         }
     }
     
@@ -254,16 +253,15 @@ struct PersonFineDetail: View {
         connectionStateToUnpayed = .loading
         var editedFine = fine
         editedFine.payed = .unpayed
-        ListChanger.shared.change(.update, item: editedFine) { taskState in
-            if taskState == .passed {
-                connectionStateToUnpayed = .passed
-                withAnimation {
-                    fine.payed = .unpayed
-                }
-            } else {
-                connectionStateToUnpayed = .failed
-                noConnectionAlertToUnpayed = true
+        let changeItem = ServerListChange(changeType: .update, item: editedFine)
+        Changer.shared.change(changeItem) {
+            connectionStateToUnpayed = .passed
+            withAnimation {
+                fine.payed = .unpayed
             }
+        } failedHandler: {
+            connectionStateToUnpayed = .failed
+            noConnectionAlertToUnpayed = true
         }
     }
 }

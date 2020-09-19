@@ -134,18 +134,17 @@ struct SignInSelectPersonView: View {
         let personId = selectedPerson?.id ?? UUID()
         let person = RegisterPerson(clubId: clubId, personId: personId, personName: personName, login: personLogin)
         connectionState = .loading
-        RegisterPersonChanger.shared.registerPerson(person) { taskState in
-            if taskState == .passed {
-                connectionState = .passed
-                DispatchQueue.main.async {
-                    listData.connectionState = .loading
-                    Settings.shared.person = .init(id: personId, name: selectedPerson?.personName ?? personName, clubId: clubId, clubName: clubName, isCashier: false)
-                    showSignInSheet = false
-                }
-            } else {
-                connectionState = .failed
-                noConnectionAlert = true
+        let changeItem = RegisterPersonChange(person: person)
+        Changer.shared.change(changeItem) {
+            connectionState = .passed
+            DispatchQueue.main.async {
+                listData.connectionState = .loading
+                Settings.shared.person = .init(id: personId, name: selectedPerson?.personName ?? personName, clubId: clubId, clubName: clubName, isCashier: false)
+                showSignInSheet = false
             }
+        } failedHandler: {
+            connectionState = .failed
+            noConnectionAlert = true
         }
     }
 }

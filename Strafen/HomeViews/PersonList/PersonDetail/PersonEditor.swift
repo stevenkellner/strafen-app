@@ -188,7 +188,7 @@ struct PersonEditor: View {
                     connectionStateUpdate = .loading
                     ImageFetcher.shared.fetch(of: person.id) { oldImage in
                         connectionStateUpdate = .passed
-                        if person.firstName == firstName && person.lastName == lastName && oldImage?.pngData() == image?.scaledTo(PersonImageChanger.maxImageResolution).pngData() {
+                        if person.firstName == firstName && person.lastName == lastName && oldImage?.pngData() == image?.scaledTo(PersonImageChange.maxImageResolution).pngData() {
                             presentationMode.wrappedValue.dismiss()
                         } else {
                             isFirstNameError = firstName == ""
@@ -234,36 +234,33 @@ struct PersonEditor: View {
         let dispatchGroup = DispatchGroup()
         dispatchGroup.enter()
         dispatchGroup.enter()
-        ListChanger.shared.change(.delete, item: person) { taskState in
-            if taskState == .passed {
-                dispatchGroup.leave()
-            } else {
-                connectionStateDelete = .failed
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                    noConnectionAlertDelete = true
-                }
+        let changeItem = ServerListChange(changeType: .delete, item: person)
+        Changer.shared.change(changeItem) {
+            dispatchGroup.leave()
+        } failedHandler: {
+            connectionStateDelete = .failed
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                noConnectionAlertDelete = true
             }
         }
-        PersonImageChanger.shared.changeImage(.delete(personId: person.id)) { taskState in
-            if taskState == .passed {
-                dispatchGroup.leave()
-            } else {
-                connectionStateDelete = .failed
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                    noConnectionAlertDelete = true
-                }
+        let changeItemImage = PersonImageChange(changeType: .delete, image: nil, personId: person.id)
+        Changer.shared.change(changeItemImage) {
+            dispatchGroup.leave()
+        } failedHandler: {
+            connectionStateDelete = .failed
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                noConnectionAlertDelete = true
             }
         }
         fineListData.list!.filter({ $0.personId == person.id }).forEach { fine in
             dispatchGroup.enter()
-            ListChanger.shared.change(.delete, item: fine) { taskState in
-                if taskState == .passed {
-                    dispatchGroup.leave()
-                } else {
-                    connectionStateDelete = .failed
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                        noConnectionAlertDelete = true
-                    }
+            let changeItem = ServerListChange(changeType: .delete, item: fine)
+            Changer.shared.change(changeItem) {
+                dispatchGroup.leave()
+            } failedHandler: {
+                connectionStateDelete = .failed
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                    noConnectionAlertDelete = true
                 }
             }
         }
@@ -279,26 +276,24 @@ struct PersonEditor: View {
         let dispatchGroup = DispatchGroup()
         dispatchGroup.enter()
         let editedPerson = Person(firstName: firstName, lastName: lastName, id: person.id)
-        ListChanger.shared.change(.update, item: editedPerson) { taskState in
-            if taskState == .passed {
-                dispatchGroup.leave()
-            } else {
-                connectionStateUpdate = .failed
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                    noConnectionAlertUpdate = true
-                }
+        let changeItem = ServerListChange(changeType: .update, item: editedPerson)
+        Changer.shared.change(changeItem) {
+            dispatchGroup.leave()
+        } failedHandler: {
+            connectionStateUpdate = .failed
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                noConnectionAlertUpdate = true
             }
         }
         if let image = image {
             dispatchGroup.enter()
-            PersonImageChanger.shared.changeImage(.update(image: image, personId: person.id)) { taskState in
-                if taskState == .passed {
-                    dispatchGroup.leave()
-                } else {
-                    connectionStateUpdate = .failed
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                        noConnectionAlertUpdate = true
-                    }
+            let changeItem = PersonImageChange(changeType: .update, image: image, personId: person.id)
+            Changer.shared.change(changeItem) {
+                dispatchGroup.leave()
+            } failedHandler: {
+                connectionStateUpdate = .failed
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                    noConnectionAlertUpdate = true
                 }
             }
         }
