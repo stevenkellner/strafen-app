@@ -214,3 +214,64 @@ extension PersonNameComponents {
         return PersonName(firstName: givenName, lastName: familyName)
     }
 }
+
+// Extension of URLRequest to init for url and http body
+extension URLRequest {
+    
+    /// URLRequest for url and http body
+    init(url: URL, body: Data?, boundaryId: UUID?) {
+        self.init(url: url)
+        setValue("Basic \(AppUrls.shared.loginString)", forHTTPHeaderField: "Authorization")
+        if let boundaryId = boundaryId {
+            setValue("multipart/form-data; boundary=Boundary-\(boundaryId.uuidString)", forHTTPHeaderField: "Content-Type")
+        }
+        cachePolicy = .reloadIgnoringLocalAndRemoteCacheData
+        httpMethod = "POST"
+        httpBody = body
+    }
+}
+
+// Extension of URLSession to execute a data task with task state completion
+extension URLSession {
+    
+    /// Data task with task state completion
+    func dataTask(with request: URLRequest, completionHandler: @escaping (TaskState) -> Void) {
+        URLSession.shared.dataTask(with: request) { data, _, error in
+            guard let data = data, error == nil else {
+                return completionHandler(.failed)
+            }
+            let success = data == "success".data(using: .utf8)
+            let taskState: TaskState = success ? .passed : .failed
+            completionHandler(taskState)
+        }.resume()
+    }
+}
+
+// Extension of UIImage to get http body with parameters, boundaryId and fileName
+extension UIImage {
+    
+    /// http body with parameters, boundaryId and fileName
+    func body(parameters: Parameters, boundaryId: UUID, fileName: String) -> Data {
+        var data = parameters.encodedForImage(boundaryId: boundaryId)
+        data.append("--Boundary-\(boundaryId.uuidString)\r\n".data(using: .utf8)!)
+        data.append("Content-Disposition: form-data; name=\"file\"; filename=\"\(fileName)\"\r\n".data(using: .utf8)!)
+        data.append("Content-Type: image/png\r\n\r\n".data(using: .utf8)!)
+        data.append(pngData()!)
+        data.append("\r\n".data(using: .utf8)!)
+        data.append("--Boundary-\(boundaryId.uuidString)--\r\n".data(using: .utf8)!)
+        return data
+    }
+}
+
+// Extension of Dictionary to encode it for image
+extension Dictionary where Key == String {
+    
+    /// Encode it for image
+    func encodedForImage(boundaryId: UUID) -> Data {
+        reduce(into: Data()) { data, element in
+            data.append("--Boundary-\(boundaryId.uuidString)\r\n".data(using: .utf8)!)
+            data.append("Content-Disposition: form-data; name=\"\(element.key)\"\r\n\r\n".data(using: .utf8)!)
+            data.append("\(element.value)\r\n".data(using: .utf8)!)
+        }
+    }
+}

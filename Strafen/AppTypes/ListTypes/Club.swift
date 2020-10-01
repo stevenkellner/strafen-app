@@ -8,8 +8,7 @@
 import Foundation
 
 /// Club for decoding json list
-struct Club: ListTypes {
-    
+struct Club: ListTypes, Equatable {
     /// Url to list on server
     static var serverListUrl = \AppUrls.allClubsUrl
     
@@ -23,7 +22,7 @@ struct Club: ListTypes {
     var postParameters: [String : Any]? = nil
     
     /// Person in club list
-    struct ClubPerson: Decodable, Identifiable {
+    struct ClubPerson: Decodable, Identifiable, Equatable {
         
         /// Coding Key for Decoding Json
         enum CodingKeys: String, CodingKey {
@@ -92,4 +91,8 @@ struct Club: ListTypes {
     
     /// Late payment interest
     let latePaymentInterest: Settings.LatePaymentInterest?
+    
+    static func == (lhs: Club, rhs: Club) -> Bool {
+        lhs.id == rhs.id && lhs.name == rhs.name && lhs.allPersons == rhs.allPersons && lhs.latePaymentInterest == rhs.latePaymentInterest
+    }
 }

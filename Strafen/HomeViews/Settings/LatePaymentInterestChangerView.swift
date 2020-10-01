@@ -197,18 +197,15 @@ struct LatePaymentInterestChangerView: View {
         if interestsActive {
             latePaymentInterest = .init(interestFreePeriod: interestFreePeriod, interestRate: interestRate, interestPeriod: interestPeriod, compoundInterest: compoundInterest)
         }
-        LatePaymentInterestChanger.shared.change(latePaymentInterest) { taskState in
-            DispatchQueue.main.async {
-                if taskState == .passed {
-                    connectionState = .passed
-                    Settings.shared.latePaymentInterest = latePaymentInterest
-                    presentationMode.wrappedValue.dismiss()
-                } else {
-                    connectionState = .failed
-                    alertType = .noConnection
-                    showAlert = true
-                }
-            }
+        let changeItem = LatePaymentInterestChange(latePaymentInterest: latePaymentInterest)
+        Changer.shared.change(changeItem) {
+            connectionState = .passed
+            Settings.shared.latePaymentInterest = latePaymentInterest
+            presentationMode.wrappedValue.dismiss()
+        } failedHandler: {
+            connectionState = .failed
+            alertType = .noConnection
+            showAlert = true
         }
     }
     

@@ -164,14 +164,13 @@ struct ReasonEditor: View {
     /// Handles reason deleting
     func handleDelete() {
         connectionStateDelete = .loading
-        ListChanger.shared.change(.delete, item: reasonToEdit) { taskState in
-            if taskState == .passed {
-                connectionStateDelete = .passed
-                presentationMode.wrappedValue.dismiss()
-            } else {
-                connectionStateDelete = .failed
-                noConnectionAlertDelete = true
-            }
+        let changeItem = ServerListChange(changeType: .delete, item: reasonToEdit)
+        Changer.shared.change(changeItem) {
+            connectionStateDelete = .passed
+            presentationMode.wrappedValue.dismiss()
+        } failedHandler: {
+            connectionStateDelete = .failed
+            noConnectionAlertDelete = true
         }
     }
     
@@ -179,14 +178,13 @@ struct ReasonEditor: View {
     func handleUpdate() {
         connectionStateUpdate = .loading
         let editedReason = Reason(reason: reason, id: reasonToEdit.id, amount: amount, importance: importance)
-        ListChanger.shared.change(.update, item: editedReason) { taskState in
-            if taskState == .passed {
-                connectionStateUpdate = .passed
-                presentationMode.wrappedValue.dismiss()
-            } else {
-                connectionStateUpdate = .failed
-                noConnectionAlertUpdate = true
-            }
+        let changeItem = ServerListChange(changeType: .update, item: editedReason)
+        Changer.shared.change(changeItem) {
+            connectionStateUpdate = .passed
+            presentationMode.wrappedValue.dismiss()
+        } failedHandler: {
+            connectionStateUpdate = .failed
+            noConnectionAlertUpdate = true
         }
     }
 }

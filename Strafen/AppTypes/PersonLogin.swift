@@ -44,7 +44,7 @@ struct PersonLoginEmail: PersonLogin {
     }
 }
 
-struct PersonLoginCodable: Decodable {
+struct PersonLoginCodable: Decodable, Equatable {
     
     /// Coding Key for Decoding Json
     enum CodingKeys: String, CodingKey {

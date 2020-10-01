@@ -337,14 +337,14 @@ struct SignInEMailView: View {
     /// Send code mail
     func sendMail() {
         connectionState = .loading
-        SendCodeMail.shared.sendMail(to: email) { taskState in
-            if taskState == .passed {
-                connectionState = .passed
-                confirmButtonClicked = true
-            } else {
-                connectionState = .failed
-                noConnectionAlert = true
-            }
+        ConfirmCode.shared.generateCode()
+        let changeItem = SendCodeMailChange(address: email)
+        Changer.shared.change(changeItem) {
+            connectionState = .passed
+            confirmButtonClicked = true
+        } failedHandler: {
+            connectionState = .failed
+            noConnectionAlert = true
         }
     }
 }

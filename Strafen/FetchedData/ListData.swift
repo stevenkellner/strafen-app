@@ -159,13 +159,3 @@ enum ConnectionState {
     /// All loaded
     case passed
 }
-
-/// State of data task
-enum TaskState {
-    
-    /// Data task passed
-    case passed
-    
-    /// Data task failed
-    case failed
-}

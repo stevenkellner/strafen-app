@@ -42,6 +42,10 @@ struct FormattedDate: Equatable {
         formatter.dateFormat = "dd.MM.yyyy"
         return formatter.string(from: date)
     }
+    
+    static func ==(lhs: FormattedDate, rhs: FormattedDate) -> Bool {
+        lhs.formattedForPost == rhs.formattedForPost
+    }
 }
 
 // Extension of FormattedDate for init from decoder

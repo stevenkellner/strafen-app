@@ -159,23 +159,22 @@ struct PersonAddNew: View {
         connectionState = .loading
         let dispathGroup = DispatchGroup()
         dispathGroup.enter()
-        ListChanger.shared.change(.add, item:Person(firstName: firstName, lastName: lastName, id: personId)) { taskState in
-            if taskState == .passed {
-                dispathGroup.leave()
-            } else {
-                connectionState = .failed
-                noConnectionAlert = true
-            }
+        let person = Person(firstName: firstName, lastName: lastName, id: personId)
+        let changeItem = ServerListChange(changeType: .add, item: person)
+        Changer.shared.change(changeItem) {
+            dispathGroup.leave()
+        } failedHandler: {
+            connectionState = .failed
+            noConnectionAlert = true
         }
         if let image = image {
             dispathGroup.enter()
-            PersonImageChanger.shared.changeImage(.add(image: image, personId: personId)) { taskState in
-                if taskState == .passed {
-                    dispathGroup.leave()
-                } else {
-                    connectionState = .failed
-                    noConnectionAlert = true
-                }
+            let changeItem = PersonImageChange(changeType: .add, image: image, personId: personId)
+            Changer.shared.change(changeItem) {
+                dispathGroup.leave()
+            } failedHandler: {
+                connectionState = .failed
+                noConnectionAlert = true
             }
         }
         dispathGroup.notify(queue: .main) {

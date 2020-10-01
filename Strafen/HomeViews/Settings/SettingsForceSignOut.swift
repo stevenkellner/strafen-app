@@ -141,15 +141,14 @@ struct SettingsForceSignOut: View {
         let dispatchGroup = DispatchGroup()
         for personId in personIds {
             dispatchGroup.enter()
-            ForceSignOutChanger.shared.change(of: personId) { taskState in
-                if taskState == .passed {
-                    personIds.filtered { $0 != personId }
-                    dispatchGroup.leave()
-                } else {
-                    connectionState = .failed
-                    alertType = .noConnection
-                    showAlert = true
-                }
+            let changeItem = ForceSignOutChange(personId: personId)
+            Changer.shared.change(changeItem) {
+                personIds.filtered { $0 != personId }
+                dispatchGroup.leave()
+            } failedHandler: {
+                connectionState = .failed
+                alertType = .noConnection
+                showAlert = true
             }
         }
         dispatchGroup.notify(queue: .main) {

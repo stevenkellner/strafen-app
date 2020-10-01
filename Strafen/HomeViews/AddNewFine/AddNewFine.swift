@@ -317,14 +317,13 @@ struct AddNewFine: View {
         for personId in personIds {
             let newFine = Fine(personId: personId, date: date.formattedDate, payed: .unpayed, number: number, id: UUID(), fineReason: fineReason!)
             dispatchGroup.enter()
-            ListChanger.shared.change(.add, item: newFine) { taskState in
-                if taskState == .passed {
-                    personIds.filtered { $0 != personId }
-                    dispatchGroup.leave()
-                } else {
-                    connectionState = .failed
-                    noConnectionAlert = true
-                }
+            let changeItem = ServerListChange(changeType: .add, item: newFine)
+            Changer.shared.change(changeItem) {
+                personIds.filtered { $0 != personId }
+                dispatchGroup.leave()
+            } failedHandler: {
+                connectionState = .failed
+                noConnectionAlert = true
             }
         }
         dispatchGroup.notify(queue: .main) {

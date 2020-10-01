@@ -99,7 +99,8 @@ struct ProfileDetail: View {
                             }
                             .sheet(isPresented: self.$showImagePicker) {
                                 ImagePicker($image) { image, isFirstImage in
-                                    PersonImageChanger.shared.changeImage(isFirstImage ? . add(image: image, personId: settings.person!.id) : .update(image: image, personId: settings.person!.id)) { _ in }
+                                    let changeItem = PersonImageChange(changeType: isFirstImage ? .add : .update, image: image, personId: settings.person!.id)
+                                    Changer.shared.change(changeItem) {} failedHandler: {}
                                 }
                             }
                         

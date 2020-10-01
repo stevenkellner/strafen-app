@@ -56,6 +56,9 @@ struct AppUrls {
         /// for force sign out
         let forceSignOut: URL
         
+        /// for delete club
+        let deleteClub: URL
+        
         init(_ appUrls: CodableAppUrls) {
             let baseUrl = URL(string: appUrls.baseUrl)!
             newClub = baseUrl.appendingPathComponent(appUrls.changer.newClub)
@@ -68,6 +71,7 @@ struct AppUrls {
             fineList = baseUrl.appendingPathComponent(appUrls.changer.fineList)
             latePaymentInterest = baseUrl.appendingPathComponent(appUrls.changer.latePaymentInterest)
             forceSignOut = baseUrl.appendingPathComponent(appUrls.changer.forceSignOut)
+            deleteClub = baseUrl.appendingPathComponent(appUrls.changer.deleteClub)
         }
     }
     
@@ -81,14 +85,19 @@ struct AppUrls {
     }
     
     /// Used to decode app urls from json
-    private var codableAppUrls: CodableAppUrls
+    var codableAppUrls: CodableAppUrls
+    
+    /// Base url
+    var baseUrl: URL {
+        URL(string: codableAppUrls.baseUrl)!
+    }
     
     /// Url for the different app lists
     ///
     /// nil if no person logged in
     var listTypesUrls: ListTypesUrls? {
         guard let loggedInPerson = Settings.shared.person else { return nil }
-        let baseUrl = URL(string: codableAppUrls.baseUrl)!.appendingPathComponent("clubs").appendingPathComponent(loggedInPerson.clubId.uuidString)
+        let baseUrl = self.baseUrl.appendingPathComponent("clubs").appendingPathComponent(loggedInPerson.clubId.uuidString)
         let personUrl = baseUrl.appendingPathComponent(codableAppUrls.lists.person)
         let fineUrl = baseUrl.appendingPathComponent(codableAppUrls.lists.fine)
         let reasonUrl = baseUrl.appendingPathComponent(codableAppUrls.lists.reason)
@@ -103,7 +112,6 @@ struct AppUrls {
     
     /// Url for the image directory of given clubId
     func imageDirUrl(of clubId: UUID) -> URL {
-        let baseUrl = URL(string: codableAppUrls.baseUrl)!
         return baseUrl.appendingPathComponent("clubs").appendingPathComponent(clubId.uuidString).appendingPathComponent(codableAppUrls.imagesDirectory)
     }
     
@@ -112,7 +120,6 @@ struct AppUrls {
     /// nil if no person logged in
     var imagesDirUrl: URL? {
         guard let loggedInPerson = Settings.shared.person else { return nil }
-        let baseUrl = URL(string: codableAppUrls.baseUrl)!
         return baseUrl.appendingPathComponent("clubs").appendingPathComponent(loggedInPerson.clubId.uuidString).appendingPathComponent(codableAppUrls.imagesDirectory)
     }
     
@@ -164,8 +171,7 @@ struct AppUrls {
     
     /// Url for allClubs
     var allClubsUrl: URL? {
-        let baseUrl = URL(string: codableAppUrls.baseUrl)!
-        return baseUrl.appendingPathComponent(codableAppUrls.lists.allClubs)
+        baseUrl.appendingPathComponent(codableAppUrls.lists.allClubs)
     }
 }
 
@@ -220,6 +226,9 @@ struct CodableAppUrls: Decodable {
         
         /// for force Sign Out
         let forceSignOut: String
+        
+        /// for delete club
+        let deleteClub: String
     }
     
     /// Base url of server

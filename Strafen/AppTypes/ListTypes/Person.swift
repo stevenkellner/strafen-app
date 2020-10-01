@@ -8,7 +8,7 @@
 import Foundation
 
 /// Person with name, id
-struct Person: ListTypes, Identifiable {
+struct Person: ListTypes, Identifiable, Equatable {
     
     /// Url to list on server
     static var serverListUrl = \AppUrls.listTypesUrls?.person
