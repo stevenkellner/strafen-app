@@ -66,6 +66,7 @@
 		B0619C1624C236C2008969A1 /* AddNewFinePerson.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0619C1524C236C2008969A1 /* AddNewFinePerson.swift */; };
 		B0619C1824C23911008969A1 /* AddNewFineReason.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0619C1724C23910008969A1 /* AddNewFineReason.swift */; };
 		B0619C1B24C363DE008969A1 /* NoteList.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0619C1A24C363DE008969A1 /* NoteList.swift */; };
+		B0675AF825167621006357F8 /* ChangerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0675AF725167621006357F8 /* ChangerTests.swift */; };
 		B06FECF4251642CD00893DF9 /* NewClubChange.swift in Sources */ = {isa = PBXBuildFile; fileRef = B06FECF3251642CD00893DF9 /* NewClubChange.swift */; };
 		B06FECF6251644CA00893DF9 /* ForceSignOutChange.swift in Sources */ = {isa = PBXBuildFile; fileRef = B06FECF5251644CA00893DF9 /* ForceSignOutChange.swift */; };
 		B06FECF82516466500893DF9 /* LatePaymentInterestChange.swift in Sources */ = {isa = PBXBuildFile; fileRef = B06FECF72516466500893DF9 /* LatePaymentInterestChange.swift */; };
@@ -131,6 +132,7 @@
 		B0E6E86D24CDD36000D467AC /* RoundedCorners.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0C1C52424A8BC14007B584B /* RoundedCorners.swift */; };
 		B0E6E86F24CDD38500D467AC /* OutlineAndSheetBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E6E86E24CDD38500D467AC /* OutlineAndSheetBar.swift */; };
 		B0E6E87324CDD3ED00D467AC /* Outline.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E6E87124CDD3CC00D467AC /* Outline.swift */; };
+		B0F3449F251E00EA002214DF /* DeleteClubChange.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0F3449E251E00EA002214DF /* DeleteClubChange.swift */; };
 		B0F4331D2502CA7500B0AAA7 /* HomeViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0F4331C2502CA7500B0AAA7 /* HomeViews.swift */; };
 		B0F881AA25065B92008304A8 /* ForceSignedOutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0F881A925065B92008304A8 /* ForceSignedOutView.swift */; };
 		B0F881AC2506874C008304A8 /* SettingsForceSignOut.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0F881AB2506874C008304A8 /* SettingsForceSignOut.swift */; };
@@ -240,6 +242,7 @@
 		B0619C1524C236C2008969A1 /* AddNewFinePerson.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewFinePerson.swift; sourceTree = "<group>"; };
 		B0619C1724C23910008969A1 /* AddNewFineReason.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewFineReason.swift; sourceTree = "<group>"; };
 		B0619C1A24C363DE008969A1 /* NoteList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteList.swift; sourceTree = "<group>"; };
+		B0675AF725167621006357F8 /* ChangerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangerTests.swift; sourceTree = "<group>"; };
 		B06FECF3251642CD00893DF9 /* NewClubChange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewClubChange.swift; sourceTree = "<group>"; };
 		B06FECF5251644CA00893DF9 /* ForceSignOutChange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForceSignOutChange.swift; sourceTree = "<group>"; };
 		B06FECF72516466500893DF9 /* LatePaymentInterestChange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LatePaymentInterestChange.swift; sourceTree = "<group>"; };
@@ -309,6 +312,7 @@
 		B0E5C70F24C377F70004E758 /* NoteAddNew.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteAddNew.swift; sourceTree = "<group>"; };
 		B0E6E86E24CDD38500D467AC /* OutlineAndSheetBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutlineAndSheetBar.swift; sourceTree = "<group>"; };
 		B0E6E87124CDD3CC00D467AC /* Outline.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Outline.swift; sourceTree = "<group>"; };
+		B0F3449E251E00EA002214DF /* DeleteClubChange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteClubChange.swift; sourceTree = "<group>"; };
 		B0F4331C2502CA7500B0AAA7 /* HomeViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViews.swift; sourceTree = "<group>"; };
 		B0F881A925065B92008304A8 /* ForceSignedOutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForceSignedOutView.swift; sourceTree = "<group>"; };
 		B0F881AB2506874C008304A8 /* SettingsForceSignOut.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsForceSignOut.swift; sourceTree = "<group>"; };
@@ -413,6 +417,7 @@
 			isa = PBXGroup;
 			children = (
 				B06FECFD25165B8E00893DF9 /* ClubImageChange.swift */,
+				B0F3449E251E00EA002214DF /* DeleteClubChange.swift */,
 				B06FECF5251644CA00893DF9 /* ForceSignOutChange.swift */,
 				B06FECF72516466500893DF9 /* LatePaymentInterestChange.swift */,
 				B06FECF3251642CD00893DF9 /* NewClubChange.swift */,
@@ -771,6 +776,7 @@
 		B0E0F83724A63E5A00C82828 /* StrafenTests */ = {
 			isa = PBXGroup;
 			children = (
+				B0675AF725167621006357F8 /* ChangerTests.swift */,
 				B0E0F83824A63E5A00C82828 /* StrafenTests.swift */,
 				B0E0F83A24A63E5A00C82828 /* Info.plist */,
 			);
@@ -1145,6 +1151,7 @@
 				B0C1C52224A7A021007B584B /* PersonName.swift in Sources */,
 				B0C554052505646400BA3E26 /* AppDelegate.swift in Sources */,
 				B020C7C424B0C5E6008940FE /* ImageFetcher.swift in Sources */,
+				B0F3449F251E00EA002214DF /* DeleteClubChange.swift in Sources */,
 				B07938D624BEF4C300F86E86 /* PersonFineDetail.swift in Sources */,
 				B020C7C624B0C8BE008940FE /* ImageData.swift in Sources */,
 				B020C7C224B0B9D0008940FE /* PersonRowImage.swift in Sources */,
@@ -1216,6 +1223,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B0675AF825167621006357F8 /* ChangerTests.swift in Sources */,
 				B0E0F83924A63E5A00C82828 /* StrafenTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

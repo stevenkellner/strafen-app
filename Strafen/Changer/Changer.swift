@@ -17,17 +17,24 @@ struct Changer {
     private init() {}
     
     /// Change given item on server and local
-    func change(_ item: Changeable, passedHandler: @escaping () -> Void, failedHandler: @escaping () -> Void) {
+    func change(_ item: Changeable, taskStateHandler: @escaping (TaskState) -> Void) {
         let url = AppUrls.shared[keyPath: item.urlPath]
         let request = URLRequest(url: url, body: item.body, boundaryId: item.boundaryId)
         URLSession.shared.dataTask(with: request) { taskState in
             DispatchQueue.main.async {
-                if taskState == .passed {
-                    item.changeCached()
-                    passedHandler()
-                } else {
-                    failedHandler()
-                }
+                taskStateHandler(taskState)
+            }
+        }
+    }
+    
+    /// Change given item on server and local
+    func change(_ item: Changeable, passedHandler: @escaping () -> Void, failedHandler: @escaping () -> Void) {
+        change(item) { taskState in
+            if taskState == .passed {
+                item.changeCached()
+                passedHandler()
+            } else {
+                failedHandler()
             }
         }
     }

@@ -13,13 +13,21 @@ struct ForceSignOutChange: Changeable, Parameterable {
     /// Person id
     let personId: UUID
     
+    /// Club id
+    let clubId: UUID
+    
+    init(personId: UUID, clubId: UUID? = nil) {
+        self.personId = personId
+        self.clubId = clubId ?? Settings.shared.person!.clubId
+    }
+    
     /// Path from AppUrls to changer url
     var urlPath: KeyPath<AppUrls, URL> = \.changer.forceSignOut
     
     /// Parameters
     var parameters: Parameters {
         Parameters { parameters in
-            parameters["clubId"] = Settings.shared.person!.clubId.uuidString
+            parameters["clubId"] = clubId.uuidString
             parameters["personId"] = personId.uuidString
         }
     }

@@ -13,13 +13,21 @@ struct LatePaymentInterestChange: Changeable, Parameterable {
     /// Late payment interest
     let latePaymentInterest: Settings.LatePaymentInterest?
     
+    /// Club id
+    let clubId: UUID
+    
+    init(latePaymentInterest: Settings.LatePaymentInterest?, clubId: UUID? = nil) {
+        self.latePaymentInterest = latePaymentInterest
+        self.clubId = clubId ?? Settings.shared.person!.clubId
+    }
+    
     /// Path from AppUrls to changer url
     var urlPath: KeyPath<AppUrls, URL> = \.changer.latePaymentInterest
     
     /// Parameters
     var parameters: Parameters {
         var parameters = Parameters { parameters in
-            parameters["clubId"] = Settings.shared.person!.clubId.uuidString
+            parameters["clubId"] = clubId.uuidString
         }
         if let latePaymentInterest = latePaymentInterest {
             parameters.add(latePaymentInterest.parameters)

@@ -22,6 +22,16 @@ struct PersonImageChange: Changeable {
     /// Person id
     let personId: UUID
     
+    /// Club id
+    let clubId: UUID
+    
+    init(changeType: ChangeType, image: UIImage?, personId: UUID, clubId: UUID? = nil) {
+        self.changeType = changeType
+        self.image = image
+        self.personId = personId
+        self.clubId = clubId ?? Settings.shared.person!.clubId
+    }
+    
     /// Path from AppUrls to changer url
     var urlPath: KeyPath<AppUrls, URL> = \.changer.personImage
     
@@ -31,7 +41,7 @@ struct PersonImageChange: Changeable {
         let parameters = Parameters { parameters in
             parameters["change"] = changeType.rawValue
             parameters["id"] = personId.uuidString
-            parameters["clubId"] = Settings.shared.person!.clubId
+            parameters["clubId"] = clubId.uuidString
         }
         if let image = image {
             return image.body(parameters: parameters, boundaryId: boundaryId!, fileName: personId.uuidString)

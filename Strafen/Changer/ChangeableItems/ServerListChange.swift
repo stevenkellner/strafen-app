@@ -16,6 +16,15 @@ struct ServerListChange<ListType>: Changeable, Parameterable where ListType: Lis
     /// Item to change
     let item: ListType
     
+    /// Club id
+    let clubId: UUID
+    
+    init(changeType: ChangeType, item: ListType, clubId: UUID? = nil) {
+        self.changeType = changeType
+        self.item = item
+        self.clubId = clubId ?? Settings.shared.person!.clubId
+    }
+    
     /// Path from AppUrls to changer url
     var urlPath: KeyPath<AppUrls, URL> = ListType.changerUrl!
     
@@ -23,7 +32,7 @@ struct ServerListChange<ListType>: Changeable, Parameterable where ListType: Lis
     var parameters: Parameters {
         Parameters(item.postParameters!) { parameters in
             parameters["change"] = changeType.rawValue
-            parameters["clubId"] = Settings.shared.person!.clubId
+            parameters["clubId"] = clubId.uuidString
         }
     }
     

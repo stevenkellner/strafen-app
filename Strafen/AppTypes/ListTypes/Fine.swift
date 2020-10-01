@@ -144,6 +144,10 @@ struct Fine: Identifiable, ListTypes {
                 return "false"
             }
         }
+        
+        static func ==(lhs: Payed, rhs: Payed) -> Bool {
+            lhs.string == rhs.string
+        }
     }
     
     /// Id of the associated person
