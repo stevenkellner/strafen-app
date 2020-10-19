@@ -13,7 +13,7 @@
 //  - This notice may not be removed or altered from any source or binary distribution.
 //
 
-// generic for process32/64 (UInt32/UInt64)
+//  TODO: generic for process32/64 (UInt32/UInt64)
 //
 
 public final class SHA2: DigestType {

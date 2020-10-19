@@ -275,3 +275,51 @@ extension Dictionary where Key == String {
         }
     }
 }
+
+/// Protocol for an alert type
+protocol AlertTypeProtocol: Identifiable {
+    
+    /// Alert of all alert types
+    var alert: Alert { get }
+    
+}
+
+// Extension of View to get an alert with AlertTypeProtocol
+extension View {
+    
+    /// Get an alert with AlertTypeProtocol
+    func alert<AlertType>(item: Binding<AlertType?>) -> some View where AlertType: AlertTypeProtocol {
+        alert(item: item) { $0.alert }
+    }
+}
+
+// Extension of View for custom foreground color
+extension View {
+    func foregroundColor(settings: Settings, plain color: Color) -> some View {
+        foregroundColor(settings.style == .default ? .textColor : color)
+    }
+}
+
+/// Extension of Text to configurate it with text color and given font size
+extension Text {
+    
+    /// Configurate it with text color and given font size
+    func configurate(size: CGFloat) -> Text {
+        foregroundColor(.textColor).font(.text(size))
+    }
+}
+
+// Extension of Bool to confirm to Identifiable
+extension Bool: Identifiable {
+    public var id: Bool { self }
+}
+
+// Extension of View to set screen size
+extension View {
+    
+    /// Sets screen size
+    func screenSize(_ screenSize: CGSize?, geometry: GeometryProxy, setSize: @escaping () -> Void) -> some View {
+        frame(size: screenSize ?? geometry.size).onAppear(perform: setSize)
+    }
+}
+

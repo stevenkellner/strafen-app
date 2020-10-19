@@ -19,8 +19,8 @@ struct TabBar: View {
     /// Active home tab
     @ObservedObject var homeTabs = HomeTabs.shared
     
-    ///Dismiss handler
-    @Binding var dismissHandler: (() -> ())?
+    /// Handler to dimiss from a subview to the previous view.
+    @Binding var dismissHandler: DismissHandler
     
     var body: some View {
         ZStack {

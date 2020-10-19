@@ -468,6 +468,7 @@ struct SettingsView: View {
                     .font(.text(20))
                     .padding(.leading, 10)
                 Spacer()
-            }.padding(.bottom, 5)}
+            }.padding(.bottom, 5)
+        }
     }
 }

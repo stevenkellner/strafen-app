@@ -341,7 +341,7 @@ public final class Blowfish {
   private func reset() {
     self.S = self.origS
     self.P = self.origP
-    // expand key
+    // todo expand key
   }
 
   private func expandKey(key: Array<UInt8>) {

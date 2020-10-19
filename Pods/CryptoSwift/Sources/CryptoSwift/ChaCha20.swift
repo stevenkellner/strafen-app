@@ -271,7 +271,7 @@ extension ChaCha20 {
       for chunk in self.accumulated.batched(by: ChaCha20.blockSize) {
         if isLast || self.accumulated.count >= ChaCha20.blockSize {
           encrypted += try self.chacha.encrypt(chunk)
-          self.accumulated.removeFirst(chunk.count) // improve performance
+          self.accumulated.removeFirst(chunk.count) // TODO: improve performance
         }
       }
       return encrypted
@@ -315,7 +315,7 @@ extension ChaCha20 {
 
           // remove "offset" from the beginning of first chunk
           if self.offsetToRemove > 0 {
-            plaintext.removeFirst(self.offsetToRemove) // improve performance
+            plaintext.removeFirst(self.offsetToRemove) // TODO: improve performance
             self.offsetToRemove = 0
           }
 
@@ -335,7 +335,7 @@ extension ChaCha20 {
 // MARK: Cryptors
 
 extension ChaCha20: Cryptors {
-  // Use BlockEncryptor/BlockDecryptor
+  //TODO: Use BlockEncryptor/BlockDecryptor
 
   public func makeEncryptor() -> Cryptor & Updatable {
     ChaCha20.ChaChaEncryptor(chacha: self)

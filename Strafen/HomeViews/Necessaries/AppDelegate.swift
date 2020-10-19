@@ -6,23 +6,37 @@
 //
 
 import SwiftUI
+import Firebase
 
 /// App Delegate
 class AppDelegate: UIResponder, UIApplicationDelegate {
     
+    var alreadySetUp = false
+    
     /// Returns the configuration data for UIKit to use when creating a new scene
     func application(_ application: UIApplication, configurationForConnecting connectingSceneSession: UISceneSession, options: UIScene.ConnectionOptions) -> UISceneConfiguration {
-        
-        // Apply shortcut
+        setUpApplication()
         applyShortcut(of: options)
+        return .default(session: connectingSceneSession)
+    }
+    
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
+        setUpApplication()
+        return true
+    }
+    
+    func setUpApplication() {
+        guard !alreadySetUp else { return }
+        alreadySetUp = true
+        
+        // Configure Firebase
+        FirebaseApp.configure()
         
         // Register for push notifications
         registerForPushNotifications()
         
         // Schedule notification
         scheduleNotification()
-        
-        return .default(session: connectingSceneSession)
     }
     
     /// Applies shortcut

@@ -5,15 +5,29 @@
 //  Created by Steven on 8/29/20.
 //
 
-import SwiftUI
 import AuthenticationServices
+import FirebaseAuth
+import CryptoKit
+import SwiftUI
 
 /// Button to sign / log in with apple
-struct SignInWithApple: View {
+struct SignInWithAppleButton: View {
     
+    /// Button types
     enum ButtonType {
+        
+        /// Sign in
         case signIn
+        
+        /// Log in
         case logIn
+        
+    }
+    
+    enum SignInWithAppleError: Error {
+        case tokenError
+        case nonceError
+        case firebaseError
     }
     
     /// Type of the button
@@ -23,28 +37,29 @@ struct SignInWithApple: View {
     let alsoForAutomatedLogIn: Bool
     
     /// Sign in handler
-    let signInHandler: (String, PersonNameComponents?) -> ()
+    let signInHandler: (Result<(userId: String, name: PersonNameComponents), SignInWithAppleError>) -> Void
     
     /// Color scheme to get appearance of this device
     @Environment(\.colorScheme) var colorScheme
     
     /// UI Window
-    @Environment(\.window) var window: UIWindow?
+    @Environment(\.window) var window: UIWindow!
     
+    /// Apple sign in delegates
     @State var appleSignInDelegates: SignInWithAppleDelegates!
     
     var body: some View {
-        Group {
+        ZStack {
             if colorScheme == .dark {
-                SignInWithAppleView(type: type, style: .white)
+                SignInWithAppleButtonView(type: type, style: .white)
             } else {
-                SignInWithAppleView(type: type, style: .black)
+                SignInWithAppleButtonView(type: type, style: .black)
             }
         }.onTapGesture {
                 performSignIn(automated: false)
             }
             .onAppear {
-                if alsoForAutomatedLogIn {
+                if alsoForAutomatedLogIn && SignInCache.shared.cachedStatus == nil {
                     performSignIn(automated: true)
                 }
             }
@@ -55,6 +70,9 @@ struct SignInWithApple: View {
         appleSignInDelegates = SignInWithAppleDelegates(window: window, signInHandler: signInHandler)
         let request = ASAuthorizationAppleIDProvider().createRequest()
         request.requestedScopes = []
+        let nonce = randomNonceString()
+        request.nonce = sha256(nonce)
+        appleSignInDelegates.currentNonce = nonce
         if type == .signIn {
             request.requestedScopes = [.fullName]
         }
@@ -67,10 +85,52 @@ struct SignInWithApple: View {
         controller.presentationContextProvider = appleSignInDelegates
         controller.performRequests()
     }
+    
+    // Adapted from https://auth0.com/docs/api-auth/tutorials/nonce#generate-a-cryptographically-random-nonce
+    private func randomNonceString(length: Int = 32) -> String {
+        precondition(length > 0)
+        let charset: Array<Character> = Array("0123456789ABCDEFGHIJKLMNOPQRSTUVXYZabcdefghijklmnopqrstuvwxyz-._")
+        var result = ""
+        var remainingLength = length
+        
+        while remainingLength > 0 {
+            let randoms: [UInt8] = (0 ..< 16).map { _ in
+                var random: UInt8 = 0
+                let errorCode = SecRandomCopyBytes(kSecRandomDefault, 1, &random)
+                if errorCode != errSecSuccess {
+                    fatalError("Unable to generate nonce. SecRandomCopyBytes failed with OSStatus \(errorCode)")
+                }
+                return random
+            }
+            
+            randoms.forEach { random in
+                if remainingLength == 0 {
+                    return
+                }
+                
+                if random < charset.count {
+                    result.append(charset[Int(random)])
+                    remainingLength -= 1
+                }
+            }
+        }
+        
+        return result
+    }
+    
+    private func sha256(_ input: String) -> String {
+        let inputData = Data(input.utf8)
+        let hashedData = SHA256.hash(data: inputData)
+        let hashString = hashedData.compactMap {
+            return String(format: "%02x", $0)
+        }.joined()
+        
+        return hashString
+    }
 }
 
 /// Button to sign / log in with apple
-final class SignInWithAppleView: UIViewRepresentable {
+final class SignInWithAppleButtonView: UIViewRepresentable {
     
     /// Type of the button
     let buttonType: ASAuthorizationAppleIDButton.ButtonType
@@ -79,7 +139,7 @@ final class SignInWithAppleView: UIViewRepresentable {
     let buttonStyle: ASAuthorizationAppleIDButton.Style
     
     /// Init button with type and color scheme
-    init(type: SignInWithApple.ButtonType, style: ASAuthorizationAppleIDButton.Style) {
+    init(type: SignInWithAppleButton.ButtonType, style: ASAuthorizationAppleIDButton.Style) {
         buttonType = type == .logIn ? .signIn : .signUp
         buttonStyle = style
     }
@@ -93,16 +153,18 @@ final class SignInWithAppleView: UIViewRepresentable {
     func updateUIView(_ uiView: ASAuthorizationAppleIDButton, context: Context) {}
 }
 
-/// Delegate for Sign in with apple
 class SignInWithAppleDelegates: NSObject {
     
-    /// Sign in handler
-    private let signInHandler: (String, PersonNameComponents?) -> ()
+    /// Current nonce string
+    var currentNonce: String?
     
-    /// Window
-    private weak var window: UIWindow!
-  
-    init(window: UIWindow?, signInHandler: @escaping (String, PersonNameComponents?) -> ()) {
+    /// UI Window
+    let window: UIWindow!
+    
+    /// Sign in handler
+    let signInHandler: (Result<(userId: String, name: PersonNameComponents), SignInWithAppleButton.SignInWithAppleError>) -> Void
+    
+    init(window: UIWindow?, signInHandler: @escaping (Result<(userId: String, name: PersonNameComponents), SignInWithAppleButton.SignInWithAppleError>) -> Void) {
         self.window = window
         self.signInHandler = signInHandler
     }
@@ -110,18 +172,25 @@ class SignInWithAppleDelegates: NSObject {
 
 extension SignInWithAppleDelegates: ASAuthorizationControllerDelegate {
     func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
-        switch authorization.credential {
-        case let appleIdCredential as ASAuthorizationAppleIDCredential:
-            signInHandler(appleIdCredential.user, appleIdCredential.fullName)
-        case let passwordCredential as ASPasswordCredential:
-            signInHandler(passwordCredential.user, nil)
-        default:
-            break
+        if let appleIdCredential = authorization.credential as? ASAuthorizationAppleIDCredential {
+            guard let nonce = currentNonce else {
+                return signInHandler(.failure(.nonceError))
+            }
+            guard let idTokenString = String(data: appleIdCredential.identityToken, encoding: .utf8) else {
+                return signInHandler(.failure(.tokenError))
+            }
+            
+            // Initialize a Firebase credential.
+            let credential = OAuthProvider.credential(withProviderID: "apple.com", idToken: idTokenString, rawNonce: nonce)
+            
+            // Sign in with Firebase.
+            Auth.auth().signIn(with: credential) { result, error in
+                guard let user = result?.user, error == nil else {
+                    return self.signInHandler(.failure(.firebaseError))
+                }
+                self.signInHandler(.success((user.uid, appleIdCredential.fullName ?? PersonNameComponents())))
+            }
         }
-    }
-      
-    func authorizationController(controller: ASAuthorizationController, didCompleteWithError error: Error) {
-        // Handle error.
     }
 }
 

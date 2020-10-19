@@ -13,6 +13,9 @@ struct Header: View {
     /// Page title
     let title: String
     
+    /// Line limit
+    private var lineLimit: Int? = 1
+    
     /// Color scheme to get appearance of this device
     @Environment(\.colorScheme) var colorScheme
     
@@ -31,7 +34,8 @@ struct Header: View {
                 Text(self.title)
                     .foregroundColor(Color.textColor)
                     .font(.text(35))
-                    .padding(.leading, 22)
+                    .padding(.horizontal, 22)
+                    .lineLimit(lineLimit)
                 Spacer()
             }
             
@@ -53,4 +57,56 @@ struct Header: View {
                 
         }
     }
+    
+    /// Set line limit
+    func lineLimit(_ lineLimit: Int?) -> Header {
+        var header = self
+        header.lineLimit = lineLimit
+        return header
+    }
+}
+
+/// Title of a textfield
+struct Title: View {
+    
+    /// Title
+    var title: String
+    
+    init(_ title: String) {
+        self.title = title
+    }
+    
+    var body: some View {
+        HStack(spacing: 0) {
+            Text("\(title):")
+                .foregroundColor(.textColor)
+                .font(.text(20))
+                .padding(.leading, 10)
+            Spacer()
+        }
+    }
+}
+
+/// Error messages under a textfield
+struct ErrorMessages<ErrorType>: View where ErrorType: ErrorMessageType {
+    
+    /// Type of the error message
+    @Binding var errorType: ErrorType?
+    
+    var body: some View {
+        if let errorType = errorType {
+            Text(errorType.message)
+                .foregroundColor(Color.custom.red)
+                .font(.text(20))
+                .lineLimit(1)
+                .padding(.horizontal, 15)
+        }
+    }
+}
+
+/// Error Type
+protocol ErrorMessageType {
+    
+    /// Message of the error
+    var message: String { get }
 }

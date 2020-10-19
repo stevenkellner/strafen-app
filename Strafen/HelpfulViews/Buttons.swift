@@ -59,7 +59,7 @@ struct ConfirmButton: View {
     /// Observed Object that contains all settings of the app of this device
     @ObservedObject var settings = Settings.shared
     
-    init(_ text: String = "Bestätigen", connectionState: Binding<ConnectionState>? = nil, _ buttonHandler: @escaping () -> ()) {
+    init(_ text: String = "Bestätigen", connectionState: Binding<ConnectionState>? = nil, buttonHandler: @escaping () -> ()) {
         self.text = text
         _connectionState = connectionState ?? .constant(.passed)
         self.buttonHandler = buttonHandler

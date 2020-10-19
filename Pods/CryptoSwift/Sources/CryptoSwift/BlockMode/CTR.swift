@@ -47,7 +47,7 @@ struct CTRModeWorker: StreamModeWorker, SeekableModeWorker, CounterModeWorker {
   final class CTRCounter {
     private let constPrefix: Array<UInt8>
     private var value: UInt64
-    // make it an updatable value, computing is too slow
+    //TODO: make it an updatable value, computing is too slow
     var bytes: Array<UInt8> {
       self.constPrefix + self.value.bytes()
     }

@@ -153,3 +153,10 @@ extension String {
         return min(Double(newString) ?? .zero, 100)
     }
 }
+
+extension String {
+    init?(data: Data?, encoding: Encoding) {
+        guard let data = data else { return nil }
+        self.init(data: data, encoding: encoding)
+    }
+}
