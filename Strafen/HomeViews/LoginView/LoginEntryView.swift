@@ -10,30 +10,32 @@ import SwiftUI
 /// First View in login for switching between login view
 struct LoginEntryView: View {
     
-    /// Sign in cache
-    @ObservedObject var signInCache = SignInCache.shared
-    
     /// Indicates if sign in sheet is shown
     @State var showSignInSheet = false
+    
+    /// Indicates if cached sign in view is shown
+    @State var showCachedState = false
     
     var body: some View {
         ZStack {
             
             // Sheet for sign in
             EmptySheetLink(isPresented: $showSignInSheet) {
-                SignInView()
+                SignInView(showSignInSheet: $showSignInSheet)
             }
-            
+
             // Sheet for sign in with cached properties
-            EmptySheetLink(item: $signInCache.state) { state in
-                SignInCacheView(state: state)
+            EmptySheetLink(isPresented: $showCachedState) {
+                SignInCacheView(state: SignInCache.shared.cachedStatus)
             }
             
             // Login View
-            LoginView(showSignInSheet: $showSignInSheet)
+            LoginView(showSignInSheet: $showSignInSheet, showCachedState: $showCachedState)
                 
         }.onAppear {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1, execute: SignInCache.shared.checkSignInStatus)
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                showCachedState = SignInCache.shared.cachedStatus != nil
+            }
         }
     }
 }
@@ -41,7 +43,7 @@ struct LoginEntryView: View {
 // TODO remove function
 func changeAppereanceStyle() {
     let appStyle: [(Settings.Appearance, Settings.Style)] = [
-        (.light, .plain), (.light, .default), (.dark, .default), (.dark, .plain)
+        (.light, .default), (.dark, .default), (.dark, .plain), (.light, .plain)
     ]
     for (index, (appereance, style)) in appStyle.enumerated() {
         DispatchQueue.main.asyncAfter(deadline: .now() + Double(index * 2)) {

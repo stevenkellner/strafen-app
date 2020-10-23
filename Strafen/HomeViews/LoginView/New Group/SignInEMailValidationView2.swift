@@ -96,7 +96,7 @@ struct SignInEMailValidationView: View {
         ZStack {
             
             // Navigation Link
-            NavigationLink(destination: SignInSelectPersonView(personName: personName, personLogin: personLogin, clubId: clubId, clubName: clubName, showSignInSheet: $showSignInSheet), isActive: $confirmButtonClicked) {
+            CustomNavigationLink(destination: SignInSelectPersonView(personName: personName, personLogin: personLogin, clubId: clubId, clubName: clubName, showSignInSheet: $showSignInSheet), isActive: $confirmButtonClicked) {
                     EmptyView()
             }.frame(width: 0, height: 0)
             
@@ -199,7 +199,7 @@ struct SignInEMailValidationView: View {
                                 .padding(.horizontal, 25)
                             
                             // Button
-                            NavigationLink(destination: SignInNewClubView(personName: personName, personLogin: personLogin, showSignInSheet: $showSignInSheet)) {
+                            CustomNavigationLink(destination: SignInNewClubView(personName: personName, personLogin: personLogin, showSignInSheet: $showSignInSheet)) {
                                 ZStack {
                                     
                                     // Outline

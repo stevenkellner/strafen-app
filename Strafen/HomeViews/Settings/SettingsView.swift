@@ -142,7 +142,7 @@ struct SettingsView: View {
                 // Title
                 Title("Verzugszinsen")
                 
-                NavigationLink(destination: LatePaymentInterestChangerView(dismissHandler: $dismissHandler)) {
+                CustomNavigationLink(destination: LatePaymentInterestChangerView(dismissHandler: $dismissHandler)) {
                     HStack(spacing: 0) {
                         
                         // Text
@@ -358,7 +358,7 @@ struct SettingsView: View {
                 // Title
                 Title("Strafen teilen")
                 
-                NavigationLink(destination: FinesFormatterView(dismissHandler: $dismissHandler)) {
+                CustomNavigationLink(destination: FinesFormatterView(dismissHandler: $dismissHandler)) {
                     HStack(spacing: 0) {
                         
                         // Text
@@ -407,7 +407,7 @@ struct SettingsView: View {
         var body: some View {
             VStack(spacing: 0) {
                 Title("Abmelden Anderer Erzwingen")
-                NavigationLink(destination: SettingsForceSignOut(dismissHandler: $dismissHandler)) {
+                CustomNavigationLink(destination: SettingsForceSignOut(dismissHandler: $dismissHandler)) {
                     ZStack {
                         Outline()
                         Text("Abmelden Anderer Erzwingen")

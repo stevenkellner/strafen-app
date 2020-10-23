@@ -30,6 +30,7 @@
 		B028FD9E25150E90007DF006 /* Parameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = B028FD9D25150E90007DF006 /* Parameters.swift */; };
 		B02B891524BDFDA9004562B9 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B02B891424BDFDA9004562B9 /* SettingsView.swift */; };
 		B02EF27024C497CC00E4CEBC /* NoteEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = B02EF26F24C497CC00E4CEBC /* NoteEditor.swift */; };
+		B037BCEA25419CB4002B81E5 /* SignInEmailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B037BCE925419CB4002B81E5 /* SignInEmailView.swift */; };
 		B042D42E24BA21540029F2D5 /* ListTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = B042D42D24BA21540029F2D5 /* ListTypes.swift */; };
 		B042D43024BA42EB0029F2D5 /* TabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B042D42F24BA42EB0029F2D5 /* TabBar.swift */; };
 		B042D43324BB19E10029F2D5 /* ProfileDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = B042D43224BB19E10029F2D5 /* ProfileDetail.swift */; };
@@ -89,21 +90,16 @@
 		B077B59A24CB0A7E003844CE /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0C1C51824A78C90007B584B /* Color.swift */; };
 		B07938D624BEF4C300F86E86 /* PersonFineDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = B07938D524BEF4C300F86E86 /* PersonFineDetail.swift */; };
 		B07938D824BF037900F86E86 /* PersonAddNew.swift in Sources */ = {isa = PBXBuildFile; fileRef = B07938D724BF037900F86E86 /* PersonAddNew.swift */; };
-		B0A385B024ABC21C00628038 /* SignInEMailValidationView2.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0A385AF24ABC21C00628038 /* SignInEMailValidationView2.swift */; };
 		B0B117CC24FA962C006A22F2 /* SignInWithApple.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0B117CB24FA962C006A22F2 /* SignInWithApple.swift */; };
 		B0B4822024A8D46B00CB7A1A /* Header.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0B4821F24A8D46B00CB7A1A /* Header.swift */; };
 		B0B4822224A8D61300CB7A1A /* CustomTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0B4822124A8D61300CB7A1A /* CustomTextField.swift */; };
 		B0B4822424A8D69E00CB7A1A /* Buttons.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0B4822324A8D69E00CB7A1A /* Buttons.swift */; };
-		B0B799CA24AC96560027727E /* SignInNewClubView2.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0B799C924AC96560027727E /* SignInNewClubView2.swift */; };
 		B0B799CC24ACA1990027727E /* ImageSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0B799CB24ACA1990027727E /* ImageSelector.swift */; };
-		B0B799D324AE64770027727E /* SignInSelectPersonView2.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0B799D224AE64770027727E /* SignInSelectPersonView2.swift */; };
 		B0B81DC12502520E00249447 /* CodableSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0B81DC02502520E00249447 /* CodableSettings.swift */; };
 		B0B81DC32502522600249447 /* Settings+Style.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0B81DC22502522600249447 /* Settings+Style.swift */; };
 		B0B81DC52502523100249447 /* Settings+Appereance.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0B81DC42502523100249447 /* Settings+Appereance.swift */; };
 		B0B81DC72502524000249447 /* Settings+Person.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0B81DC62502524000249447 /* Settings+Person.swift */; };
 		B0B81DC92502525500249447 /* Settings+LatePaymentInterest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0B81DC82502525500249447 /* Settings+LatePaymentInterest.swift */; };
-		B0BE62D524AB50FF0018604C /* SignInView2.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0BE62D424AB50FF0018604C /* SignInView2.swift */; };
-		B0BE62D724AB58AE0018604C /* SignInEMailView2.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0BE62D624AB58AE0018604C /* SignInEMailView2.swift */; };
 		B0C1C51524A78BD7007B584B /* LoginEntryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0C1C51424A78BD7007B584B /* LoginEntryView.swift */; };
 		B0C1C51924A78C90007B584B /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0C1C51824A78C90007B584B /* Color.swift */; };
 		B0C1C51B24A78CC2007B584B /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0C1C51A24A78CC2007B584B /* Settings.swift */; };
@@ -134,6 +130,7 @@
 		B0E2C1B524CDB6AF009E3666 /* SmallWidgetNoConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E2C1B024CDB653009E3666 /* SmallWidgetNoConnection.swift */; };
 		B0E2C1B624CDB6AF009E3666 /* SmallWidgetNoPersonLoggedIn.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E2C1B224CDB661009E3666 /* SmallWidgetNoPersonLoggedIn.swift */; };
 		B0E50C9F253DCC44008C7E84 /* SignInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E50C9E253DCC44008C7E84 /* SignInView.swift */; };
+		B0E50D1325418D37008C7E84 /* KeyboardAdaptive.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E50D1225418D37008C7E84 /* KeyboardAdaptive.swift */; };
 		B0E5C71024C377F70004E758 /* NoteAddNew.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E5C70F24C377F70004E758 /* NoteAddNew.swift */; };
 		B0E6E86D24CDD36000D467AC /* RoundedCorners.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0C1C52424A8BC14007B584B /* RoundedCorners.swift */; };
 		B0E6E86F24CDD38500D467AC /* OutlineAndSheetBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E6E86E24CDD38500D467AC /* OutlineAndSheetBar.swift */; };
@@ -212,6 +209,7 @@
 		B028FD9D25150E90007DF006 /* Parameters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Parameters.swift; sourceTree = "<group>"; };
 		B02B891424BDFDA9004562B9 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		B02EF26F24C497CC00E4CEBC /* NoteEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteEditor.swift; sourceTree = "<group>"; };
+		B037BCE925419CB4002B81E5 /* SignInEmailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInEmailView.swift; sourceTree = "<group>"; };
 		B042D42D24BA21540029F2D5 /* ListTypes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListTypes.swift; sourceTree = "<group>"; };
 		B042D42F24BA42EB0029F2D5 /* TabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBar.swift; sourceTree = "<group>"; };
 		B042D43224BB19E10029F2D5 /* ProfileDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileDetail.swift; sourceTree = "<group>"; };
@@ -321,6 +319,7 @@
 		B0E2C1B024CDB653009E3666 /* SmallWidgetNoConnection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmallWidgetNoConnection.swift; sourceTree = "<group>"; };
 		B0E2C1B224CDB661009E3666 /* SmallWidgetNoPersonLoggedIn.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmallWidgetNoPersonLoggedIn.swift; sourceTree = "<group>"; };
 		B0E50C9E253DCC44008C7E84 /* SignInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInView.swift; sourceTree = "<group>"; };
+		B0E50D1225418D37008C7E84 /* KeyboardAdaptive.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardAdaptive.swift; sourceTree = "<group>"; };
 		B0E5C70F24C377F70004E758 /* NoteAddNew.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteAddNew.swift; sourceTree = "<group>"; };
 		B0E6E86E24CDD38500D467AC /* OutlineAndSheetBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutlineAndSheetBar.swift; sourceTree = "<group>"; };
 		B0E6E87124CDD3CC00D467AC /* Outline.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Outline.swift; sourceTree = "<group>"; };
@@ -719,6 +718,7 @@
 				B0F4331C2502CA7500B0AAA7 /* HomeViews.swift */,
 				B0C554042505646400BA3E26 /* AppDelegate.swift */,
 				B0F881A925065B92008304A8 /* ForceSignedOutView.swift */,
+				B0E50D1225418D37008C7E84 /* KeyboardAdaptive.swift */,
 			);
 			path = Necessaries;
 			sourceTree = "<group>";
@@ -745,6 +745,7 @@
 				B05C332F253C3597004E9923 /* LoginView.swift */,
 				B05C331C253B6B0F004E9923 /* SignInCacheView.swift */,
 				B0E50C9E253DCC44008C7E84 /* SignInView.swift */,
+				B037BCE925419CB4002B81E5 /* SignInEmailView.swift */,
 				B05C332A253B7012004E9923 /* New Group */,
 			);
 			path = LoginView;
@@ -1155,7 +1156,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				B02EF27024C497CC00E4CEBC /* NoteEditor.swift in Sources */,
-				B0A385B024ABC21C00628038 /* SignInEMailValidationView2.swift in Sources */,
 				B05C32E725388637004E9923 /* NecessaryObjects.swift in Sources */,
 				B020C7B724AE7204008940FE /* ListFetcher.swift in Sources */,
 				B0F881AA25065B92008304A8 /* ForceSignedOutView.swift in Sources */,
@@ -1174,6 +1174,7 @@
 				B0B799CC24ACA1990027727E /* ImageSelector.swift in Sources */,
 				B02B891524BDFDA9004562B9 /* SettingsView.swift in Sources */,
 				B0619BFB24C0B62B008969A1 /* PersonEditor.swift in Sources */,
+				B0E50D1325418D37008C7E84 /* KeyboardAdaptive.swift in Sources */,
 				B028FD972514EB91007DF006 /* Changer.swift in Sources */,
 				B0B4822424A8D69E00CB7A1A /* Buttons.swift in Sources */,
 				B0C1C52224A7A021007B584B /* PersonName.swift in Sources */,
@@ -1187,7 +1188,6 @@
 				B042D43D24BB2BBD0029F2D5 /* Array.swift in Sources */,
 				B0E2C19424CC6620009E3666 /* Fine.swift in Sources */,
 				B042D44024BB5B420029F2D5 /* PersonList.swift in Sources */,
-				B0B799D324AE64770027727E /* SignInSelectPersonView2.swift in Sources */,
 				B0619C1824C23911008969A1 /* AddNewFineReason.swift in Sources */,
 				B0DE1CBD24C48FB3006CCFE9 /* NoteDetail.swift in Sources */,
 				B0E0F82724A63E5800C82828 /* StrafenApp.swift in Sources */,
@@ -1220,17 +1220,14 @@
 				B0619C0F24C20EAA008969A1 /* ReasonAddNew.swift in Sources */,
 				B0B4822224A8D61300CB7A1A /* CustomTextField.swift in Sources */,
 				B0619BFE24C0B999008969A1 /* PersonFineEditor.swift in Sources */,
-				B0BE62D724AB58AE0018604C /* SignInEMailView2.swift in Sources */,
 				B020C7C024AF7CC6008940FE /* Person.swift in Sources */,
 				B0619C0D24C20C4B008969A1 /* ReasonList.swift in Sources */,
 				B0B81DC52502523100249447 /* Settings+Appereance.swift in Sources */,
 				B0C1C52524A8BC14007B584B /* RoundedCorners.swift in Sources */,
-				B0BE62D524AB50FF0018604C /* SignInView2.swift in Sources */,
 				B05C331D253B6B0F004E9923 /* SignInCacheView.swift in Sources */,
 				B0C1C52724A8BEE6007B584B /* Other.swift in Sources */,
 				B0619C1B24C363DE008969A1 /* NoteList.swift in Sources */,
 				B0B81DC32502522600249447 /* Settings+Style.swift in Sources */,
-				B0B799CA24AC96560027727E /* SignInNewClubView2.swift in Sources */,
 				B042D43B24BB27EF0029F2D5 /* FormattedDate.swift in Sources */,
 				B0619C1624C236C2008969A1 /* AddNewFinePerson.swift in Sources */,
 				B0619C0424C186FC008969A1 /* PersonFineTemplate.swift in Sources */,
@@ -1244,6 +1241,7 @@
 				B020C7BE24AF1C31008940FE /* PersonLogin.swift in Sources */,
 				B026766D24BDD346005E79C1 /* AmountDisplay.swift in Sources */,
 				B042D43024BA42EB0029F2D5 /* TabBar.swift in Sources */,
+				B037BCEA25419CB4002B81E5 /* SignInEmailView.swift in Sources */,
 				B02019D424FE779000C660B9 /* SettingsFinesFormatterView.swift in Sources */,
 				B028FD9E25150E90007DF006 /* Parameters.swift in Sources */,
 				B06FECFE25165B8E00893DF9 /* ClubImageChange.swift in Sources */,

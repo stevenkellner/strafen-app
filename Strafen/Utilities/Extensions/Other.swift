@@ -169,8 +169,10 @@ extension UINavigationController: UIGestureRecognizerDelegate {
 
     // Override gestureRecognizerShouldBegin
     public func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
-        viewControllers.count > 1
+        UINavigationController.swipeBack && viewControllers.count > 1
     }
+    
+    static var swipeBack = true
 }
 
 // Extension of Int to confirm to Identifiable
@@ -322,4 +324,3 @@ extension View {
         frame(size: screenSize ?? geometry.size).onAppear(perform: setSize)
     }
 }
-

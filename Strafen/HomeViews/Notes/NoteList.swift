@@ -67,7 +67,7 @@ struct NoteList: View {
                         // Note List
                         LazyVStack(spacing: 15) {
                             ForEach(noteListData.list!.filter(for: searchText, at: \.subject).sorted(by: \.subject.localizedUppercase)) { note in
-                                NavigationLink(destination: NoteDetail(note: note, dismissHandler: $dismissHandler)) {
+                                CustomNavigationLink(destination: NoteDetail(note: note, dismissHandler: $dismissHandler)) {
                                         NoteListRow(note: note)
                                 }.buttonStyle(PlainButtonStyle())
                             }.animation(.none)

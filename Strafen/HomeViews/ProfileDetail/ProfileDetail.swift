@@ -301,7 +301,7 @@ struct ProfileDetailRow: View {
     @State var isNavigationLinkActive = false
     
     var body: some View {
-        NavigationLink(
+        CustomNavigationLink(
             destination: PersonFineDetail(personName: settings.person!.name, fine: fine, dismissHandler: $dismissHandler),
             isActive: $isNavigationLinkActive) {
             PersonDetailRow(fine: fine)

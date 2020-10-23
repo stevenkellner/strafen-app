@@ -135,7 +135,7 @@ struct PersonListRow: View {
     var body: some View {
         ZStack {
             
-            NavigationLink(destination: PersonDetail(person: person, dismissHandler: $dismissHandler), isActive: $isLinkActive) {
+            CustomNavigationLink(destination: PersonDetail(person: person, dismissHandler: $dismissHandler), isActive: $isLinkActive) {
                 EmptyView()
             }.buttonStyle(PlainButtonStyle())
                 .frame(size: .zero)

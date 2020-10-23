@@ -7,8 +7,12 @@
 
 import SwiftUI
 
+struct _DefaultErrorType: ErrorMessageType {
+    var message: String = ""
+}
+
 /// Text Field with custom Design
-struct CustomTextField: View {
+struct CustomTextField<ErrorType>: View where ErrorType: ErrorMessageType {
     
     /// Placeholder of Text field
     let title: String
@@ -25,12 +29,16 @@ struct CustomTextField: View {
     /// Keyboard type
     let keyboardType: UIKeyboardType
     
-    init(_ title: String, text: Binding<String>, keyboardType: UIKeyboardType = .default, keyboardOnScreen: Binding<Bool> = .constant(false), completionHandler: (() -> ())? = nil) {
+    /// Error message type
+    @Binding var errorMessageType: ErrorType?
+    
+    init(_ title: String, text: Binding<String>, keyboardType: UIKeyboardType = .default, keyboardOnScreen: Binding<Bool> = .constant(false), errorType: Binding<ErrorType?>, completionHandler: (() -> ())? = nil) {
         self.title = title
         self._text = text
         self._keyboardOnScreen = keyboardOnScreen
         self.completionHandler = completionHandler
         self.keyboardType = keyboardType
+        self._errorMessageType = errorType
     }
     
     var body: some View {
@@ -38,6 +46,7 @@ struct CustomTextField: View {
             
             // Outline
             Outline()
+                .strokeColor(errorMessageType.map { _ in Color.custom.red })
             
             // Text Field
             TextField(title, text: $text) { appears in
@@ -47,7 +56,8 @@ struct CustomTextField: View {
                 if let completionHandler = completionHandler, !appears {
                     completionHandler()
                 }
-            } onCommit: {}.foregroundColor(Color.textColor)
+            } onCommit: {}
+                .foregroundColor(errorMessageType.map { _ in Color.custom.red } ?? .textColor)
                 .font(.text(20))
                 .lineLimit(1)
                 .padding(.horizontal, 10)
@@ -56,8 +66,19 @@ struct CustomTextField: View {
     }
 }
 
+extension CustomTextField where ErrorType == _DefaultErrorType {
+    init(_ title: String, text: Binding<String>, keyboardType: UIKeyboardType = .default, keyboardOnScreen: Binding<Bool> = .constant(false), completionHandler: (() -> ())? = nil) {
+        self.title = title
+        self._text = text
+        self._keyboardOnScreen = keyboardOnScreen
+        self.completionHandler = completionHandler
+        self.keyboardType = keyboardType
+        self._errorMessageType = .constant(nil)
+    }
+}
+
 /// Secure Field with custom Design
-struct CustomSecureField: View {
+struct CustomSecureField<ErrorType>: View where ErrorType: ErrorMessageType {
     
     /// Binding of input text
     @Binding var text: String
@@ -68,14 +89,18 @@ struct CustomSecureField: View {
     /// Binding containing if keyboard is on screen
     @Binding var keyboardOnScreen: Bool
     
+    /// Error message type
+    @Binding var errorMessageType: ErrorType?
+    
     /// Handler execuded after keyboard dismisses
     let completionHandler: (() -> ())?
     
-    init(text: Binding<String>, placeholder: String, keyboardOnScreen: Binding<Bool> = .constant(false), completionHandler: (() -> ())? = nil) {
+    init(text: Binding<String>, placeholder: String, keyboardOnScreen: Binding<Bool> = .constant(false), errorType: Binding<ErrorType?>, completionHandler: (() -> ())? = nil) {
         self.placeholder = placeholder
         self._text = text
         self._keyboardOnScreen = keyboardOnScreen
         self.completionHandler = completionHandler
+        self._errorMessageType = errorType
     }
     
     var body: some View {
@@ -83,6 +108,7 @@ struct CustomSecureField: View {
             
             // Outline
             Outline()
+                .strokeColor(errorMessageType.map { _ in Color.custom.red })
             
             // Text Field
             UISecureField(placeholder: placeholder, text: $text, keyboardOnScreen: $keyboardOnScreen, completionHandler: completionHandler)
@@ -92,6 +118,16 @@ struct CustomSecureField: View {
                 .padding(.horizontal, 10)
                 .multilineTextAlignment(.center)
         }
+    }
+}
+
+extension CustomSecureField where ErrorType == _DefaultErrorType {
+    init(text: Binding<String>, placeholder: String, keyboardOnScreen: Binding<Bool> = .constant(false), completionHandler: (() -> ())? = nil) {
+        self.placeholder = placeholder
+        self._text = text
+        self._keyboardOnScreen = keyboardOnScreen
+        self.completionHandler = completionHandler
+        self._errorMessageType = .constant(nil)
     }
 }
 

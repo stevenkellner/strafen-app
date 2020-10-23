@@ -19,6 +19,9 @@ struct Outline: View {
     /// Fill Color of the Outline
     private var fillColor: Color? = nil
     
+    /// Stroke Color of the outline
+    private var strokeColor: Color? = nil
+    
     /// Color scheme to get appearance of this device
     @Environment(\.colorScheme) var colorScheme
     
@@ -34,7 +37,7 @@ struct Outline: View {
             .radius(settings.style.radius)
             .lineWidth(settings.style.lineWidth)
             .fillColor(onlyDefault ? settings.style.fillColor(colorScheme, defaultStyle: fillColor) : fillColor!)
-            .strokeColor(settings.style.strokeColor(colorScheme))
+            .strokeColor(strokeColor ?? settings.style.strokeColor(colorScheme))
     }
     
     /// Set fill color
@@ -42,6 +45,13 @@ struct Outline: View {
         var outline = self
         outline.fillColor = fillColor
         outline.onlyDefault = onlyDefault
+        return outline
+    }
+    
+    /// Set stroke color
+    func strokeColor(_ strokeColor: Color?) -> Outline {
+        var outline = self
+        outline.strokeColor = strokeColor
         return outline
     }
 }

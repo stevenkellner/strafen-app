@@ -8,7 +8,7 @@
 import Foundation
 
 /// Cache of sign in status
-class SignInCache: ObservableObject {
+struct SignInCache {
     
     /// Codable properties of user id and optional person name
     struct PropertyUserId: SignInCacheProperty {
@@ -63,7 +63,7 @@ class SignInCache: ObservableObject {
     }
     
     /// Status of signing in
-    enum Status: Identifiable {
+    enum Status {
         
         /// Inputs first and last name
         case nameInput(property: PropertyUserId)
@@ -73,9 +73,6 @@ class SignInCache: ObservableObject {
         
         /// Selects person
         case personSelection(property: PropertyUserIdNameClubId)
-        
-        /// Inputs club properties
-        case clubPropertiesInput(property: PropertyUserIdName)
         
         /// Decoding error
         enum DecodingError: Error {
@@ -98,8 +95,6 @@ class SignInCache: ObservableObject {
                 return .clubSelection(property: try getProperty(of: propertyData!))
             case "personSelection":
                 return .personSelection(property: try getProperty(of: propertyData!))
-            case "clubPropertiesInput":
-                return .clubPropertiesInput(property: try getProperty(of: propertyData!))
             default:
                 throw DecodingError.valueNotFound
             }
@@ -139,14 +134,9 @@ class SignInCache: ObservableObject {
                 data = try encoder.encode(JsonObject(status: "clubSelection", property: property))
             case .personSelection(property: let property):
                 data = try encoder.encode(JsonObject(status: "personSelection", property: property))
-            case .clubPropertiesInput(property: let property):
-                data = try encoder.encode(JsonObject(status: "clubPropertiesInput", property: property))
             }
             return data
         }
-        
-        /// The stable identity of the entity associated with this instance.
-        var id: Int { .zero }
     }
     
     /// Url to cache file
@@ -156,18 +146,10 @@ class SignInCache: ObservableObject {
     }()
     
     /// Shared instance for singelton
-    static let shared = SignInCache()
+    static var shared = SignInCache()
     
     /// Private init for singleton
     private init() {}
-    
-    /// Status of signing in
-    @Published var state: Status? = nil
-    
-    /// Checks status of signing in
-    func checkSignInStatus() {
-        setState(to: cachedStatus)
-    }
     
     /// Cached status
     var cachedStatus: Status? {
@@ -178,8 +160,7 @@ class SignInCache: ObservableObject {
     }
     
     /// Set state
-    func setState(to newState: Status?) {
-        state = newState
+    mutating func setState(to newState: Status?) {
         if let state = newState {
             try! state.saveStatus()
         } else {

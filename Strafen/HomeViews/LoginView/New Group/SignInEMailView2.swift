@@ -121,7 +121,7 @@ struct SignInEMailView: View {
         ZStack {
             
             // Navigation Link
-            NavigationLink(destination: SignInEMailValidationView(email: $email, personName: PersonName(firstName: firstName, lastName: lastName), personLogin: PersonLoginEmail(email: email, password: password), showSignInSheet: $showErrorAlert, state: .codeInput), isActive: $confirmButtonClicked) {
+            CustomNavigationLink(destination: SignInEMailValidationView(email: $email, personName: PersonName(firstName: firstName, lastName: lastName), personLogin: PersonLoginEmail(email: email, password: password), showSignInSheet: $showErrorAlert, state: .codeInput), isActive: $confirmButtonClicked) {
                     EmptyView()
             }.frame(width: 0, height: 0)
             

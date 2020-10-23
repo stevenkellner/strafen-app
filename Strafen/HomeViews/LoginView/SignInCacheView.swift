@@ -11,10 +11,13 @@ import SwiftUI
 struct SignInCacheView: View {
     
     /// Sign in cache state
-    let state: SignInCache.Status
+    @State var state: SignInCache.Status?
     
     /// Idicates if navigation link is active
     @State var isNavigationLinkActive = false
+    
+    /// Presentation mode
+    @Environment(\.presentationMode) var presentationMode
     
     var body: some View {
         VStack(spacing: 0) {
@@ -34,8 +37,9 @@ struct SignInCacheView: View {
                             EmptyNavigationLink(isActive: $isNavigationLinkActive, destination: Text(String(reflecting: property)))
                         case .personSelection(property: let property):
                             EmptyNavigationLink(isActive: $isNavigationLinkActive, destination: Text(String(reflecting: property)))
-                        case .clubPropertiesInput(property: let property):
-                            EmptyNavigationLink(isActive: $isNavigationLinkActive, destination: Text(String(reflecting: property)))
+                        case .none:
+                            Text("Invalid State")
+                                .onAppear { presentationMode.wrappedValue.dismiss() }
                         }
                     }.frame(size: .zero)
                     

@@ -101,7 +101,7 @@ struct PersonDetail: View {
                 ScrollView {
                     LazyVStack(spacing: 15) {
                         ForEach(fineListData.list!.filter({ $0.personId == person.id }).sorted(by: \.fineReason.reason.localizedUppercase)) { fine in
-                            NavigationLink(destination: PersonFineDetail(personName: person.personName, fine: fine, dismissHandler: $dismissHandler)) {
+                            CustomNavigationLink(destination: PersonFineDetail(personName: person.personName, fine: fine, dismissHandler: $dismissHandler)) {
                                 PersonDetailRow(fine: fine)
                             }.buttonStyle(PlainButtonStyle())
                         }

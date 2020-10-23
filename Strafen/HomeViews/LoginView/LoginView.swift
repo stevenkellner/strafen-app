@@ -146,6 +146,9 @@ struct LoginView: View {
     /// Indicates if sign in sheet is shown
     @Binding var showSignInSheet: Bool
     
+    /// Indicates if cached sign in view is shown
+    @Binding var showCachedState: Bool
+    
     /// Credentials of email log in (Email and Password)
     @State var emailCredentials = EmailCredentials()
     
@@ -196,7 +199,7 @@ struct LoginView: View {
                     }
                     
                     // Sign in button
-                    SignInButton(showSignInSheet: $showSignInSheet)
+                    SignInButton(showSignInSheet: $showSignInSheet, showCachedState: $showCachedState)
                     
                 }.animation(.default)
                 
@@ -212,7 +215,6 @@ struct LoginView: View {
             
         }.frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(colorScheme.backgroundColor)
-            .onAppear(perform: changeAppereanceStyle)
     }
     
     /// Handles log in with email
@@ -244,7 +246,6 @@ struct LoginView: View {
     func handleAppleLogIn(result: Result<(userId: String, name: PersonNameComponents), SignInWithAppleButton.SignInWithAppleError>) {
         signInWithAppleErrorType = nil
         emailCredentials.resetErrorTypes()
-        return signInWithAppleErrorType = .internalError
         switch result {
         case .failure(_):
             signInWithAppleErrorType = .internalError
@@ -258,6 +259,7 @@ struct LoginView: View {
                     state = cachedStatus
                 }
                 SignInCache.shared.setState(to: state)
+                showCachedState = true
                 signInWithAppleErrorType = .notSignedIn
             } else {
                 // TODO Log in
@@ -281,7 +283,7 @@ struct LoginView: View {
                     Title("Email")
                     
                     // Text Field
-                    CustomTextField("Email", text: $emailCredentials.email, keyboardType: .emailAddress) {
+                    CustomTextField("Email", text: $emailCredentials.email, keyboardType: .emailAddress, errorType: $emailCredentials.emailErrorType) {
                         emailCredentials.evaluteEmailError()
                     }.frame(width: UIScreen.main.bounds.width * 0.95, height: 50)
                     
@@ -297,7 +299,7 @@ struct LoginView: View {
                     Title("Passwort")
                     
                     // Text Field
-                    CustomSecureField(text: $emailCredentials.password, placeholder: "Passwort") {
+                    CustomSecureField(text: $emailCredentials.password, placeholder: "Passwort", errorType: $emailCredentials.passwordErrorType) {
                         emailCredentials.evalutePasswordError()
                     }.frame(width: UIScreen.main.bounds.width * 0.95, height: 50)
                     
@@ -315,6 +317,9 @@ struct LoginView: View {
         
         /// Indicates if sign in sheet is shown
         @Binding var showSignInSheet: Bool
+        
+        /// Indicates if cached sign in view is shown
+        @Binding var showCachedState: Bool
         
         var body: some View {
             HStack(spacing: 0) {
@@ -338,8 +343,9 @@ struct LoginView: View {
                 }.frame(width: 150, height: 30)
                     .padding(.leading, 10)
                     .onTapGesture {
-                        if let state = SignInCache.shared.cachedStatus {
-                            SignInCache.shared.state = state
+                        return showSignInSheet = true
+                        if SignInCache.shared.cachedStatus != nil {
+                            showCachedState = true
                         } else {
                             showSignInSheet = true
                         }
