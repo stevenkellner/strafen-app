@@ -297,8 +297,8 @@ extension View {
 
 // Extension of View for custom foreground color
 extension View {
-    func foregroundColor(settings: Settings, plain color: Color) -> some View {
-        foregroundColor(settings.style == .default ? .textColor : color)
+    func foregroundColor(settings: Settings, plain color: Color?) -> some View {
+        foregroundColor(color == nil || settings.style == .default ? .textColor : color!)
     }
 }
 
@@ -306,8 +306,8 @@ extension View {
 extension Text {
     
     /// Configurate it with text color and given font size
-    func configurate(size: CGFloat) -> Text {
-        foregroundColor(.textColor).font(.text(size))
+    func configurate(size: CGFloat) -> some View {
+        foregroundColor(.textColor).font(.text(size)).multilineTextAlignment(.center)
     }
 }
 
@@ -320,7 +320,9 @@ extension Bool: Identifiable {
 extension View {
     
     /// Sets screen size
-    func screenSize(_ screenSize: CGSize?, geometry: GeometryProxy, setSize: @escaping () -> Void) -> some View {
-        frame(size: screenSize ?? geometry.size).onAppear(perform: setSize)
+    func screenSize(_ screenSize: Binding<CGSize?>, geometry: GeometryProxy) -> some View {
+        frame(size: screenSize.wrappedValue ?? geometry.size).onAppear {
+            screenSize.wrappedValue = geometry.size
+        }
     }
 }

@@ -278,7 +278,7 @@ struct SignInEMailView: View {
                 
                 // Navigation link to club selection
                 EmptyNavigationLink(swipeBack: false, isActive: $isClubSelectionNavigationLinkActive) {
-                    Text("Club Selection") // TODO
+                    SignInClubSelection()
                 }
                 
                 // Back button
@@ -303,15 +303,18 @@ struct SignInEMailView: View {
                         .padding(.bottom, 50)
                     
                 }
-            }.screenSize(screenSize, geometry: geometry) {
-                screenSize = geometry.size
-            }
-        }.onAppear(perform: changeAppereanceStyle)
+            }.screenSize($screenSize, geometry: geometry)
+        }
     }
     
     /// Handles confirm button click
     func handleConfirmButton() {
+        
+        let cacheProperty = SignInCache.PropertyUserIdName(userId: "UserId", name: PersonName(firstName: "FirstName", lastName: "LastName"))
+        let state: SignInCache.Status = .clubSelection(property: cacheProperty)
+        SignInCache.shared.setState(to: state)
         return isClubSelectionNavigationLinkActive = true
+        
         guard connectionState != .loading else { return }
         connectionState = .loading
         
@@ -323,7 +326,8 @@ struct SignInEMailView: View {
                     emailCredentials.evaluteErrorCode(of: error)
                     connectionState = .failed
                 } else if let user = result?.user {
-                    let personName = PersonName(firstName: emailCredentials.firstName, lastName: emailCredentials.lastName  )
+                    // TODO send validation email
+                    let personName = PersonName(firstName: emailCredentials.firstName, lastName: emailCredentials.lastName)
                     let cacheProperty = SignInCache.PropertyUserIdName(userId: user.uid, name: personName)
                     let state: SignInCache.Status = .clubSelection(property: cacheProperty)
                     SignInCache.shared.setState(to: state)
@@ -359,25 +363,14 @@ struct SignInEMailView: View {
                             // Text Field
                             CustomTextField("Vorname", text: $emailCredentials.firstName, errorType: $emailCredentials.firstNameErrorType) {
                                 emailCredentials.evaluteFirstNameError()
-                            }.frame(width: UIScreen.main.bounds.width * 0.95, height: 50)
-                            
-                            // Error Message
-                            ErrorMessages(errorType: $emailCredentials.firstNameErrorType)
+                            }.textFieldSize(width: UIScreen.main.bounds.width * 0.95, height: 50)
                             
                         }
                         
                         // Last name input
-                        VStack(spacing: 5) {
-                            
-                            // Text Field
-                            CustomTextField("Nachname", text: $emailCredentials.lastName, errorType: $emailCredentials.lastNameErrorType) {
-                                emailCredentials.evaluteLastNameError()
-                            }.frame(width: UIScreen.main.bounds.width * 0.95, height: 50)
-                            
-                            // Error Message
-                            ErrorMessages(errorType: $emailCredentials.lastNameErrorType)
-                            
-                        }
+                        CustomTextField("Nachname", text: $emailCredentials.lastName, errorType: $emailCredentials.lastNameErrorType) {
+                            emailCredentials.evaluteLastNameError()
+                        }.textFieldSize(width: UIScreen.main.bounds.width * 0.95, height: 50)
                         
                     }
                     
@@ -390,10 +383,7 @@ struct SignInEMailView: View {
                         // Text Field
                         CustomTextField("Email", text: $emailCredentials.email, keyboardType: .emailAddress, errorType: $emailCredentials.emailErrorType) {
                             emailCredentials.evaluteEmailError()
-                        }.frame(width: UIScreen.main.bounds.width * 0.95, height: 50)
-                        
-                        // Error Message
-                        ErrorMessages(errorType: $emailCredentials.emailErrorType)
+                        }.textFieldSize(width: UIScreen.main.bounds.width * 0.95, height: 50)
                         
                     }
                     
@@ -409,25 +399,14 @@ struct SignInEMailView: View {
                             // Text Field
                             CustomSecureField(text: $emailCredentials.password, placeholder: "Passwort", errorType: $emailCredentials.passwordErrorType) {
                                 emailCredentials.evalutePasswordError()
-                            }.frame(width: UIScreen.main.bounds.width * 0.95, height: 50)
-                            
-                            // Error Message
-                            ErrorMessages(errorType: $emailCredentials.passwordErrorType)
+                            }.textFieldSize(width: UIScreen.main.bounds.width * 0.95, height: 50)
                             
                         }
                         
                         // Repeat password input
-                        VStack(spacing: 5) {
-                            
-                            // Text Field
-                            CustomSecureField(text: $emailCredentials.repeatPassword, placeholder: "Passwort Wiederholen", errorType: $emailCredentials.repeatPasswordErrorType) {
-                                emailCredentials.evaluteRepeatPasswordError()
-                            }.frame(width: UIScreen.main.bounds.width * 0.95, height: 50)
-                            
-                            // Error Message
-                            ErrorMessages(errorType: $emailCredentials.repeatPasswordErrorType)
-                            
-                        }
+                        CustomSecureField(text: $emailCredentials.repeatPassword, placeholder: "Passwort Wiederholen", errorType: $emailCredentials.repeatPasswordErrorType) {
+                            emailCredentials.evaluteRepeatPasswordError()
+                        }.textFieldSize(width: UIScreen.main.bounds.width * 0.95, height: 50)
                         
                     }
                     

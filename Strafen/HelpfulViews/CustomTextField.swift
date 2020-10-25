@@ -32,6 +32,12 @@ struct CustomTextField<ErrorType>: View where ErrorType: ErrorMessageType {
     /// Error message type
     @Binding var errorMessageType: ErrorType?
     
+    /// Textfield size
+    private var textFieldSize: (width: CGFloat?, height: CGFloat?)
+    
+    /// Show error message
+    private var showErrorMessage = true
+    
     init(_ title: String, text: Binding<String>, keyboardType: UIKeyboardType = .default, keyboardOnScreen: Binding<Bool> = .constant(false), errorType: Binding<ErrorType?>, completionHandler: (() -> ())? = nil) {
         self.title = title
         self._text = text
@@ -42,27 +48,56 @@ struct CustomTextField<ErrorType>: View where ErrorType: ErrorMessageType {
     }
     
     var body: some View {
-        ZStack {
+        VStack(spacing: 5) {
+            ZStack {
+                
+                // Outline
+                Outline()
+                    .strokeColor(errorMessageType.map { _ in Color.custom.red })
+                
+                // Text Field
+                TextField(title, text: $text) { appears in
+                    withAnimation {
+                        keyboardOnScreen = appears
+                    }
+                    if let completionHandler = completionHandler, !appears {
+                        completionHandler()
+                    }
+                } onCommit: {}
+                    .foregroundColor(errorMessageType.map { _ in Color.custom.red } ?? .textColor)
+                    .font(.text(20))
+                    .lineLimit(1)
+                    .padding(.horizontal, 10)
+                    .multilineTextAlignment(.center)
+            }.keyboardType(keyboardType)
+                .frame(width: textFieldSize.width, height: textFieldSize.height)
             
-            // Outline
-            Outline()
-                .strokeColor(errorMessageType.map { _ in Color.custom.red })
-            
-            // Text Field
-            TextField(title, text: $text) { appears in
-                withAnimation {
-                    keyboardOnScreen = appears
-                }
-                if let completionHandler = completionHandler, !appears {
-                    completionHandler()
-                }
-            } onCommit: {}
-                .foregroundColor(errorMessageType.map { _ in Color.custom.red } ?? .textColor)
-                .font(.text(20))
-                .lineLimit(1)
-                .padding(.horizontal, 10)
-                .multilineTextAlignment(.center)
-        }.keyboardType(keyboardType)
+            // Error message
+            if showErrorMessage {
+                ErrorMessages(errorType: $errorMessageType)
+            }
+        }
+    }
+    
+    /// Set textfield size
+    func textFieldSize(width: CGFloat? = nil, height: CGFloat? = nil) -> CustomTextField {
+        var textfield = self
+        textfield.textFieldSize = (width: width, height: height)
+        return textfield
+    }
+    
+    /// Set textfield size
+    func textFieldSize(size: CGSize) -> CustomTextField {
+        var textfield = self
+        textfield.textFieldSize = (width: size.width, height: size.height)
+        return textfield
+    }
+    
+    /// Show error message
+    func showErrorMessage(_ show: Bool) -> CustomTextField {
+        var textField = self
+        textField.showErrorMessage = show
+        return textField
     }
 }
 
@@ -95,6 +130,9 @@ struct CustomSecureField<ErrorType>: View where ErrorType: ErrorMessageType {
     /// Handler execuded after keyboard dismisses
     let completionHandler: (() -> ())?
     
+    /// Textfield size
+    private var textFieldSize: (width: CGFloat?, height: CGFloat?)
+    
     init(text: Binding<String>, placeholder: String, keyboardOnScreen: Binding<Bool> = .constant(false), errorType: Binding<ErrorType?>, completionHandler: (() -> ())? = nil) {
         self.placeholder = placeholder
         self._text = text
@@ -104,20 +142,39 @@ struct CustomSecureField<ErrorType>: View where ErrorType: ErrorMessageType {
     }
     
     var body: some View {
-        ZStack {
+        VStack(spacing: 5) {
+            ZStack {
+                
+                // Outline
+                Outline()
+                    .strokeColor(errorMessageType.map { _ in Color.custom.red })
+                
+                // Text Field
+                UISecureField(placeholder: placeholder, text: $text, keyboardOnScreen: $keyboardOnScreen, completionHandler: completionHandler)
+                    .foregroundColor(.textColor)
+                    .font(.text(20))
+                    .lineLimit(1)
+                    .padding(.horizontal, 10)
+                    .multilineTextAlignment(.center)
+            }.frame(width: textFieldSize.width, height: textFieldSize.height)
             
-            // Outline
-            Outline()
-                .strokeColor(errorMessageType.map { _ in Color.custom.red })
-            
-            // Text Field
-            UISecureField(placeholder: placeholder, text: $text, keyboardOnScreen: $keyboardOnScreen, completionHandler: completionHandler)
-                .foregroundColor(.textColor)
-                .font(.text(20))
-                .lineLimit(1)
-                .padding(.horizontal, 10)
-                .multilineTextAlignment(.center)
+            // Error message
+            ErrorMessages(errorType: $errorMessageType)
         }
+    }
+    
+    /// Set textfield size
+    func textFieldSize(width: CGFloat? = nil, height: CGFloat? = nil) -> CustomSecureField {
+        var textfield = self
+        textfield.textFieldSize = (width: width, height: height)
+        return textfield
+    }
+    
+    /// Set textfield size
+    func textFieldSize(size: CGSize) -> CustomSecureField {
+        var textfield = self
+        textfield.textFieldSize = (width: size.width, height: size.height)
+        return textfield
     }
 }
 

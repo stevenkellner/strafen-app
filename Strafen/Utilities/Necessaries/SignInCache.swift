@@ -52,10 +52,10 @@ struct SignInCache {
         let name: PersonName
         
         /// Club id
-        let clubId: String
+        let clubId: UUID
         
         /// Init with PropertyUserIdName and clubId
-        init(userIdName: PropertyUserIdName, clubId: String) {
+        init(userIdName: PropertyUserIdName, clubId: UUID) {
             self.userId = userIdName.userId
             self.name = userIdName.name
             self.clubId = clubId
@@ -136,6 +136,18 @@ struct SignInCache {
                 data = try encoder.encode(JsonObject(status: "personSelection", property: property))
             }
             return data
+        }
+        
+        /// Property of state
+        var property: SignInCacheProperty {
+            switch self {
+            case .nameInput(property: let property):
+                return property
+            case .clubSelection(property: let property):
+                return property
+            case .personSelection(property: let property):
+                return property
+            }
         }
     }
     

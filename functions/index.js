@@ -17,23 +17,27 @@ let transporter = nodemailer.createTransport({
 exports.newClub = functions.region('europe-west1').https.onCall(async (data, context) => {
 
     // Check if all arguments are set
-    let requiredArguements = ['clubId', 'clubName', 'personId', 'personFirstName', 'personLastName'];
+    let requiredArguements = ['clubId', 'clubName', 'personId', 'personFirstName', 'personLastName', 'clubIdentifier', 'userId'];
     checkAllArguments(requiredArguements, data);
 
     // Add club to allClubs
-    let clubPath = 'clubs/' + data.clubId.toString();
+    let clubPath = 'clubs/' + data.clubId.toString().toUpperCase();
     let clubRef = admin.database().ref(clubPath);
     if (!await existsData(clubRef)) {
         let isError = false;
+        await clubRef.child('identifier').set(data.identifier, error => {
+            isError = isError || error != null;
+        });
         await clubRef.child('name').set(data.clubName, error => {
             isError = isError || error != null;
         });
-        await clubRef.child('persons').child(data.personId.toString()).set({
+        await clubRef.child('persons').child(data.personId.toString().toUpperCase()).set({
             name: {
                 first: data.personFirstName,
                 last: data.personLastName
             },
-            cashier: true
+            cashier: true,
+            userId: data.userId
         }, error => {
             isError = isError || error != null;
         });
@@ -54,7 +58,7 @@ exports.changeLatePaymentInterest = functions.region('europe-west1').https.onCal
     checkAllArguments(['clubId'], data);
 
     // Late payment interest reference
-    let path = 'clubs/' + data.clubId.toString() + '/latePaymentInterest';
+    let path = 'clubs/' + data.clubId.toString().toUpperCase() + '/latePaymentInterest';
     let interestRef = admin.database().ref(path);
 
     try {
@@ -99,11 +103,11 @@ exports.changeLatePaymentInterest = functions.region('europe-west1').https.onCal
 exports.registerPerson = functions.region('europe-west1').https.onCall(async (data, context) => {
 
     // Check if all arguments are set
-    let requiredArguements = ['clubId', 'id', 'firstName', 'lastName'];
+    let requiredArguements = ['clubId', 'id', 'firstName', 'lastName', 'userId'];
     checkAllArguments(requiredArguements, data);
 
     // Get person reference
-    let path = 'clubs/' + data.clubId.toString() + '/persons/' + data.id.toString();
+    let path = 'clubs/' + data.clubId.toString().toUpperCase() + '/persons/' + data.id.toString().toUpperCase();
     let personRef = admin.database().ref(path);
     
     let isError = false;
@@ -112,7 +116,8 @@ exports.registerPerson = functions.region('europe-west1').https.onCall(async (da
             first: data.firstName,
             last: data.lastName
         },
-        cashier: false
+        cashier: false,
+        userId: data.userId
     };
     if (!await existsData(personRef)) {
         await personRef.set(person, error => {
@@ -139,7 +144,7 @@ exports.forceSignOut = functions.region('europe-west1').https.onCall(async (data
     checkAllArguments(requiredArguements, data);
 
     // Get cashier reference
-    let path = 'clubs/' + data.clubId.toString() + '/persons/' + data.personId.toString() + '/cashier';
+    let path = 'clubs/' + data.clubId.toString().toUpperCase() + '/persons/' + data.personId.toString().toUpperCase() + '/cashier';
     let cashierRef = admin.database().ref(path);
 
     if (await existsData(cashierRef)) {
@@ -167,7 +172,7 @@ exports.changeList = functions.region('europe-west1').https.onCall(async (data, 
     // Get item reference
     let path = null;
     if (data.listType == 'person' || data.listType == 'fine' || data.listType == 'reason') {
-        path = 'clubs/' + data.clubId.toString() + '/' + data.listType + 's/' + data.itemId.toString();
+        path = 'clubs/' + data.clubId.toString().toUpperCase() + '/' + data.listType + 's/' + data.itemId.toString().toUpperCase();
     } else {
         throw new functions.https.HttpsError(
             'invalid-argument', 
@@ -294,6 +299,32 @@ exports.sendMail = functions.region('europe-west1').https.onCall(async (data, co
             'internal', 
             "Couldn't send email" 
          );
+    }
+});
+
+// Get club uuid of club identifier
+exports.getClubId = functions.region('europe-west1').https.onCall(async (data, context) => {
+
+    // Check if all arguments are set
+    checkAllArguments(['identifier'], data);
+
+    let clubsRef = admin.database().ref('clubs');
+    var clubId = null;
+    await clubsRef.once('value', snapshot => {
+        snapshot.forEach(child => {
+            let identifier = child.child('identifier').val();
+            if (identifier == data.identifier) {
+                clubId = child.key;
+            }
+        });
+    });
+    if (clubId == null) {
+        throw new functions.https.HttpsError(
+            'not-found', 
+            "Club doesn't exist"
+         );
+    } else {
+        return clubId;
     }
 });
 

@@ -13,6 +13,7 @@ target 'Strafen' do
   pod 'Firebase/Database'
   pod 'Firebase/Functions'
   pod 'Firebase/Storage'
+  pod 'CodableFirebase'
 
   target 'StrafenTests' do
     inherit! :search_paths

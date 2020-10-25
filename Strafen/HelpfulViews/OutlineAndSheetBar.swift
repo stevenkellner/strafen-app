@@ -41,7 +41,7 @@ struct Outline: View {
     }
     
     /// Set fill color
-    func fillColor(_ fillColor: Color, onlyDefault: Bool = true) -> Outline {
+    func fillColor(_ fillColor: Color?, onlyDefault: Bool = true) -> Outline {
         var outline = self
         outline.fillColor = fillColor
         outline.onlyDefault = onlyDefault

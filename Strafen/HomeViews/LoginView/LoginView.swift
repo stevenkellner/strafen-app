@@ -209,9 +209,7 @@ struct LoginView: View {
                 ConfirmButton("Anmelden", connectionState: $connectionState, buttonHandler: handleEmailLogIn)
                     .padding(.bottom, 50)
                 
-            }.screenSize(screenSize, geometry: geometry) {
-                screenSize = geometry.size
-            }
+            }.screenSize($screenSize, geometry: geometry)
             
         }.frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(colorScheme.backgroundColor)
@@ -285,10 +283,7 @@ struct LoginView: View {
                     // Text Field
                     CustomTextField("Email", text: $emailCredentials.email, keyboardType: .emailAddress, errorType: $emailCredentials.emailErrorType) {
                         emailCredentials.evaluteEmailError()
-                    }.frame(width: UIScreen.main.bounds.width * 0.95, height: 50)
-                    
-                    // Error Message
-                    ErrorMessages(errorType: $emailCredentials.emailErrorType)
+                    }.textFieldSize(width: UIScreen.main.bounds.width * 0.95, height: 50)
                     
                 }
                 
@@ -301,10 +296,7 @@ struct LoginView: View {
                     // Text Field
                     CustomSecureField(text: $emailCredentials.password, placeholder: "Passwort", errorType: $emailCredentials.passwordErrorType) {
                         emailCredentials.evalutePasswordError()
-                    }.frame(width: UIScreen.main.bounds.width * 0.95, height: 50)
-                    
-                    // Error Message
-                    ErrorMessages(errorType: $emailCredentials.passwordErrorType)
+                    }.textFieldSize(width: UIScreen.main.bounds.width * 0.95, height: 50)
                     
                 }
                 

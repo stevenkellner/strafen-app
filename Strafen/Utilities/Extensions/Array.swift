@@ -104,6 +104,11 @@ extension Array {
             element[keyPath: keyPath].searchFor(searchText)
         }
     }
+    
+    /// Filter and sort array for a search text
+    func filterSorted(for searchText: String, at keyPath: KeyPath<Element, String>) -> [Element] {
+        filter(for: searchText, at: keyPath).sorted(by: keyPath)
+    }
 }
 
 /// Extension of Array to filter for a search text for String with deafult keyPath
@@ -114,6 +119,11 @@ extension Array where Element == String {
         filter { element in
             element[keyPath: keyPath].searchFor(searchText)
         }
+    }
+    
+    /// Filter and sort array for a search text
+    func filterSorted(for searchText: String, at keyPath: KeyPath<Element, String> = \.self) -> [Element] {
+        filter(for: searchText, at: keyPath).sorted(by: keyPath)
     }
 }
 
