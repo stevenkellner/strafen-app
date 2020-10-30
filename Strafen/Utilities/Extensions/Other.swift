@@ -295,10 +295,24 @@ extension View {
     }
 }
 
+/// View modifer for plain foreground color
+struct TextForegroudColor: ViewModifier {
+    
+    /// Color for plain style
+    let color: Color?
+    
+    /// Observed Object that contains all settings of the app of this device
+    @ObservedObject private var settings = Settings.shared
+    
+    func body(content: Content) -> some View {
+        content.foregroundColor(color == nil || settings.style == .default ? .textColor : color!)
+    }
+}
+
 // Extension of View for custom foreground color
 extension View {
-    func foregroundColor(settings: Settings, plain color: Color?) -> some View {
-        foregroundColor(color == nil || settings.style == .default ? .textColor : color!)
+    func foregroundColor(plain color: Color?) -> some View {
+        ModifiedContent(content: self, modifier: TextForegroudColor(color: color))
     }
 }
 

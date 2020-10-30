@@ -136,12 +136,6 @@ struct AmountDisplay: View {
         }
     }
     
-    /// Color scheme to get appearance of this device
-    @Environment(\.colorScheme) var colorScheme
-    
-    /// Observed Object that contains all settings of the app of this device
-    @ObservedObject var settings = Settings.shared
-    
     /// Current shown display state
     @State var currentDisplay: AmountDisplayState = .total
     
@@ -158,29 +152,32 @@ struct AmountDisplay: View {
         }.frame(height: 52)
             .frame(maxWidth: .infinity)
             .clipped()
-            .onTapGesture {
-                withAnimation {
-                    if Date().timeIntervalSince1970 - dragTimeStamp >= 0.25 {
-                        dragTimeStamp = Date().timeIntervalSince1970
-                        currentDisplay.toNextState()
-                    }
+            .onTapGesture(perform: tapToNextDisplay)
+            .gesture(DragGesture().onChanged(dragToAdjacentDisplay))
+    }
+    
+    /// Go to next display
+    func tapToNextDisplay() {
+        withAnimation {
+            if Date().timeIntervalSince1970 - dragTimeStamp >= 0.25 {
+                dragTimeStamp = Date().timeIntervalSince1970
+                currentDisplay.toNextState()
+            }
+        }
+    }
+    
+    /// Go to next or previous diplay depending on value
+    func dragToAdjacentDisplay(value: DragGesture.Value) {
+        withAnimation {
+            if Date().timeIntervalSince1970 - dragTimeStamp >= 0.25 {
+                dragTimeStamp = Date().timeIntervalSince1970
+                if value.translation.width >= 50 {
+                    currentDisplay.toPreviousState()
+                } else if value.translation.width <= -50 {
+                    currentDisplay.toNextState()
                 }
             }
-            .gesture(
-                DragGesture()
-                    .onChanged { value in
-                        withAnimation {
-                            if Date().timeIntervalSince1970 - dragTimeStamp >= 0.25 {
-                                dragTimeStamp = Date().timeIntervalSince1970
-                                if value.translation.width >= 50 {
-                                    currentDisplay.toPreviousState()
-                                } else if value.translation.width <= -50 {
-                                    currentDisplay.toNextState()
-                                }
-                            }
-                        }
-                    }
-            )
+        }
     }
     
     /// Amount display field
@@ -194,9 +191,6 @@ struct AmountDisplay: View {
         
         /// Current shown display state
         @Binding var currentDisplay: AmountDisplayState
-        
-        /// Observed Object that contains all settings of the app of this device
-        @ObservedObject var settings = Settings.shared
         
         /// Fine List Data
         @ObservedObject var fineListData = ListData.fine
@@ -230,7 +224,7 @@ struct AmountDisplay: View {
                         
                         // Inside
                         Text(String(describing: state.amount(of: personId, fineListData.list!)))
-                            .foregroundColor(settings.style == .default ? .textColor : state.color)
+                            .foregroundColor(plain: state.color)
                             .font(.text(20))
                             .lineLimit(1)
                         
@@ -245,12 +239,3 @@ struct AmountDisplay: View {
         
     }
 }
-
-#if DEBUG
-struct AmountDisplay_Previews: PreviewProvider {
-    static var previews: some View {
-        AmountDisplay(personId: UUID(uuidString: "ADB004F2-ACD2-42E2-8FB5-3591A43C6F9C")!)
-            .previewDevice("iPhone 11")
-    }
-}
-#endif

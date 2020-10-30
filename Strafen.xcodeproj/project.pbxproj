@@ -49,6 +49,8 @@
 		B04B71F524CF36AE0038B02F /* LargeWidgetSuccess.swift in Sources */ = {isa = PBXBuildFile; fileRef = B04B71F424CF36AE0038B02F /* LargeWidgetSuccess.swift */; };
 		B04B71F724CF36B90038B02F /* LargeWidgetNoConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = B04B71F624CF36B90038B02F /* LargeWidgetNoConnection.swift */; };
 		B04B71F924CF36C30038B02F /* LargeWidgetNoPersonLoggedIn.swift in Sources */ = {isa = PBXBuildFile; fileRef = B04B71F824CF36C30038B02F /* LargeWidgetNoPersonLoggedIn.swift */; };
+		B04D4AA22546AFB900658924 /* SignInNameInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = B04D4AA12546AFB900658924 /* SignInNameInput.swift */; };
+		B04D4AA82546E89E00658924 /* SignInClubInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = B04D4AA72546E89E00658924 /* SignInClubInput.swift */; };
 		B05C32E725388637004E9923 /* NecessaryObjects.swift in Sources */ = {isa = PBXBuildFile; fileRef = B05C32E625388637004E9923 /* NecessaryObjects.swift */; };
 		B05C3317253B6AEE004E9923 /* SignInCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = B05C3316253B6AEE004E9923 /* SignInCache.swift */; };
 		B05C331D253B6B0F004E9923 /* SignInCacheView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B05C331C253B6B0F004E9923 /* SignInCacheView.swift */; };
@@ -237,6 +239,8 @@
 		B04B71F424CF36AE0038B02F /* LargeWidgetSuccess.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LargeWidgetSuccess.swift; sourceTree = "<group>"; };
 		B04B71F624CF36B90038B02F /* LargeWidgetNoConnection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LargeWidgetNoConnection.swift; sourceTree = "<group>"; };
 		B04B71F824CF36C30038B02F /* LargeWidgetNoPersonLoggedIn.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LargeWidgetNoPersonLoggedIn.swift; sourceTree = "<group>"; };
+		B04D4AA12546AFB900658924 /* SignInNameInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInNameInput.swift; sourceTree = "<group>"; };
+		B04D4AA72546E89E00658924 /* SignInClubInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInClubInput.swift; sourceTree = "<group>"; };
 		B05C32E625388637004E9923 /* NecessaryObjects.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NecessaryObjects.swift; sourceTree = "<group>"; };
 		B05C3316253B6AEE004E9923 /* SignInCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInCache.swift; sourceTree = "<group>"; };
 		B05C331C253B6B0F004E9923 /* SignInCacheView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInCacheView.swift; sourceTree = "<group>"; };
@@ -766,9 +770,11 @@
 				B05C332F253C3597004E9923 /* LoginView.swift */,
 				B05C331C253B6B0F004E9923 /* SignInCacheView.swift */,
 				B0E50C9E253DCC44008C7E84 /* SignInView.swift */,
+				B04D4AA12546AFB900658924 /* SignInNameInput.swift */,
 				B037BCE925419CB4002B81E5 /* SignInEmailView.swift */,
 				B0231D752542FF550030BADE /* SignInClubSelection.swift */,
 				B0B84C812544818C000B94BA /* SignInPersonSelection.swift */,
+				B04D4AA72546E89E00658924 /* SignInClubInput.swift */,
 				B05C332A253B7012004E9923 /* New Group */,
 			);
 			path = LoginView;
@@ -1249,6 +1255,7 @@
 				B06FECF4251642CD00893DF9 /* NewClubChange.swift in Sources */,
 				B06FECFA25164D8B00893DF9 /* SendCodeMailChange.swift in Sources */,
 				B042D43524BB1B040029F2D5 /* Euro.swift in Sources */,
+				B04D4AA22546AFB900658924 /* SignInNameInput.swift in Sources */,
 				B0C1C51B24A78CC2007B584B /* Settings.swift in Sources */,
 				B042D43324BB19E10029F2D5 /* ProfileDetail.swift in Sources */,
 				B0619C0A24C1E62C008969A1 /* PersonFineAdvanced.swift in Sources */,
@@ -1262,6 +1269,7 @@
 				B0619BFE24C0B999008969A1 /* PersonFineEditor.swift in Sources */,
 				B020C7C024AF7CC6008940FE /* Person.swift in Sources */,
 				B0619C0D24C20C4B008969A1 /* ReasonList.swift in Sources */,
+				B04D4AA82546E89E00658924 /* SignInClubInput.swift in Sources */,
 				B0B81DC52502523100249447 /* Settings+Appereance.swift in Sources */,
 				B0C1C52524A8BC14007B584B /* RoundedCorners.swift in Sources */,
 				B05C331D253B6B0F004E9923 /* SignInCacheView.swift in Sources */,

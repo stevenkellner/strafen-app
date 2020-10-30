@@ -22,7 +22,12 @@ struct LoginEntryView: View {
             // Sheet for sign in
             EmptySheetLink(isPresented: $showSignInSheet) {
                 SignInView(showSignInSheet: $showSignInSheet)
+            } onDismiss: {
+                if SignInCache.shared.cachedStatus != nil {
+                    showCachedState = true
+                }
             }
+
 
             // Sheet for sign in with cached properties
             EmptySheetLink(isPresented: $showCachedState) {

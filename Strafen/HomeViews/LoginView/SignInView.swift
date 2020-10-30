@@ -31,9 +31,11 @@ struct SignInView: View {
                 Spacer()
                 
                 // Cancel Button
-                CancelButton {
-                    showSignInSheet = false
-                }.padding(.bottom, 50)
+                CancelButton()
+                    .onButtonPress {
+                        showSignInSheet = false
+                    }
+                    .padding(.bottom, 50)
                 
             }.navigationTitle("Title")
                 .navigationBarHidden(true)
@@ -42,21 +44,6 @@ struct SignInView: View {
 
     /// Sign in with Email and Apple Buttons
     struct SignInButtonsView: View {
-        
-        /// Sign in with apple error type
-        enum SignInWithAppleErrorType: ErrorMessageType {
-            
-            /// Internal error
-            case internalError
-            
-            /// Message of the error
-            var message: String {
-                switch self {
-                case .internalError:
-                    return "Es gab ein Problem beim Registrieren."
-                }
-            }
-        }
         
         /// Active navigation links
         struct ActiveNavigationLinks {
@@ -76,10 +63,7 @@ struct SignInView: View {
         @State var activeNavigationLinks = ActiveNavigationLinks()
         
         /// Sign in with apple error type
-        @State var signInWithAppleErrorType: SignInWithAppleErrorType? = nil
-        
-        /// Observed Object that contains all settings of the app of this device
-        @ObservedObject var settings = Settings.shared
+        @State var signInWithAppleErrorMessages: ErrorMessages? = nil
         
         var body: some View {
             ZStack {
@@ -91,12 +75,12 @@ struct SignInView: View {
                 
                 // Navigation link for name input
                 EmptyNavigationLink(swipeBack: false, isActive: $activeNavigationLinks.nameInput) {
-                    Text("Name input") // TODO
+                    SignInNameInput()
                 }
                 
                 // Navigation link for club selection
                 EmptyNavigationLink(swipeBack: false, isActive: $activeNavigationLinks.clubSelction) {
-                    Text("Club selection") // TODO
+                    SignInClubSelection()
                 }
                 
                 VStack(spacing: 20) {
@@ -111,7 +95,7 @@ struct SignInView: View {
                         
                         // Text
                         Text("Mit E-Mail Registrieren")
-                            .foregroundColor(settings: settings, plain: Color.custom.orange)
+                            .foregroundColor(plain: Color.custom.orange)
                             .font(.text(20))
                             .lineLimit(1)
                             .padding(.horizontal, 15)
@@ -129,7 +113,7 @@ struct SignInView: View {
                         .frame(width: UIScreen.main.bounds.width * 0.95, height: 50)
                     
                     // Error Message
-                    ErrorMessages(errorType: $signInWithAppleErrorType)
+                    ErrorMessageView(errorMessages: $signInWithAppleErrorMessages)
                     
                     Spacer()
                 }
@@ -138,10 +122,10 @@ struct SignInView: View {
         
         /// Handles sign in with apple button click
         func handleSignInWithApple(result: Result<(userId: String, name: PersonNameComponents), SignInWithAppleButton.SignInWithAppleError>) {
-            signInWithAppleErrorType = nil
+            signInWithAppleErrorMessages = nil
             switch result {
             case .failure(_):
-                signInWithAppleErrorType = .internalError
+                signInWithAppleErrorMessages = .internalErrorSignIn
             case .success((userId: let userId, name: let name)):
                 let state: SignInCache.Status
                 if let personName = name.personName {

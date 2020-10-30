@@ -14,43 +14,18 @@ struct SignInClubSelection: View {
     /// Club Identifier Properties
     struct ClubIdentifierProperties {
         
-        /// Club identifier error type
-        enum ClubIdentifierErrorType: ErrorMessageType {
-            
-            /// Textfield is empty
-            case emptyField
-            
-            /// Club doesn't exist
-            case clubNotExists
-            
-            /// Internal error
-            case internalError
-            
-            /// Message of the error
-            var message: String {
-                switch self {
-                case .emptyField:
-                    return "Dieses Feld darf nicht leer sein!"
-                case .clubNotExists:
-                    return "Es gibt keinen Verein mit dieser Kennung!"
-                case .internalError:
-                    return "Es gab ein Problem beim Registrieren."
-                }
-            }
-        }
-        
         /// Club identifier
         var clubIdentifier: String = ""
         
         /// Type of club identifier textfield error
-        var clubIdentifierErrorType: ClubIdentifierErrorType? = nil
+        var clubIdentifierErrorMessages: ErrorMessages? = nil
         
         /// Evaluate error
         @discardableResult mutating func evaluateError() -> Bool {
             if clubIdentifier.isEmpty {
-                clubIdentifierErrorType = .emptyField
+                clubIdentifierErrorMessages = .emptyField
             } else {
-                clubIdentifierErrorType = nil
+                clubIdentifierErrorMessages = nil
                 return false
             }
             return true
@@ -58,12 +33,15 @@ struct SignInClubSelection: View {
         
         /// Checks if an error occured while signing in
         mutating func evaluteErrorCode(of error: Error) {
-            let errorCode = FunctionsErrorCode(rawValue: error._code)
+            guard let error = error as NSError?, error.domain == FunctionsErrorDomain else {
+                return clubIdentifierErrorMessages = .internalErrorSignIn
+            }
+            let errorCode = FunctionsErrorCode(rawValue: error.code)
             switch errorCode {
             case .notFound:
-                clubIdentifierErrorType = .clubNotExists
+                clubIdentifierErrorMessages = .clubNotExists
             default:
-                clubIdentifierErrorType = .internalError
+                clubIdentifierErrorMessages = .internalErrorSignIn
             }
         }
     }
@@ -115,7 +93,10 @@ struct SignInClubSelection: View {
                     Spacer()
                     
                     // Continue button
-                    ConfirmButton("Weiter", connectionState: $connectionState, buttonHandler: handleContinueButton)
+                    ConfirmButton()
+                        .title("Weiter")
+                        .connectionState($connectionState)
+                        .onButtonPress(handleContinueButton)
                         .padding(.bottom, 50)
                 }
             }.screenSize($screenSize, geometry: geometry)
@@ -124,34 +105,30 @@ struct SignInClubSelection: View {
     
     /// Handles continue button click
     func handleContinueButton() {
-        
-        let cacheProperty = SignInCache.PropertyUserIdNameClubId(userIdName: SignInCache.shared.cachedStatus?.property as! SignInCache.PropertyUserIdName, clubId: UUID(uuidString: "C0AFDCF2-53D1-427F-9958-27CF3DCBA344")!)
-        let state: SignInCache.Status = .personSelection(property: cacheProperty)
-        SignInCache.shared.setState(to: state)
-        return isNavigationLinkActive = true
-        
         guard connectionState != .loading else { return }
         connectionState = .loading
         
         if clubIdentifierProperties.evaluateError() {
             connectionState = .failed
         } else {
-            Functions.functions(region: "europe-west1").httpsCallable("getClubId").call(["identifier": clubIdentifierProperties.clubIdentifier]) { result, error in
-                if let error = error {
-                    clubIdentifierProperties.evaluteErrorCode(of: error)
-                    connectionState = .failed
-                } else if let clubIdString = result?.data as? String, let clubId = UUID(uuidString: clubIdString) {
-                    let cacheProperty = SignInCache.PropertyUserIdNameClubId(userIdName: SignInCache.shared.cachedStatus?.property as! SignInCache.PropertyUserIdName, clubId: clubId)
-                    let state: SignInCache.Status = .personSelection(property: cacheProperty)
-                    SignInCache.shared.setState(to: state)
-                    isNavigationLinkActive = true
-                    connectionState = .passed
-                } else {
-                    clubIdentifierProperties.clubIdentifierErrorType = .internalError
-                    connectionState = .failed
-                }
-            }
+            let callItem = GetClubIdCall(identifier: clubIdentifierProperties.clubIdentifier)
+            FunctionCaller.shared.call(callItem, passedHandler: handleCallResult, failedHandler: handleCallError)
         }
+    }
+    
+    /// Handles result of get club id call
+    func handleCallResult(clubId: GetClubIdCall.CallResult) {
+        let cacheProperty = SignInCache.PropertyUserIdNameClubId(userIdName: SignInCache.shared.cachedStatus?.property as! SignInCache.PropertyUserIdName, clubId: clubId)
+        let state: SignInCache.Status = .personSelection(property: cacheProperty)
+        SignInCache.shared.setState(to: state)
+        isNavigationLinkActive = true
+        connectionState = .passed
+    }
+    
+    /// Handles error of get club id call
+    func handleCallError(error: Error) {
+        clubIdentifierProperties.evaluteErrorCode(of: error)
+        connectionState = .failed
     }
     
     /// Club identifier input
@@ -172,10 +149,15 @@ struct SignInClubSelection: View {
                     HStack(spacing: 0) {
                         
                         // Textfield
-                        CustomTextField("Vereinskennung", text: $clubIdentifierProperties.clubIdentifier, errorType: $clubIdentifierProperties.clubIdentifierErrorType) {
-                            clubIdentifierProperties.evaluateError()
-                        }.textFieldSize(width: UIScreen.main.bounds.width * 0.75, height: 50)
+                        CustomTextField()
+                            .title("Vereinskennung")
+                            .textBinding($clubIdentifierProperties.clubIdentifier)
+                            .errorMessages($clubIdentifierProperties.clubIdentifierErrorMessages)
+                            .textFieldSize(width: UIScreen.main.bounds.width * 0.75, height: 50)
                             .showErrorMessage(false)
+                            .onCompletion {
+                                clubIdentifierProperties.evaluateError()
+                            }
                         
                         Spacer()
                         
@@ -194,7 +176,7 @@ struct SignInClubSelection: View {
                     }.frame(width: UIScreen.main.bounds.width * 0.95)
                     
                     // Error messages
-                    ErrorMessages(errorType: $clubIdentifierProperties.clubIdentifierErrorType)
+                    ErrorMessageView(errorMessages: $clubIdentifierProperties.clubIdentifierErrorMessages)
                     
                 }
                 
@@ -215,15 +197,12 @@ struct SignInClubSelection: View {
         /// Indicates if navigation link is active
         @State var isNavigationLinkActive = false
         
-        /// Observed Object that contains all settings of the app of this device
-        @ObservedObject var settings = Settings.shared
-        
         var body: some View {
             ZStack {
                 
                 // Navigation link to new club view
                 EmptyNavigationLink(isActive: $isNavigationLinkActive) {
-                    Text("Club input") // TODO
+                    SignInClubInput()
                 }
                 
                 VStack(spacing: 10) {
@@ -237,7 +216,7 @@ struct SignInClubSelection: View {
                         
                         // Text
                         Text("Verein Erstellen")
-                            .foregroundColor(settings: settings, plain: Color.custom.orange)
+                            .foregroundColor(plain: Color.custom.orange)
                             .font(.text(20))
                             .lineLimit(1)
         

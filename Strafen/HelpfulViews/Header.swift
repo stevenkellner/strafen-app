@@ -11,28 +11,28 @@ import SwiftUI
 struct Header: View {
     
     /// Page title
-    let title: String
+    private let title: String
     
     /// Line limit
     private var lineLimit: Int? = 1
     
     /// Color scheme to get appearance of this device
-    @Environment(\.colorScheme) var colorScheme
+    @Environment(\.colorScheme) private var colorScheme
     
     /// Observed Object that contains all settings of the app of this device
-    @ObservedObject var settings = Settings.shared
+    @ObservedObject private var settings = Settings.shared
     
-    init(_ title: String) {
+    public init(_ title: String) {
         self.title = title
     }
     
-    var body: some View {
+    public var body: some View {
         VStack(spacing: 0) {
                 
             // Title
             HStack {
-                Text(self.title)
-                    .foregroundColor(Color.textColor)
+                Text(title)
+                    .foregroundColor(.textColor)
                     .font(.text(35))
                     .padding(.horizontal, 22)
                     .lineLimit(lineLimit)
@@ -59,7 +59,7 @@ struct Header: View {
     }
     
     /// Set line limit
-    func lineLimit(_ lineLimit: Int?) -> Header {
+    public func lineLimit(_ lineLimit: Int?) -> Header {
         var header = self
         header.lineLimit = lineLimit
         return header
@@ -70,17 +70,16 @@ struct Header: View {
 struct Title: View {
     
     /// Title
-    var title: String
+    private let title: String
     
-    init(_ title: String) {
+    public init(_ title: String) {
         self.title = title
     }
     
-    var body: some View {
+    public var body: some View {
         HStack(spacing: 0) {
             Text("\(title):")
-                .foregroundColor(.textColor)
-                .font(.text(20))
+                .configurate(size: 20)
                 .padding(.leading, 10)
             Spacer()
         }
@@ -88,14 +87,14 @@ struct Title: View {
 }
 
 /// Error messages under a textfield
-struct ErrorMessages<ErrorType>: View where ErrorType: ErrorMessageType {
+struct ErrorMessageView: View {
     
     /// Type of the error message
-    @Binding var errorType: ErrorType?
+    @Binding public var errorMessages: ErrorMessages?
     
-    var body: some View {
-        if let errorType = errorType {
-            Text(errorType.message)
+    public var body: some View {
+        if let errorMessages = errorMessages {
+            Text(errorMessages.message)
                 .foregroundColor(Color.custom.red)
                 .font(.text(20))
                 .lineLimit(1)
@@ -104,9 +103,92 @@ struct ErrorMessages<ErrorType>: View where ErrorType: ErrorMessageType {
     }
 }
 
-/// Error Type
-protocol ErrorMessageType {
+/// Error messages
+enum ErrorMessages {
+    
+    /// Textfield is empty
+    case emptyField
+    
+    /// Club doesn't exist
+    case clubNotExists
+    
+    /// Internal error
+    case internalErrorSignIn
+    
+    /// Invalid email
+    case emailNotRegistered
+    
+    /// Internal error
+    case internalErrorLogIn
+    
+    /// Password is incorrect
+    case incorrectPassword
+    
+    /// Not signed in
+    case notSignedIn
+    
+    /// Invalid email
+    case invalidEmail
+    
+    /// Email is already signed in
+    case alreadySignedIn
+    
+    /// Less than 8 characters
+    case tooFewCharacters
+    
+    /// No upper character in Password
+    case noUpperCharacter
+    
+    /// No lower character in Password
+    case noLowerCharacter
+    
+    /// No digit in Password
+    case noDigit
+    
+    /// Passwword is too weak
+    case weakPassword
+    
+    /// Not same password
+    case notSamePassword
+    
+    /// Club identifier already exists
+    case identifierAlreadyExists
     
     /// Message of the error
-    var message: String { get }
+    var message: String {
+        switch self {
+        case .emptyField:
+            return "Dieses Feld darf nicht leer sein!"
+        case .clubNotExists:
+            return "Es gibt keinen Verein mit dieser Kennung!"
+        case .internalErrorSignIn:
+            return "Es gab ein Problem beim Registrieren."
+        case .emailNotRegistered:
+            return "Diese Email-Adresse ist nicht registriert."
+        case .internalErrorLogIn:
+            return "Es gab ein Problem beim Anmelden."
+        case .incorrectPassword:
+            return "Das eingegebene Passwort ist falsch."
+        case .notSignedIn:
+            return "Du bist noch nicht registriert."
+        case .invalidEmail:
+            return "Dies ist keine gültige Email!"
+        case .alreadySignedIn:
+            return "Diese Email ist bereits registriert!"
+        case .tooFewCharacters:
+            return "Passwort ist zu kurz!"
+        case .noUpperCharacter:
+            return "Muss einen Großbuchstaben enthalten!"
+        case .noLowerCharacter:
+            return "Muss einen Kleinbuchstaben enthalten!"
+        case .noDigit:
+            return "Muss eine Zahl enthalten!"
+        case .weakPassword:
+            return "Das Passwort ist zu schwach!"
+        case .notSamePassword:
+            return "Passwörter stimmen nicht überein!"
+        case .identifierAlreadyExists:
+            return "Vereinskennung ist bereits vergeben!"
+        }
+    }
 }

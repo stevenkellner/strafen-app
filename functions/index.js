@@ -15,17 +15,41 @@ let transporter = nodemailer.createTransport({
 
 // Create a new club
 exports.newClub = functions.region('europe-west1').https.onCall(async (data, context) => {
+    if (!context.auth) {
+        throw new functions.https.HttpsError(
+            'failed-precondition', 
+            'The function must be called while authenticated.'
+        );
+      }
 
     // Check if all arguments are set
-    let requiredArguements = ['clubId', 'clubName', 'personId', 'personFirstName', 'personLastName', 'clubIdentifier', 'userId'];
+    let requiredArguements = ['clubId', 'clubName', 'personId', 'personFirstName', 'personLastName', 'clubIdentifier', 'userId', 'signInDate'];
     checkAllArguments(requiredArguements, data);
 
     // Add club to allClubs
     let clubPath = 'clubs/' + data.clubId.toString().toUpperCase();
     let clubRef = admin.database().ref(clubPath);
+
+    // Check if identifier already exists
+    let clubExists = false;
+    await admin.database().ref('clubs').once('value', snapshot => {
+        snapshot.forEach(child => {
+            let identifier = child.child('identifier').val();
+            if (identifier == data.clubIdentifier) {
+                clubExists = true;
+            }
+        });
+    });
+    if (clubExists) {
+        throw new functions.https.HttpsError(
+            'already-exists', 
+            "Club identifier already exists"
+        );
+    } 
+
     if (!await existsData(clubRef)) {
         let isError = false;
-        await clubRef.child('identifier').set(data.identifier, error => {
+        await clubRef.child('identifier').set(data.clubIdentifier, error => {
             isError = isError || error != null;
         });
         await clubRef.child('name').set(data.clubName, error => {
@@ -37,7 +61,8 @@ exports.newClub = functions.region('europe-west1').https.onCall(async (data, con
                 last: data.personLastName
             },
             cashier: true,
-            userId: data.userId
+            userId: data.userId,
+            signInDate: data.signInDate
         }, error => {
             isError = isError || error != null;
         });
@@ -53,7 +78,13 @@ exports.newClub = functions.region('europe-west1').https.onCall(async (data, con
 
 // Change late payment interest
 exports.changeLatePaymentInterest = functions.region('europe-west1').https.onCall(async (data, context) => {
-
+    if (!context.auth) {
+        throw new functions.https.HttpsError(
+            'failed-precondition', 
+            'The function must be called while authenticated.'
+        );
+      }
+      
     // Check if clubId is set
     checkAllArguments(['clubId'], data);
 
@@ -101,9 +132,15 @@ exports.changeLatePaymentInterest = functions.region('europe-west1').https.onCal
 
 // Register new person
 exports.registerPerson = functions.region('europe-west1').https.onCall(async (data, context) => {
-
+    if (!context.auth) {
+        throw new functions.https.HttpsError(
+            'failed-precondition', 
+            'The function must be called while authenticated.'
+        );
+      }
+      
     // Check if all arguments are set
-    let requiredArguements = ['clubId', 'id', 'firstName', 'lastName', 'userId'];
+    let requiredArguements = ['clubId', 'id', 'firstName', 'lastName', 'userId', 'signInDate'];
     checkAllArguments(requiredArguements, data);
 
     // Get person reference
@@ -117,7 +154,8 @@ exports.registerPerson = functions.region('europe-west1').https.onCall(async (da
             last: data.lastName
         },
         cashier: false,
-        userId: data.userId
+        userId: data.userId,
+        signInDate: data.signInDate
     };
     if (!await existsData(personRef)) {
         await personRef.set(person, error => {
@@ -138,7 +176,13 @@ exports.registerPerson = functions.region('europe-west1').https.onCall(async (da
 
 // Force sign out a person
 exports.forceSignOut = functions.region('europe-west1').https.onCall(async (data, context) => {
-
+    if (!context.auth) {
+        throw new functions.https.HttpsError(
+            'failed-precondition', 
+            'The function must be called while authenticated.'
+        );
+      }
+      
     // Check if all arguments are set
     let requiredArguements = ['clubId', 'personId'];
     checkAllArguments(requiredArguements, data);
@@ -164,7 +208,13 @@ exports.forceSignOut = functions.region('europe-west1').https.onCall(async (data
 
 // Change list item
 exports.changeList = functions.region('europe-west1').https.onCall(async (data, context) => {
-
+    if (!context.auth) {
+        throw new functions.https.HttpsError(
+            'failed-precondition', 
+            'The function must be called while authenticated.'
+        );
+      }
+      
     // Check if all arguments are set
     let requiredArguements = ['clubId', 'changeType', 'listType', 'itemId'];
     checkAllArguments(requiredArguements, data);
@@ -271,7 +321,13 @@ exports.changeList = functions.region('europe-west1').https.onCall(async (data, 
 
 // Send mail
 exports.sendMail = functions.region('europe-west1').https.onCall(async (data, context) => {
-    
+    if (!context.auth) {
+        throw new functions.https.HttpsError(
+            'failed-precondition', 
+            'The function must be called while authenticated.'
+        );
+      }
+      
     // Check if all arguments are set
     checkAllArguments(['email'], data);
 
@@ -304,7 +360,13 @@ exports.sendMail = functions.region('europe-west1').https.onCall(async (data, co
 
 // Get club uuid of club identifier
 exports.getClubId = functions.region('europe-west1').https.onCall(async (data, context) => {
-
+    if (!context.auth) {
+        throw new functions.https.HttpsError(
+            'failed-precondition', 
+            'The function must be called while authenticated.'
+        );
+    }
+      
     // Check if all arguments are set
     checkAllArguments(['identifier'], data);
 
@@ -326,6 +388,68 @@ exports.getClubId = functions.region('europe-west1').https.onCall(async (data, c
     } else {
         return clubId;
     }
+});
+
+// Get club and person uuid of user id
+exports.getClubPersonId = functions.region('europe-west1').https.onCall(async (data, context) => {
+    if (!context.auth) {
+        throw new functions.https.HttpsError(
+            'failed-precondition', 
+            'The function must be called while authenticated.'
+        );
+    }
+
+    // Check if all arguments are set
+    checkAllArguments(['userId'], data);
+
+    let clubsRef = admin.database().ref('clubs');
+    var clubPersonId = null;
+    await clubsRef.once('value', clubsSnapshot => {
+        clubsSnapshot.forEach(club => {
+            club.child('persons').forEach(person => {
+                let userId = person.child('userId').val()
+                if (userId == data.userId) {
+                    clubPersonId = {
+                        clubId: club.key,
+                        personId: person.key                        
+                    }
+                }
+            });
+        });
+    });
+    if (clubPersonId == null) {
+        throw new functions.https.HttpsError(
+            'not-found', 
+            "Person doesn't exist"
+         );
+    } else {
+        return clubPersonId;
+    }
+});
+
+// Check if club with given identifier already exists
+exports.existsClubWithIdentifier = functions.region('europe-west1').https.onCall(async (data, context) => {
+    if (!context.auth) {
+        throw new functions.https.HttpsError(
+            'failed-precondition', 
+            'The function must be called while authenticated.'
+        );
+      }
+      
+    // Check if all arguments are set
+    checkAllArguments(['identifier'], data);
+
+    let clubsRef = admin.database().ref('clubs');
+    var clubExists = false;
+    await clubsRef.once('value', snapshot => {
+        snapshot.forEach(child => {
+            let identifier = child.child('identifier').val();
+            if (identifier == data.identifier) {
+                clubExists = true;
+            }
+        });
+    });
+    return clubExists;
 });
 
 // Check if data exists at path

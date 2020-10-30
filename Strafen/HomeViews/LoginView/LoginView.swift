@@ -7,57 +7,13 @@
 
 import SwiftUI
 import FirebaseAuth
+import FirebaseFunctions
 
 /// View  for login
 struct LoginView: View {
     
     /// Credentials of email log in (Email and Password) and errors types
     struct EmailCredentials {
-        
-        /// Email error type
-        enum EmailErrorType: ErrorMessageType {
-            
-            /// Email is empty
-            case emptyField
-            
-            /// Invalid email
-            case invalidEmail
-            
-            /// Internal error
-            case internalError
-            
-            /// Message of the error
-            var message: String {
-                switch self {
-                case .emptyField:
-                    return "Dieses Feld darf nicht leer sein!"
-                case .invalidEmail:
-                    return "Diese Email-Adresse ist nicht registriert."
-                case .internalError:
-                    return "Es gab ein Problem beim Anmelden."
-                }
-            }
-        }
-        
-        /// Password error type
-        enum PasswordErrorType: ErrorMessageType {
-            
-            /// Password is empty
-            case emptyField
-            
-            /// Password is incorrect
-            case incorrectPassword
-            
-            /// Message of the error
-            var message: String {
-                switch self {
-                case .emptyField:
-                    return "Dieses Feld darf nicht leer sein!"
-                case .incorrectPassword:
-                    return "Das eingegebene Passwort ist falsch."
-                }
-            }
-        }
         
         /// Email address
         var email: String = ""
@@ -66,21 +22,21 @@ struct LoginView: View {
         var password: String = ""
         
         /// Type of  email textfield error
-        var emailErrorType: EmailErrorType? = nil
+        var emailErrorMessages: ErrorMessages? = nil
         
         /// Type of password textfield error
-        var passwordErrorType: PasswordErrorType? = nil
+        var passwordErrorMessages: ErrorMessages? = nil
         
         /// Checks if email and password are empty
         mutating func checkEmpty() -> Bool {
             var isEmpty = false
             if email.isEmpty {
                 isEmpty = true
-                emailErrorType = .emptyField
+                emailErrorMessages = .emptyField
             }
             if password.isEmpty {
                 isEmpty = true
-                passwordErrorType = .emptyField
+                passwordErrorMessages = .emptyField
             }
             return isEmpty
         }
@@ -88,58 +44,41 @@ struct LoginView: View {
         /// Checks if email is empty
         mutating func evaluteEmailError() {
             if email.isEmpty {
-                emailErrorType = .emptyField
+                emailErrorMessages = .emptyField
             } else {
-                emailErrorType = nil
+                emailErrorMessages = nil
             }
         }
         
         /// Checks if password is empty
         mutating func evalutePasswordError() {
             if password.isEmpty {
-                passwordErrorType = .emptyField
+                passwordErrorMessages = .emptyField
             } else {
-                passwordErrorType = nil
+                passwordErrorMessages = nil
             }
         }
         
         /// Checks if an error occured while logging in
         mutating func evaluteErrorCode(of error: Error) {
-            let errorCode = AuthErrorCode(rawValue: error._code)
+            guard let error = error as NSError?, error.domain == AuthErrorDomain else {
+                return emailErrorMessages = .internalErrorSignIn
+            }
+            let errorCode = AuthErrorCode(rawValue: error.code)
             switch errorCode {
             case .invalidEmail:
-                emailErrorType = .invalidEmail
+                emailErrorMessages = .emailNotRegistered
             case .wrongPassword:
-                passwordErrorType = .incorrectPassword
+                passwordErrorMessages = .incorrectPassword
             default:
-                emailErrorType = .internalError
+                emailErrorMessages = .internalErrorLogIn
             }
         }
         
         /// Reset error types
         mutating func resetErrorTypes() {
-            emailErrorType = nil
-            passwordErrorType = nil
-        }
-    }
-    
-    /// Sign in with apple error type
-    enum SignInWithAppleErrorType: ErrorMessageType {
-        
-        /// Not signed in
-        case notSignedIn
-        
-        /// Internal error
-        case internalError
-        
-        /// Message of the error
-        var message: String {
-            switch self {
-            case .notSignedIn:
-                return "Du bist noch nicht registriert."
-            case .internalError:
-                return "Es gab ein Problem beim Anmelden."
-            }
+            emailErrorMessages = nil
+            passwordErrorMessages = nil
         }
     }
     
@@ -153,7 +92,7 @@ struct LoginView: View {
     @State var emailCredentials = EmailCredentials()
     
     /// Sign in with apple error type
-    @State var signInWithAppleErrorType: SignInWithAppleErrorType? = nil
+    @State var signInWithAppleErrorMessages: ErrorMessages? = nil
     
     /// Color scheme to get appearance of this device
     @Environment(\.colorScheme) var colorScheme
@@ -194,7 +133,7 @@ struct LoginView: View {
                             .frame(width: UIScreen.main.bounds.width * 0.95, height: 50)
                         
                         // Error Message
-                        ErrorMessages(errorType: $signInWithAppleErrorType)
+                        ErrorMessageView(errorMessages: $signInWithAppleErrorMessages)
                             
                     }
                     
@@ -206,7 +145,10 @@ struct LoginView: View {
                 Spacer()
                 
                 // Confirm Button
-                ConfirmButton("Anmelden", connectionState: $connectionState, buttonHandler: handleEmailLogIn)
+                ConfirmButton()
+                    .title("Anmelden")
+                    .connectionState($connectionState)
+                    .onButtonPress(handleEmailLogIn)
                     .padding(.bottom, 50)
                 
             }.screenSize($screenSize, geometry: geometry)
@@ -221,7 +163,7 @@ struct LoginView: View {
         connectionState = .loading
         
         // Check if email and password aren't empty
-        signInWithAppleErrorType = nil
+        signInWithAppleErrorMessages = nil
         emailCredentials.resetErrorTypes()
         guard !emailCredentials.checkEmpty() else {
             return DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
@@ -242,26 +184,43 @@ struct LoginView: View {
     
     /// Handles log in with apple
     func handleAppleLogIn(result: Result<(userId: String, name: PersonNameComponents), SignInWithAppleButton.SignInWithAppleError>) {
-        signInWithAppleErrorType = nil
+        guard connectionState != .loading else { return }
+        connectionState = .loading
+        
+        signInWithAppleErrorMessages = nil
         emailCredentials.resetErrorTypes()
         switch result {
         case .failure(_):
-            signInWithAppleErrorType = .internalError
+            connectionState = .failed
+            signInWithAppleErrorMessages = .internalErrorLogIn
         case .success((userId: let userId, name: let name)):
-            // TODO check if user is already sign in
-            let notSignedIn = true
-            if notSignedIn {
-                let cacheProperty = SignInCache.PropertyUserId(userId: userId, name: name)
-                var state: SignInCache.Status = .nameInput(property: cacheProperty)
-                if let cachedStatus = SignInCache.shared.cachedStatus {
-                    state = cachedStatus
-                }
-                SignInCache.shared.setState(to: state)
-                showCachedState = true
-                signInWithAppleErrorType = .notSignedIn
-            } else {
+            let callItem = GetClubPersonIdCall(userId: userId)
+            FunctionCaller.shared.call(callItem) { (result: GetClubPersonIdCall.CallResult) in
+                connectionState = .passed
                 // TODO Log in
+            } failedHandler: { error in
+                let cacheProperty = SignInCache.PropertyUserId(userId: userId, name: name)
+                handleAppleSignInGetIdsCallError(error: error, cacheProperty: cacheProperty)
+                connectionState = .failed
             }
+        }
+    }
+    
+    /// Handle apple sign in get ids call error
+    func handleAppleSignInGetIdsCallError(error: Error, cacheProperty: SignInCache.PropertyUserId) {
+        if let error = error as NSError?,
+           error.domain == FunctionsErrorDomain,
+           let errorCode = FunctionsErrorCode(rawValue: error.code),
+           errorCode == .notFound {
+            var state: SignInCache.Status = .nameInput(property: cacheProperty)
+            if let cachedStatus = SignInCache.shared.cachedStatus {
+                state = cachedStatus
+            }
+            SignInCache.shared.setState(to: state)
+            showCachedState = true
+            signInWithAppleErrorMessages = .notSignedIn
+        } else {
+            signInWithAppleErrorMessages = .internalErrorLogIn
         }
     }
     
@@ -281,9 +240,15 @@ struct LoginView: View {
                     Title("Email")
                     
                     // Text Field
-                    CustomTextField("Email", text: $emailCredentials.email, keyboardType: .emailAddress, errorType: $emailCredentials.emailErrorType) {
-                        emailCredentials.evaluteEmailError()
-                    }.textFieldSize(width: UIScreen.main.bounds.width * 0.95, height: 50)
+                    CustomTextField()
+                        .title("Email")
+                        .textBinding($emailCredentials.email)
+                        .errorMessages($emailCredentials.emailErrorMessages)
+                        .keyboardType(.emailAddress)
+                        .textFieldSize(width: UIScreen.main.bounds.width * 0.95, height: 50)
+                        .onCompletion {
+                            emailCredentials.evaluteEmailError()
+                        }
                     
                 }
                 
@@ -294,9 +259,14 @@ struct LoginView: View {
                     Title("Passwort")
                     
                     // Text Field
-                    CustomSecureField(text: $emailCredentials.password, placeholder: "Passwort", errorType: $emailCredentials.passwordErrorType) {
-                        emailCredentials.evalutePasswordError()
-                    }.textFieldSize(width: UIScreen.main.bounds.width * 0.95, height: 50)
+                    CustomSecureField()
+                        .title("Passwort")
+                        .textBinding($emailCredentials.password)
+                        .errorMessages($emailCredentials.passwordErrorMessages)
+                        .textFieldSize(width: UIScreen.main.bounds.width * 0.95, height: 50)
+                        .onCompletion {
+                            emailCredentials.evalutePasswordError()
+                        }
                     
                 }
                 

@@ -22,6 +22,9 @@ struct Outline: View {
     /// Stroke Color of the outline
     private var strokeColor: Color? = nil
     
+    /// Line width of the outline
+    private var lineWidth: CGFloat? = nil
+    
     /// Color scheme to get appearance of this device
     @Environment(\.colorScheme) var colorScheme
     
@@ -35,7 +38,7 @@ struct Outline: View {
     var body: some View {
         RoundedCorners(cornerSet)
             .radius(settings.style.radius)
-            .lineWidth(settings.style.lineWidth)
+            .lineWidth(lineWidth ?? settings.style.lineWidth)
             .fillColor(onlyDefault ? settings.style.fillColor(colorScheme, defaultStyle: fillColor) : fillColor!)
             .strokeColor(strokeColor ?? settings.style.strokeColor(colorScheme))
     }
@@ -52,6 +55,13 @@ struct Outline: View {
     func strokeColor(_ strokeColor: Color?) -> Outline {
         var outline = self
         outline.strokeColor = strokeColor
+        return outline
+    }
+    
+    /// Set line width
+    func lineWidth(_ lineWidth: CGFloat?) -> Outline {
+        var outline = self
+        outline.lineWidth = lineWidth
         return outline
     }
 }

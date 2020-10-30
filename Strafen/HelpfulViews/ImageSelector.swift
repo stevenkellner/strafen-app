@@ -13,11 +13,20 @@ struct ImageSelector: View {
     /// Selected Image
     @Binding var image: UIImage?
     
+    /// Indicates image upload progress
+    @Binding var uploadProgress: Double?
+    
     /// Indicate if image picker is shown
     @State var showImagePicker = false
     
     /// Observed Object that contains all settings of the app of this device
     @ObservedObject var settings = Settings.shared
+    
+    /// Init with image and upload progress binding
+    init(image: Binding<UIImage?>, uploadProgress: Binding<Double?> = .constant(nil)) {
+        _image = image
+        _uploadProgress = uploadProgress
+    }
     
     var body: some View {
         GeometryReader { geometry in
@@ -58,22 +67,26 @@ struct ImageSelector: View {
                     }
                     
                     // Change image text
-                    Text("Bild ändern")
-                        .foregroundColor(Color.custom.gray)
-                        .font(.custom("Futura-Medium", size: geometry.size.width / 7.5))
-                        .frame(width: geometry.size.width)
-                        .lineLimit(1)
-                        .padding(.top, 5)
+                    if uploadProgress == nil {
+                        Text("Bild ändern")
+                            .foregroundColor(Color.custom.gray)
+                            .font(.custom("Futura-Medium", size: geometry.size.width / 7.5))
+                            .frame(width: geometry.size.width)
+                            .lineLimit(1)
+                            .padding(.top, 5)
+                    }
                     
                 }.onTapGesture {
-                        showImagePicker = true
+                        if uploadProgress == nil {
+                            showImagePicker = true
+                        }
                     }
                     .sheet(isPresented: self.$showImagePicker) {
                         ImagePicker($image)
                     }
                 
                 // remove image button
-                if image != nil {
+                if image != nil && uploadProgress == nil {
                     Image(systemName: "xmark.circle")
                         .foregroundColor(Color.custom.red)
                         .font(.system(size: geometry.size.width / 3, weight: settings.style == .default ? .light : .thin))

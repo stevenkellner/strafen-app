@@ -15,126 +15,6 @@ struct SignInEMailView: View {
     /// Credentials of email log in (Name, Email and Password) and errors types
     struct EmailCredentials {
         
-        /// First name error type
-        enum FirstNameErrorType: ErrorMessageType {
-            
-            /// Textfield is empty
-            case emptyField
-            
-            /// Message of the error
-            var message: String {
-                switch self {
-                case .emptyField:
-                    return "Dieses Feld darf nicht leer sein!"
-                }
-            }
-        }
-        
-        /// Last name error type
-        enum LastNameErrorType: ErrorMessageType {
-            
-            /// Textfield is empty
-            case emptyField
-            
-            /// Message of the error
-            var message: String {
-                switch self {
-                case .emptyField:
-                    return "Dieses Feld darf nicht leer sein!"
-                }
-            }
-        }
-        
-        /// Email error type
-        enum EmailErrorType: ErrorMessageType {
-            
-            /// Textfield is empty
-            case emptyField
-            
-            /// Invalid email
-            case invalidEmail
-            
-            /// Email is already signed in
-            case alreadySignedIn
-            
-            /// Internal error
-            case internalError
-            
-            /// Message of the error
-            var message: String {
-                switch self {
-                case .emptyField:
-                    return "Dieses Feld darf nicht leer sein!"
-                case .invalidEmail:
-                    return "Dies ist keine gültige Email!"
-                case .alreadySignedIn:
-                    return "Diese Email ist bereits registriert!"
-                case .internalError:
-                    return "Es gab ein Problem beim Registrieren."
-                }
-            }
-        }
-        
-        /// Password error type
-        enum PasswordErrorType: ErrorMessageType {
-            
-            /// Textfield is empty
-            case emptyField
-            
-            /// Less than 8 characters
-            case tooFewCharacters
-            
-            /// No upper character in Password
-            case noUpperCharacter
-            
-            /// No lower character in Password
-            case noLowerCharacter
-            
-            /// No digit in Password
-            case noDigit
-            
-            /// Passwword is too weak
-            case weakPassword
-            
-            /// Message of the error
-            var message: String {
-                switch self {
-                case .emptyField:
-                    return "Dieses Feld darf nicht leer sein!"
-                case .tooFewCharacters:
-                    return "Passwort ist zu kurz!"
-                case .noUpperCharacter:
-                    return "Muss einen Großbuchstaben enthalten!"
-                case .noLowerCharacter:
-                    return "Muss einen Kleinbuchstaben enthalten!"
-                case .noDigit:
-                    return "Muss eine Zahl enthalten!"
-                case .weakPassword:
-                    return "Das Passwort ist zu schwach!"
-                }
-            }
-        }
-        
-        /// Repeat password error type
-        enum RepeatPasswordErrorType: ErrorMessageType {
-            
-            /// Textfield is empty
-            case emptyField
-            
-            /// not same password
-            case notSamePassword
-            
-            /// Message of the error
-            var message: String {
-                switch self {
-                case .emptyField:
-                    return "Dieses Feld darf nicht leer sein!"
-                case .notSamePassword:
-                    return "Passwörter stimmen nicht überein!"
-                }
-            }
-        }
-        
         /// First name
         var firstName: String = ""
         
@@ -151,26 +31,26 @@ struct SignInEMailView: View {
         var repeatPassword: String = ""
         
         /// Type of first name textfield error
-        var firstNameErrorType: FirstNameErrorType? = nil
+        var firstNameErrorMessages: ErrorMessages? = nil
         
         /// Type of last name textfield error
-        var lastNameErrorType: LastNameErrorType? = nil
+        var lastNameErrorMessages: ErrorMessages? = nil
         
         /// Type of  email textfield error
-        var emailErrorType: EmailErrorType? = nil
+        var emailErrorMessages: ErrorMessages? = nil
         
         /// Type of password textfield error
-        var passwordErrorType: PasswordErrorType? = nil
+        var passwordErrorMessages: ErrorMessages? = nil
         
         /// Type of repeat password textfield error
-        var repeatPasswordErrorType: RepeatPasswordErrorType? = nil
+        var repeatPasswordErrorMessages: ErrorMessages? = nil
         
         /// Check if first name is empty
         @discardableResult mutating func evaluteFirstNameError() -> Bool {
             if firstName.isEmpty {
-                firstNameErrorType = .emptyField
+                firstNameErrorMessages = .emptyField
             } else {
-                firstNameErrorType = nil
+                firstNameErrorMessages = nil
                 return false
             }
             return true
@@ -179,9 +59,9 @@ struct SignInEMailView: View {
         /// Check if last name is empty
         @discardableResult mutating func evaluteLastNameError() -> Bool {
             if lastName.isEmpty {
-                lastNameErrorType = .emptyField
+                lastNameErrorMessages = .emptyField
             } else {
-                lastNameErrorType = nil
+                lastNameErrorMessages = nil
                 return false
             }
             return true
@@ -190,11 +70,11 @@ struct SignInEMailView: View {
         /// Check if email is empty or no valid email
         @discardableResult mutating func evaluteEmailError() -> Bool {
             if email.isEmpty {
-                emailErrorType = .emptyField
+                emailErrorMessages = .emptyField
             } else if !email.isValidEmail {
-                emailErrorType = .invalidEmail
+                emailErrorMessages = .invalidEmail
             } else {
-                emailErrorType = nil
+                emailErrorMessages = nil
                 return false
             }
             return true
@@ -206,17 +86,17 @@ struct SignInEMailView: View {
             let lowerPredicate = NSPredicate(format:"SELF MATCHES %@", ".*[a-z]+.*")
             let digitPredicate = NSPredicate(format:"SELF MATCHES %@", ".*[0-9]+.*")
             if password.isEmpty {
-                passwordErrorType = .emptyField
+                passwordErrorMessages = .emptyField
             } else if password.count < 8 {
-                passwordErrorType = .tooFewCharacters
+                passwordErrorMessages = .tooFewCharacters
             } else if !capitalPredicate.evaluate(with: password) {
-                passwordErrorType = .noUpperCharacter
+                passwordErrorMessages = .noUpperCharacter
             } else if !lowerPredicate.evaluate(with: password) {
-                passwordErrorType = .noLowerCharacter
+                passwordErrorMessages = .noLowerCharacter
             } else if !digitPredicate.evaluate(with: password) {
-                passwordErrorType = .noDigit
+                passwordErrorMessages = .noDigit
             } else {
-                passwordErrorType = nil
+                passwordErrorMessages = nil
                 return false
             }
             return true
@@ -225,11 +105,11 @@ struct SignInEMailView: View {
         /// Check if repeat password is empty of not the same as the password
         @discardableResult mutating func evaluteRepeatPasswordError() -> Bool {
             if repeatPassword.isEmpty {
-                repeatPasswordErrorType = .emptyField
+                repeatPasswordErrorMessages = .emptyField
             } else if repeatPassword != password {
-                repeatPasswordErrorType = .notSamePassword
+                repeatPasswordErrorMessages = .notSamePassword
             } else {
-                repeatPasswordErrorType = nil
+                repeatPasswordErrorMessages = nil
                 return false
             }
             return true
@@ -237,25 +117,30 @@ struct SignInEMailView: View {
         
         /// Check if any errors occurs
         mutating func checkErrors() -> Bool {
-            evaluteFirstNameError()
-                || evaluteLastNameError()
-                || evaluteEmailError()
-                || evalutePasswordError()
-                || evaluteRepeatPasswordError()
+            var isError = false
+            isError = evaluteFirstNameError() || isError
+            isError = evaluteLastNameError() || isError
+            isError = evaluteEmailError() || isError
+            isError = evalutePasswordError() || isError
+            isError = evaluteRepeatPasswordError() || isError
+            return isError
         }
         
         /// Checks if an error occured while signing in
         mutating func evaluteErrorCode(of error: Error) {
-            let errorCode = AuthErrorCode(rawValue: error._code)
+            guard let error = error as NSError?, error.domain == AuthErrorDomain else {
+                return emailErrorMessages = .internalErrorSignIn
+            }
+            let errorCode = AuthErrorCode(rawValue: error.code)
             switch errorCode {
             case .invalidEmail:
-                emailErrorType = .invalidEmail
+                emailErrorMessages = .invalidEmail
             case .emailAlreadyInUse:
-                emailErrorType = .alreadySignedIn
+                emailErrorMessages = .alreadySignedIn
             case .weakPassword:
-                passwordErrorType = .weakPassword
+                passwordErrorMessages = .weakPassword
             default:
-                emailErrorType = .internalError
+                emailErrorMessages = .internalErrorSignIn
             }
         }
     }
@@ -299,7 +184,10 @@ struct SignInEMailView: View {
                     Spacer()
                     
                     // Confirm button
-                    ConfirmButton("Weiter", connectionState: $connectionState, buttonHandler: handleConfirmButton)
+                    ConfirmButton()
+                        .title("Weiter")
+                        .connectionState($connectionState)
+                        .onButtonPress(handleConfirmButton)
                         .padding(.bottom, 50)
                     
                 }
@@ -334,7 +222,7 @@ struct SignInEMailView: View {
                     isClubSelectionNavigationLinkActive = true
                     connectionState = .passed
                 } else {
-                    emailCredentials.emailErrorType = .internalError
+                    emailCredentials.emailErrorMessages = .internalErrorSignIn
                     connectionState = .failed
                 }
             }
@@ -361,16 +249,26 @@ struct SignInEMailView: View {
                             Title("Name")
                             
                             // Text Field
-                            CustomTextField("Vorname", text: $emailCredentials.firstName, errorType: $emailCredentials.firstNameErrorType) {
-                                emailCredentials.evaluteFirstNameError()
-                            }.textFieldSize(width: UIScreen.main.bounds.width * 0.95, height: 50)
+                            CustomTextField()
+                                .title("Vorname")
+                                .textBinding($emailCredentials.firstName)
+                                .errorMessages($emailCredentials.firstNameErrorMessages)
+                                .textFieldSize(width: UIScreen.main.bounds.width * 0.95, height: 50)
+                                .onCompletion {
+                                    emailCredentials.evaluteFirstNameError()
+                                }
                             
                         }
                         
                         // Last name input
-                        CustomTextField("Nachname", text: $emailCredentials.lastName, errorType: $emailCredentials.lastNameErrorType) {
-                            emailCredentials.evaluteLastNameError()
-                        }.textFieldSize(width: UIScreen.main.bounds.width * 0.95, height: 50)
+                        CustomTextField()
+                            .title("Nachname")
+                            .textBinding($emailCredentials.lastName)
+                            .errorMessages($emailCredentials.lastNameErrorMessages)
+                            .textFieldSize(width: UIScreen.main.bounds.width * 0.95, height: 50)
+                            .onCompletion {
+                                emailCredentials.evaluteLastNameError()
+                            }
                         
                     }
                     
@@ -381,9 +279,15 @@ struct SignInEMailView: View {
                         Title("Email")
                         
                         // Text Field
-                        CustomTextField("Email", text: $emailCredentials.email, keyboardType: .emailAddress, errorType: $emailCredentials.emailErrorType) {
-                            emailCredentials.evaluteEmailError()
-                        }.textFieldSize(width: UIScreen.main.bounds.width * 0.95, height: 50)
+                        CustomTextField()
+                            .title("Email")
+                            .textBinding($emailCredentials.email)
+                            .errorMessages($emailCredentials.emailErrorMessages)
+                            .keyboardType(.emailAddress)
+                            .textFieldSize(width: UIScreen.main.bounds.width * 0.95, height: 50)
+                            .onCompletion {
+                                emailCredentials.evaluteEmailError()
+                            }
                         
                     }
                     
@@ -397,16 +301,26 @@ struct SignInEMailView: View {
                             Title("Passwort")
                             
                             // Text Field
-                            CustomSecureField(text: $emailCredentials.password, placeholder: "Passwort", errorType: $emailCredentials.passwordErrorType) {
-                                emailCredentials.evalutePasswordError()
-                            }.textFieldSize(width: UIScreen.main.bounds.width * 0.95, height: 50)
+                            CustomSecureField()
+                                .title("Passwort")
+                                .textBinding($emailCredentials.password)
+                                .errorMessages($emailCredentials.passwordErrorMessages)
+                                .textFieldSize(width: UIScreen.main.bounds.width * 0.95, height: 50)
+                                .onCompletion {
+                                    emailCredentials.evalutePasswordError()
+                                }
                             
                         }
                         
                         // Repeat password input
-                        CustomSecureField(text: $emailCredentials.repeatPassword, placeholder: "Passwort Wiederholen", errorType: $emailCredentials.repeatPasswordErrorType) {
-                            emailCredentials.evaluteRepeatPasswordError()
-                        }.textFieldSize(width: UIScreen.main.bounds.width * 0.95, height: 50)
+                        CustomSecureField()
+                            .title("Passwort Wiederholen")
+                            .textBinding($emailCredentials.repeatPassword)
+                            .errorMessages($emailCredentials.repeatPasswordErrorMessages)
+                            .textFieldSize(width: UIScreen.main.bounds.width * 0.95, height: 50)
+                            .onCompletion {
+                                emailCredentials.evaluteRepeatPasswordError()
+                            }
                         
                     }
                     

@@ -20,67 +20,64 @@ struct SignInCacheView: View {
     @Environment(\.presentationMode) var presentationMode
     
     var body: some View {
-        VStack(spacing: 0) {
-            
-            // Bar to wipe sheet down
-            SheetBar()
-            
-            NavigationView {
+        NavigationView {
+            ZStack {
+                
+                // Navigation Links
                 ZStack {
+                    switch state {
+                    case .nameInput(property: _):
+                        EmptyNavigationLink(isActive: $isNavigationLinkActive, destination: SignInNameInput())
+                    case .clubSelection(property: _):
+                        EmptyNavigationLink(isActive: $isNavigationLinkActive, destination: SignInClubSelection())
+                    case .personSelection(property: _):
+                        EmptyNavigationLink(isActive: $isNavigationLinkActive, destination: SignInPersonSelection())
+                    case .none:
+                        Text("Invalid State")
+                            .onAppear { presentationMode.wrappedValue.dismiss() }
+                    }
+                }.frame(size: .zero)
+                
+                // Content
+                VStack(spacing: 0) {
                     
-                    // Navigation Links
-                    ZStack {
-                        switch state {
-                        case .nameInput(property: let property): // TODO
-                            EmptyNavigationLink(isActive: $isNavigationLinkActive, destination: Text(String(reflecting: property)))
-                        case .clubSelection(property: let property):
-                            EmptyNavigationLink(isActive: $isNavigationLinkActive, destination: Text(String(reflecting: property)))
-                        case .personSelection(property: let property):
-                            EmptyNavigationLink(isActive: $isNavigationLinkActive, destination: Text(String(reflecting: property)))
-                        case .none:
-                            Text("Invalid State")
-                                .onAppear { presentationMode.wrappedValue.dismiss() }
-                        }
-                    }.frame(size: .zero)
+                    // Bar to wipe sheet down
+                    SheetBar()
                     
-                    // Content
-                    VStack(spacing: 0) {
+                    // Header
+                    Header("Registrierung Fortsetzen")
+                        .lineLimit(2)
+                    
+                    Spacer()
+                    
+                    // Text
+                    VStack(spacing: 35) {
                         
-                        // Header
-                        Header("Registrierung Fortsetzen")
+                        Text("Du hast schon versucht dich zu registrieren.")
+                            .foregroundColor(.textColor)
+                            .font(.text(25))
                             .lineLimit(2)
+                            .multilineTextAlignment(.center)
+                            .padding(.horizontal, 15)
                         
-                        Spacer()
-                        
-                        // Text
-                        VStack(spacing: 35) {
-                            
-                            Text("Du hast schon versucht dich zu registrieren.")
-                                .foregroundColor(.textColor)
-                                .font(.text(25))
-                                .lineLimit(2)
-                                .multilineTextAlignment(.center)
-                                .padding(.horizontal, 15)
-                            
-                            Text("Möchtest du fortfahren oder erneut beginnen?")
-                                .foregroundColor(.textColor)
-                                .font(.text(25))
-                                .lineLimit(2)
-                                .multilineTextAlignment(.center)
-                                .padding(.horizontal, 15)
-                        }
-                        
-                        Spacer()
-                        
-                        // Cancel and continue button
-                        CancelContinueButton(handleContinueClick: handleContinueClick)
-                            .padding(.bottom, 50)
-                        
+                        Text("Möchtest du fortfahren oder erneut beginnen?")
+                            .foregroundColor(.textColor)
+                            .font(.text(25))
+                            .lineLimit(2)
+                            .multilineTextAlignment(.center)
+                            .padding(.horizontal, 15)
                     }
                     
-                }.navigationTitle("Title")
-                    .navigationBarHidden(true)
-            }
+                    Spacer()
+                    
+                    // Cancel and continue button
+                    CancelContinueButton(handleContinueClick: handleContinueClick)
+                        .padding(.bottom, 50)
+                    
+                }
+                
+            }.navigationTitle("Title")
+            .navigationBarHidden(true)
         }
     }
     
@@ -95,9 +92,6 @@ struct SignInCacheView: View {
         /// Handles continue button click
         let handleContinueClick: () -> Void
         
-        /// Observed Object that contains all settings of the app of this device
-        @ObservedObject var settings = Settings.shared
-        
         /// Color scheme to get appearance of this device
         @Environment(\.colorScheme) var colorScheme
         
@@ -107,7 +101,7 @@ struct SignInCacheView: View {
         var body: some View {
             GeometryReader { geometry in
                 HStack(spacing: 0) {
-                
+                    
                     // Cancel Button
                     ZStack {
                         
@@ -119,7 +113,7 @@ struct SignInCacheView: View {
                             
                             // Text
                             Text("Abbrechen")
-                                .foregroundColor(settings: settings, plain: Color.custom.red)
+                                .foregroundColor(plain: Color.custom.red)
                                 .font(.text(20))
                                 .lineLimit(1)
                             
@@ -131,7 +125,7 @@ struct SignInCacheView: View {
                         }
                         
                     }.frame(width: geometry.size.width / 2)
-                        .onTapGesture(perform: handleCancelClick)
+                    .onTapGesture(perform: handleCancelClick)
                     
                     // Confirm Button
                     ZStack {
@@ -151,7 +145,7 @@ struct SignInCacheView: View {
                         }
                         
                     }.frame(width: geometry.size.width / 2)
-                        .onTapGesture(perform: handleContinueClick)
+                    .onTapGesture(perform: handleContinueClick)
                     
                 }
             }.frame(width: UIScreen.main.bounds.width * 0.95, height: 50)
@@ -159,27 +153,27 @@ struct SignInCacheView: View {
         
         /// Handles cancel button click
         func handleCancelClick() {
-//            cancelConnectionState = .loading
-//            // TODO Remove person from Firebase Database
-//            Functions.functions().call(<#path#>) { error in
-//                if error == nil {
-//
-//                    // Remove person from Firebase Auth
-//                    if let user = Auth.auth().currentUser {
-//                        user.delete { error in
-//                            cancelConnectionState = error == nil ? .passed : .failed
-//                        }
-//                    } else {
-//                        cancelConnectionState = .passed
-//                    }
-//
-//                } else {
-//                    cancelConnectionState = .failed
-//                }
-//            }
-//
-//            // TODO Clear sign in cache
-//            SignInCache.shared.state = nil
+            //            cancelConnectionState = .loading
+            //            // TODO Remove person from Firebase Database
+            //            Functions.functions().call(<#path#>) { error in
+            //                if error == nil {
+            //
+            //                    // Remove person from Firebase Auth
+            //                    if let user = Auth.auth().currentUser {
+            //                        user.delete { error in
+            //                            cancelConnectionState = error == nil ? .passed : .failed
+            //                        }
+            //                    } else {
+            //                        cancelConnectionState = .passed
+            //                    }
+            //
+            //                } else {
+            //                    cancelConnectionState = .failed
+            //                }
+            //            }
+            //
+            //            // TODO Clear sign in cache
+            //            SignInCache.shared.state = nil
         }
     }
 }
