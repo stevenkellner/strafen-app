@@ -9,7 +9,7 @@ import SwiftUI
 import WidgetKit
 
 /// Contains all settings of the app of this device
-class Settings: ObservableObject {
+class Settings: ObservableObject { // TODO remove
     
     /// Deafulf setting for first apply
     static let `default` = CodableSettings(appearance: .system, style: .plain, person: nil, latePaymentInterest: nil)
@@ -128,7 +128,7 @@ struct SettingProperties: Codable {
     @SettingProperty(default: .plain) public var style: Settings.Style
     
     /// Person that is logged in
-    @SettingProperty(default: nil) public var person: Settings.Person?
+    @SettingProperty(default: nil) public var person: NewSettings.Person?
     
     /// Late payment interest
     @SettingProperty(default: nil) public var latePaymentInterest: Settings.LatePaymentInterest?

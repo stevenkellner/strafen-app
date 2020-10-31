@@ -182,7 +182,7 @@ struct SignInClubInput: View {
             connectionState = .passed
             imageUploadProgess = nil
             SignInCache.shared.setState(to: nil)
-            // TODO log in
+            NewSettings.shared.properties.person = .init(personId: personId, clubId: clubId, isCashier: true)
         } failedHandler: { error in
             handleCallError(error: error)
         }

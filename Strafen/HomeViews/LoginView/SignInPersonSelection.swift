@@ -107,7 +107,7 @@ struct SignInPersonSelection: View {
             if taskState == .passed {
                 signInConnectionState = .passed
                 SignInCache.shared.setState(to: nil)
-                // TODO sign in
+                NewSettings.shared.properties.person = .init(personId: personId, clubId: cachedProperties.clubId, isCashier: false)
             } else {
                 errorMessages = .internalErrorSignIn
                 signInConnectionState = .failed
@@ -542,14 +542,7 @@ struct GetClubIdCall: FunctionCallable, FunctionCallResult {
 struct GetClubPersonIdCall: FunctionCallable,FunctionCallResult {
     
     /// Function call result
-    struct CallResult: Decodable {
-        
-        /// Person id
-        let personId: UUID
-        
-        /// Club id
-        let clubId: UUID
-    }
+    typealias CallResult = NewSettings.Person
     
     /// User id
     let userId: String

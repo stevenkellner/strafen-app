@@ -7,7 +7,7 @@
 
 import Foundation
 
-extension Settings {
+extension Settings { // TODO remove
     
     /// Logged in person
     struct Person: Codable {
@@ -26,5 +26,21 @@ extension Settings {
         
         /// True if person is cashier of the club
         var isCashier: Bool
+    }
+}
+
+extension NewSettings {
+    
+    /// Logged in person
+    struct Person: Codable {
+        
+        /// Id of the person
+        let personId: UUID
+        
+        /// Id of the associated club
+        let clubId: UUID
+        
+        /// Indicates whether the signed-in person is the club's cashier
+        let isCashier: Bool
     }
 }

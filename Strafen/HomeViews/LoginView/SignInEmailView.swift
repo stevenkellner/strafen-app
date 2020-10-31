@@ -197,12 +197,6 @@ struct SignInEMailView: View {
     
     /// Handles confirm button click
     func handleConfirmButton() {
-        
-        let cacheProperty = SignInCache.PropertyUserIdName(userId: "UserId", name: PersonName(firstName: "FirstName", lastName: "LastName"))
-        let state: SignInCache.Status = .clubSelection(property: cacheProperty)
-        SignInCache.shared.setState(to: state)
-        return isClubSelectionNavigationLinkActive = true
-        
         guard connectionState != .loading else { return }
         connectionState = .loading
         

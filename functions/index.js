@@ -409,9 +409,11 @@ exports.getClubPersonId = functions.region('europe-west1').https.onCall(async (d
             club.child('persons').forEach(person => {
                 let userId = person.child('userId').val()
                 if (userId == data.userId) {
+                    let isCashier = person.child('cashier').val();
                     clubPersonId = {
                         clubId: club.key,
-                        personId: person.key                        
+                        personId: person.key,
+                        isCashier: isCashier                          
                     }
                 }
             });

@@ -172,13 +172,36 @@ struct LoginView: View {
         }
         
         // Sign in with email
-        Auth.auth().signIn(withEmail: emailCredentials.email, password: emailCredentials.password) { _, error in
+        Auth.auth().signIn(withEmail: emailCredentials.email, password: emailCredentials.password) { result, error in
             if let error = error {
                 emailCredentials.evaluteErrorCode(of: error)
                 connectionState = .failed
+            } else if let userId = result?.user.uid {
+                let callItem = GetClubPersonIdCall(userId: userId)
+                FunctionCaller.shared.call(callItem) { (person: GetClubPersonIdCall.CallResult) in
+                    connectionState = .passed
+                    SignInCache.shared.setState(to: nil)
+                    NewSettings.shared.properties.person = person
+                } failedHandler: { error in
+                    handleEmailSignInGetIdsCallError(error: error)
+                    connectionState = .failed
+                }
             } else {
-                connectionState = .passed
+                emailCredentials.emailErrorMessages = .internalErrorLogIn
+                connectionState = .failed
             }
+        }
+    }
+    
+    /// Handle email sign in get ids call error
+    func handleEmailSignInGetIdsCallError(error: Error) {
+        if let error = error as NSError? ,
+           error.domain == FunctionsErrorDomain,
+           let errorCode = FunctionsErrorCode(rawValue: error.code),
+           errorCode == .notFound {
+            emailCredentials.emailErrorMessages = .notSignedIn
+        } else {
+            emailCredentials.emailErrorMessages = .internalErrorLogIn
         }
     }
     
@@ -195,9 +218,10 @@ struct LoginView: View {
             signInWithAppleErrorMessages = .internalErrorLogIn
         case .success((userId: let userId, name: let name)):
             let callItem = GetClubPersonIdCall(userId: userId)
-            FunctionCaller.shared.call(callItem) { (result: GetClubPersonIdCall.CallResult) in
+            FunctionCaller.shared.call(callItem) { (person: GetClubPersonIdCall.CallResult) in
                 connectionState = .passed
-                // TODO Log in
+                SignInCache.shared.setState(to: nil)
+                NewSettings.shared.properties.person = person
             } failedHandler: { error in
                 let cacheProperty = SignInCache.PropertyUserId(userId: userId, name: name)
                 handleAppleSignInGetIdsCallError(error: error, cacheProperty: cacheProperty)
@@ -305,7 +329,6 @@ struct LoginView: View {
                 }.frame(width: 150, height: 30)
                     .padding(.leading, 10)
                     .onTapGesture {
-                        return showSignInSheet = true
                         if SignInCache.shared.cachedStatus != nil {
                             showCachedState = true
                         } else {

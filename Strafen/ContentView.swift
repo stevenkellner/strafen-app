@@ -6,12 +6,13 @@
 //
 
 import SwiftUI
+import FirebaseAuth
 
 /// View with all relevant app contents.
 struct ContentView: View {
     
     /// Observed Object that contains all settings of the app of this device
-    @ObservedObject var settings = Settings.shared
+    @ObservedObject var settings = NewSettings.shared
     
     /// List data that contains all datas of the different lists
     @ObservedObject var listData = ListData.shared
@@ -22,23 +23,33 @@ struct ContentView: View {
             // Activity View
             ActivityView.shared
             
-            if listData.forceSignedOut {
+            if listData.forceSignedOut { // TODO connection state of list fetches
                 
                 // Force Sign Out View
                 ContentForceSignedOutView()
                 
-            } else if settings.person != nil && false { // TODO Check connectionState, if a person is loggedIn, name if given (for apple login) and a club is selected
+            } else if settings.properties.person != nil && Auth.auth().currentUser != nil {
+                
+                Text("Log out")
+                    .onTapGesture {
+                        do {
+                            try Auth.auth().signOut()
+                            NewSettings.shared.properties.person = nil
+                        } catch {
+                            print(error)
+                        }
+                    }
                 
                 // Home Tabs View and Tab Bar
-                ContentHomeView()
-                    .onAppear {
-                        
-                        // Fetch note list
-                        ListData.note.list = nil
-                        ListData.note.fetch()
-                        
-                        ListData.shared.fetchLists()
-                    }
+//                ContentHomeView()
+//                    .onAppear {
+//
+//                        // Fetch note list
+//                        ListData.note.list = nil
+//                        ListData.note.fetch()
+//
+//                        ListData.shared.fetchLists()
+//                    }
                 
             } else {
                 
