@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import FirebaseAuth
 
 /// View shown when sign in process is cached and select possiblity to continue or to start again
 struct SignInCacheView: View {
@@ -98,6 +99,9 @@ struct SignInCacheView: View {
         /// Cancel connection state
         @State var cancelConnectionState: ConnectionState = .passed
         
+        /// Presentation mode
+        @Environment(\.presentationMode) var presentationMode
+        
         var body: some View {
             GeometryReader { geometry in
                 HStack(spacing: 0) {
@@ -153,27 +157,19 @@ struct SignInCacheView: View {
         
         /// Handles cancel button click
         func handleCancelClick() {
-            //            cancelConnectionState = .loading
-            //            // TODO Remove person from Firebase Database
-            //            Functions.functions().call(<#path#>) { error in
-            //                if error == nil {
-            //
-            //                    // Remove person from Firebase Auth
-            //                    if let user = Auth.auth().currentUser {
-            //                        user.delete { error in
-            //                            cancelConnectionState = error == nil ? .passed : .failed
-            //                        }
-            //                    } else {
-            //                        cancelConnectionState = .passed
-            //                    }
-            //
-            //                } else {
-            //                    cancelConnectionState = .failed
-            //                }
-            //            }
-            //
-            //            // TODO Clear sign in cache
-            //            SignInCache.shared.state = nil
+            guard cancelConnectionState != .loading else { return }
+            cancelConnectionState = .loading
+            
+            if let user = Auth.auth().currentUser {
+                user.delete { error in
+                    cancelConnectionState = error == nil ? .passed : .failed
+                    presentationMode.wrappedValue.dismiss()
+                }
+            } else {
+                SignInCache.shared.setState(to: nil)
+                cancelConnectionState = .passed
+                presentationMode.wrappedValue.dismiss()
+            }
         }
     }
 }

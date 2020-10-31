@@ -214,7 +214,7 @@ struct SignInEMailView: View {
                     emailCredentials.evaluteErrorCode(of: error)
                     connectionState = .failed
                 } else if let user = result?.user {
-                    // TODO send validation email
+                    Auth.auth().currentUser?.sendEmailVerification(completion: nil)
                     let personName = PersonName(firstName: emailCredentials.firstName, lastName: emailCredentials.lastName)
                     let cacheProperty = SignInCache.PropertyUserIdName(userId: user.uid, name: personName)
                     let state: SignInCache.Status = .clubSelection(property: cacheProperty)
