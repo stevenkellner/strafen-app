@@ -79,6 +79,17 @@ extension Array {
             }
         }
     }
+    
+    func sorted<T>(by sortValue: (Element) throws -> T, order: Order = .ascending) rethrows -> [Element] where T: Comparable {
+        try sorted { firstElement, secondElement in
+            switch order {
+            case .ascending:
+                return try sortValue(firstElement) < sortValue(secondElement)
+            case .descanding:
+                return try sortValue(firstElement) > sortValue(secondElement)
+            }
+        }
+    }
 }
 
 /// Extension of Array for mapped and filtered
@@ -140,5 +151,14 @@ extension Array where Element == Person {
             }
             return firstPerson.personName.formatted < secondPerson.personName.formatted
         }
+    }
+}
+
+// Extension of Array to get a new array with unique elemets
+extension Array where Element: Hashable {
+    
+    /// Array with unique elemets
+    var unique: [Element] {
+        Array(Set(self))
     }
 }

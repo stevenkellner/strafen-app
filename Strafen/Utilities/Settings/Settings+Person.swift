@@ -34,11 +34,30 @@ extension NewSettings {
     /// Logged in person
     struct Person: Codable {
         
-        /// Id of the person
-        let personId: UUID
+        /// Club properties
+        struct ClubProperties: Codable {
+            
+            /// Id of the club
+            let id: UUID
+            
+            /// Name of the club
+            let name: String
+            
+            /// Identifier of the club
+            let identifier: String
+            
+            /// Region code
+            let regionCode: String
+        }
         
-        /// Id of the associated club
-        let clubId: UUID
+        /// Club properties
+        let clubProperties: ClubProperties
+        
+        /// Id of the person
+        let id: UUID
+        
+        /// Sign in date
+        let signInDate: Date
         
         /// Indicates whether the signed-in person is the club's cashier
         let isCashier: Bool

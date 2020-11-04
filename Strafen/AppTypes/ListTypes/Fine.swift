@@ -33,7 +33,7 @@ struct Fine: Identifiable, ListTypes {
     }
     
     /// Importance of a fine
-    enum Importance: Int, Decodable {
+    enum Importance: Int, Codable {
         
         /// High importance
         case high = 2
@@ -65,6 +65,11 @@ struct Fine: Identifiable, ListTypes {
             default:
                 throw CodingError.unknownStringValue
             }
+        }
+        
+        func encode(to encoder: Encoder) throws {
+            var container = encoder.singleValueContainer()
+            try container.encode(string)
         }
         
         /// String value of importance

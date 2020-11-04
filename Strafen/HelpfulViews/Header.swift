@@ -133,6 +133,9 @@ enum ErrorMessages {
     /// Email is already signed in
     case alreadySignedIn
     
+    /// Apple id is already signed in
+    case alreadySignedInApple
+    
     /// Less than 8 characters
     case tooFewCharacters
     
@@ -153,6 +156,9 @@ enum ErrorMessages {
     
     /// Club identifier already exists
     case identifierAlreadyExists
+    
+    /// No region given
+    case noRegionGiven
     
     /// Message of the error
     var message: String {
@@ -175,6 +181,8 @@ enum ErrorMessages {
             return "Dies ist keine gültige Email!"
         case .alreadySignedIn:
             return "Diese Email ist bereits registriert!"
+        case .alreadySignedInApple:
+            return "Diese Apple-Id existiert bereits"
         case .tooFewCharacters:
             return "Passwort ist zu kurz!"
         case .noUpperCharacter:
@@ -189,6 +197,8 @@ enum ErrorMessages {
             return "Passwörter stimmen nicht überein!"
         case .identifierAlreadyExists:
             return "Vereinskennung ist bereits vergeben!"
+        case .noRegionGiven:
+            return "Keine Region angegeben!"
         }
     }
 }

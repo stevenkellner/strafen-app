@@ -49,7 +49,7 @@ struct Euro {
     static let zero = Euro(euro: 0, cent: 0)
 }
 
-// Extenstion of Euro to confirm to CustomStringConvertible
+// Extension of Euro to confirm to CustomStringConvertible
 extension Euro: CustomStringConvertible {
     
     /// Double value of amount

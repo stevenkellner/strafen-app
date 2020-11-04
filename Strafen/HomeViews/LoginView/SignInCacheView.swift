@@ -161,15 +161,27 @@ struct SignInCacheView: View {
             cancelConnectionState = .loading
             
             if let user = Auth.auth().currentUser {
-                user.delete { error in
-                    cancelConnectionState = error == nil ? .passed : .failed
-                    presentationMode.wrappedValue.dismiss()
+                let callItem = UserIdAlreadyExistsCall(userId: user.uid)
+                FunctionCaller.shared.call(callItem) { (personExists: UserIdAlreadyExistsCall.CallResult) in
+                    if personExists {
+                        dismissSheet(with: .passed)
+                    } else {
+                        user.delete { error in
+                            dismissSheet(with: error == nil ? .passed : .failed)
+                        }
+                    }
+                } failedHandler: { _ in
+                    dismissSheet(with: .failed)
                 }
             } else {
-                SignInCache.shared.setState(to: nil)
-                cancelConnectionState = .passed
-                presentationMode.wrappedValue.dismiss()
+                dismissSheet(with: .passed)
             }
+        }
+        
+        func dismissSheet(with connectionState: ConnectionState) {
+            SignInCache.shared.setState(to: nil)
+            cancelConnectionState = connectionState
+            presentationMode.wrappedValue.dismiss()
         }
     }
 }

@@ -177,8 +177,8 @@ struct LoginView: View {
                 emailCredentials.evaluteErrorCode(of: error)
                 connectionState = .failed
             } else if let userId = result?.user.uid {
-                let callItem = GetClubPersonIdCall(userId: userId)
-                FunctionCaller.shared.call(callItem) { (person: GetClubPersonIdCall.CallResult) in
+                let callItem = GetPersonPropertiesCall(userId: userId)
+                FunctionCaller.shared.call(callItem) { (person: GetPersonPropertiesCall.CallResult) in
                     connectionState = .passed
                     SignInCache.shared.setState(to: nil)
                     NewSettings.shared.properties.person = person
@@ -217,8 +217,8 @@ struct LoginView: View {
             connectionState = .failed
             signInWithAppleErrorMessages = .internalErrorLogIn
         case .success((userId: let userId, name: let name)):
-            let callItem = GetClubPersonIdCall(userId: userId)
-            FunctionCaller.shared.call(callItem) { (person: GetClubPersonIdCall.CallResult) in
+            let callItem = GetPersonPropertiesCall(userId: userId)
+            FunctionCaller.shared.call(callItem) { (person: GetPersonPropertiesCall.CallResult) in
                 connectionState = .passed
                 SignInCache.shared.setState(to: nil)
                 NewSettings.shared.properties.person = person

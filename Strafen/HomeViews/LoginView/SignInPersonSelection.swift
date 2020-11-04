@@ -102,16 +102,15 @@ struct SignInPersonSelection: View {
         
         let personId = selectedPersonId ?? UUID()
         let cachedProperties = SignInCache.shared.cachedStatus?.property as! SignInCache.PropertyUserIdNameClubId
-        let callItem = NewRegisterPersonCall(cachedProperties: cachedProperties, personId: personId)
-        FunctionCaller.shared.call(callItem) { (taskState: TaskState) in
-            if taskState == .passed {
-                signInConnectionState = .passed
-                SignInCache.shared.setState(to: nil)
-                NewSettings.shared.properties.person = .init(personId: personId, clubId: cachedProperties.clubId, isCashier: false)
-            } else {
-                errorMessages = .internalErrorSignIn
-                signInConnectionState = .failed
-            }
+        let callItem = RegisterPersonCall(cachedProperties: cachedProperties, personId: personId)
+        FunctionCaller.shared.call(callItem) { (result: RegisterPersonCall.CallResult) in
+            signInConnectionState = .passed
+            SignInCache.shared.setState(to: nil)
+            let clubProperties = NewSettings.Person.ClubProperties(id: cachedProperties.clubId, name: result.clubName, identifier: result.clubIdentifier, regionCode: result.regionCode)
+            NewSettings.shared.properties.person = .init(clubProperties: clubProperties, id: personId, signInDate: Date(), isCashier: false)
+        } failedHandler: { _ in
+            errorMessages = .internalErrorSignIn
+            signInConnectionState = .failed
         }
     }
     
@@ -205,7 +204,7 @@ struct SignInPersonSelection: View {
         
         /// Fill color
         var fillColor: Color? {
-            if person.isCashier != nil {
+            if person.signInData != nil {
                 return Color.custom.red
             } else if person.id == selectedPersonId {
                 return Color.custom.lightGreen
@@ -220,7 +219,7 @@ struct SignInPersonSelection: View {
         
         /// Handle tap
         func handleTap() {
-            guard person.isCashier == nil else { return }
+            guard person.signInData == nil else { return }
             if person.id == selectedPersonId {
                 selectedPersonId = nil
             } else {
@@ -240,21 +239,27 @@ import CodableFirebase
 protocol NewListType: Identifiable where ID == UUID {
     
     /// Codable list type
-    associatedtype CodableSelf: CodableListType
-}
-
-/// Protocol for a codable list type of database
-protocol CodableListType: Codable {
+    associatedtype CodableSelf: Codable
     
-    /// Associated list type of database
-    associatedtype AssociatedListType: NewListType
-    
-    /// Convert it to associated list type
-    func listType(with id: UUID) -> AssociatedListType
+    /// Init with id and codable self
+    init(with id: UUID, codableSelf: CodableSelf)
 }
 
 /// Contains all properties of a person
 struct NewPerson: NewListType {
+    
+    /// Data if person is signed in
+    struct SignInData: Codable {
+        
+        /// Indicates if person is cachier, is nil if person isn't signed in
+        let isCashier: Bool
+        
+        /// User id for authentication
+        let userId: String
+        
+        /// Date of sign in
+        let signInDate: Date
+    }
     
     /// Id
     let id: UUID
@@ -262,14 +267,18 @@ struct NewPerson: NewListType {
     /// Name
     let name: PersonName
     
-    /// Indicates if person is cachier, is nil if person isn't signed in
-    let isCashier: Bool?
+    /// Data if person is signed in
+    let signInData: SignInData?
     
-    /// User id for authentication
-    let userId: String?
+    /// Init with id and codable self
+    init(with id: UUID, codableSelf: CodableSelf) {
+        self.id = id
+        self.name = codableSelf.name.personName
+        self.signInData = codableSelf.signInData
+    }
     
     /// Person to fetch from database
-    struct CodableSelf: CodableListType {
+    struct CodableSelf: Codable {
         
         /// Person name to fetch from database
         struct CodablePersonName: Codable {
@@ -289,16 +298,45 @@ struct NewPerson: NewListType {
         /// Name
         let name: CodablePersonName
         
-        /// Indicates if person is cachier, is nil if person isn't signed in
-        let cashier: Bool?
+        /// Data if person is signed in
+        let signInData: SignInData?
+    }
+}
+
+/// Contains all properties of a reason
+struct ReasonTemplate: NewListType {
+    
+    /// Id
+    let id: UUID
+    
+    /// Reason of this template
+    let reason: String
+    
+    /// Imporance of this template
+    let importance: Fine.Importance
+    
+    /// Amount of this template
+    let amount: Amount
+    
+    /// Init with id and codable self
+    init(with id: UUID, codableSelf: CodableSelf) {
+        self.id = id
+        self.reason = codableSelf.reason
+        self.importance = codableSelf.importance
+        self.amount = codableSelf.amount
+    }
+    
+    /// Reason template to fetch from database
+    struct CodableSelf: Codable {
         
-        /// User id for authentication
-        let userId: String?
+        /// Reason of this template
+        let reason: String
         
-        /// Convertes to person
-        func listType(with id: UUID) -> NewPerson {
-            NewPerson(id: id, name: name.personName, isCashier: cashier, userId: userId)
-        }
+        /// Imporance of this template
+        let importance: Fine.Importance
+        
+        /// Amount of this template
+        let amount: Amount
     }
 }
 
@@ -360,7 +398,7 @@ struct NewFetcher {
         let dictionary = try? decoder.decode(Dictionary<String, Type.CodableSelf>.self, from: data)
         let list = dictionary.map { dictionary in
             dictionary.map { idString, item in
-                item.listType(with: UUID(uuidString: idString)!) as! Type
+                Type.init(with: UUID(uuidString: idString)!, codableSelf: item)
             }
         }
         return list
@@ -409,8 +447,8 @@ struct NewFetcher {
     /// Decodes fetched data from database to list type item
     private func decodeFetchedItem<Type>(from data: Any, key: String) -> Type? where Type: NewListType {
         let decoder = FirebaseDecoder()
-        let item = try? decoder.decode(Type.CodableSelf.self, from: data)
-        return item?.listType(with: UUID(uuidString: key)!) as! Type?
+        guard let item = try? decoder.decode(Type.CodableSelf.self, from: data) else { return nil }
+        return Type.init(with: UUID(uuidString: key)!, codableSelf: item)
     }
 }
 
@@ -461,7 +499,20 @@ struct NewParameters {
 }
 
 /// Used to register a new person in the database
-struct NewRegisterPersonCall: FunctionCallable {
+struct RegisterPersonCall: FunctionCallable, FunctionCallResult {
+    
+    /// Return result of function call
+    struct CallResult: Decodable {
+        
+        /// Club identifier
+        let clubIdentifier: String
+        
+        /// Club name
+        let clubName: String
+        
+        /// Region code
+        let regionCode: String
+    }
     
     /// Cached user id, name and club id
     let cachedProperties: SignInCache.PropertyUserIdNameClubId
@@ -508,6 +559,7 @@ struct NewClubCall: FunctionCallable {
         NewParameters { parameters in
             parameters["clubId"] = clubId.uuidString
             parameters["clubName"] = clubCredentials.clubName
+            parameters["regionCode"] = clubCredentials.regionCode
             parameters["personId"] = personId.uuidString
             parameters["personFirstName"] = cachedProperties.name.firstName
             parameters["personLastName"] = cachedProperties.name.lastName
@@ -539,7 +591,7 @@ struct GetClubIdCall: FunctionCallable, FunctionCallResult {
 }
 
 /// Used to get club and person id from user id
-struct GetClubPersonIdCall: FunctionCallable,FunctionCallResult {
+struct GetPersonPropertiesCall: FunctionCallable, FunctionCallResult {
     
     /// Function call result
     typealias CallResult = NewSettings.Person
@@ -548,7 +600,7 @@ struct GetClubPersonIdCall: FunctionCallable,FunctionCallResult {
     let userId: String
     
     /// Function name
-    let functionName = "getClubPersonId"
+    let functionName = "getPersonProperties"
     
     /// Parameters
     var parameters: NewParameters {
@@ -574,6 +626,26 @@ struct ClubIdentifierAlreadyExistsCall: FunctionCallable, FunctionCallResult {
     var parameters: NewParameters {
         NewParameters { parameters in
             parameters["identifier"] = identifier
+        }
+    }
+}
+
+/// Used to check if person with user id already exists
+struct UserIdAlreadyExistsCall: FunctionCallable, FunctionCallResult {
+    
+    /// Result type
+    typealias CallResult = Bool
+    
+    /// User id
+    let userId: String
+    
+    /// Function name
+    let functionName = "existsPersonWithUserId"
+    
+    /// Parameters
+    var parameters: NewParameters {
+        NewParameters { parameters in
+            parameters["userId"] = userId
         }
     }
 }
@@ -647,5 +719,118 @@ struct FunctionCaller {
         } failedHandler: { _ in
             taskStateHandler(.failed)
         }
+    }
+}
+
+
+
+// TODO
+
+/// Stores an amount
+struct Amount {
+    
+    /// Value of the amount
+    @NonNegative private var value: Int = .zero
+    
+    /// Value of the subunit of this amount
+    @Clamping(0...99) private var subUnitValue: Int = .zero
+    
+    /// Init with euro and cent
+    init(_ value: Int, subUnit: Int) {
+        self.value = value
+        self.subUnitValue = subUnit
+    }
+}
+
+// Extension of Amount to confirm to CustomStringConvertible
+extension Amount: CustomStringConvertible {
+    
+    /// Description
+    var description: String {
+        let doubleValue = Double(value) + Double(subUnitValue) / 100
+        let numberFormatter = NumberFormatter()
+        numberFormatter.locale = Locale(identifier: "de_DE") // TODO
+        numberFormatter.numberStyle = .currency
+        return numberFormatter.string(from: NSNumber(value: doubleValue)) ?? numberFormatter.string(from: 0)!
+    }
+}
+
+// Extension of Amount to confirm to CustomDebugStringConvertible
+extension Amount: CustomDebugStringConvertible {
+    
+    /// Debug description
+    var debugDescription: String {
+        let doubleValue = Double(value) + Double(subUnitValue) / 100
+        let numberFormatter = NumberFormatter()
+        numberFormatter.locale = Locale.current
+        numberFormatter.numberStyle = .currency
+        return numberFormatter.string(from: NSNumber(value: doubleValue)) ?? numberFormatter.string(from: 0)!
+    }
+}
+
+// Extension of Amount to confirm to AdditiveArithmetic
+extension Amount: AdditiveArithmetic {
+    
+    static var zero: Amount {
+        Amount(.zero, subUnit: .zero)
+    }
+    
+    static func +(lhs: Amount, rhs: Amount) -> Amount {
+        let newSubUnitValue = lhs.subUnitValue + rhs.subUnitValue
+        let value = lhs.value + rhs.value + newSubUnitValue / 100
+        let subUnitValue = newSubUnitValue % 100
+        return Amount(value, subUnit: subUnitValue)
+    }
+    
+    static func -(lhs: Amount, rhs: Amount) -> Amount {
+        let newSubUnitValue = lhs.subUnitValue - rhs.subUnitValue
+        let value = lhs.value - rhs.value - (newSubUnitValue >= 0 ? 0 : 1)
+        let subUnitValue = (newSubUnitValue + 100) % 100
+        guard value >= 0 else { return .zero }
+        return Amount(value, subUnit: subUnitValue)
+    }
+}
+
+// Extension of Amount to confirm to Equatable
+extension Amount: Equatable {
+    static func ==(lhs: Amount, rhs: Amount) -> Bool {
+        lhs.value == rhs.value && lhs.subUnitValue == rhs.subUnitValue
+    }
+}
+
+// Extension of Amount to confirm to Comparable
+extension Amount: Comparable {
+    static func <(lhs: Amount, rhs: Amount) -> Bool {
+        if lhs.value < rhs.value {
+            return true
+        } else if lhs.value == rhs.value && lhs.subUnitValue < rhs.subUnitValue {
+            return true
+        }
+        return false
+    }
+}
+
+// Extension of Amount to confirm to Decodable
+extension Amount: Decodable {
+    init(from decoder: Decoder) throws {
+        let container = try decoder.singleValueContainer()
+        let rawAmount = try container.decode(Double.self)
+        
+        // Check if amount is positive
+        guard rawAmount >= 0 else {
+            throw DecodingError.dataCorruptedError(in: container, debugDescription: "Amount is negative.")
+        }
+        
+        self.value = Int(rawAmount)
+        self.subUnitValue = Int(rawAmount * 100) - value * 100
+    }
+}
+
+// Extension of Amount to confirm to Encodable
+extension Amount: Encodable {
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.singleValueContainer()
+        let doubleValue = Double(value) + Double(subUnitValue) / 100
+        try container.encode(doubleValue)
     }
 }

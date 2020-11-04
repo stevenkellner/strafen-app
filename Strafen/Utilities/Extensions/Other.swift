@@ -340,3 +340,75 @@ extension View {
         }
     }
 }
+
+/// Extension of Locale to get available language codes for english translation
+extension Locale {
+
+    /// Used to decode fetched data
+    struct Dict: Decodable {
+        struct Language: Decodable {
+            let name: String
+            let nativeName: String
+            let dir: String
+            let code: String
+        }
+        
+        struct Translations: Decodable {
+            let name: String
+            let nativeName: String
+            let dir: String
+            let translations: [Language]
+        }
+        
+        let dictionary: Dictionary<String, Translations>
+    }
+
+    /// Gets available languages
+    static private func getAvailableTranslateLanguages(completion completionHandler: @escaping ([Dict.Language]?) -> Void) {
+        let url = URL(string: "https://dev.microsofttranslator.com/languages?api-version=3.0&scope=dictionary")!
+        URLSession.shared.dataTask(with: url) { data, _, _ in
+            guard let data = data else { return completionHandler(nil) }
+            let decoder = JSONDecoder()
+            let languages = try? decoder.decode(Dict.self, from: data).dictionary["en"]?.translations
+            completionHandler(languages)
+        }.resume()
+    }
+    
+    /// Gets available language codes
+    static func availableTranslateLanguageCodes(completion completionHandler: @escaping ([String]?) -> Void) {
+        getAvailableTranslateLanguages { languages in
+            let languageCodes = languages?.map { language in
+                language.code
+            }.filter { languageCode in
+                Locale.current.localizedString(forLanguageCode: languageCode) != nil
+            }
+            completionHandler(languageCodes)
+        }
+    }
+}
+
+// Extension of Locale for available region codes
+extension Locale {
+    
+    /// All available region codes with valid currency Symbol
+    static var availableRegionCodes: [String] {
+        availableIdentifiers.compactMap { identifier in
+            guard let regionCode = Locale(identifier: identifier).regionCode else { return nil }
+            let locale = Locale(identifier: Locale.identifier(fromComponents: ["kCFLocaleCountryCodeKey": regionCode]))
+            guard locale.currencyCode != nil else { return nil }
+            return regionCode
+        }.unique.sorted { identifier in
+            Locale.regionName(of: identifier)
+        }
+    }
+}
+
+// Extension of Locale to get region name
+extension Locale {
+    
+    /// Region name
+    static func regionName(of regionCode: String) -> String {
+        let regionName = Locale.current.localizedString(forRegionCode: regionCode)
+        return regionName ?? regionCode
+    }
+}

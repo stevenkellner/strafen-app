@@ -23,7 +23,7 @@ struct ContentView: View {
             // Activity View
             ActivityView.shared
             
-            if listData.forceSignedOut { // TODO connection state of list fetches
+            if listData.forceSignedOut {
                 
                 // Force Sign Out View
                 ContentForceSignedOutView()
@@ -59,7 +59,7 @@ struct ContentView: View {
                 
             }
         }.onAppear {
-            Settings.shared.applySettings()
+            NewSettings.shared.applySettings()
         }
     }
     

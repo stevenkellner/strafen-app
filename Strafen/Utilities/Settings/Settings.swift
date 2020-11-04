@@ -119,7 +119,7 @@ class NewSettings: ObservableObject {
 }
 
 /// Contains all settings of the app of this device
-struct SettingProperties: Codable {
+struct SettingProperties {
     
     /// Appearance of the app (light / dark / system)
     @SettingProperty(default: .system) public var appearance: Settings.Appearance
@@ -138,12 +138,62 @@ struct SettingProperties: Codable {
         appearance.applySettings()
     }
 }
+ 
+// Extension of SettingProperties to confirm to Codable
+extension SettingProperties: Codable {
+    
+    /// Coding keys for codable
+    private enum CodingKeys: CodingKey {
+        
+        /// For appearance
+        case appearance
+        
+        /// For stype
+        case style
+        
+        /// For person
+        case person
+        
+        /// For late payment interest
+        case latePaymentInterest
+    }
+    
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        func decode<Value>(_ type: Value.Type, with key: CodingKeys) throws -> Value? where Value: Decodable {
+            if let value = try container.decodeIfPresent(Value?.self, forKey: key) {
+                return value
+            }
+            return nil
+        }
+        if let appearance = try decode(Settings.Appearance.self, with: .appearance) {
+            self.appearance = appearance
+        }
+        if let style = try decode(Settings.Style.self, with: .style) {
+            self.style = style
+        }
+        if let person = try decode(NewSettings.Person?.self, with: .person) {
+            self.person = person
+        }
+        if let latePaymentInterest = try decode(Settings.LatePaymentInterest?.self, with: .latePaymentInterest) {
+            self.latePaymentInterest = latePaymentInterest
+        }
+    }
+    
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(_appearance.value, forKey: .appearance)
+        try container.encode(_style.value, forKey: .style)
+        try container.encode(_person.value, forKey: .person)
+        try container.encode(_latePaymentInterest.value, forKey: .latePaymentInterest)
+    }
+}
 
 /// A Property of settings
-@propertyWrapper struct SettingProperty<Value>: Codable where Value: Codable {
+@propertyWrapper struct SettingProperty<Value> {
     
     /// Value
-    private var value: Value?
+    public var value: Value?
     
     /// Default value
     private let defaultValue: Value

@@ -20,6 +20,9 @@ struct SignInClubInput: View {
         /// Club identifier
         var clubIdentifier: String = ""
         
+        /// Region code
+        var regionCode: String?
+        
         /// Club image
         var image: UIImage? = nil
         
@@ -28,6 +31,9 @@ struct SignInClubInput: View {
         
         /// Type of club identifier error
         var clubIdentifierErrorMessages: ErrorMessages? = nil
+        
+        /// Type of region code error
+        var regionCodeErrorMessages: ErrorMessages? = nil
         
         /// Check if club name is empty
         @discardableResult mutating func evaluteClubNameError() -> Bool {
@@ -51,11 +57,23 @@ struct SignInClubInput: View {
             return true
         }
         
+        /// Check if an error in region code occurs
+        mutating func evalutateRegionCodeError() -> Bool {
+            if regionCode == nil {
+                regionCodeErrorMessages = .noRegionGiven
+            } else {
+                regionCodeErrorMessages = nil
+                return false
+            }
+            return true
+        }
+        
         /// Check if any errors occurs
         mutating func checkErrors() -> Bool {
             var isError = false
             isError = evaluteClubNameError() || isError
             isError = evaluateClubIdentifierError() || isError
+            isError = evalutateRegionCodeError() || isError
             return isError
         }
     }
@@ -182,7 +200,8 @@ struct SignInClubInput: View {
             connectionState = .passed
             imageUploadProgess = nil
             SignInCache.shared.setState(to: nil)
-            NewSettings.shared.properties.person = .init(personId: personId, clubId: clubId, isCashier: true)
+            let clubProperties = NewSettings.Person.ClubProperties(id: clubId, name: clubCredentials.clubName, identifier: clubCredentials.clubIdentifier, regionCode: clubCredentials.regionCode!)
+            NewSettings.shared.properties.person = .init(clubProperties: clubProperties, id: personId, signInDate: Date(), isCashier: true)
         } failedHandler: { error in
             handleCallError(error: error)
         }
@@ -218,9 +237,9 @@ struct SignInClubInput: View {
             ScrollView {
                 VStack(spacing: 20) {
                     
+                    // Image
                     VStack(spacing: 5) {
                         
-                        // Image
                         ImageSelector(image: $clubCredentials.image, uploadProgress: $imageUploadProgess)
                             .frame(width: 150, height: 150)
                             .padding(.bottom, 20)
@@ -258,6 +277,20 @@ struct SignInClubInput: View {
                         
                     }
                     
+                    // Region code
+                    VStack(spacing: 5) {
+                        
+                        // Title
+                        Title("Region")
+                        
+                        // Region input
+                        RegionInput(clubCredentials: $clubCredentials)
+                        
+                        // Error message
+                        ErrorMessageView(errorMessages: $clubCredentials.regionCodeErrorMessages)
+                        
+                    }
+                    
                     // Club identifier
                     VStack(spacing: 5) {
                         
@@ -285,6 +318,43 @@ struct SignInClubInput: View {
                 }.padding(.vertical, 10)
                 .keyboardAdaptiveOffset
             }.padding(.vertical, 10)
+        }
+    }
+    
+    /// Region input
+    struct RegionInput: View {
+        
+        /// Club credentials
+        @Binding var clubCredentials: ClubCredentials
+        
+        var body: some View {
+            ZStack {
+                
+                // Outline
+                Outline()
+                    .lineWidth(clubCredentials.regionCodeErrorMessages.map({ _ in CGFloat(2) }))
+                    .strokeColor(clubCredentials.regionCodeErrorMessages.map({ _ in Color.custom.red }))
+                
+                // Picker
+                Picker({ () -> String in
+                    guard let regionCode = clubCredentials.regionCode else { return "Region auswählen" }
+                    return Locale.regionName(of: regionCode)
+                }(), selection: $clubCredentials.regionCode) {
+                    ForEach(Locale.availableRegionCodes, id: \.self) { regionCode in
+                        Text(Locale.regionName(of: regionCode))
+                            .tag(regionCode as String?)
+                    }
+                }.pickerStyle(MenuPickerStyle())
+                    .font(.text(20))
+                    .foregroundColor(.textColor)
+                    .lineLimit(1)
+                
+            }.frame(width: UIScreen.main.bounds.width * 0.95, height: 50)
+                .onAppear {
+                    if let regionCode = Locale.current.regionCode, Locale.availableRegionCodes.contains(regionCode) {
+                        clubCredentials.regionCode = regionCode
+                    }
+                }
         }
     }
 }

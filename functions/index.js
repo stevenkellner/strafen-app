@@ -23,7 +23,7 @@ exports.newClub = functions.region('europe-west1').https.onCall(async (data, con
       }
 
     // Check if all arguments are set
-    let requiredArguements = ['clubId', 'clubName', 'personId', 'personFirstName', 'personLastName', 'clubIdentifier', 'userId', 'signInDate'];
+    let requiredArguements = ['clubId', 'clubName', 'personId', 'personFirstName', 'personLastName', 'clubIdentifier', 'userId', 'signInDate', 'regionCode'];
     checkAllArguments(requiredArguements, data);
 
     // Add club to allClubs
@@ -55,14 +55,19 @@ exports.newClub = functions.region('europe-west1').https.onCall(async (data, con
         await clubRef.child('name').set(data.clubName, error => {
             isError = isError || error != null;
         });
+        await clubPath.child('regionCode').set(data.regionCode, error => {
+            isError = isError || error != null;
+        });
         await clubRef.child('persons').child(data.personId.toString().toUpperCase()).set({
             name: {
                 first: data.personFirstName,
                 last: data.personLastName
             },
-            cashier: true,
-            userId: data.userId,
-            signInDate: data.signInDate
+            signInData: {
+                cashier: true,
+                userId: data.userId,
+                signInDate: data.signInDate
+            }
         }, error => {
             isError = isError || error != null;
         });
@@ -144,7 +149,9 @@ exports.registerPerson = functions.region('europe-west1').https.onCall(async (da
     checkAllArguments(requiredArguements, data);
 
     // Get person reference
-    let path = 'clubs/' + data.clubId.toString().toUpperCase() + '/persons/' + data.id.toString().toUpperCase();
+    let clubPath = 'clubs/' + data.clubId.toString().toUpperCase();
+    let path = clubPath + '/persons/' + data.id.toString().toUpperCase();
+    let clubRef = admin.database.ref(clubPath);
     let personRef = admin.database().ref(path);
     
     let isError = false;
@@ -153,9 +160,11 @@ exports.registerPerson = functions.region('europe-west1').https.onCall(async (da
             first: data.firstName,
             last: data.lastName
         },
-        cashier: false,
-        userId: data.userId,
-        signInDate: data.signInDate
+        signInData: {
+            cashier: false,
+            userId: data.userId,
+            signInDate: data.signInDate
+        }
     };
     if (!await existsData(personRef)) {
         await personRef.set(person, error => {
@@ -171,6 +180,15 @@ exports.registerPerson = functions.region('europe-west1').https.onCall(async (da
             'internal', 
             "Couldn't add new person to database" 
          );
+    }
+
+    let clubIdentifier = clubRef.child('identifier').val();
+    let clubName = clubRef.child('name').val();
+    let regionCode = clubRef.child('regionCode').val();
+    return {
+        clubIdentifier: clubIdentifier,
+        clubName: clubName,
+        regionCode: regionCode
     }
 });
 
@@ -188,12 +206,12 @@ exports.forceSignOut = functions.region('europe-west1').https.onCall(async (data
     checkAllArguments(requiredArguements, data);
 
     // Get cashier reference
-    let path = 'clubs/' + data.clubId.toString().toUpperCase() + '/persons/' + data.personId.toString().toUpperCase() + '/cashier';
-    let cashierRef = admin.database().ref(path);
+    let path = 'clubs/' + data.clubId.toString().toUpperCase() + '/persons/' + data.personId.toString().toUpperCase() + '/signInData';
+    let signInDataRef = admin.database().ref(path);
 
-    if (await existsData(cashierRef)) {
+    if (await existsData(signInDataRef)) {
         let isError = false;
-        await cashierRef.remove(error => {
+        await signInDataRef.remove(error => {
             isError = error != null;
         });
         if (isError) {
@@ -391,7 +409,7 @@ exports.getClubId = functions.region('europe-west1').https.onCall(async (data, c
 });
 
 // Get club and person uuid of user id
-exports.getClubPersonId = functions.region('europe-west1').https.onCall(async (data, context) => {
+exports.getPersonProperties = functions.region('europe-west1').https.onCall(async (data, context) => {
     if (!context.auth) {
         throw new functions.https.HttpsError(
             'failed-precondition', 
@@ -403,29 +421,39 @@ exports.getClubPersonId = functions.region('europe-west1').https.onCall(async (d
     checkAllArguments(['userId'], data);
 
     let clubsRef = admin.database().ref('clubs');
-    var clubPersonId = null;
+    var personProperties = null;
     await clubsRef.once('value', clubsSnapshot => {
         clubsSnapshot.forEach(club => {
             club.child('persons').forEach(person => {
-                let userId = person.child('userId').val()
+                let userId = person.child('signInData').child('userId').val()
                 if (userId == data.userId) {
-                    let isCashier = person.child('cashier').val();
-                    clubPersonId = {
-                        clubId: club.key,
-                        personId: person.key,
+                    let isCashier = person.child('signInData').child('cashier').val();
+                    let signInDate = person.child('signInData').child('signInDate').val();
+                    let clubName = club.child('name').val();
+                    let clubIdentifier = club.child('identifier').val();
+                    let regionCode = club.child('regionCode').val();
+                    personProperties = {
+                        clubProperties: {
+                            id: club.key,
+                            name: clubName,
+                            identifier: clubIdentifier,
+                            regionCode: regionCode
+                        },
+                        id: person.key,
+                        signInDate: signInDate,
                         isCashier: isCashier                          
                     }
                 }
             });
         });
     });
-    if (clubPersonId == null) {
+    if (personProperties == null) {
         throw new functions.https.HttpsError(
             'not-found', 
             "Person doesn't exist"
          );
     } else {
-        return clubPersonId;
+        return personProperties;
     }
 });
 
@@ -452,6 +480,32 @@ exports.existsClubWithIdentifier = functions.region('europe-west1').https.onCall
         });
     });
     return clubExists;
+});
+
+// Check if person with user id already exists
+exports.existsPersonWithUserId = functions.region('europe-west1').https.onCall(async (data, context) => {
+    if (!context.auth) {
+        throw new functions.https.HttpsError(
+            'failed-precondition', 
+            'The function must be called while authenticated.'
+        );
+    }
+
+    // Check if all arguments are set
+    checkAllArguments(['userId'], data);
+
+    let clubsRef = admin.database().ref('clubs');
+    var personExists = false;await clubsRef.once('value', clubsSnapshot => {
+        clubsSnapshot.forEach(club => {
+            club.child('persons').forEach(person => {
+                let userId = person.child('signInData').child('userId').val()
+                if (userId == data.userId) {
+                    personExists = true;
+                }
+            });
+        });
+    });
+    return personExists;
 });
 
 // Check if data exists at path

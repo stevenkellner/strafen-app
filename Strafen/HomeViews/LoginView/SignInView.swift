@@ -108,12 +108,15 @@ struct SignInView: View {
                     // "or" Text
                     Text("oder").configurate(size: 20)
                     
-                    // Sign in with Apple Button
-                    SignInWithAppleButton(type: .signIn, alsoForAutomatedLogIn: false, signInHandler: handleSignInWithApple)
-                        .frame(width: UIScreen.main.bounds.width * 0.95, height: 50)
-                    
-                    // Error Message
-                    ErrorMessageView(errorMessages: $signInWithAppleErrorMessages)
+                    VStack(spacing: 5) {
+                        
+                        // Sign in with Apple Button
+                        SignInWithAppleButton(type: .signIn, alsoForAutomatedLogIn: false, signInHandler: handleSignInWithApple)
+                            .frame(width: UIScreen.main.bounds.width * 0.95, height: 50)
+                        
+                        // Error Message
+                        ErrorMessageView(errorMessages: $signInWithAppleErrorMessages)
+                    }
                     
                     Spacer()
                 }
@@ -127,18 +130,32 @@ struct SignInView: View {
             case .failure(_):
                 signInWithAppleErrorMessages = .internalErrorSignIn
             case .success((userId: let userId, name: let name)):
-                let state: SignInCache.Status
-                if let personName = name.personName {
-                    let cacheProperty = SignInCache.PropertyUserIdName(userId: userId, name: personName)
-                    state = .clubSelection(property: cacheProperty)
-                    activeNavigationLinks.clubSelction = true
-                } else {
-                    let cacheProperty = SignInCache.PropertyUserId(userId: userId, name: name)
-                    state = .nameInput(property: cacheProperty)
-                    activeNavigationLinks.nameInput = true
+                let callItem = UserIdAlreadyExistsCall(userId: userId)
+                FunctionCaller.shared.call(callItem) { (personExists: UserIdAlreadyExistsCall.CallResult) in
+                    if !personExists {
+                        handleSetStatus(userId: userId, name: name)
+                    } else {
+                        signInWithAppleErrorMessages = .alreadySignedInApple
+                    }
+                } failedHandler: { _ in
+                    signInWithAppleErrorMessages = .internalErrorSignIn
                 }
-                SignInCache.shared.setState(to: state)
             }
+        }
+        
+        /// Handles status set and navigation to next view
+        func handleSetStatus(userId: String, name: PersonNameComponents) {
+            let state: SignInCache.Status
+            if let personName = name.personName {
+                let cacheProperty = SignInCache.PropertyUserIdName(userId: userId, name: personName)
+                state = .clubSelection(property: cacheProperty)
+                activeNavigationLinks.clubSelction = true
+            } else {
+                let cacheProperty = SignInCache.PropertyUserId(userId: userId, name: name)
+                state = .nameInput(property: cacheProperty)
+                activeNavigationLinks.nameInput = true
+            }
+            SignInCache.shared.setState(to: state)
         }
     }
 }
