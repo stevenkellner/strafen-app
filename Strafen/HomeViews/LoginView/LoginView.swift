@@ -30,20 +30,28 @@ struct LoginView: View {
         /// Checks if email and password are empty
         mutating func checkEmpty() -> Bool {
             var isEmpty = false
+            
+            // Check if input email is empty
             if email.isEmpty {
                 isEmpty = true
                 emailErrorMessages = .emptyField
+                Logging.shared.log(with: .info, "Email textfield is empty.")
             }
+            
+            // Check if input password is empty
             if password.isEmpty {
                 isEmpty = true
                 passwordErrorMessages = .emptyField
+                Logging.shared.log(with: .info, "Password textfield is empty.")
             }
+            
             return isEmpty
         }
         
         /// Checks if email is empty
         mutating func evaluteEmailError() {
             if email.isEmpty {
+                Logging.shared.log(with: .info, "Email textfield is empty.")
                 emailErrorMessages = .emptyField
             } else {
                 emailErrorMessages = nil
@@ -53,6 +61,7 @@ struct LoginView: View {
         /// Checks if password is empty
         mutating func evalutePasswordError() {
             if password.isEmpty {
+                Logging.shared.log(with: .info, "Password textfield is empty.")
                 passwordErrorMessages = .emptyField
             } else {
                 passwordErrorMessages = nil
@@ -60,18 +69,30 @@ struct LoginView: View {
         }
         
         /// Checks if an error occured while logging in
-        mutating func evaluteErrorCode(of error: Error) {
-            guard let error = error as NSError?, error.domain == AuthErrorDomain else {
+        mutating func evaluteErrorCode(of _error: Error) {
+            
+            /// Get auth error code
+            guard let error = _error as NSError?, error.domain == AuthErrorDomain else {
+                Logging.shared.log(with: .error, "An error occurs, that hasn't the auth error domain: \(_error.localizedDescription)")
                 return emailErrorMessages = .internalErrorSignIn
             }
             let errorCode = AuthErrorCode(rawValue: error.code)
+            
             switch errorCode {
+            
+            // Email is invalid
             case .invalidEmail:
-                emailErrorMessages = .emailNotRegistered
+                emailErrorMessages = .invalidEmail
+                Logging.shared.log(with: .debug, "Email is invalid.")
+                
+            // Wrong password
             case .wrongPassword:
                 passwordErrorMessages = .incorrectPassword
+                Logging.shared.log(with: .debug, "Password is incorrect.")
+                
             default:
                 emailErrorMessages = .internalErrorLogIn
+                Logging.shared.log(with: .error, "An error occurs, that isn't handled: \(error.localizedDescription)")
             }
         }
         
@@ -161,6 +182,8 @@ struct LoginView: View {
     func handleEmailLogIn() {
         guard connectionState != .loading else { return }
         connectionState = .loading
+        Logging.shared.log(with: .info, "Log in with email is started to handle.")
+        Logging.shared.log(with: .default, "With properties: \(emailCredentials)")
         
         // Check if email and password aren't empty
         signInWithAppleErrorMessages = nil
@@ -173,20 +196,34 @@ struct LoginView: View {
         
         // Sign in with email
         Auth.auth().signIn(withEmail: emailCredentials.email, password: emailCredentials.password) { result, error in
+            
+            // Error occured
             if let error = error {
                 emailCredentials.evaluteErrorCode(of: error)
                 connectionState = .failed
+                
+            // Handle sign in with apple result
             } else if let userId = result?.user.uid {
+                
+                // Get properties of signed in person
                 let callItem = GetPersonPropertiesCall(userId: userId)
                 FunctionCaller.shared.call(callItem) { (person: GetPersonPropertiesCall.CallResult) in
+                    
+                    // Reset cached state and set settings person
+                    Logging.shared.log(with: .info, "Get person properties call succeeded.")
+                    Logging.shared.log(with: .default, "With return person: \(person)")
                     connectionState = .passed
                     SignInCache.shared.setState(to: nil)
                     NewSettings.shared.properties.person = person
+                    
                 } failedHandler: { error in
                     handleEmailSignInGetIdsCallError(error: error)
                     connectionState = .failed
                 }
+            
+            // Internal error occurs
             } else {
+                Logging.shared.log(with: .fault, "No result and no error is given back to sign in closure.")
                 emailCredentials.emailErrorMessages = .internalErrorLogIn
                 connectionState = .failed
             }
@@ -199,8 +236,13 @@ struct LoginView: View {
            error.domain == FunctionsErrorDomain,
            let errorCode = FunctionsErrorCode(rawValue: error.code),
            errorCode == .notFound {
+            
+            // Person user id isn't found in database
+            Logging.shared.log(with: .error, "Person user id not found in database.")
             emailCredentials.emailErrorMessages = .notSignedIn
+            
         } else {
+            Logging.shared.log(with: .error, "Unhandled error uccured: \(error.localizedDescription)")
             emailCredentials.emailErrorMessages = .internalErrorLogIn
         }
     }
@@ -209,24 +251,38 @@ struct LoginView: View {
     func handleAppleLogIn(result: Result<(userId: String, name: PersonNameComponents), SignInWithAppleButton.SignInWithAppleError>) {
         guard connectionState != .loading else { return }
         connectionState = .loading
+        Logging.shared.log(with: .info, "Log in with apple is started to handle.")
+        Logging.shared.log(with: .default, "With result: \(result)")
         
         signInWithAppleErrorMessages = nil
         emailCredentials.resetErrorTypes()
         switch result {
-        case .failure(_):
+        
+        // Log in ended with an error
+        case .failure(let error):
             connectionState = .failed
             signInWithAppleErrorMessages = .internalErrorLogIn
+            Logging.shared.log(with: .error, "Unhandled error uccured: \(error.localizedDescription)")
+            
         case .success((userId: let userId, name: let name)):
+            
+            // Get person properties from database
             let callItem = GetPersonPropertiesCall(userId: userId)
             FunctionCaller.shared.call(callItem) { (person: GetPersonPropertiesCall.CallResult) in
+                
+                // Reset cached state and set settings person
+                Logging.shared.log(with: .info, "Get person properties call succeeded.")
+                Logging.shared.log(with: .default, "With return person: \(person)")
                 connectionState = .passed
                 SignInCache.shared.setState(to: nil)
                 NewSettings.shared.properties.person = person
+                
             } failedHandler: { error in
                 let cacheProperty = SignInCache.PropertyUserId(userId: userId, name: name)
                 handleAppleSignInGetIdsCallError(error: error, cacheProperty: cacheProperty)
                 connectionState = .failed
             }
+            
         }
     }
     
@@ -236,6 +292,9 @@ struct LoginView: View {
            error.domain == FunctionsErrorDomain,
            let errorCode = FunctionsErrorCode(rawValue: error.code),
            errorCode == .notFound {
+            
+            // Person user id isn't found in database
+            Logging.shared.log(with: .error, "Person user id not found in database.")
             var state: SignInCache.Status = .nameInput(property: cacheProperty)
             if let cachedStatus = SignInCache.shared.cachedStatus {
                 state = cachedStatus
@@ -243,7 +302,9 @@ struct LoginView: View {
             SignInCache.shared.setState(to: state)
             showCachedState = true
             signInWithAppleErrorMessages = .notSignedIn
+            
         } else {
+            Logging.shared.log(with: .error, "Unhandled error uccured: \(error.localizedDescription)")
             signInWithAppleErrorMessages = .internalErrorLogIn
         }
     }
@@ -329,7 +390,9 @@ struct LoginView: View {
                 }.frame(width: 150, height: 30)
                     .padding(.leading, 10)
                     .onTapGesture {
-                        if SignInCache.shared.cachedStatus != nil {
+                        let isCached = SignInCache.shared.cachedStatus != nil
+                        Logging.shared.log(with: .info, "Sign in button pressed and \(isCached ? "something" : "nothing") is cached.")
+                        if isCached {
                             showCachedState = true
                         } else {
                             showSignInSheet = true

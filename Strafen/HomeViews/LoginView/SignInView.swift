@@ -126,25 +126,41 @@ struct SignInView: View {
         /// Handles sign in with apple button click
         func handleSignInWithApple(result: Result<(userId: String, name: PersonNameComponents), SignInWithAppleButton.SignInWithAppleError>) {
             signInWithAppleErrorMessages = nil
+            Logging.shared.log(with: .info, "Sign in with apple is started to handle.")
+            Logging.shared.log(with: .default, "With result: \(result)")
+            
             switch result {
-            case .failure(_):
+            
+            // Sign in ended with an error
+            case .failure(let error):
                 signInWithAppleErrorMessages = .internalErrorSignIn
+                Logging.shared.log(with: .error, "Unhandled error uccured: \(error.localizedDescription)")
+                
             case .success((userId: let userId, name: let name)):
+                
+                // Check if user id already exists
                 let callItem = UserIdAlreadyExistsCall(userId: userId)
                 FunctionCaller.shared.call(callItem) { (personExists: UserIdAlreadyExistsCall.CallResult) in
+                    
+                    Logging.shared.log(with: .debug, "Person does\(personExists ? "" : "n't") exitsts in database.")
                     if !personExists {
                         handleSetStatus(userId: userId, name: name)
                     } else {
                         signInWithAppleErrorMessages = .alreadySignedInApple
                     }
-                } failedHandler: { _ in
+                    
+                } failedHandler: { error in
                     signInWithAppleErrorMessages = .internalErrorSignIn
+                    Logging.shared.log(with: .error, "Unhandled error uccured: \(error.localizedDescription)")
                 }
             }
         }
         
         /// Handles status set and navigation to next view
         func handleSetStatus(userId: String, name: PersonNameComponents) {
+            
+            Logging.shared.log(with: .info, "Sign in with apple succeeded.")
+            Logging.shared.log(with: .default, "With userId: \(userId), name: \(name)")
             let state: SignInCache.Status
             if let personName = name.personName {
                 let cacheProperty = SignInCache.PropertyUserIdName(userId: userId, name: personName)

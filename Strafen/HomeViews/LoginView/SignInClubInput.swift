@@ -38,6 +38,7 @@ struct SignInClubInput: View {
         /// Check if club name is empty
         @discardableResult mutating func evaluteClubNameError() -> Bool {
             if clubName.isEmpty {
+                Logging.shared.log(with: .debug, "Club name textfield is empty.")
                 clubNameErrorMessages = .emptyField
             } else {
                 clubNameErrorMessages = nil
@@ -49,6 +50,7 @@ struct SignInClubInput: View {
         /// Check if club identifier is empty
         @discardableResult mutating func evaluateClubIdentifierError() -> Bool {
             if clubIdentifier.isEmpty {
+                Logging.shared.log(with: .debug, "Club identifier textfield is empty.")
                 clubIdentifierErrorMessages = .emptyField
             } else {
                 clubIdentifierErrorMessages = nil
@@ -60,6 +62,7 @@ struct SignInClubInput: View {
         /// Check if an error in region code occurs
         mutating func evalutateRegionCodeError() -> Bool {
             if regionCode == nil {
+                Logging.shared.log(with: .debug, "Region code textfield is empty.")
                 regionCodeErrorMessages = .noRegionGiven
             } else {
                 regionCodeErrorMessages = nil
@@ -128,6 +131,7 @@ struct SignInClubInput: View {
     func handleConfirmButton() {
         guard connectionState != .loading else { return }
         connectionState = .loading
+        Logging.shared.log(with: .info, "Started to create club.")
         
         guard !clubCredentials.checkErrors() else {
             return connectionState = .failed
@@ -153,13 +157,15 @@ struct SignInClubInput: View {
     func checkClubIdentifierExists(doesnotExistsHandler: @escaping () -> Void) {
         let existClubCallItem = ClubIdentifierAlreadyExistsCall(identifier: clubCredentials.clubIdentifier)
         FunctionCaller.shared.call(existClubCallItem) { (clubExists: ClubIdentifierAlreadyExistsCall.CallResult) in
+            Logging.shared.log(with: .info, "Club does\(clubExists ? "" : "n't") already exists.")
             if !clubExists {
                 doesnotExistsHandler()
             } else {
                 clubCredentials.clubIdentifierErrorMessages = .identifierAlreadyExists
                 connectionState = .failed
             }
-        } failedHandler: { _ in
+        } failedHandler: { error in
+            Logging.shared.log(with: .error, "An error occurs, that isn't handled: \(error.localizedDescription)")
             clubCredentials.clubNameErrorMessages = .internalErrorSignIn
             connectionState = .failed
         }
@@ -171,13 +177,21 @@ struct SignInClubInput: View {
         if let image = clubCredentials.image {
             imageUploadProgess = .zero
             dispatchGroup.enter()
+            Logging.shared.log(with: .info, "Started to upload image.")
             ImageStorage.shared.store(at: .clubImage(with: clubId), image: image) { _ in
+                
+                // Success
+                Logging.shared.log(with: .info, "Successfully uploaded image.")
                 dispatchGroup.leave()
                 imageUploadProgess = nil
-            } failedHandler: { _ in
+            
+            // An error occurs
+            } failedHandler: { error in
+                Logging.shared.log(with: .error, "An error occurs, that isn't handled: \(error.localizedDescription)")
                 clubCredentials.clubNameErrorMessages = .internalErrorSignIn
                 connectionState = .failed
                 imageUploadProgess = nil
+                
             } progressChangeHandler: { progress in
                 imageUploadProgess = progress
             }
@@ -197,27 +211,36 @@ struct SignInClubInput: View {
         
         // Create new club in database
         FunctionCaller.shared.call(callItem) { _ in
+            
+            Logging.shared.log(with: .info, "Successfully created club in database.")
             connectionState = .passed
             imageUploadProgess = nil
             SignInCache.shared.setState(to: nil)
             let clubProperties = NewSettings.Person.ClubProperties(id: clubId, name: clubCredentials.clubName, identifier: clubCredentials.clubIdentifier, regionCode: clubCredentials.regionCode!)
             NewSettings.shared.properties.person = .init(clubProperties: clubProperties, id: personId, signInDate: Date(), isCashier: true)
+            
         } failedHandler: { error in
-            handleCallError(error: error)
+            handleCallError(error)
         }
         
     }
     
     /// Handles error of get club id call
-    func handleCallError(error: Error) {
-        guard let error = error as NSError?, error.domain == FunctionsErrorDomain else {
+    func handleCallError(_ _error: Error) {
+        
+        // Get function error code
+        guard let error = _error as NSError?, error.domain == FunctionsErrorDomain else {
+            Logging.shared.log(with: .error, "An error occurs, that isn't handled: \(_error.localizedDescription)")
             return clubCredentials.clubNameErrorMessages = .internalErrorSignIn
         }
         let errorCode = FunctionsErrorCode(rawValue: error.code)
+        
         switch errorCode {
         case .alreadyExists:
+            Logging.shared.log(with: .debug, "Club identifier already exists.")
             clubCredentials.clubIdentifierErrorMessages = .identifierAlreadyExists
         default:
+            Logging.shared.log(with: .error, "An error occurs, that isn't handled: \(error.localizedDescription)")
             clubCredentials.clubNameErrorMessages = .internalErrorSignIn
         }
         connectionState = .failed

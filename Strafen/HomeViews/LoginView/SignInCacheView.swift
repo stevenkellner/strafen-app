@@ -159,10 +159,16 @@ struct SignInCacheView: View {
         func handleCancelClick() {
             guard cancelConnectionState != .loading else { return }
             cancelConnectionState = .loading
+            Logging.shared.log(with: .info, "Cancel cache button is started to handle.")
             
             if let user = Auth.auth().currentUser {
+                
+                // Check if user is already registered in database
                 let callItem = UserIdAlreadyExistsCall(userId: user.uid)
                 FunctionCaller.shared.call(callItem) { (personExists: UserIdAlreadyExistsCall.CallResult) in
+                    
+                    // Check if person exists
+                    Logging.shared.log(with: .debug, "Person exists\(personExists ? "" : " not ").")
                     if personExists {
                         dismissSheet(with: .passed)
                     } else {
@@ -170,15 +176,24 @@ struct SignInCacheView: View {
                             dismissSheet(with: error == nil ? .passed : .failed)
                         }
                     }
-                } failedHandler: { _ in
+                    
+                } failedHandler: { error in
+                    Logging.shared.log(with: .error, "Unhandled error uccured: \(error.localizedDescription)")
                     dismissSheet(with: .failed)
                 }
+                
             } else {
+                
+                // No auth user is logged in
+                Logging.shared.log(with: .debug, "Auth hasn't a current user.")
                 dismissSheet(with: .passed)
+                
             }
         }
         
+        /// Dismiss cached state sheet and reset state
         func dismissSheet(with connectionState: ConnectionState) {
+            Logging.shared.log(with: .info, "Dismiss cached state sheet and reset state.")
             SignInCache.shared.setState(to: nil)
             cancelConnectionState = connectionState
             presentationMode.wrappedValue.dismiss()

@@ -55,7 +55,7 @@ exports.newClub = functions.region('europe-west1').https.onCall(async (data, con
         await clubRef.child('name').set(data.clubName, error => {
             isError = isError || error != null;
         });
-        await clubPath.child('regionCode').set(data.regionCode, error => {
+        await clubRef.child('regionCode').set(data.regionCode, error => {
             isError = isError || error != null;
         });
         await clubRef.child('persons').child(data.personId.toString().toUpperCase()).set({

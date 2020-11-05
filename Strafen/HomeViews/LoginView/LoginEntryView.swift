@@ -23,7 +23,13 @@ struct LoginEntryView: View {
             EmptySheetLink(isPresented: $showSignInSheet) {
                 SignInView(showSignInSheet: $showSignInSheet)
             } onDismiss: {
-                if SignInCache.shared.cachedStatus != nil {
+                
+                // Get cached status
+                if let cachedStatus = SignInCache.shared.cachedStatus {
+                    Logging.shared.log(with: .info, "Show cached sheet, since cached state isn't nil.")
+                    Logging.shared.log(with: .default, "Cached state: \(cachedStatus)")
+                    
+                    // Show cached state sheet if a state is cached
                     showCachedState = true
                 }
             }
@@ -39,8 +45,19 @@ struct LoginEntryView: View {
                 
         }.onAppear {
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                showCachedState = SignInCache.shared.cachedStatus != nil
+                
+                // Get cached status
+                if let cachedStatus = SignInCache.shared.cachedStatus {
+                    Logging.shared.log(with: .info, "Show cached sheet, since cached state isn't nil.")
+                    Logging.shared.log(with: .default, "Cached state: \(cachedStatus)")
+                    
+                    // Show cached state sheet if a state is cached
+                    showCachedState = true
+                } else {
+                    showCachedState = false
+                }
             }
+            
         }
     }
 }

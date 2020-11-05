@@ -82,11 +82,16 @@ struct SignInPersonSelection: View {
     func fetchPersonList() {
         fetchConnectionState = .loading
         let clubId = (SignInCache.shared.cachedStatus?.property as! SignInCache.PropertyUserIdNameClubId).clubId
+        Logging.shared.log(with: .info, "Start fetching person list of clubId: \(clubId)")
+        
         let url = URL(string: "clubs")!.appendingPathComponent(clubId.uuidString.uppercased()).appendingPathComponent("persons")
         NewFetcher.shared.fetch(from: url, wait: 2) { (personList: [NewPerson]?) in
             guard let personList = personList else {
+                Logging.shared.log(with: .error, "Couldn't fetch person list.")
                 return fetchConnectionState = .failed
             }
+            Logging.shared.log(with: .info, "Person list fetched successfully.")
+            Logging.shared.log(with: .default, "Person list: \(personList)")
             self.personList = personList
             fetchConnectionState = .passed
         }
@@ -99,16 +104,24 @@ struct SignInPersonSelection: View {
         guard personList != nil else { return }
         errorMessages = nil
         signInConnectionState = .loading
+        Logging.shared.log(with: .info, "Started to sign in.")
         
         let personId = selectedPersonId ?? UUID()
         let cachedProperties = SignInCache.shared.cachedStatus?.property as! SignInCache.PropertyUserIdNameClubId
+        
+        // Register person to database
         let callItem = RegisterPersonCall(cachedProperties: cachedProperties, personId: personId)
         FunctionCaller.shared.call(callItem) { (result: RegisterPersonCall.CallResult) in
+            
+            Logging.shared.log(with: .info, "Sign in succeeded.")
+            Logging.shared.log(with: .default, "With result: \(result)")
             signInConnectionState = .passed
             SignInCache.shared.setState(to: nil)
             let clubProperties = NewSettings.Person.ClubProperties(id: cachedProperties.clubId, name: result.clubName, identifier: result.clubIdentifier, regionCode: result.regionCode)
             NewSettings.shared.properties.person = .init(clubProperties: clubProperties, id: personId, signInDate: Date(), isCashier: false)
-        } failedHandler: { _ in
+            
+        } failedHandler: { error in
+            Logging.shared.log(with: .error, "An error occurs, that isn't handled: \(error.localizedDescription)")
             errorMessages = .internalErrorSignIn
             signInConnectionState = .failed
         }

@@ -23,6 +23,7 @@ struct SignInClubSelection: View {
         /// Evaluate error
         @discardableResult mutating func evaluateError() -> Bool {
             if clubIdentifier.isEmpty {
+                Logging.shared.log(with: .debug, "First name textfield is empty.")
                 clubIdentifierErrorMessages = .emptyField
             } else {
                 clubIdentifierErrorMessages = nil
@@ -32,15 +33,21 @@ struct SignInClubSelection: View {
         }
         
         /// Checks if an error occured while signing in
-        mutating func evaluteErrorCode(of error: Error) {
-            guard let error = error as NSError?, error.domain == FunctionsErrorDomain else {
+        mutating func evaluteErrorCode(of _error: Error) {
+            
+            // Get function error code
+            guard let error = _error as NSError?, error.domain == FunctionsErrorDomain else {
+                Logging.shared.log(with: .error, "Unhandled error uccured: \(_error.localizedDescription)")
                 return clubIdentifierErrorMessages = .internalErrorSignIn
             }
             let errorCode = FunctionsErrorCode(rawValue: error.code)
+            
             switch errorCode {
             case .notFound:
+                Logging.shared.log(with: .debug, "Club doesn't exists in database.")
                 clubIdentifierErrorMessages = .clubNotExists
             default:
+                Logging.shared.log(with: .error, "Unhandled error uccured: \(error.localizedDescription)")
                 clubIdentifierErrorMessages = .internalErrorSignIn
             }
         }
@@ -121,6 +128,7 @@ struct SignInClubSelection: View {
         let cacheProperty = SignInCache.PropertyUserIdNameClubId(userIdName: SignInCache.shared.cachedStatus?.property as! SignInCache.PropertyUserIdName, clubId: clubId)
         let state: SignInCache.Status = .personSelection(property: cacheProperty)
         SignInCache.shared.setState(to: state)
+        Logging.shared.log(with: .info, "Set cached to to: \(state)")
         isNavigationLinkActive = true
         connectionState = .passed
     }

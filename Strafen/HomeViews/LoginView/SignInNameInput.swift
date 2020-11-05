@@ -28,6 +28,9 @@ struct SignInNameInput: View {
         /// Set name from cached properties
         mutating func setFromCache() {
             let cacheProperty = SignInCache.shared.cachedStatus?.property as! SignInCache.PropertyUserId
+            if let firstName = cacheProperty.name.givenName, let lastName = cacheProperty.name.familyName {
+                Logging.shared.log(with: .info, "Got cached name: \(firstName) \(lastName)")
+            }
             firstName = cacheProperty.name.givenName ?? ""
             lastName = cacheProperty.name.familyName ?? ""
         }
@@ -35,6 +38,7 @@ struct SignInNameInput: View {
         /// Check if first name is empty
         @discardableResult mutating func evaluteFirstNameError() -> Bool {
             if firstName.isEmpty {
+                Logging.shared.log(with: .debug, "First name textfield is empty.")
                 firstNameErrorMessages = .emptyField
             } else {
                 firstNameErrorMessages = nil
@@ -46,6 +50,7 @@ struct SignInNameInput: View {
         /// Check if last name is empty
         @discardableResult mutating func evaluteLastNameError() -> Bool {
             if lastName.isEmpty {
+                Logging.shared.log(with: .debug, "Last name textfield is empty.")
                 lastNameErrorMessages = .emptyField
             } else {
                 lastNameErrorMessages = nil
@@ -116,6 +121,7 @@ struct SignInNameInput: View {
         let name = PersonName(firstName: nameCredentials.firstName, lastName: nameCredentials.lastName)
         let cacheProperty = SignInCache.PropertyUserIdName(userId: oldCacheProperty, name: name)
         let state: SignInCache.Status = .clubSelection(property: cacheProperty)
+        Logging.shared.log(with: .info, "Set cached to to: \(state)")
         SignInCache.shared.setState(to: state)
         isNavigationLinkActive = true
     }
