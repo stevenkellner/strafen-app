@@ -42,3 +42,104 @@ struct Person: ListTypes, Identifiable, Equatable {
         PersonName(firstName: firstName, lastName: lastName)
     }
 }
+
+/// Contains all properties of a person
+struct NewPerson {
+    
+    /// Data if person is signed in
+    struct SignInData: Codable {
+        
+        /// Indicates if person is cachier, is nil if person isn't signed in
+        let isCashier: Bool
+        
+        /// User id for authentication
+        let userId: String
+        
+        /// Date of sign in
+        let signInDate: Date
+    }
+    
+    /// Id
+    let id: UUID
+    
+    /// Name
+    let name: PersonName
+    
+    /// Data if person is signed in
+    let signInData: SignInData?
+}
+
+// Extension of Person to confirm to ListType
+extension NewPerson: NewListType {
+    
+    /// Url for database refernce
+    static var url: URL {
+        guard let clubId = NewSettings.shared.properties.person?.clubProperties.id else {
+            fatalError("No person is logged in.")
+        }
+        return URL.personList(with: clubId)
+    }
+    
+    /// Init with id and codable self
+    init(with id: UUID, codableSelf: CodableSelf) {
+        self.id = id
+        self.name = codableSelf.name.personName
+        self.signInData = codableSelf.signInData?.signInData
+    }
+    
+    /// Parameters for database change call
+    var callParameters: NewParameters {
+        NewParameters { parameters in
+            parameters["itemId"] = id
+            parameters["firstName"] = name.firstName
+            parameters["lastName"] = name.lastName
+            parameters["listType"] = "person"
+        }
+    }
+}
+
+// Extension of Person for CodableSelf
+extension NewPerson {
+    
+    /// Person to fetch from database
+    struct CodableSelf: Codable {
+    
+        /// Name
+        let name: CodablePersonName
+        
+        /// Data if person is signed in
+        let signInData: CodableSignInData?
+    }
+    
+    /// Person name to fetch from database
+    struct CodablePersonName: Codable {
+        
+        /// First name
+        let first: String
+        
+        /// Last name
+        let last: String
+        
+        /// Convertes to person name
+        var personName: PersonName {
+            PersonName(firstName: first, lastName: last)
+        }
+    }
+    
+    /// Data if person is signed in
+    struct CodableSignInData: Codable {
+        
+        /// Indicates if person is cachier, is nil if person isn't signed in
+        let cashier: Bool
+        
+        /// User id for authentication
+        let userId: String
+        
+        /// Date of sign in
+        let signInDate: Date
+        
+        var signInData: SignInData {
+            SignInData(isCashier: cashier, userId: userId, signInDate: signInDate)
+        }
+    }
+}

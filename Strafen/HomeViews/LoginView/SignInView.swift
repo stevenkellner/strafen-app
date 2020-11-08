@@ -127,7 +127,7 @@ struct SignInView: View {
         func handleSignInWithApple(result: Result<(userId: String, name: PersonNameComponents), SignInWithAppleButton.SignInWithAppleError>) {
             signInWithAppleErrorMessages = nil
             Logging.shared.log(with: .info, "Sign in with apple is started to handle.")
-            Logging.shared.log(with: .default, "With result: \(result)")
+            Logging.shared.log(with: .info, "With result: \(result)")
             
             switch result {
             
@@ -160,7 +160,7 @@ struct SignInView: View {
         func handleSetStatus(userId: String, name: PersonNameComponents) {
             
             Logging.shared.log(with: .info, "Sign in with apple succeeded.")
-            Logging.shared.log(with: .default, "With userId: \(userId), name: \(name)")
+            Logging.shared.log(with: .info, "With userId: \(userId), name: \(name)")
             let state: SignInCache.Status
             if let personName = name.personName {
                 let cacheProperty = SignInCache.PropertyUserIdName(userId: userId, name: personName)

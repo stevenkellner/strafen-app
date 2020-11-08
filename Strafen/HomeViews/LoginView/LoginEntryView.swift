@@ -27,7 +27,7 @@ struct LoginEntryView: View {
                 // Get cached status
                 if let cachedStatus = SignInCache.shared.cachedStatus {
                     Logging.shared.log(with: .info, "Show cached sheet, since cached state isn't nil.")
-                    Logging.shared.log(with: .default, "Cached state: \(cachedStatus)")
+                    Logging.shared.log(with: .info, "Cached state: \(cachedStatus)")
                     
                     // Show cached state sheet if a state is cached
                     showCachedState = true
@@ -49,7 +49,7 @@ struct LoginEntryView: View {
                 // Get cached status
                 if let cachedStatus = SignInCache.shared.cachedStatus {
                     Logging.shared.log(with: .info, "Show cached sheet, since cached state isn't nil.")
-                    Logging.shared.log(with: .default, "Cached state: \(cachedStatus)")
+                    Logging.shared.log(with: .info, "Cached state: \(cachedStatus)")
                     
                     // Show cached state sheet if a state is cached
                     showCachedState = true

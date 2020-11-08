@@ -183,7 +183,7 @@ struct LoginView: View {
         guard connectionState != .loading else { return }
         connectionState = .loading
         Logging.shared.log(with: .info, "Log in with email is started to handle.")
-        Logging.shared.log(with: .default, "With properties: \(emailCredentials)")
+        Logging.shared.log(with: .info, "With properties: \(emailCredentials)")
         
         // Check if email and password aren't empty
         signInWithAppleErrorMessages = nil
@@ -211,7 +211,7 @@ struct LoginView: View {
                     
                     // Reset cached state and set settings person
                     Logging.shared.log(with: .info, "Get person properties call succeeded.")
-                    Logging.shared.log(with: .default, "With return person: \(person)")
+                    Logging.shared.log(with: .info, "With return person: \(person)")
                     connectionState = .passed
                     SignInCache.shared.setState(to: nil)
                     NewSettings.shared.properties.person = person
@@ -252,7 +252,7 @@ struct LoginView: View {
         guard connectionState != .loading else { return }
         connectionState = .loading
         Logging.shared.log(with: .info, "Log in with apple is started to handle.")
-        Logging.shared.log(with: .default, "With result: \(result)")
+        Logging.shared.log(with: .info, "With result: \(result)")
         
         signInWithAppleErrorMessages = nil
         emailCredentials.resetErrorTypes()
@@ -272,7 +272,7 @@ struct LoginView: View {
                 
                 // Reset cached state and set settings person
                 Logging.shared.log(with: .info, "Get person properties call succeeded.")
-                Logging.shared.log(with: .default, "With return person: \(person)")
+                Logging.shared.log(with: .info, "With return person: \(person)")
                 connectionState = .passed
                 SignInCache.shared.setState(to: nil)
                 NewSettings.shared.properties.person = person

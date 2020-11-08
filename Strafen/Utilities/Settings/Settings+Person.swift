@@ -47,11 +47,11 @@ extension NewSettings {
             let identifier: String
             
             /// Region code
-            let regionCode: String
+            var regionCode: String
         }
         
         /// Club properties
-        let clubProperties: ClubProperties
+        var clubProperties: ClubProperties
         
         /// Id of the person
         let id: UUID

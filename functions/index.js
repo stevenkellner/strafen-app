@@ -425,7 +425,7 @@ exports.getPersonProperties = functions.region('europe-west1').https.onCall(asyn
     await clubsRef.once('value', clubsSnapshot => {
         clubsSnapshot.forEach(club => {
             club.child('persons').forEach(person => {
-                let userId = person.child('signInData').child('userId').val()
+                let userId = person.child('signInData').child('userId').val();
                 if (userId == data.userId) {
                     let isCashier = person.child('signInData').child('cashier').val();
                     let signInDate = person.child('signInData').child('signInDate').val();

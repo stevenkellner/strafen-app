@@ -79,6 +79,15 @@ enum ChangeType: String {
     case delete
 }
 
+// Extension of Change Type to confirm to ParameterableObject
+extension ChangeType: ParameterableObject {
+    
+    // Object call with Firebase function as Parameter
+    var parameterableObject: _ParameterableObject {
+        rawValue
+    }
+}
+
 /// State of data task
 enum TaskState {
     

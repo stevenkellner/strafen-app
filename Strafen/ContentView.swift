@@ -15,7 +15,9 @@ struct ContentView: View {
     @ObservedObject var settings = NewSettings.shared
     
     /// List data that contains all datas of the different lists
-    @ObservedObject var listData = ListData.shared
+    @ObservedObject var listData = NewListData.shared
+    
+    @ObservedObject var fineDataList = NewListData.fine
     
     var body: some View {
         ZStack {
@@ -26,30 +28,26 @@ struct ContentView: View {
             if listData.forceSignedOut {
                 
                 // Force Sign Out View
-                ContentForceSignedOutView()
+                // ContentForceSignedOutView() TODO
                 
-            } else if settings.properties.person != nil && Auth.auth().currentUser != nil {
+            } else if listData.emailNotVerificated {
                 
-                Text("Log out")
-                    .onTapGesture {
-                        do {
-                            try Auth.auth().signOut()
-                            NewSettings.shared.properties.person = nil
-                        } catch {
-                            print(error)
-                        }
-                    }
+                // TODO
+                
+            }
+            if settings.properties.person != nil && Auth.auth().currentUser != nil {
                 
                 // Home Tabs View and Tab Bar
-//                ContentHomeView()
-//                    .onAppear {
-//
-//                        // Fetch note list
-//                        ListData.note.list = nil
-//                        ListData.note.fetch()
-//
-//                        ListData.shared.fetchLists()
-//                    }
+                // TODO ContentHomeView()
+                ScrollView {
+                    if let list = fineDataList.list {
+                        ForEach(list) { fine in
+                            Text(fine.date.description)
+                        }
+                    }
+                }.onAppear {
+                    NewListData.shared.setup()
+                }
                 
             } else {
                 
@@ -120,48 +118,6 @@ struct ContentView: View {
                 .onOpenURL { url in
                     homeTabs.active = url.pathComponents.first == "profileDetail" ? .profileDetail : homeTabs.active
                 }
-        }
-    }
-}
-
-// TODO
-import OSLog
-
-/// Used to log messages
-struct Logging {
-    
-    /// Shared instance for singelton
-    static let shared = Self()
-    
-    /// Private init for singleton
-    private init() {}
-    
-    let logLevelHigherEqual: OSLogType = .default
-    
-    /// Logges a message with given logging level
-    func log(with level: OSLogType, _ messages: String..., file: String = #fileID, function: String = #function, line: Int = #line) {
-        guard level.rawValue >= logLevelHigherEqual.rawValue else { return }
-        let logger = Logger(subsystem: "Strafen-App", category: "File: \(file), in Function: \(function), at Line: \(line)")
-        let message = messages.joined(separator: "\n\t")
-        logger.log(level: level, "\(level.levelName.uppercased(), privacy: .public) | \(message, privacy: .public)")
-    }
-}
-
-extension OSLogType {
-    var levelName: String {
-        switch self {
-        case .default:
-            return "(Default)"
-        case .info:
-            return "(Info)   "
-        case .debug:
-            return "(Debug)  "
-        case .error:
-            return "(Error)  "
-        case .fault:
-            return "(Fault)  "
-        default:
-            return "(Unknown)"
         }
     }
 }

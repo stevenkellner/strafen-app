@@ -32,3 +32,21 @@ protocol LocalListTypes: Codable, Identifiable {
     /// List data of this local list type
     static var listData: ListDataLocalListType<Self> { get }
 }
+
+/// Protocol for a list type of database
+protocol NewListType: Identifiable where ID == UUID {
+    
+    /// Codable list type
+    associatedtype CodableSelf: Decodable
+    
+    /// Init with id and codable self
+    init(with id: UUID, codableSelf: CodableSelf)
+    
+    /// Url for database refernce
+    ///
+    /// - Note: Don't use this url when no person is logged in
+    static var url: URL { get }
+    
+    /// Parameters for database change call
+    var callParameters: NewParameters { get }
+}

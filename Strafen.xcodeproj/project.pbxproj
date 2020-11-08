@@ -13,7 +13,7 @@
 		B016578A24C369850012B6AC /* Note.swift in Sources */ = {isa = PBXBuildFile; fileRef = B016578924C369850012B6AC /* Note.swift */; };
 		B02019D424FE779000C660B9 /* SettingsFinesFormatterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B02019D324FE779000C660B9 /* SettingsFinesFormatterView.swift */; };
 		B020C7B724AE7204008940FE /* ListFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = B020C7B624AE7204008940FE /* ListFetcher.swift */; };
-		B020C7BA24AE744F008940FE /* ListData.swift in Sources */ = {isa = PBXBuildFile; fileRef = B020C7B924AE744F008940FE /* ListData.swift */; };
+		B020C7BA24AE744F008940FE /* ListData2.swift in Sources */ = {isa = PBXBuildFile; fileRef = B020C7B924AE744F008940FE /* ListData2.swift */; };
 		B020C7BC24AF1AE9008940FE /* ChangerClub.swift in Sources */ = {isa = PBXBuildFile; fileRef = B020C7BB24AF1AE9008940FE /* ChangerClub.swift */; };
 		B020C7BE24AF1C31008940FE /* PersonLogin.swift in Sources */ = {isa = PBXBuildFile; fileRef = B020C7BD24AF1C31008940FE /* PersonLogin.swift */; };
 		B020C7C024AF7CC6008940FE /* Person.swift in Sources */ = {isa = PBXBuildFile; fileRef = B020C7BF24AF7CC6008940FE /* Person.swift */; };
@@ -28,7 +28,7 @@
 		B028FD972514EB91007DF006 /* Changer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B028FD962514EB91007DF006 /* Changer.swift */; };
 		B028FD9A25150E5E007DF006 /* ServerListChange.swift in Sources */ = {isa = PBXBuildFile; fileRef = B028FD9925150E5E007DF006 /* ServerListChange.swift */; };
 		B028FD9C25150E77007DF006 /* RegisterPersonChange.swift in Sources */ = {isa = PBXBuildFile; fileRef = B028FD9B25150E77007DF006 /* RegisterPersonChange.swift */; };
-		B028FD9E25150E90007DF006 /* Parameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = B028FD9D25150E90007DF006 /* Parameters.swift */; };
+		B028FD9E25150E90007DF006 /* Parameters2.swift in Sources */ = {isa = PBXBuildFile; fileRef = B028FD9D25150E90007DF006 /* Parameters2.swift */; };
 		B02B891524BDFDA9004562B9 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B02B891424BDFDA9004562B9 /* SettingsView.swift */; };
 		B02EF27024C497CC00E4CEBC /* NoteEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = B02EF26F24C497CC00E4CEBC /* NoteEditor.swift */; };
 		B037BCEA25419CB4002B81E5 /* SignInEmailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B037BCE925419CB4002B81E5 /* SignInEmailView.swift */; };
@@ -113,6 +113,26 @@
 		B0C1C52524A8BC14007B584B /* RoundedCorners.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0C1C52424A8BC14007B584B /* RoundedCorners.swift */; };
 		B0C1C52724A8BEE6007B584B /* Other.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0C1C52624A8BEE6007B584B /* Other.swift */; };
 		B0C554052505646400BA3E26 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0C554042505646400BA3E26 /* AppDelegate.swift */; };
+		B0D75C502557149500555B03 /* ReasonTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0D75C4F2557149500555B03 /* ReasonTemplate.swift */; };
+		B0D75C5A2557157400555B03 /* Payed.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0D75C592557157400555B03 /* Payed.swift */; };
+		B0D75C602557159900555B03 /* Importance.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0D75C5F2557159900555B03 /* Importance.swift */; };
+		B0D75C66255715C900555B03 /* FineReason.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0D75C65255715C900555B03 /* FineReason.swift */; };
+		B0D75C712557169000555B03 /* ListData.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0D75C702557169000555B03 /* ListData.swift */; };
+		B0D75C7B255716CD00555B03 /* DataTypeList.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0D75C7A255716CD00555B03 /* DataTypeList.swift */; };
+		B0D75C85255716FB00555B03 /* Fetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0D75C84255716FB00555B03 /* Fetcher.swift */; };
+		B0D75C8E2557179800555B03 /* Euro.swift in Sources */ = {isa = PBXBuildFile; fileRef = B042D43424BB1B040029F2D5 /* Euro.swift */; };
+		B0D75C9D25581D9200555B03 /* Parameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0D75C9C25581D9200555B03 /* Parameters.swift */; };
+		B0D75CA325581E0900555B03 /* FunctionCaller.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0D75CA225581E0900555B03 /* FunctionCaller.swift */; };
+		B0D75CAA25581FA300555B03 /* FunctionCallable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0D75CA925581FA200555B03 /* FunctionCallable.swift */; };
+		B0D75CB425581FDC00555B03 /* RegisterPersonCall.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0D75CB325581FDC00555B03 /* RegisterPersonCall.swift */; };
+		B0D75CBA25581FE900555B03 /* NewClubCall.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0D75CB925581FE900555B03 /* NewClubCall.swift */; };
+		B0D75CC025581FF400555B03 /* GetClubIdCall.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0D75CBF25581FF400555B03 /* GetClubIdCall.swift */; };
+		B0D75CC625581FFE00555B03 /* GetPersonPropertiesCall.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0D75CC525581FFE00555B03 /* GetPersonPropertiesCall.swift */; };
+		B0D75CCC2558200900555B03 /* ClubIdentifierAlreadyExistsCall.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0D75CCB2558200900555B03 /* ClubIdentifierAlreadyExistsCall.swift */; };
+		B0D75CD22558201400555B03 /* UserIdAlreadyExistsCall.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0D75CD12558201400555B03 /* UserIdAlreadyExistsCall.swift */; };
+		B0D75CD82558202000555B03 /* ChangeListCall.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0D75CD72558202000555B03 /* ChangeListCall.swift */; };
+		B0D75CDE2558208500555B03 /* Amount.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0D75CDD2558208500555B03 /* Amount.swift */; };
+		B0D75CF0255820FC00555B03 /* ImageStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0D75CEF255820FC00555B03 /* ImageStorage.swift */; };
 		B0DE1CBB24C44D61006CCFE9 /* LocalListChanger.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0DE1CBA24C44D61006CCFE9 /* LocalListChanger.swift */; };
 		B0DE1CBD24C48FB3006CCFE9 /* NoteDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0DE1CBC24C48FB3006CCFE9 /* NoteDetail.swift */; };
 		B0E0F82724A63E5800C82828 /* StrafenApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E0F82624A63E5800C82828 /* StrafenApp.swift */; };
@@ -126,7 +146,6 @@
 		B0E2C19D24CC66C2009E3666 /* WidgetListTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E2C18D24CC65F9009E3666 /* WidgetListTypes.swift */; };
 		B0E2C1A124CC67F3009E3666 /* PersonName.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0C1C52124A7A021007B584B /* PersonName.swift */; };
 		B0E2C1A424CC6828009E3666 /* WidgetReason.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E2C1A224CC6815009E3666 /* WidgetReason.swift */; };
-		B0E2C1A524CC6859009E3666 /* Euro.swift in Sources */ = {isa = PBXBuildFile; fileRef = B042D43424BB1B040029F2D5 /* Euro.swift */; };
 		B0E2C1A824CC6884009E3666 /* WidgetFine.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E2C1A624CC6872009E3666 /* WidgetFine.swift */; };
 		B0E2C1A924CC6919009E3666 /* FormattedDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B042D43A24BB27EF0029F2D5 /* FormattedDate.swift */; };
 		B0E2C1AC24CC6C2D009E3666 /* WidgetListFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E2C1AA24CC6C15009E3666 /* WidgetListFetcher.swift */; };
@@ -203,7 +222,7 @@
 		B016578924C369850012B6AC /* Note.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Note.swift; sourceTree = "<group>"; };
 		B02019D324FE779000C660B9 /* SettingsFinesFormatterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsFinesFormatterView.swift; sourceTree = "<group>"; };
 		B020C7B624AE7204008940FE /* ListFetcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListFetcher.swift; sourceTree = "<group>"; };
-		B020C7B924AE744F008940FE /* ListData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListData.swift; sourceTree = "<group>"; };
+		B020C7B924AE744F008940FE /* ListData2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListData2.swift; sourceTree = "<group>"; };
 		B020C7BB24AF1AE9008940FE /* ChangerClub.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangerClub.swift; sourceTree = "<group>"; };
 		B020C7BD24AF1C31008940FE /* PersonLogin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonLogin.swift; sourceTree = "<group>"; };
 		B020C7BF24AF7CC6008940FE /* Person.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Person.swift; sourceTree = "<group>"; };
@@ -218,7 +237,7 @@
 		B028FD962514EB91007DF006 /* Changer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Changer.swift; sourceTree = "<group>"; };
 		B028FD9925150E5E007DF006 /* ServerListChange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerListChange.swift; sourceTree = "<group>"; };
 		B028FD9B25150E77007DF006 /* RegisterPersonChange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterPersonChange.swift; sourceTree = "<group>"; };
-		B028FD9D25150E90007DF006 /* Parameters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Parameters.swift; sourceTree = "<group>"; };
+		B028FD9D25150E90007DF006 /* Parameters2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Parameters2.swift; sourceTree = "<group>"; };
 		B02B891424BDFDA9004562B9 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		B02EF26F24C497CC00E4CEBC /* NoteEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteEditor.swift; sourceTree = "<group>"; };
 		B037BCE925419CB4002B81E5 /* SignInEmailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInEmailView.swift; sourceTree = "<group>"; };
@@ -311,6 +330,25 @@
 		B0C1C52624A8BEE6007B584B /* Other.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Other.swift; sourceTree = "<group>"; };
 		B0C554042505646400BA3E26 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B0C5540625056A0F00BA3E26 /* ExecuteOnlyOnce.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExecuteOnlyOnce.swift; sourceTree = "<group>"; };
+		B0D75C4F2557149500555B03 /* ReasonTemplate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReasonTemplate.swift; sourceTree = "<group>"; };
+		B0D75C592557157400555B03 /* Payed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Payed.swift; sourceTree = "<group>"; };
+		B0D75C5F2557159900555B03 /* Importance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Importance.swift; sourceTree = "<group>"; };
+		B0D75C65255715C900555B03 /* FineReason.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FineReason.swift; sourceTree = "<group>"; };
+		B0D75C702557169000555B03 /* ListData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListData.swift; sourceTree = "<group>"; };
+		B0D75C7A255716CD00555B03 /* DataTypeList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataTypeList.swift; sourceTree = "<group>"; };
+		B0D75C84255716FB00555B03 /* Fetcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fetcher.swift; sourceTree = "<group>"; };
+		B0D75C9C25581D9200555B03 /* Parameters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Parameters.swift; sourceTree = "<group>"; };
+		B0D75CA225581E0900555B03 /* FunctionCaller.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FunctionCaller.swift; sourceTree = "<group>"; };
+		B0D75CA925581FA200555B03 /* FunctionCallable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FunctionCallable.swift; sourceTree = "<group>"; };
+		B0D75CB325581FDC00555B03 /* RegisterPersonCall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterPersonCall.swift; sourceTree = "<group>"; };
+		B0D75CB925581FE900555B03 /* NewClubCall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewClubCall.swift; sourceTree = "<group>"; };
+		B0D75CBF25581FF400555B03 /* GetClubIdCall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetClubIdCall.swift; sourceTree = "<group>"; };
+		B0D75CC525581FFE00555B03 /* GetPersonPropertiesCall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetPersonPropertiesCall.swift; sourceTree = "<group>"; };
+		B0D75CCB2558200900555B03 /* ClubIdentifierAlreadyExistsCall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubIdentifierAlreadyExistsCall.swift; sourceTree = "<group>"; };
+		B0D75CD12558201400555B03 /* UserIdAlreadyExistsCall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserIdAlreadyExistsCall.swift; sourceTree = "<group>"; };
+		B0D75CD72558202000555B03 /* ChangeListCall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeListCall.swift; sourceTree = "<group>"; };
+		B0D75CDD2558208500555B03 /* Amount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Amount.swift; sourceTree = "<group>"; };
+		B0D75CEF255820FC00555B03 /* ImageStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageStorage.swift; sourceTree = "<group>"; };
 		B0DE1CBA24C44D61006CCFE9 /* LocalListChanger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalListChanger.swift; sourceTree = "<group>"; };
 		B0DE1CBC24C48FB3006CCFE9 /* NoteDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteDetail.swift; sourceTree = "<group>"; };
 		B0E0F82324A63E5800C82828 /* Strafen.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Strafen.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -422,7 +460,7 @@
 		B020C7B824AE743F008940FE /* FetchedData */ = {
 			isa = PBXGroup;
 			children = (
-				B020C7B924AE744F008940FE /* ListData.swift */,
+				B020C7B924AE744F008940FE /* ListData2.swift */,
 				B020C7C524B0C8BE008940FE /* ImageData.swift */,
 			);
 			path = FetchedData;
@@ -432,10 +470,11 @@
 			isa = PBXGroup;
 			children = (
 				B042D42D24BA21540029F2D5 /* ListTypes.swift */,
-				B020C7CB24B87653008940FE /* Club.swift */,
 				B020C7BF24AF7CC6008940FE /* Person.swift */,
-				B0E2C19124CC6620009E3666 /* Reason.swift */,
 				B0E2C19024CC661F009E3666 /* Fine.swift */,
+				B0D75C4F2557149500555B03 /* ReasonTemplate.swift */,
+				B020C7CB24B87653008940FE /* Club.swift */,
+				B0E2C19124CC6620009E3666 /* Reason.swift */,
 				B016578924C369850012B6AC /* Note.swift */,
 			);
 			path = ListTypes;
@@ -648,7 +687,7 @@
 			isa = PBXGroup;
 			children = (
 				B028FD962514EB91007DF006 /* Changer.swift */,
-				B028FD9D25150E90007DF006 /* Parameters.swift */,
+				B028FD9D25150E90007DF006 /* Parameters2.swift */,
 				B028FD9825150E49007DF006 /* ChangeableItems */,
 				B0DE1CBA24C44D61006CCFE9 /* LocalListChanger.swift */,
 			);
@@ -659,12 +698,16 @@
 			isa = PBXGroup;
 			children = (
 				B020C7D124BA2111008940FE /* ListTypes */,
-				B0C1C52124A7A021007B584B /* PersonName.swift */,
-				B020C7BD24AF1C31008940FE /* PersonLogin.swift */,
+				B0D75CDD2558208500555B03 /* Amount.swift */,
 				B020C7BB24AF1AE9008940FE /* ChangerClub.swift */,
-				B020C7C924B1168F008940FE /* RegisterPerson.swift */,
 				B042D43424BB1B040029F2D5 /* Euro.swift */,
+				B0D75C65255715C900555B03 /* FineReason.swift */,
 				B042D43A24BB27EF0029F2D5 /* FormattedDate.swift */,
+				B0D75C5F2557159900555B03 /* Importance.swift */,
+				B020C7C924B1168F008940FE /* RegisterPerson.swift */,
+				B0D75C592557157400555B03 /* Payed.swift */,
+				B020C7BD24AF1C31008940FE /* PersonLogin.swift */,
+				B0C1C52124A7A021007B584B /* PersonName.swift */,
 			);
 			path = AppTypes;
 			sourceTree = "<group>";
@@ -702,6 +745,7 @@
 				B0C5540625056A0F00BA3E26 /* ExecuteOnlyOnce.swift */,
 				B05C32E625388637004E9923 /* NecessaryObjects.swift */,
 				B05C3316253B6AEE004E9923 /* SignInCache.swift */,
+				B0D75CEF255820FC00555B03 /* ImageStorage.swift */,
 			);
 			path = Necessaries;
 			sourceTree = "<group>";
@@ -780,6 +824,41 @@
 			path = LoginView;
 			sourceTree = "<group>";
 		};
+		B0D75C6F2557166D00555B03 /* ListData */ = {
+			isa = PBXGroup;
+			children = (
+				B0D75C7A255716CD00555B03 /* DataTypeList.swift */,
+				B0D75C84255716FB00555B03 /* Fetcher.swift */,
+				B0D75C702557169000555B03 /* ListData.swift */,
+			);
+			path = ListData;
+			sourceTree = "<group>";
+		};
+		B0D75C9325581CB200555B03 /* FunctionCaller */ = {
+			isa = PBXGroup;
+			children = (
+				B0D75CA825581F8200555B03 /* CallableItems */,
+				B0D75C9C25581D9200555B03 /* Parameters.swift */,
+				B0D75CA225581E0900555B03 /* FunctionCaller.swift */,
+			);
+			path = FunctionCaller;
+			sourceTree = "<group>";
+		};
+		B0D75CA825581F8200555B03 /* CallableItems */ = {
+			isa = PBXGroup;
+			children = (
+				B0D75CA925581FA200555B03 /* FunctionCallable.swift */,
+				B0D75CD72558202000555B03 /* ChangeListCall.swift */,
+				B0D75CCB2558200900555B03 /* ClubIdentifierAlreadyExistsCall.swift */,
+				B0D75CBF25581FF400555B03 /* GetClubIdCall.swift */,
+				B0D75CC525581FFE00555B03 /* GetPersonPropertiesCall.swift */,
+				B0D75CB925581FE900555B03 /* NewClubCall.swift */,
+				B0D75CB325581FDC00555B03 /* RegisterPersonCall.swift */,
+				B0D75CD12558201400555B03 /* UserIdAlreadyExistsCall.swift */,
+			);
+			path = CallableItems;
+			sourceTree = "<group>";
+		};
 		B0E0F81A24A63E5800C82828 = {
 			isa = PBXGroup;
 			children = (
@@ -814,6 +893,8 @@
 				B020C7B524AE71EE008940FE /* Fetcher */,
 				B020C7B824AE743F008940FE /* FetchedData */,
 				B0B799CD24ACE9EF0027727E /* Changer */,
+				B0D75C6F2557166D00555B03 /* ListData */,
+				B0D75C9325581CB200555B03 /* FunctionCaller */,
 				B0B799D424AE6F990027727E /* AppTypes */,
 				B0C1C51624A78C56007B584B /* Utilities */,
 			);
@@ -1174,6 +1255,7 @@
 				B061754424CC658200382D9C /* WidgetUrls.swift in Sources */,
 				B0E6E87324CDD3ED00D467AC /* Outline.swift in Sources */,
 				B04B71F024CEDAAA0038B02F /* MediumWidgetNoConnection.swift in Sources */,
+				B0D75C8E2557179800555B03 /* Euro.swift in Sources */,
 				B04B71F524CF36AE0038B02F /* LargeWidgetSuccess.swift in Sources */,
 				B04B71F724CF36B90038B02F /* LargeWidgetNoConnection.swift in Sources */,
 				B0E2C1A124CC67F3009E3666 /* PersonName.swift in Sources */,
@@ -1185,7 +1267,6 @@
 				B04B71EB24CE18560038B02F /* TestContent.swift in Sources */,
 				B0E2C1AC24CC6C2D009E3666 /* WidgetListFetcher.swift in Sources */,
 				B0E2C1A424CC6828009E3666 /* WidgetReason.swift in Sources */,
-				B0E2C1A524CC6859009E3666 /* Euro.swift in Sources */,
 				B077B59A24CB0A7E003844CE /* Color.swift in Sources */,
 				B0E2C19D24CC66C2009E3666 /* WidgetListTypes.swift in Sources */,
 				B0E2C1B624CDB6AF009E3666 /* SmallWidgetNoPersonLoggedIn.swift in Sources */,
@@ -1210,6 +1291,7 @@
 				B0C1C51524A78BD7007B584B /* LoginEntryView.swift in Sources */,
 				B0E5C71024C377F70004E758 /* NoteAddNew.swift in Sources */,
 				B0C1C51924A78C90007B584B /* Color.swift in Sources */,
+				B0D75C5A2557157400555B03 /* Payed.swift in Sources */,
 				B0F881AC2506874C008304A8 /* SettingsForceSignOut.swift in Sources */,
 				B0619C0224C0C1E2008969A1 /* String.swift in Sources */,
 				B07938D824BF037900F86E86 /* PersonAddNew.swift in Sources */,
@@ -1229,21 +1311,26 @@
 				B0F3449F251E00EA002214DF /* DeleteClubChange.swift in Sources */,
 				B07938D624BEF4C300F86E86 /* PersonFineDetail.swift in Sources */,
 				B020C7C624B0C8BE008940FE /* ImageData.swift in Sources */,
+				B0D75CC625581FFE00555B03 /* GetPersonPropertiesCall.swift in Sources */,
 				B020C7C224B0B9D0008940FE /* PersonRowImage.swift in Sources */,
 				B0280AB424FFB9D30049202D /* LatePaymentInterestChangerView.swift in Sources */,
 				B042D43D24BB2BBD0029F2D5 /* Array.swift in Sources */,
 				B0E2C19424CC6620009E3666 /* Fine.swift in Sources */,
 				B042D44024BB5B420029F2D5 /* PersonList.swift in Sources */,
 				B0619C1824C23911008969A1 /* AddNewFineReason.swift in Sources */,
+				B0D75CF0255820FC00555B03 /* ImageStorage.swift in Sources */,
 				B0DE1CBD24C48FB3006CCFE9 /* NoteDetail.swift in Sources */,
+				B0D75C602557159900555B03 /* Importance.swift in Sources */,
 				B0E0F82724A63E5800C82828 /* StrafenApp.swift in Sources */,
 				B0E6E86F24CDD38500D467AC /* OutlineAndSheetBar.swift in Sources */,
 				B042D42E24BA21540029F2D5 /* ListTypes.swift in Sources */,
 				B020C7BC24AF1AE9008940FE /* ChangerClub.swift in Sources */,
 				B020C7CA24B1168F008940FE /* RegisterPerson.swift in Sources */,
 				B028FD9A25150E5E007DF006 /* ServerListChange.swift in Sources */,
+				B0D75CD82558202000555B03 /* ChangeListCall.swift in Sources */,
 				B0B81DC92502525500249447 /* Settings+LatePaymentInterest.swift in Sources */,
 				B0619C1424C21958008969A1 /* AddNewFine.swift in Sources */,
+				B0D75CD22558201400555B03 /* UserIdAlreadyExistsCall.swift in Sources */,
 				B0B4822024A8D46B00CB7A1A /* Header.swift in Sources */,
 				B042D44724BDAB280029F2D5 /* ActivityView.swift in Sources */,
 				B028FD9C25150E77007DF006 /* RegisterPersonChange.swift in Sources */,
@@ -1251,9 +1338,15 @@
 				B0E50C9F253DCC44008C7E84 /* SignInView.swift in Sources */,
 				B06FECFC2516587F00893DF9 /* PersonImageChange.swift in Sources */,
 				B0DE1CBB24C44D61006CCFE9 /* LocalListChanger.swift in Sources */,
+				B0D75C502557149500555B03 /* ReasonTemplate.swift in Sources */,
 				B05C3317253B6AEE004E9923 /* SignInCache.swift in Sources */,
+				B0D75C9D25581D9200555B03 /* Parameters.swift in Sources */,
+				B0D75CA325581E0900555B03 /* FunctionCaller.swift in Sources */,
+				B0D75CAA25581FA300555B03 /* FunctionCallable.swift in Sources */,
 				B06FECF4251642CD00893DF9 /* NewClubChange.swift in Sources */,
+				B0D75C7B255716CD00555B03 /* DataTypeList.swift in Sources */,
 				B06FECFA25164D8B00893DF9 /* SendCodeMailChange.swift in Sources */,
+				B0D75CC025581FF400555B03 /* GetClubIdCall.swift in Sources */,
 				B042D43524BB1B040029F2D5 /* Euro.swift in Sources */,
 				B04D4AA22546AFB900658924 /* SignInNameInput.swift in Sources */,
 				B0C1C51B24A78CC2007B584B /* Settings.swift in Sources */,
@@ -1271,6 +1364,7 @@
 				B0619C0D24C20C4B008969A1 /* ReasonList.swift in Sources */,
 				B04D4AA82546E89E00658924 /* SignInClubInput.swift in Sources */,
 				B0B81DC52502523100249447 /* Settings+Appereance.swift in Sources */,
+				B0D75C66255715C900555B03 /* FineReason.swift in Sources */,
 				B0C1C52524A8BC14007B584B /* RoundedCorners.swift in Sources */,
 				B05C331D253B6B0F004E9923 /* SignInCacheView.swift in Sources */,
 				B0C1C52724A8BEE6007B584B /* Other.swift in Sources */,
@@ -1278,23 +1372,29 @@
 				B0B81DC32502522600249447 /* Settings+Style.swift in Sources */,
 				B042D43B24BB27EF0029F2D5 /* FormattedDate.swift in Sources */,
 				B0619C1624C236C2008969A1 /* AddNewFinePerson.swift in Sources */,
+				B0D75C85255716FB00555B03 /* Fetcher.swift in Sources */,
 				B0619C0424C186FC008969A1 /* PersonFineTemplate.swift in Sources */,
 				B0B84C822544818C000B94BA /* SignInPersonSelection.swift in Sources */,
 				B0619C1124C21463008969A1 /* ReasonEditor.swift in Sources */,
 				B0C1C51D24A7910F007B584B /* AppUrls.swift in Sources */,
 				B020C7CC24B87653008940FE /* Club.swift in Sources */,
 				B042D44224BB61810029F2D5 /* SearchBar.swift in Sources */,
+				B0D75CCC2558200900555B03 /* ClubIdentifierAlreadyExistsCall.swift in Sources */,
 				B016578A24C369850012B6AC /* Note.swift in Sources */,
 				B05C3330253C3597004E9923 /* LoginView.swift in Sources */,
-				B020C7BA24AE744F008940FE /* ListData.swift in Sources */,
+				B0D75CB425581FDC00555B03 /* RegisterPersonCall.swift in Sources */,
+				B020C7BA24AE744F008940FE /* ListData2.swift in Sources */,
 				B020C7BE24AF1C31008940FE /* PersonLogin.swift in Sources */,
+				B0D75CBA25581FE900555B03 /* NewClubCall.swift in Sources */,
+				B0D75CDE2558208500555B03 /* Amount.swift in Sources */,
 				B026766D24BDD346005E79C1 /* AmountDisplay.swift in Sources */,
 				B042D43024BA42EB0029F2D5 /* TabBar.swift in Sources */,
 				B037BCEA25419CB4002B81E5 /* SignInEmailView.swift in Sources */,
 				B02019D424FE779000C660B9 /* SettingsFinesFormatterView.swift in Sources */,
-				B028FD9E25150E90007DF006 /* Parameters.swift in Sources */,
+				B028FD9E25150E90007DF006 /* Parameters2.swift in Sources */,
 				B06FECFE25165B8E00893DF9 /* ClubImageChange.swift in Sources */,
 				B06FECF6251644CA00893DF9 /* ForceSignOutChange.swift in Sources */,
+				B0D75C712557169000555B03 /* ListData.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

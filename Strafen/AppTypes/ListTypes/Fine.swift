@@ -366,3 +366,82 @@ extension Fine {
         return latePaymentInterest(with: interest)
     }
 }
+
+/// Contains all properties of a fine
+struct NewFine {
+    
+    /// Id
+    let id: UUID
+    
+    /// Id of the associated person
+    let assoiatedPersonId: UUID
+    
+    /// Date this fine was issued
+    let date: Date
+    
+    /// Is fine payed
+    var payed: Payed
+    
+    /// Number of fines
+    let number: Int
+    
+    /// Fine reason for reason / amount / importance or templateId
+    let fineReason: NewFineReason
+}
+
+// Extension of Fine to confirm to ListType
+extension NewFine: NewListType {
+    
+    /// Url for database refernce
+    static var url: URL {
+        guard let clubId = NewSettings.shared.properties.person?.clubProperties.id else {
+            fatalError("No person is logged in.")
+        }
+        return URL.fineList(with: clubId)
+    }
+    
+    /// Init with id and codable self
+    init(with id: UUID, codableSelf: CodableSelf) {
+        self.id = id
+        self.assoiatedPersonId = codableSelf.personId
+        self.date = codableSelf.date
+        self.payed = codableSelf.payed
+        self.number = codableSelf.number
+        self.fineReason = codableSelf.reason.fineReason
+    }
+    
+    /// Parameters for database change call
+    var callParameters: NewParameters {
+        NewParameters(fineReason.callParameters) { parameters in
+            parameters["itemId"] = id
+            parameters["personId"] = assoiatedPersonId
+            parameters["payed"] = payed
+            parameters["number"] = number
+            parameters["date"] = date
+            parameters["listType"] = "fine"
+        }
+    }
+}
+
+// Extension of Fine for CodableSelf
+extension NewFine {
+    
+    /// Fine to fetch from database
+    struct CodableSelf: Decodable {
+        
+        /// Id of the associated person
+        let personId: UUID
+        
+        /// Date this fine was issued
+        let date: Date
+        
+        /// Is fine payed
+        var payed: Payed
+        
+        /// Number of fines
+        let number: Int
+        
+        /// Fine reason for reason / amount / importance or templateId
+        let reason: NewCodableFineReason
+    }
+}

@@ -247,7 +247,7 @@ struct SignInEMailView: View {
         guard connectionState != .loading else { return }
         connectionState = .loading
         Logging.shared.log(with: .info, "Sign in with email is started to handle.")
-        Logging.shared.log(with: .default, "With properties: \(emailCredentials)")
+        Logging.shared.log(with: .info, "With properties: \(emailCredentials)")
         
         if emailCredentials.checkErrors() {
             connectionState = .failed
