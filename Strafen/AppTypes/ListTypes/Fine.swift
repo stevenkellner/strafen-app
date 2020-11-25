@@ -394,13 +394,13 @@ struct NewFine {
     }
     
     /// Complete amount of this fine
-    var completeAmount: Amount {
-        fineReason.amount * number + (latePaymentInterestAmount ?? .zero)
+    func completeAmount(with reasonList: [ReasonTemplate]?) -> Amount {
+        fineReason.amount(with: reasonList) * number + (latePaymentInterestAmount(with: reasonList) ?? .zero)
     }
     
     /// Color of amount text
-    var amountTextColor: Color {
-        isPayed ? Color.custom.lightGreen : fineReason.importance.color
+    func amountTextColor(with reasonList: [ReasonTemplate]?) -> Color {
+        isPayed ? Color.custom.lightGreen : fineReason.importance(with: reasonList).color
     }
 }
 
@@ -461,11 +461,11 @@ extension NewFine {
     }
 }
 
-/// Extension of Fine to calculate the late payment interest
+// Extension of Fine to calculate the late payment interest
 extension NewFine {
     
     /// Late payment interest
-    func latePaymentInterestAmount(with latePaymentInterest: Settings.LatePaymentInterest) -> Amount {
+    func latePaymentInterestAmount(with latePaymentInterest: Settings.LatePaymentInterest, reasonList: [ReasonTemplate]?) -> Amount {
         
         // Get start date
         let calender = Calendar.current
@@ -487,7 +487,7 @@ extension NewFine {
         let numberBetweenDates = latePaymentInterest.interestPeriod.unit.numberBetweenDates(start: startDate, end: endDate) / latePaymentInterest.interestPeriod.value
         
         // Original amount
-        let originalAmount = fineReason.amount * number
+        let originalAmount = fineReason.amount(with: reasonList) * number
         
         // Return late payment interest
         if latePaymentInterest.compoundInterest {
@@ -498,8 +498,8 @@ extension NewFine {
     }
     
     /// Late payment interest
-    var latePaymentInterestAmount: Amount? {
+    func latePaymentInterestAmount(with reasonList: [ReasonTemplate]?) -> Amount? {
         guard let interest = NewSettings.shared.properties.latePaymentInterest else { return nil }
-        return latePaymentInterestAmount(with: interest)
+        return latePaymentInterestAmount(with: interest, reasonList: reasonList)
     }
 }

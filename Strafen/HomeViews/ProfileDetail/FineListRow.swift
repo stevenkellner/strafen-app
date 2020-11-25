@@ -32,6 +32,9 @@ struct FineListRow: View {
     /// Namespace for matched geometry effect
     @Namespace var namespace
     
+    /// Reason List Data
+    @ObservedObject var reasonListData = NewListData.reason
+    
     /// Indicates if navigation link is active
     @State var isNavigationLinkActive = false
     
@@ -40,7 +43,7 @@ struct FineListRow: View {
             
             // Navigation Link
             EmptyNavigationLink(isActive: $isNavigationLinkActive) {
-                Text(fine.fineReason.reason) // TODO
+                Text(fine.fineReason.reason(with: reasonListData.list)) // TODO
             }
             
             if selectedForLargeDesign == fine.id {
@@ -71,6 +74,9 @@ struct FineListRow: View {
         /// Fine
         let fine: NewFine
         
+        /// Reason List Data
+        @ObservedObject var reasonListData = NewListData.reason
+        
         /// Namespace for matched geometry effect
         let namespace: Namespace.ID
         
@@ -86,11 +92,11 @@ struct FineListRow: View {
                         
                         // Outline
                         Outline(.left)
-                            .fillColor(fine.amountTextColor)
+                            .fillColor(fine.amountTextColor(with: reasonListData.list))
                         
                         // Inside
-                        Text(describing: fine.completeAmount)
-                            .foregroundColor(plain: fine.amountTextColor)
+                        Text(describing: fine.completeAmount(with: reasonListData.list))
+                            .foregroundColor(plain: fine.amountTextColor(with: reasonListData.list))
                             .font(.text(20))
                             .lineLimit(1)
                             .matchedGeometryEffect(id: "firstOutline", in: namespace)
@@ -107,7 +113,7 @@ struct FineListRow: View {
                         HStack(spacing: 0) {
                             
                             // Text
-                            Text(fine.fineReason.reason)
+                            Text(fine.fineReason.reason(with: reasonListData.list))
                                 .configurate(size: 20)
                                 .padding(.leading, 10)
                                 .lineLimit(1)
@@ -140,6 +146,9 @@ struct FineListRow: View {
         /// Fine
         let fine: NewFine
         
+        /// Reason List Data
+        @ObservedObject var reasonListData = NewListData.reason
+        
         /// Namespace for matched geometry effect
         let namespace: Namespace.ID
         
@@ -158,16 +167,16 @@ struct FineListRow: View {
                             
                             // Outline
                             Outline(.topLeft)
-                                .fillColor(fine.amountTextColor)
+                                .fillColor(fine.amountTextColor(with: reasonListData.list))
                             
                             // Amount
-                            Text(describing: fine.completeAmount)
-                                .foregroundColor(plain: fine.amountTextColor)
+                            Text(describing: fine.completeAmount(with: reasonListData.list))
+                                .foregroundColor(plain: fine.amountTextColor(with: reasonListData.list))
                                 .font(.text(20))
                                 .lineLimit(1)
                                 .matchedGeometryEffect(id: "firstOutline", in: namespace)
                             
-                        }.frame(width: geometry.size.width * 0.5)
+                        }.frame(width: geometry.size.width * 0.382)
                         
                         // Right of the divider
                         ZStack {
@@ -180,7 +189,7 @@ struct FineListRow: View {
                                 .configurate(size: 20)
                                 .lineLimit(1)
                             
-                        }.frame(width: geometry.size.width * 0.5)
+                        }.frame(width: geometry.size.width * 0.618)
                         
                     }.frame(height: geometry.size.height * 0.5)
                     
@@ -194,7 +203,7 @@ struct FineListRow: View {
                         HStack(spacing: 0) {
                             
                             // Text
-                            Text(fine.fineReason.reason)
+                            Text(fine.fineReason.reason(with: reasonListData.list))
                                 .configurate(size: 20)
                                 .padding(.leading, 15)
                                 .lineLimit(1)

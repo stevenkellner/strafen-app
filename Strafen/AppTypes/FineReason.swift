@@ -11,19 +11,13 @@ import Foundation
 protocol NewFineReason {
     
     /// Reason
-    ///
-    /// Use it only when reason list is fetched
-    var reason: String { get }
+    func reason(with reasonList: [ReasonTemplate]?) -> String
     
     /// Amount
-    ///
-    /// Use it only when reason list is fetched
-    var amount: Amount { get }
+    func amount(with reasonList: [ReasonTemplate]?) -> Amount
     
     /// Importance
-    ///
-    /// Use it only when reason list is fetched
-    var importance: Importance { get }
+    func importance(with reasonList: [ReasonTemplate]?) -> Importance
     
     /// Parameters for database change call
     var callParameters: NewParameters { get }
@@ -41,6 +35,15 @@ struct NewFineReasonCustom: NewFineReason, Equatable {
     /// Importance
     let importance: Importance
     
+    /// Reason
+    func reason(with reasonList: [ReasonTemplate]?) -> String { reason }
+    
+    /// Amount
+    func amount(with reasonList: [ReasonTemplate]?) -> Amount { amount }
+    
+    /// Importance
+    func importance(with reasonList: [ReasonTemplate]?) -> Importance { importance }
+    
     /// Parameters for database change call
     var callParameters: NewParameters {
         NewParameters { parameters in
@@ -57,30 +60,19 @@ struct NewFineReasonTemplate: NewFineReason, Equatable {
     /// Template id
     let templateId: UUID
     
-    /// Reason template
-    var reasonTemplate: ReasonTemplate? {
-        NewListData.reason.list?.first(where: { $0.id == templateId })
-    }
-    
     /// Reason
-    ///
-    /// Use it only when reason list is fetched
-    var reason: String {
-        reasonTemplate?.reason ?? ""
+    func reason(with reasonList: [ReasonTemplate]?) -> String {
+        reasonList?.first(where: { $0.id == templateId })?.reason ?? ""
     }
     
     /// Amount
-    ///
-    /// Use it only when reason list is fetched
-    var amount: Amount {
-        reasonTemplate?.amount ?? .zero
+    func amount(with reasonList: [ReasonTemplate]?) -> Amount {
+        reasonList?.first(where: { $0.id == templateId })?.amount ?? .zero
     }
     
     /// Importance
-    ///
-    /// Use it only whenreason list is fetched
-    var importance: Importance {
-        reasonTemplate?.importance ?? .low
+    func importance(with reasonList: [ReasonTemplate]?) -> Importance {
+        reasonList?.first(where: { $0.id == templateId })?.importance ?? .low
     }
     
     /// Parameters for database change call

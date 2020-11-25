@@ -65,12 +65,16 @@ extension Array where Element == NewFine {
         /// Fine list
         private let fineList: [NewFine]
         
+        /// Reason list
+        private let reasonList: [ReasonTemplate]?
+        
         /// Person id
         private let personId: UUID
         
-        init(of personId: UUID, fineList: [NewFine]) {
+        init(of personId: UUID, fineList: [NewFine], reasonList: [ReasonTemplate]?) {
             self.personId = personId
             self.fineList = fineList
+            self.reasonList = reasonList
         }
         
         /// Payed amount sum of the person
@@ -78,7 +82,7 @@ extension Array where Element == NewFine {
             fineList.filter {
                 $0.assoiatedPersonId == personId && $0.isPayed
             }.reduce(into: .zero) { result, fine in
-                result += fine.completeAmount
+                result += fine.completeAmount(with: reasonList)
             }
         }
         
@@ -87,25 +91,25 @@ extension Array where Element == NewFine {
             fineList.filter {
                 $0.assoiatedPersonId == personId && !$0.isPayed
             }.reduce(into: .zero) { result, fine in
-                result += fine.completeAmount
+                result += fine.completeAmount(with: reasonList)
             }
         }
         
         /// Medium amount sum of the person
         var medium: Amount {
             fineList.filter {
-                $0.assoiatedPersonId == personId && !$0.isPayed && ($0.fineReason.importance == .high || $0.fineReason.importance == .medium)
+                $0.assoiatedPersonId == personId && !$0.isPayed && ($0.fineReason.importance(with: reasonList) == .high || $0.fineReason.importance(with: reasonList) == .medium)
             }.reduce(into: .zero) { result, fine in
-                result += fine.completeAmount
+                result += fine.completeAmount(with: reasonList)
             }
         }
         
         /// High amount sum of the person
         var high: Amount {
             fineList.filter {
-                $0.assoiatedPersonId == personId && !$0.isPayed && $0.fineReason.importance == .high
+                $0.assoiatedPersonId == personId && !$0.isPayed && $0.fineReason.importance(with: reasonList) == .high
             }.reduce(into: .zero) { result, fine in
-                result += fine.completeAmount
+                result += fine.completeAmount(with: reasonList)
             }
         }
         
@@ -114,14 +118,14 @@ extension Array where Element == NewFine {
             fineList.filter {
                 $0.assoiatedPersonId == personId
             }.reduce(into: .zero) { result, fine in
-                result += fine.completeAmount
+                result += fine.completeAmount(with: reasonList)
             }
         }
     }
     
     /// Sum of amount of a fine list
-    func amountSum(of personId: UUID) -> AmountSum {
-        AmountSum(of: personId, fineList: self)
+    func amountSum(of personId: UUID, with reasonList: [ReasonTemplate]?) -> AmountSum {
+        AmountSum(of: personId, fineList: self, reasonList: reasonList)
     }
 }
 
@@ -149,7 +153,7 @@ extension Array {
         }
     }
     
-    func sorted<T>(by sortValue: (Element) throws -> T, order: Order = .ascending) rethrows -> [Element] where T: Comparable {
+    func sorted<T>(byValue sortValue: (Element) throws -> T, order: Order = .ascending) rethrows -> [Element] where T: Comparable {
         try sorted { firstElement, secondElement in
             switch order {
             case .ascending:

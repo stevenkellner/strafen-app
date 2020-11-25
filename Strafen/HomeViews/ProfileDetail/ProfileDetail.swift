@@ -22,6 +22,9 @@ struct ProfileDetail: View {
     /// Fine List Data
     @ObservedObject var fineListData = NewListData.fine
     
+    /// Reason List Data
+    @ObservedObject var reasonListData = NewListData.reason
+    
     /// Id of selected row for large design
     @State var selectedForLargeDesign: UUID? = nil
     
@@ -105,7 +108,7 @@ struct ProfileDetail: View {
                         // Fine list
                         ScrollView {
                             LazyVStack(spacing: 15) {
-                                ForEach(fineList.sortedForList(of: personId)) { fine in
+                                ForEach(fineList.sortedForList(of: personId, with: reasonListData.list)) { fine in
                                     FineListRow(of: fine, selectedForLargeDesign: $selectedForLargeDesign, withOpenUrl: true, dismissHandler: $dismissHandler)
                                 }
                             }.padding(.bottom, 20)
@@ -243,9 +246,9 @@ struct ProfileDetail: View {
             }
             
             /// Amount sum
-            func amountSum(with fineList: [NewFine]?) -> Amount? {
+            func amountSum(with fineList: [NewFine]?, reasonList: [ReasonTemplate]?) -> Amount? {
                 guard let personId = NewSettings.shared.properties.person?.id else { return nil }
-                guard let amountSum = fineList?.amountSum(of: personId) else { return nil }
+                guard let amountSum = fineList?.amountSum(of: personId, with: reasonList) else { return nil }
                 switch self {
                 case .payed:
                     return amountSum.payed
@@ -262,6 +265,9 @@ struct ProfileDetail: View {
         
         /// Fine List Data
         @ObservedObject var fineListData = NewListData.fine
+        
+        /// Reason List Data
+        @ObservedObject var reasonListData = NewListData.reason
         
         var body: some View {
             HStack(spacing: 0) {
@@ -288,7 +294,7 @@ struct ProfileDetail: View {
                         .fillColor(displayType.color)
                     
                     // Amount
-                    Text(describing: displayType.amountSum(with: fineListData.list) ?? .zero)
+                    Text(describing: displayType.amountSum(with: fineListData.list, reasonList: reasonListData.list) ?? .zero)
                         .foregroundColor(plain: displayType.color)
                         .font(.text(16))
                         .lineLimit(1)
@@ -304,9 +310,11 @@ struct ProfileDetail: View {
 extension Array where Element == NewFine {
     
     /// Filtered and sorted for profile detail fine list
-    fileprivate func sortedForList(of personId: UUID) -> [Element] {
+    fileprivate func sortedForList(of personId: UUID, with reasonList: [ReasonTemplate]?) -> [Element] {
         filter {
             $0.assoiatedPersonId == personId
-        }.sorted(by: \.fineReason.reason.localizedUppercase)
+        }.sorted(byValue: { fine in
+            fine.fineReason.reason(with: reasonList).localizedUppercase
+        })
     }
 }
