@@ -8,6 +8,7 @@
 import SwiftUI
 
 /// Used to fetch Images from server
+@available(*, deprecated, message: "Use Image Storage instead.")
 class ImageData: ObservableObject {
     
     /// Shared instance for singelton

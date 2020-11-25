@@ -9,6 +9,7 @@ import SwiftUI
 import WidgetKit
 
 /// Contains all settings of the app of this device
+@available(*, deprecated, message: "Use Settings instead.")
 class Settings: ObservableObject { // TODO remove
     
     /// Deafulf setting for first apply
@@ -75,7 +76,7 @@ class NewSettings: ObservableObject {
     
     /// Shared instance for singelton
     static let shared = NewSettings()
-    
+
     /// Private init for singleton
     private init() {
         if let propertiesData = FileManager.default.contents(atPath: Self.settingsUrl.path) {
@@ -115,6 +116,19 @@ class NewSettings: ObservableObject {
         FileManager.default.sharedContainerUrl
             .appendingPathComponent("settings_v2")
             .appendingPathExtension("json")
+    }
+    
+    /// Used only in swiftui preview to select active settings
+    @available(*, deprecated, message: "only use it in previews.")
+    static func forPreview(appereance: Settings.Appearance? = nil, style: Settings.Style? = nil) -> NewSettings {
+        let settings = NewSettings()
+        if let appereance = appereance {
+            settings.properties.appearance = appereance
+        }
+        if let style = style {
+            settings.properties.style = style
+        }
+        return settings
     }
 }
 

@@ -64,13 +64,26 @@ struct LoginEntryView: View {
 
 // TODO remove function
 func changeAppereanceStyle() {
-    let appStyle: [(Settings.Appearance, Settings.Style)] = [
-        (.light, .default), (.dark, .default), (.dark, .plain), (.light, .plain)
-    ]
-    for (index, (appereance, style)) in appStyle.enumerated() {
+    let appearances: [Settings.Appearance] = [.dark, .light]
+    let styles: [Settings.Style] = [.default, .plain]
+    let isCashiers: [Bool] = [false, true]
+    let appStyle = appearances.permutate(with: styles, permutate: {($0, $1)}).permutate(with: isCashiers, permutate: {($0.0, $0.1, $1)})
+    
+    for (index, (appereance, style, isCashier)) in appStyle.enumerated() {
         DispatchQueue.main.asyncAfter(deadline: .now() + Double(index * 2)) {
-            Settings.shared.appearance = appereance
-            Settings.shared.style = style
+            NewSettings.shared.properties.person?.isCashier = isCashier
+            NewSettings.shared.properties.appearance = appereance
+            NewSettings.shared.properties.style = style
+        }
+    }
+}
+
+extension Array {
+    func permutate<OtherElement, Result>(with otherArray: [OtherElement], permutate: (Element, OtherElement) -> Result) -> [Result] {
+        reduce(into: [Result]()) { result, element in
+            result.append(contentsOf: otherArray.reduce(into: [Result](), { result, otherElement in
+                result.append(permutate(element, otherElement))
+            }))
         }
     }
 }

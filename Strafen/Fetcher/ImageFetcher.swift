@@ -8,6 +8,7 @@
 import SwiftUI
 
 /// Fetches an image from server
+@available(*, deprecated, message: "Use Image Storage instead.")
 struct ImageFetcher {
     
     /// Shared instance for singelton

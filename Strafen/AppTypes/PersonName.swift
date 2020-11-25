@@ -16,6 +16,9 @@ struct PersonName: Codable {
     /// Last name of a person
     let lastName: String
     
+    /// Unknown person name
+    static let unknown = PersonName(firstName: "Unknown", lastName: "Person")
+    
     /// POST parameters
     var parameters: [String : Any] {
         [
@@ -24,7 +27,7 @@ struct PersonName: Codable {
         ]
     }
     
-    /// formatted
+    /// Formatted
     var formatted: String {
         var componets = PersonNameComponents()
         componets.givenName = firstName

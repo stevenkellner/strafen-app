@@ -25,9 +25,6 @@ class HomeTabs: ObservableObject {
         /// Add new fine
         case addNewFine
         
-        /// Notes
-        case notes
-        
         /// Settings
         case settings
         
@@ -42,8 +39,6 @@ class HomeTabs: ObservableObject {
                 return "list.dash"
             case .addNewFine:
                 return "plus"
-            case .notes:
-                return "note.text"
             case .settings:
                 return "gear"
             }
@@ -60,8 +55,6 @@ class HomeTabs: ObservableObject {
                 return "Strafenkatalog"
             case .addNewFine:
                 return "Strafe"
-            case .notes:
-                return "Notizen"
             case .settings:
                 return "Einstellungen"
             }
@@ -76,4 +69,12 @@ class HomeTabs: ObservableObject {
     
     /// Active home tabs
     @Published var active: Tabs = .profileDetail
+    
+    /// Used only in swiftui preview to select active home tab
+    @available(*, deprecated, message: "only use it in previews.")
+    static func forPreview(_ active: Tabs) -> HomeTabs {
+        let homeTabs = HomeTabs()
+        homeTabs.active = active
+        return homeTabs
+    }
 }

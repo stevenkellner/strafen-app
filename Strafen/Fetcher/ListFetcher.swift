@@ -8,6 +8,7 @@
 import Foundation
 
 /// Fetches list of app types from server
+@available(*, deprecated, message: "Use Fetcher instead.")
 struct ListFetcher {
     
     /// Shared instance for singelton

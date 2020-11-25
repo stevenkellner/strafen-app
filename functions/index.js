@@ -429,6 +429,8 @@ exports.getPersonProperties = functions.region('europe-west1').https.onCall(asyn
                 if (userId == data.userId) {
                     let isCashier = person.child('signInData').child('cashier').val();
                     let signInDate = person.child('signInData').child('signInDate').val();
+                    let firstName = person.child('name').child('first').val();
+                    let lastName = person.child('name').child('last').val();
                     let clubName = club.child('name').val();
                     let clubIdentifier = club.child('identifier').val();
                     let regionCode = club.child('regionCode').val();
@@ -441,7 +443,11 @@ exports.getPersonProperties = functions.region('europe-west1').https.onCall(asyn
                         },
                         id: person.key,
                         signInDate: signInDate,
-                        isCashier: isCashier                          
+                        isCashier: isCashier,
+                        name: {
+                            firstName: firstName,
+                            lastName: lastName
+                        }                          
                     }
                 }
             });

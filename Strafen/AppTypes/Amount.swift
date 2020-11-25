@@ -5,7 +5,7 @@
 //  Created by Steven on 11/8/20.
 //
 
-import Foundation
+import SwiftUI
 
 /// Stores an amount
 struct Amount {
@@ -21,6 +21,11 @@ struct Amount {
         self.value = value
         self.subUnitValue = subUnit
     }
+    
+    /// Double value
+    var doubleValue: Double {
+        Double(value) + Double(subUnitValue) / 100
+    }
 }
 
 // Extension of Amount to confirm to CustomStringConvertible
@@ -28,7 +33,6 @@ extension Amount: CustomStringConvertible {
     
     /// Description
     var description: String {
-        let doubleValue = Double(value) + Double(subUnitValue) / 100
         let numberFormatter = NumberFormatter()
         numberFormatter.locale = Locale(identifier: "de_DE") // TODO
         numberFormatter.numberStyle = .currency
@@ -41,7 +45,6 @@ extension Amount: CustomDebugStringConvertible {
     
     /// Debug description
     var debugDescription: String {
-        let doubleValue = Double(value) + Double(subUnitValue) / 100
         let numberFormatter = NumberFormatter()
         numberFormatter.locale = Locale.current
         numberFormatter.numberStyle = .currency
@@ -51,7 +54,6 @@ extension Amount: CustomDebugStringConvertible {
 
 // Extension of Amount to confirm to AdditiveArithmetic
 extension Amount: AdditiveArithmetic {
-    
     static var zero: Amount {
         Amount(.zero, subUnit: .zero)
     }
@@ -69,6 +71,45 @@ extension Amount: AdditiveArithmetic {
         let subUnitValue = (newSubUnitValue + 100) % 100
         guard value >= 0 else { return .zero }
         return Amount(value, subUnit: subUnitValue)
+    }
+}
+
+// Extension of Amount to confirm to VectorArithmetic
+extension Amount: VectorArithmetic {
+    
+    /// Multiplies each component of this value by the given value.
+    mutating func scale(by rhs: Double) {
+        self *= rhs
+    }
+
+    /// Returns the dot-product of this vector arithmetic instance with itself.
+    var magnitudeSquared: Double {
+        doubleValue.magnitudeSquared
+}
+}
+// Extension of Amount to multiply with an Int
+extension Amount {
+    static func *(amount: Amount, multiplier: Int) -> Amount {
+        let multiplier = abs(multiplier)
+        let value = amount.value * multiplier + (amount.subUnitValue * multiplier) / 100
+        let subUnitValue = (amount.subUnitValue * multiplier) % 100
+        return Amount(value, subUnit: subUnitValue)
+    }
+    
+    static func *(amount: Amount, multiplier: Double) -> Amount {
+        let multiplier = abs(multiplier)
+        let doubleValue = amount.doubleValue * multiplier
+        let value = Int(doubleValue)
+        let subUnitValue = Int(doubleValue * 100) - value * 100
+        return Amount(value, subUnit: subUnitValue)
+    }
+    
+    static func *= (amount: inout Amount, multiplier: Int) {
+        amount = amount * multiplier
+    }
+    
+    static func *= (amount: inout Amount, multiplier: Double) {
+        amount = amount * multiplier
     }
 }
 
@@ -93,6 +134,13 @@ extension Amount: Comparable {
 
 // Extension of Amount to confirm to Decodable
 extension Amount: Decodable {
+    
+    init(doubleValue: Double) {
+        let doubleValue = abs(doubleValue)
+        self.value = Int(doubleValue)
+        self.subUnitValue = Int(doubleValue * 100) - value * 100
+    }
+    
     init(from decoder: Decoder) throws {
         let container = try decoder.singleValueContainer()
         let rawAmount = try container.decode(Double.self)
@@ -102,8 +150,7 @@ extension Amount: Decodable {
             throw DecodingError.dataCorruptedError(in: container, debugDescription: "Amount is negative.")
         }
         
-        self.value = Int(rawAmount)
-        self.subUnitValue = Int(rawAmount * 100) - value * 100
+        self.init(doubleValue: rawAmount)
     }
 }
 
@@ -111,7 +158,6 @@ extension Amount: Decodable {
 extension Amount: Encodable {
     func encode(to encoder: Encoder) throws {
         var container = encoder.singleValueContainer()
-        let doubleValue = Double(value) + Double(subUnitValue) / 100
         try container.encode(doubleValue)
     }
 }
@@ -119,13 +165,18 @@ extension Amount: Encodable {
 // Extension of Amount to confirm to ParameterableObject
 extension Amount: ParameterableObject {
     
-    /// Double value
-    var doubleValue: Double {
-        Double(value) + Double(subUnitValue) / 100
-    }
-    
     // Object call with Firebase function as Parameter
     var parameterableObject: _ParameterableObject {
         doubleValue
+    }
+}
+
+// Extension of Amount to confirm to Animatable
+extension Amount: Animatable {
+    
+    /// The data to animate.
+    var animatableData: Double {
+        get { doubleValue }
+        set { self = .init(doubleValue: newValue) }
     }
 }

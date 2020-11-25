@@ -8,6 +8,7 @@
 import Foundation
 
 /// Changer
+@available(*, deprecated, message: "Use FunctionCaller instead.")
 struct Changer {
     
     /// Shared instance for singelton

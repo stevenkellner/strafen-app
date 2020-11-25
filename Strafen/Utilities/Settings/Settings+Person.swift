@@ -56,10 +56,13 @@ extension NewSettings {
         /// Id of the person
         let id: UUID
         
+        /// Name of the person
+        let name: PersonName
+        
         /// Sign in date
         let signInDate: Date
         
         /// Indicates whether the signed-in person is the club's cashier
-        let isCashier: Bool
+        var isCashier: Bool
     }
 }

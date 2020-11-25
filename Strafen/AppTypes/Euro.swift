@@ -31,6 +31,7 @@ extension UIntMax99: ExpressibleByIntegerLiteral {
 }
 
 /// Stores an amount in euro
+@available(*, deprecated, message: "Use Amount instead.")
 struct Euro {
     
     /// Euro value

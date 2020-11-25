@@ -387,6 +387,21 @@ struct NewFine {
     
     /// Fine reason for reason / amount / importance or templateId
     let fineReason: NewFineReason
+    
+    /// Indicates if fine is payed
+    var isPayed: Bool {
+        payed != .unpayed
+    }
+    
+    /// Complete amount of this fine
+    var completeAmount: Amount {
+        fineReason.amount * number + (latePaymentInterestAmount ?? .zero)
+    }
+    
+    /// Color of amount text
+    var amountTextColor: Color {
+        isPayed ? Color.custom.lightGreen : fineReason.importance.color
+    }
 }
 
 // Extension of Fine to confirm to ListType
@@ -443,5 +458,48 @@ extension NewFine {
         
         /// Fine reason for reason / amount / importance or templateId
         let reason: NewCodableFineReason
+    }
+}
+
+/// Extension of Fine to calculate the late payment interest
+extension NewFine {
+    
+    /// Late payment interest
+    func latePaymentInterestAmount(with latePaymentInterest: Settings.LatePaymentInterest) -> Amount {
+        
+        // Get start date
+        let calender = Calendar.current
+        var startDate = calender.startOfDay(for: date)
+        startDate = calender.date(byAdding: latePaymentInterest.interestFreePeriod.unit.dateComponentFlag, value: latePaymentInterest.interestFreePeriod.value, to: startDate) ?? startDate
+        
+        // Get end date
+        var endDate = Date()
+        if case .payed(date: let paymentDate) = payed {
+            endDate = paymentDate
+        }
+        
+        // Return .zero if start date is greater than the end date
+        guard startDate <= endDate else {
+            return .zero
+        }
+        
+        // Get number of components between start and end date
+        let numberBetweenDates = latePaymentInterest.interestPeriod.unit.numberBetweenDates(start: startDate, end: endDate) / latePaymentInterest.interestPeriod.value
+        
+        // Original amount
+        let originalAmount = fineReason.amount * number
+        
+        // Return late payment interest
+        if latePaymentInterest.compoundInterest {
+            return originalAmount * (pow(1 + latePaymentInterest.interestRate / 100, Double(numberBetweenDates)) - 1)
+        } else {
+            return originalAmount * (latePaymentInterest.interestRate / 100 * Double(numberBetweenDates))
+        }
+    }
+    
+    /// Late payment interest
+    var latePaymentInterestAmount: Amount? {
+        guard let interest = NewSettings.shared.properties.latePaymentInterest else { return nil }
+        return latePaymentInterestAmount(with: interest)
     }
 }

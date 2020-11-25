@@ -19,6 +19,8 @@ struct ContentView: View {
     
     @ObservedObject var fineDataList = NewListData.fine
     
+    @State var amount = Amount(10, subUnit: 50)
+    
     var body: some View {
         ZStack {
             
@@ -38,16 +40,10 @@ struct ContentView: View {
             if settings.properties.person != nil && Auth.auth().currentUser != nil {
                 
                 // Home Tabs View and Tab Bar
-                // TODO ContentHomeView()
-                ScrollView {
-                    if let list = fineDataList.list {
-                        ForEach(list) { fine in
-                            Text(fine.date.description)
-                        }
+                ContentHomeView()
+                    .onAppear {
+                        NewListData.shared.setup()
                     }
-                }.onAppear {
-                    NewListData.shared.setup()
-                }
                 
             } else {
                 
@@ -110,14 +106,12 @@ struct ContentView: View {
                     TabBar(dismissHandler: $dismissHandler)
                         .edgesIgnoringSafeArea([.horizontal, .top])
                     
-                }.frame(size: screenSize ?? geometry.size)
-                    .onAppear {
-                        screenSize = geometry.size
-                    }
+                }.screenSize($screenSize, geometry: geometry)
             }.frame(maxWidth: .infinity, maxHeight: .infinity)
                 .onOpenURL { url in
                     homeTabs.active = url.pathComponents.first == "profileDetail" ? .profileDetail : homeTabs.active
                 }
+                .onAppear(perform: changeAppereanceStyle)
         }
     }
 }

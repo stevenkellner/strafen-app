@@ -14,7 +14,7 @@ struct TabBar: View {
     @Environment(\.colorScheme) var colorScheme
     
     /// Observed Object that contains all settings of the app of this device
-    @ObservedObject var settings = Settings.shared
+    @ObservedObject var settings = NewSettings.shared
     
     /// Active home tab
     @ObservedObject var homeTabs = HomeTabs.shared
@@ -25,7 +25,7 @@ struct TabBar: View {
     var body: some View {
         ZStack {
             
-            if settings.style == .plain {
+            if settings.properties.style == .plain {
                 if colorScheme == .light {
                     Color.plain.lightLightGray
                         .frame(height: 65)
@@ -42,7 +42,7 @@ struct TabBar: View {
             }
             
             // Outline in default style
-            if settings.style == .default {
+            if settings.properties.style == .default {
                 GeometryReader { geometry in
                     Path { path in
                         path.move(to: CGPoint(x: 0, y: 72))
@@ -60,7 +60,7 @@ struct TabBar: View {
                 VStack(spacing: 0) {
                     
                     // Outline in plain style
-                    if settings.style == .plain {
+                    if settings.properties.style == .plain {
                         Rectangle()
                             .frame(width: geometry.size.width, height: 1)
                             .border(Color.plain.strokeColor(colorScheme), width: 0.5)
@@ -75,7 +75,7 @@ struct TabBar: View {
                         }
                         
                         // Left Divider
-                        if settings.style == .default {
+                        if settings.properties.style == .default {
                             Rectangle()
                                 .frame(width: 2, height: geometry.size.height * 3 / 4)
                                 .border(Color.custom.darkGreen, width: 1)
@@ -87,7 +87,7 @@ struct TabBar: View {
                         }
                         
                         // Middle Divider
-                        if settings.style == .default {
+                        if settings.properties.style == .default {
                             Rectangle()
                                 .frame(width: 2, height: geometry.size.height * 3 / 4)
                                 .border(Color.custom.darkGreen, width: 1)
@@ -96,10 +96,10 @@ struct TabBar: View {
                         // Reason Button
                         ButtonContent(tab: .reasonList, size: geometry.size, tabHandler: nil)
                     
-                        if settings.person?.isCashier ?? false {
+                        if settings.properties.person?.isCashier ?? false {
                             
                             // Add New Fine Button
-                            if settings.style == .default {
+                            if settings.properties.style == .default {
                                 ZStack {
                                     Circle()
                                         .overlay(
@@ -115,19 +115,12 @@ struct TabBar: View {
                                     .onTapGesture {
                                         homeTabs.active = .addNewFine
                                     }
-                            } else if settings.style == .plain {
+                            } else if settings.properties.style == .plain {
                                 ButtonContent(tab: .addNewFine, size: geometry.size, tabHandler: nil)
                             }
                             
-                            // Notes Button
-                            ButtonContent(tab: .notes, size: geometry.size) {
-                                if let dismissHandler = dismissHandler { dismissHandler() }
-                            }
-                            
-                        }
-                        
                         // Right Divider
-                        if settings.style == .default {
+                        } else if settings.properties.style == .default {
                             Rectangle()
                                 .frame(width: 2, height: geometry.size.height * 3 / 4)
                                 .border(Color.custom.darkGreen, width: 1)
@@ -142,7 +135,7 @@ struct TabBar: View {
                     
                 }
             }.frame(height: 65)
-        }.background(settings.style == .plain ? colorScheme == .light ? Color.plain.lightLightGray : Color.plain.darkDarkGray : colorScheme.backgroundColor)
+        }.background(settings.properties.style == .plain ? colorScheme == .light ? Color.plain.lightLightGray : Color.plain.darkDarkGray : colorScheme.backgroundColor)
     }
     
     /// Content of TabBar Button
@@ -158,7 +151,7 @@ struct TabBar: View {
         @ObservedObject var homeTabs = HomeTabs.shared
         
         /// Observed Object that contains all settings of the app of this device
-        @ObservedObject var settings = Settings.shared
+        @ObservedObject var settings = NewSettings.shared
         
         /// Handles the tab
         let tabHandler: (() -> ())?
@@ -184,44 +177,23 @@ struct TabBar: View {
                         .padding(.top, 8)
                         .padding(.horizontal, 2)
                     
-                }.frame(width: settings.person?.isCashier ?? false ? size.width / 6 : size.width / 4, height: size.height)
+                }.frame(width: settings.properties.person?.isCashier ?? false ? size.width / 5 : size.width / 4, height: size.height)
             }.buttonStyle(PlainButtonStyle())
         }
     }
 }
 
-#if DEBUG
+/*#if DEBUG
 struct TabBar_Previews: PreviewProvider {
     static var previews: some View {
         
-        let phoneType = "iPhone 11"
-        let colorScheme: ColorScheme = .light
+        let phoneType = "iPhone 12"
+        let colorScheme: ColorScheme = .dark
         
         return Group {
             VStack {
                 Spacer()
-                // TabBar(settings: .constant(Settings(style: .default, isCashier: false)), activeHomeTab: .constant(.profileDetail), dismissHandler: .constant(nil))
-            }.previewDevice(.init(rawValue: phoneType))
-                .previewDisplayName(phoneType)
-                .edgesIgnoringSafeArea(.all)
-                .environment(\.colorScheme, colorScheme)
-            VStack {
-                Spacer()
-                // TabBar(settings: .constant(Settings(style: .default, isCashier: true)), activeHomeTab: .constant(.profileDetail), dismissHandler: .constant(nil))
-            }.previewDevice(.init(rawValue: phoneType))
-                .previewDisplayName(phoneType)
-                .edgesIgnoringSafeArea(.all)
-                .environment(\.colorScheme, colorScheme)
-            VStack {
-                Spacer()
-                // TabBar(settings: .constant(Settings(style: .plain, isCashier: false)), activeHomeTab: .constant(.profileDetail), dismissHandler: .constant(nil))
-            }.previewDevice(.init(rawValue: phoneType))
-                .previewDisplayName(phoneType)
-                .edgesIgnoringSafeArea(.all)
-                .environment(\.colorScheme, colorScheme)
-            VStack {
-                Spacer()
-                // TabBar(settings: .constant(Settings(style: .plain, isCashier: true)), activeHomeTab: .constant(.profileDetail), dismissHandler: .constant(nil))
+                TabBar(settings: .forPreview(style: .default), homeTabs: .forPreview(.profileDetail), dismissHandler: .constant(nil))
             }.previewDevice(.init(rawValue: phoneType))
                 .previewDisplayName(phoneType)
                 .edgesIgnoringSafeArea(.all)
@@ -229,4 +201,4 @@ struct TabBar_Previews: PreviewProvider {
         }
     }
 }
-#endif
+#endif*/

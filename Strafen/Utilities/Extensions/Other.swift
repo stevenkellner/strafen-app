@@ -302,10 +302,10 @@ struct TextForegroudColor: ViewModifier {
     let color: Color?
     
     /// Observed Object that contains all settings of the app of this device
-    @ObservedObject private var settings = Settings.shared
+    @ObservedObject private var settings = NewSettings.shared
     
     func body(content: Content) -> some View {
-        content.foregroundColor(color == nil || settings.style == .default ? .textColor : color!)
+        content.foregroundColor(color == nil || settings.properties.style == .default ? .textColor : color!)
     }
 }
 
@@ -451,5 +451,71 @@ extension URL {
     /// Path to fine list of club with given id
     static func fineList(with id: UUID) -> URL {
         baseList(with: id).appendingPathComponent("fines")
+    }
+}
+
+// Extension of View to toggle a boolean value on tap gesture
+extension View {
+    
+    /// Toggle a boolean value on tap gesture
+    func toggleOnTapGesture(_ binding: Binding<Bool>) -> some View {
+        onTapGesture {
+            binding.wrappedValue.toggle()
+        }
+    }
+    
+    /// Set value on tap gesture
+    func setOnTapGesture<T>(_ binding: Binding<T>, to value: T) -> some View {
+        onTapGesture {
+            binding.wrappedValue = value
+        }
+    }
+}
+
+// Extension of View to hide navigation bar title
+extension View {
+    
+    /// Hide navigation bar title
+    func hideNavigationBarTitle() -> some View {
+        navigationBarTitle("Title").navigationBarHidden(true)
+    }
+}
+
+// Extension of CGSize to init with same edge length
+extension CGSize: _VectorMath {
+    
+    /// Init with same edge length
+    init(square edgeLength: CGFloat) {
+        self.init(width: edgeLength, height: edgeLength)
+    }
+}
+
+extension Text {
+    init<Subject>(describing instance: Subject) {
+        self.init(String(describing: instance))
+    }
+    
+    init<Subject>(describing instance: Subject) where Subject : CustomStringConvertible {
+        self.init(String(describing: instance))
+    }
+    
+    init<Subject>(describing instance: Subject) where Subject : TextOutputStreamable {
+        self.init(String(describing: instance))
+    }
+    
+    init<Subject>(describing instance: Subject) where Subject : CustomStringConvertible, Subject : TextOutputStreamable {
+        self.init(String(describing: instance))
+    }
+}
+
+// Extension of Date to get formatted strings
+extension Date {
+    
+    /// Formatted with long style
+    var formattedLong: String {
+        let formatter = DateFormatter()
+        formatter.locale = Locale.current
+        formatter.dateStyle = .long
+        return formatter.string(from: self)
     }
 }

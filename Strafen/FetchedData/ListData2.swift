@@ -58,6 +58,7 @@ class ListDataLocalListType<LocalListType>: ObservableObject where LocalListType
 }
 
 /// Data of all list types
+@available(*, deprecated, message: "Use List Data instead.")
 class ListData: ObservableObject {
     
     /// List data of club list

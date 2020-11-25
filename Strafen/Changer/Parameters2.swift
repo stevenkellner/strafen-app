@@ -8,6 +8,7 @@
 import Foundation
 
 /// Parameters
+@available(*, deprecated, message: "Use Parameters instead.")
 struct Parameters {
     
     /// Parameters

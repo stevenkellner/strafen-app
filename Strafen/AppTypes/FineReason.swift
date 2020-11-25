@@ -57,25 +57,30 @@ struct NewFineReasonTemplate: NewFineReason, Equatable {
     /// Template id
     let templateId: UUID
     
+    /// Reason template
+    var reasonTemplate: ReasonTemplate? {
+        NewListData.reason.list?.first(where: { $0.id == templateId })
+    }
+    
     /// Reason
     ///
     /// Use it only when reason list is fetched
     var reason: String {
-        "" // TODO
+        reasonTemplate?.reason ?? ""
     }
     
     /// Amount
     ///
     /// Use it only when reason list is fetched
     var amount: Amount {
-        .zero // TODO
+        reasonTemplate?.amount ?? .zero
     }
     
     /// Importance
     ///
     /// Use it only whenreason list is fetched
     var importance: Importance {
-        .low // TODO
+        reasonTemplate?.importance ?? .low
     }
     
     /// Parameters for database change call

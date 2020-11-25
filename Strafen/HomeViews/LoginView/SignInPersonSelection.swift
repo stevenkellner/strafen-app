@@ -118,7 +118,7 @@ struct SignInPersonSelection: View {
             signInConnectionState = .passed
             SignInCache.shared.setState(to: nil)
             let clubProperties = NewSettings.Person.ClubProperties(id: cachedProperties.clubId, name: result.clubName, identifier: result.clubIdentifier, regionCode: result.regionCode)
-            NewSettings.shared.properties.person = .init(clubProperties: clubProperties, id: personId, signInDate: Date(), isCashier: false)
+            NewSettings.shared.properties.person = .init(clubProperties: clubProperties, id: personId, name: cachedProperties.name, signInDate: Date(), isCashier: false)
             
         } failedHandler: { error in
             Logging.shared.log(with: .error, "An error occurs, that isn't handled: \(error.localizedDescription)")

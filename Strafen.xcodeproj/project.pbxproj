@@ -94,6 +94,7 @@
 		B07938D624BEF4C300F86E86 /* PersonFineDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = B07938D524BEF4C300F86E86 /* PersonFineDetail.swift */; };
 		B07938D824BF037900F86E86 /* PersonAddNew.swift in Sources */ = {isa = PBXBuildFile; fileRef = B07938D724BF037900F86E86 /* PersonAddNew.swift */; };
 		B0B117CC24FA962C006A22F2 /* SignInWithApple.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0B117CB24FA962C006A22F2 /* SignInWithApple.swift */; };
+		B0B39A82256D8B06002E2CB9 /* FineListRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0B39A81256D8B06002E2CB9 /* FineListRow.swift */; };
 		B0B4822024A8D46B00CB7A1A /* Header.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0B4821F24A8D46B00CB7A1A /* Header.swift */; };
 		B0B4822224A8D61300CB7A1A /* CustomTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0B4822124A8D61300CB7A1A /* CustomTextField.swift */; };
 		B0B4822424A8D69E00CB7A1A /* Buttons.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0B4822324A8D69E00CB7A1A /* Buttons.swift */; };
@@ -306,6 +307,7 @@
 		B099522C254472C700833EA4 /* AlertsAndPickers.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = AlertsAndPickers.xcodeproj; path = ../../../../Desktop/AlertsAndPickers/AlertsAndPickers.xcodeproj; sourceTree = "<group>"; };
 		B0A385AF24ABC21C00628038 /* SignInEMailValidationView2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInEMailValidationView2.swift; sourceTree = "<group>"; };
 		B0B117CB24FA962C006A22F2 /* SignInWithApple.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInWithApple.swift; sourceTree = "<group>"; };
+		B0B39A81256D8B06002E2CB9 /* FineListRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FineListRow.swift; sourceTree = "<group>"; };
 		B0B4821F24A8D46B00CB7A1A /* Header.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Header.swift; sourceTree = "<group>"; };
 		B0B4822124A8D61300CB7A1A /* CustomTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextField.swift; sourceTree = "<group>"; };
 		B0B4822324A8D69E00CB7A1A /* Buttons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Buttons.swift; sourceTree = "<group>"; };
@@ -511,6 +513,7 @@
 			isa = PBXGroup;
 			children = (
 				B042D43224BB19E10029F2D5 /* ProfileDetail.swift */,
+				B0B39A81256D8B06002E2CB9 /* FineListRow.swift */,
 			);
 			path = ProfileDetail;
 			sourceTree = "<group>";
@@ -1323,6 +1326,7 @@
 				B0D75C602557159900555B03 /* Importance.swift in Sources */,
 				B0E0F82724A63E5800C82828 /* StrafenApp.swift in Sources */,
 				B0E6E86F24CDD38500D467AC /* OutlineAndSheetBar.swift in Sources */,
+				B0B39A82256D8B06002E2CB9 /* FineListRow.swift in Sources */,
 				B042D42E24BA21540029F2D5 /* ListTypes.swift in Sources */,
 				B020C7BC24AF1AE9008940FE /* ChangerClub.swift in Sources */,
 				B020C7CA24B1168F008940FE /* RegisterPerson.swift in Sources */,

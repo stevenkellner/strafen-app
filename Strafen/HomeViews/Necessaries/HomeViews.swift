@@ -14,39 +14,37 @@ struct HomeTabsView: View {
     @Environment(\.colorScheme) var colorScheme
     
     ///Dismiss handler
-    @Binding var dismissHandler: (() -> ())?
+    @Binding var dismissHandler: DismissHandler
     
     /// Active home tab
     @ObservedObject var homeTabs = HomeTabs.shared
     
     /// List data
-    @ObservedObject var listData = ListData.shared
+    @ObservedObject var listData = NewListData.shared
     
     var body: some View {
         Group {
             if listData.connectionState == .passed && homeTabs.active == .profileDetail {
                 ProfileDetail(dismissHandler: $dismissHandler)
             } else if listData.connectionState == .passed && homeTabs.active == .personList {
-                PersonList(dismissHandler: $dismissHandler)
+                // PersonList(dismissHandler: $dismissHandler) TODO
             } else if listData.connectionState == .passed && homeTabs.active == .reasonList {
-                ReasonList()
+                // ReasonList() TODO
             } else if listData.connectionState == .passed && homeTabs.active == .addNewFine {
-                ZStack {
+                /*ZStack { TODO
                     colorScheme.backgroundColor
                     AddNewFine()
                         .padding(.top, 50)
-                }
-            } else if homeTabs.active == .notes {
-                NoteList(dismissHandler: $dismissHandler)
+                }*/
             } else if homeTabs.active == .settings {
-                SettingsView(dismissHandler: $dismissHandler)
+                //SettingsView(dismissHandler: $dismissHandler) TODO
             } else if listData.connectionState == .loading {
                 ZStack {
                     colorScheme.backgroundColor
                     ProgressView("Laden")
                 }
             } else if listData.connectionState == .failed {
-                ZStack {
+                /*ZStack { TODO
                     colorScheme.backgroundColor
                     VStack(spacing: 30) {
                         Spacer()
@@ -63,9 +61,9 @@ struct HomeTabsView: View {
                             .onTapGesture(perform: ListData.shared.fetchLists)
                         Spacer()
                     }
-                }
+                }*/
             } else {
-                Text("No available home view")
+                Text("No available view")
             }
         }
     }

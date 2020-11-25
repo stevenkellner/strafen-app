@@ -56,6 +56,75 @@ extension Array where Element == Fine {
     }
 }
 
+// Extension of Fine Array for amount sums of given person
+extension Array where Element == NewFine {
+    
+    /// Sum of amount of a fine list
+    struct AmountSum {
+        
+        /// Fine list
+        private let fineList: [NewFine]
+        
+        /// Person id
+        private let personId: UUID
+        
+        init(of personId: UUID, fineList: [NewFine]) {
+            self.personId = personId
+            self.fineList = fineList
+        }
+        
+        /// Payed amount sum of the person
+        var payed: Amount {
+            fineList.filter {
+                $0.assoiatedPersonId == personId && $0.isPayed
+            }.reduce(into: .zero) { result, fine in
+                result += fine.completeAmount
+            }
+        }
+        
+        /// Unpayed amount sum of the person
+        var unpayed: Amount {
+            fineList.filter {
+                $0.assoiatedPersonId == personId && !$0.isPayed
+            }.reduce(into: .zero) { result, fine in
+                result += fine.completeAmount
+            }
+        }
+        
+        /// Medium amount sum of the person
+        var medium: Amount {
+            fineList.filter {
+                $0.assoiatedPersonId == personId && !$0.isPayed && ($0.fineReason.importance == .high || $0.fineReason.importance == .medium)
+            }.reduce(into: .zero) { result, fine in
+                result += fine.completeAmount
+            }
+        }
+        
+        /// High amount sum of the person
+        var high: Amount {
+            fineList.filter {
+                $0.assoiatedPersonId == personId && !$0.isPayed && $0.fineReason.importance == .high
+            }.reduce(into: .zero) { result, fine in
+                result += fine.completeAmount
+            }
+        }
+        
+        /// Total amount sum of the person
+        var total: Amount {
+            fineList.filter {
+                $0.assoiatedPersonId == personId
+            }.reduce(into: .zero) { result, fine in
+                result += fine.completeAmount
+            }
+        }
+    }
+    
+    /// Sum of amount of a fine list
+    func amountSum(of personId: UUID) -> AmountSum {
+        AmountSum(of: personId, fineList: self)
+    }
+}
+
 // Extension of Array for sorted with order
 extension Array {
     
@@ -160,5 +229,11 @@ extension Array where Element: Hashable {
     /// Array with unique elemets
     var unique: [Element] {
         Array(Set(self))
+    }
+}
+
+extension Array {
+    func isEmpty(_ isIncluded: (Element) throws -> Bool) rethrows -> Bool {
+        try filter(isIncluded).isEmpty
     }
 }

@@ -29,7 +29,7 @@ struct Outline: View {
     @Environment(\.colorScheme) var colorScheme
     
     /// Observed Object that contains all settings of the app of this device
-    @ObservedObject var settings = Settings.shared
+    @ObservedObject var settings = NewSettings.shared
     
     init(_ cornerSet: RoundedCorners.CornerSet = .all) {
         self.cornerSet = cornerSet
@@ -37,10 +37,10 @@ struct Outline: View {
     
     var body: some View {
         RoundedCorners(cornerSet)
-            .radius(settings.style.radius)
-            .lineWidth(lineWidth ?? settings.style.lineWidth)
-            .fillColor(onlyDefault ? settings.style.fillColor(colorScheme, defaultStyle: fillColor) : fillColor!)
-            .strokeColor(strokeColor ?? settings.style.strokeColor(colorScheme))
+            .radius(settings.properties.style.radius)
+            .lineWidth(lineWidth ?? settings.properties.style.lineWidth)
+            .fillColor(onlyDefault ? settings.properties.style.fillColor(colorScheme, defaultStyle: fillColor) : fillColor!)
+            .strokeColor(strokeColor ?? settings.properties.style.strokeColor(colorScheme))
     }
     
     /// Set fill color
