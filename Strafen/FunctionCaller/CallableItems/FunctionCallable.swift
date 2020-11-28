@@ -15,6 +15,12 @@ protocol FunctionCallable {
     
     /// Change parametes
     var parameters: NewParameters { get }
+    
+    /// Handler called after function call is succeded
+    func successHandler()
+    
+    /// Handler called after function call is failed
+    func failedHandler()
 }
 
 /// Function call has a decodable result
@@ -22,4 +28,14 @@ protocol FunctionCallResult {
     
     /// Type of call result data
     associatedtype CallResult: Decodable
+}
+
+// Extension of FunctionCallable to get default handler
+extension FunctionCallable {
+    
+    /// Handler called after function call is succeded
+    func successHandler() {}
+    
+    /// Handler called after function call is failed
+    func failedHandler() {}
 }

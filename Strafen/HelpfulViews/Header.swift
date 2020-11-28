@@ -27,7 +27,7 @@ struct Header: View {
     }
     
     public var body: some View {
-        VStack(spacing: 0) {
+        VStack(spacing: 10) {
                 
             // Title
             HStack {
@@ -40,20 +40,7 @@ struct Header: View {
             }
             
             // Top Underline
-            HStack {
-                Rectangle()
-                    .frame(width: 300, height: 2)
-                    .border(settings.style == .default ? Color.custom.darkGreen : (colorScheme == .dark ? Color.plain.lightGray : Color.plain.darkGray), width: 1)
-                Spacer()
-            }.padding(.top, 10)
-            
-            // Bottom Underline
-            HStack {
-                Rectangle()
-                    .frame(width: 275, height: 2)
-                    .border(settings.style == .default ? Color.custom.darkGreen : (colorScheme == .dark ? Color.plain.lightGray : Color.plain.darkGray), width: 1)
-                Spacer()
-            }.padding(.top, 5)
+            Underlines()
                 
         }
     }
@@ -85,6 +72,66 @@ struct Title: View {
         }
     }
 }
+
+/// Content with a title
+struct TitledContent<Content>: View where Content: View {
+    
+    /// Title
+    private let title: String
+    
+    /// Content
+    private let content: Content
+    
+    init(_ title: String, @ViewBuilder content: () -> Content) {
+        self.title = title
+        self.content = content()
+    }
+    
+    var body: some View {
+        VStack(spacing: 5) {
+            
+            // Title
+            Title(title)
+            
+            // Content
+            content
+            
+        }
+    }
+}
+
+/// Two underlines
+struct Underlines: View {
+    
+    /// Observed Object that contains all settings of the app of this device
+    @ObservedObject var settings = NewSettings.shared
+    
+    /// Color scheme to get appearance of this device
+    @Environment(\.colorScheme) var colorScheme
+    
+    var body: some View {
+        VStack(spacing: 5) {
+            
+            // Top Underline
+            HStack {
+                Rectangle()
+                    .frame(width: 300, height: 2)
+                    .border(settings.properties.style == .default ? Color.custom.darkGreen : (colorScheme == .dark ? Color.plain.lightGray : Color.plain.darkGray), width: 1)
+                Spacer()
+            }
+            
+            // Bottom Underline
+            HStack {
+                Rectangle()
+                    .frame(width: 275, height: 2)
+                    .border(settings.properties.style == .default ? Color.custom.darkGreen : (colorScheme == .dark ? Color.plain.lightGray : Color.plain.darkGray), width: 1)
+                Spacer()
+            }
+            
+        }
+    }
+}
+
 
 /// Error messages under a textfield
 struct ErrorMessageView: View {
@@ -160,6 +207,12 @@ enum ErrorMessages {
     /// No region given
     case noRegionGiven
     
+    /// Internal error
+    case internalErrorSave
+    
+    /// Amount mustn't be zero
+    case amountZero
+    
     /// Message of the error
     var message: String {
         switch self {
@@ -168,21 +221,21 @@ enum ErrorMessages {
         case .clubNotExists:
             return "Es gibt keinen Verein mit dieser Kennung!"
         case .internalErrorSignIn:
-            return "Es gab ein Problem beim Registrieren."
+            return "Es gab ein Problem beim Registrieren!"
         case .emailNotRegistered:
-            return "Diese Email-Adresse ist nicht registriert."
+            return "Diese Email-Adresse ist nicht registriert!"
         case .internalErrorLogIn:
-            return "Es gab ein Problem beim Anmelden."
+            return "Es gab ein Problem beim Anmelden!"
         case .incorrectPassword:
-            return "Das eingegebene Passwort ist falsch."
+            return "Das eingegebene Passwort ist falsch!"
         case .notSignedIn:
-            return "Du bist noch nicht registriert."
+            return "Du bist noch nicht registriert!"
         case .invalidEmail:
             return "Dies ist keine gültige Email!"
         case .alreadySignedIn:
             return "Diese Email ist bereits registriert!"
         case .alreadySignedInApple:
-            return "Diese Apple-Id existiert bereits"
+            return "Diese Apple-Id existiert bereits!"
         case .tooFewCharacters:
             return "Passwort ist zu kurz!"
         case .noUpperCharacter:
@@ -199,6 +252,10 @@ enum ErrorMessages {
             return "Vereinskennung ist bereits vergeben!"
         case .noRegionGiven:
             return "Keine Region angegeben!"
+        case .internalErrorSave:
+            return "Es gab ein Problem beim Speichern!"
+        case .amountZero:
+            return "Betrag darf nicht Null sein!"
         }
     }
 }

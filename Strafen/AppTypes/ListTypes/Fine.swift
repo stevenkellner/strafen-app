@@ -425,6 +425,17 @@ extension NewFine: NewListType {
         self.fineReason = codableSelf.reason.fineReason
     }
     
+    /// Get fine list of ListData
+    static func getDataList() -> [NewFine]? {
+        NewListData.fine.list
+    }
+    
+    /// Change fine list of ListData
+    static func changeHandler(_ newList: [NewFine]?) {
+        NewListData.fine.list = newList
+    }
+    
+    
     /// Parameters for database change call
     var callParameters: NewParameters {
         NewParameters(fineReason.callParameters) { parameters in

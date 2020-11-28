@@ -241,3 +241,20 @@ extension Array {
         try filter(isIncluded).isEmpty
     }
 }
+
+extension Array {
+    
+    /// Adds an element to the end of the collection.
+    func appending(_ newElement: Element) -> [Element] {
+        var list = self
+        list.append(newElement)
+        return list
+    }
+    
+    /// Adds the elements of a sequence or collection to the end of this collection.
+    func appending(contentsOf newElements: [Element]) -> [Element] {
+        var list = self
+        list.append(contentsOf: newElements)
+        return list
+    }
+}

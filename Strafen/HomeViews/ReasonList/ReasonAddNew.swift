@@ -59,7 +59,7 @@ struct ReasonAddNew: View {
                 Spacer()
                 
                 // Importance changer
-                ImportanceChanger(importance: $importance)
+                ImportanceChanger2(importance: $importance)
                     .frame(width: UIScreen.main.bounds.width * 0.7, height: 25)
                 
                 Spacer()

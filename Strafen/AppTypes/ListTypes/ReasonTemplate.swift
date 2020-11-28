@@ -42,6 +42,16 @@ extension ReasonTemplate: NewListType {
         self.amount = codableSelf.amount
     }
     
+    /// Get reason template list of ListData
+    static func getDataList() -> [ReasonTemplate]? {
+        NewListData.reason.list
+    }
+    
+    /// Change reason template list of ListData
+    static func changeHandler(_ newList: [ReasonTemplate]?) {
+        NewListData.reason.list = newList
+    }
+    
     /// Parameters for database change call
     var callParameters: NewParameters {
         NewParameters { parameters in

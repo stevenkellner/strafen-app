@@ -267,7 +267,7 @@ struct DeleteConfirmButton: View {
                     
                     // Text
                     Text("Löschen")
-                        .foregroundColor(Color.custom.red)
+                        .foregroundColor(plain: Color.custom.red)
                         .font(.text(20))
                         .lineLimit(1)
                     
@@ -338,6 +338,20 @@ struct DeleteConfirmButton: View {
         deleteConfirmButton.confirmButtonHandler = confirmButtonHandler
         return deleteConfirmButton
     }
+    
+    /// Set delete button handler
+    public func onDeletePress<AlertType>(_ alertType: Binding<AlertType?>, value: AlertType) -> DeleteConfirmButton where AlertType: AlertTypeProtocol {
+        var deleteConfirmButton = self
+        deleteConfirmButton.deleteButtonHandler = { alertType.wrappedValue = value }
+        return deleteConfirmButton
+    }
+    
+    /// Set confirm button handler
+    public func onConfirmPress<AlertType>(_ alertType: Binding<AlertType?>, value: AlertType) -> DeleteConfirmButton where AlertType: AlertTypeProtocol {
+        var deleteConfirmButton = self
+        deleteConfirmButton.confirmButtonHandler = { alertType.wrappedValue = value }
+        return deleteConfirmButton
+    }
 }
 
 /// Back and edit button
@@ -347,7 +361,7 @@ struct BackAndEditButton<EditSheetContent>: View where EditSheetContent: View {
     private let editSheetContent: EditSheetContent
     
     /// Observed Object that contains all settings of the app of this device
-    @ObservedObject private var settings = Settings.shared
+    @ObservedObject private var settings = NewSettings.shared
     
     /// Presentation mode
     @Environment(\.presentationMode) private var presentationMode
@@ -374,7 +388,7 @@ struct BackAndEditButton<EditSheetContent>: View where EditSheetContent: View {
                 Spacer()
                 
                 // EditButton
-                if settings.person!.isCashier {
+                if settings.properties.person?.isCashier ?? false {
                     Text("Bearbeiten")
                         .configurate(size: 25)
                         .padding(.trailing, 10)

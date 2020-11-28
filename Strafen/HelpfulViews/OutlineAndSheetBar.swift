@@ -84,3 +84,24 @@ struct SheetBar: View {
             .padding(.vertical, 20)
     }
 }
+
+/// Indicator
+struct Indicator: View {
+    
+    /// Width
+    let width: CGFloat
+    
+    /// Observed Object that contains all settings of the app of this device
+    @ObservedObject var settings = NewSettings.shared
+    
+    /// Color scheme to get appearance of this device
+    @Environment(\.colorScheme) var colorScheme
+    
+    var body: some View {
+        RoundedCorners()
+            .strokeColor(settings.properties.style == .default ? Color.custom.gray : Color.plain.strokeColor(colorScheme))
+            .lineWidth(2.5)
+            .radius(2.5)
+            .frame(width: width, height: 2.5)
+    }
+}

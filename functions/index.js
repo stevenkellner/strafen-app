@@ -337,6 +337,32 @@ exports.changeList = functions.region('europe-west1').https.onCall(async (data, 
     }
 });
 
+// Change fine payed
+exports.changeFinePayed = functions.region('europe-west1').https.onCall(async (data, context) => {
+    if (!context.auth) {
+        throw new functions.https.HttpsError(
+            'failed-precondition', 
+            'The function must be called while authenticated.'
+        );
+      }
+      
+    // Check if all arguments are set
+    let requiredArguements = ['clubId', 'fineId', 'payed'];
+    checkAllArguments(requiredArguements, data);
+    
+    let path = 'clubs/' + data.clubId.toString().toUpperCase() + '/fines/' + data.fineId.toString().toUpperCase() + '/payed';
+    let payedRef = admin.database().ref(path);
+
+    if (await existsData(payedRef)) {
+        await payedRef.update(data.payed, error => {
+            throw new functions.https.HttpsError(
+                'internal', 
+                "Couldn't change item"
+             );
+        });
+    }
+});
+
 // Send mail
 exports.sendMail = functions.region('europe-west1').https.onCall(async (data, context) => {
     if (!context.auth) {

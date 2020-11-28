@@ -123,7 +123,6 @@ struct CustomTextField: View {
     }
     
     /// Deprecated set keyboard on screen binding
-    @available(*, deprecated, message: "use keyboardAdaptive view modifier instead")
     public func keyboardOnScreen(_ keyboardOnScreen: Binding<Bool>) -> CustomTextField {
         var textField = self
         textField.keyboardOnScreen = keyboardOnScreen

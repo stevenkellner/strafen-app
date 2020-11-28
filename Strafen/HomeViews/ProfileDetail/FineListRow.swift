@@ -32,9 +32,6 @@ struct FineListRow: View {
     /// Namespace for matched geometry effect
     @Namespace var namespace
     
-    /// Reason List Data
-    @ObservedObject var reasonListData = NewListData.reason
-    
     /// Indicates if navigation link is active
     @State var isNavigationLinkActive = false
     
@@ -43,29 +40,28 @@ struct FineListRow: View {
             
             // Navigation Link
             EmptyNavigationLink(isActive: $isNavigationLinkActive) {
-                Text(fine.fineReason.reason(with: reasonListData.list)) // TODO
+                FineDetail(fine: fine, dismissHandler: $dismissHandler)
             }
             
             if selectedForLargeDesign == fine.id {
                 
                 // Large row
                 LargeRow(fine: fine, namespace: namespace, isNavigationLinkActive: $isNavigationLinkActive)
-                    .setOnTapGesture($selectedForLargeDesign, to: nil)
+                    .setOnTapGesture($selectedForLargeDesign, to: nil, animation: .default)
                 
             } else {
                 
                 // Small row
                 SmallRow(fine: fine, namespace: namespace, isNavigationLinkActive: $isNavigationLinkActive)
-                    .setOnTapGesture($selectedForLargeDesign, to: fine.id)
+                    .setOnTapGesture($selectedForLargeDesign, to: fine.id, animation: .default)
                 
             }
             
-        }.animation(.easeInOut)
-            .onOpenURL { url in
-                if withOpenUrl {
-                    isNavigationLinkActive = url.lastPathComponent == fine.id.uuidString
-                }
+        }.onOpenURL { url in
+            if withOpenUrl {
+                isNavigationLinkActive = url.lastPathComponent == fine.id.uuidString
             }
+        }
     }
     
     /// Small row

@@ -32,6 +32,7 @@
 		B02B891524BDFDA9004562B9 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B02B891424BDFDA9004562B9 /* SettingsView.swift */; };
 		B02EF27024C497CC00E4CEBC /* NoteEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = B02EF26F24C497CC00E4CEBC /* NoteEditor.swift */; };
 		B037BCEA25419CB4002B81E5 /* SignInEmailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B037BCE925419CB4002B81E5 /* SignInEmailView.swift */; };
+		B042C5E8256FA02000DD74B8 /* FineDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = B042C5E7256FA01F00DD74B8 /* FineDetail.swift */; };
 		B042D42E24BA21540029F2D5 /* ListTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = B042D42D24BA21540029F2D5 /* ListTypes.swift */; };
 		B042D43024BA42EB0029F2D5 /* TabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B042D42F24BA42EB0029F2D5 /* TabBar.swift */; };
 		B042D43324BB19E10029F2D5 /* ProfileDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = B042D43224BB19E10029F2D5 /* ProfileDetail.swift */; };
@@ -42,6 +43,8 @@
 		B042D44224BB61810029F2D5 /* SearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B042D44124BB61810029F2D5 /* SearchBar.swift */; };
 		B042D44524BCD80C0029F2D5 /* PersonDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = B042D44424BCD80B0029F2D5 /* PersonDetail.swift */; };
 		B042D44724BDAB280029F2D5 /* ActivityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B042D44624BDAB280029F2D5 /* ActivityView.swift */; };
+		B04750AA25703382002C8B99 /* FineEditorAdvanced.swift in Sources */ = {isa = PBXBuildFile; fileRef = B04750A925703382002C8B99 /* FineEditorAdvanced.swift */; };
+		B04750B02570370D002C8B99 /* FineEditorTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B04750AF2570370D002C8B99 /* FineEditorTemplate.swift */; };
 		B04B71EB24CE18560038B02F /* TestContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = B04B71EA24CE18560038B02F /* TestContent.swift */; };
 		B04B71EE24CEDA9C0038B02F /* MediumWidgetSuccess.swift in Sources */ = {isa = PBXBuildFile; fileRef = B04B71ED24CEDA9C0038B02F /* MediumWidgetSuccess.swift */; };
 		B04B71F024CEDAAA0038B02F /* MediumWidgetNoConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = B04B71EF24CEDAAA0038B02F /* MediumWidgetNoConnection.swift */; };
@@ -93,6 +96,8 @@
 		B077B59A24CB0A7E003844CE /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0C1C51824A78C90007B584B /* Color.swift */; };
 		B07938D624BEF4C300F86E86 /* PersonFineDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = B07938D524BEF4C300F86E86 /* PersonFineDetail.swift */; };
 		B07938D824BF037900F86E86 /* PersonAddNew.swift in Sources */ = {isa = PBXBuildFile; fileRef = B07938D724BF037900F86E86 /* PersonAddNew.swift */; };
+		B07DDDCF256FB9E20003F139 /* ChangeFinePayedCall.swift in Sources */ = {isa = PBXBuildFile; fileRef = B07DDDCE256FB9E20003F139 /* ChangeFinePayedCall.swift */; };
+		B07DDDEF256FF8CF0003F139 /* FineEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = B07DDDEE256FF8CF0003F139 /* FineEditor.swift */; };
 		B0B117CC24FA962C006A22F2 /* SignInWithApple.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0B117CB24FA962C006A22F2 /* SignInWithApple.swift */; };
 		B0B39A82256D8B06002E2CB9 /* FineListRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0B39A81256D8B06002E2CB9 /* FineListRow.swift */; };
 		B0B4822024A8D46B00CB7A1A /* Header.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0B4821F24A8D46B00CB7A1A /* Header.swift */; };
@@ -242,6 +247,7 @@
 		B02B891424BDFDA9004562B9 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		B02EF26F24C497CC00E4CEBC /* NoteEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteEditor.swift; sourceTree = "<group>"; };
 		B037BCE925419CB4002B81E5 /* SignInEmailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInEmailView.swift; sourceTree = "<group>"; };
+		B042C5E7256FA01F00DD74B8 /* FineDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FineDetail.swift; sourceTree = "<group>"; };
 		B042D42D24BA21540029F2D5 /* ListTypes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListTypes.swift; sourceTree = "<group>"; };
 		B042D42F24BA42EB0029F2D5 /* TabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBar.swift; sourceTree = "<group>"; };
 		B042D43224BB19E10029F2D5 /* ProfileDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileDetail.swift; sourceTree = "<group>"; };
@@ -252,6 +258,8 @@
 		B042D44124BB61810029F2D5 /* SearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBar.swift; sourceTree = "<group>"; };
 		B042D44424BCD80B0029F2D5 /* PersonDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonDetail.swift; sourceTree = "<group>"; };
 		B042D44624BDAB280029F2D5 /* ActivityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityView.swift; sourceTree = "<group>"; };
+		B04750A925703382002C8B99 /* FineEditorAdvanced.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FineEditorAdvanced.swift; sourceTree = "<group>"; };
+		B04750AF2570370D002C8B99 /* FineEditorTemplate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FineEditorTemplate.swift; sourceTree = "<group>"; };
 		B04B71EA24CE18560038B02F /* TestContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestContent.swift; sourceTree = "<group>"; };
 		B04B71ED24CEDA9C0038B02F /* MediumWidgetSuccess.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediumWidgetSuccess.swift; sourceTree = "<group>"; };
 		B04B71EF24CEDAAA0038B02F /* MediumWidgetNoConnection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediumWidgetNoConnection.swift; sourceTree = "<group>"; };
@@ -304,6 +312,8 @@
 		B077B59624CB0801003844CE /* WidgetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetView.swift; sourceTree = "<group>"; };
 		B07938D524BEF4C300F86E86 /* PersonFineDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonFineDetail.swift; sourceTree = "<group>"; };
 		B07938D724BF037900F86E86 /* PersonAddNew.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonAddNew.swift; sourceTree = "<group>"; };
+		B07DDDCE256FB9E20003F139 /* ChangeFinePayedCall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeFinePayedCall.swift; sourceTree = "<group>"; };
+		B07DDDEE256FF8CF0003F139 /* FineEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FineEditor.swift; sourceTree = "<group>"; };
 		B099522C254472C700833EA4 /* AlertsAndPickers.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = AlertsAndPickers.xcodeproj; path = ../../../../Desktop/AlertsAndPickers/AlertsAndPickers.xcodeproj; sourceTree = "<group>"; };
 		B0A385AF24ABC21C00628038 /* SignInEMailValidationView2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInEMailValidationView2.swift; sourceTree = "<group>"; };
 		B0B117CB24FA962C006A22F2 /* SignInWithApple.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInWithApple.swift; sourceTree = "<group>"; };
@@ -514,6 +524,10 @@
 			children = (
 				B042D43224BB19E10029F2D5 /* ProfileDetail.swift */,
 				B0B39A81256D8B06002E2CB9 /* FineListRow.swift */,
+				B042C5E7256FA01F00DD74B8 /* FineDetail.swift */,
+				B07DDDEE256FF8CF0003F139 /* FineEditor.swift */,
+				B04750A925703382002C8B99 /* FineEditorAdvanced.swift */,
+				B04750AF2570370D002C8B99 /* FineEditorTemplate.swift */,
 			);
 			path = ProfileDetail;
 			sourceTree = "<group>";
@@ -851,6 +865,7 @@
 			isa = PBXGroup;
 			children = (
 				B0D75CA925581FA200555B03 /* FunctionCallable.swift */,
+				B07DDDCE256FB9E20003F139 /* ChangeFinePayedCall.swift */,
 				B0D75CD72558202000555B03 /* ChangeListCall.swift */,
 				B0D75CCB2558200900555B03 /* ClubIdentifierAlreadyExistsCall.swift */,
 				B0D75CBF25581FF400555B03 /* GetClubIdCall.swift */,
@@ -1291,6 +1306,7 @@
 				B0B81DC72502524000249447 /* Settings+Person.swift in Sources */,
 				B0E2C19524CC6620009E3666 /* Reason.swift in Sources */,
 				B06FECF82516466500893DF9 /* LatePaymentInterestChange.swift in Sources */,
+				B04750AA25703382002C8B99 /* FineEditorAdvanced.swift in Sources */,
 				B0C1C51524A78BD7007B584B /* LoginEntryView.swift in Sources */,
 				B0E5C71024C377F70004E758 /* NoteAddNew.swift in Sources */,
 				B0C1C51924A78C90007B584B /* Color.swift in Sources */,
@@ -1300,6 +1316,7 @@
 				B07938D824BF037900F86E86 /* PersonAddNew.swift in Sources */,
 				B0B81DC12502520E00249447 /* CodableSettings.swift in Sources */,
 				B0E0F82924A63E5800C82828 /* ContentView.swift in Sources */,
+				B07DDDEF256FF8CF0003F139 /* FineEditor.swift in Sources */,
 				B0619C0024C0BD16008969A1 /* ImportanceChanger.swift in Sources */,
 				B0231D762542FF550030BADE /* SignInClubSelection.swift in Sources */,
 				B0B799CC24ACA1990027727E /* ImageSelector.swift in Sources */,
@@ -1322,6 +1339,7 @@
 				B042D44024BB5B420029F2D5 /* PersonList.swift in Sources */,
 				B0619C1824C23911008969A1 /* AddNewFineReason.swift in Sources */,
 				B0D75CF0255820FC00555B03 /* ImageStorage.swift in Sources */,
+				B04750B02570370D002C8B99 /* FineEditorTemplate.swift in Sources */,
 				B0DE1CBD24C48FB3006CCFE9 /* NoteDetail.swift in Sources */,
 				B0D75C602557159900555B03 /* Importance.swift in Sources */,
 				B0E0F82724A63E5800C82828 /* StrafenApp.swift in Sources */,
@@ -1384,9 +1402,11 @@
 				B020C7CC24B87653008940FE /* Club.swift in Sources */,
 				B042D44224BB61810029F2D5 /* SearchBar.swift in Sources */,
 				B0D75CCC2558200900555B03 /* ClubIdentifierAlreadyExistsCall.swift in Sources */,
+				B042C5E8256FA02000DD74B8 /* FineDetail.swift in Sources */,
 				B016578A24C369850012B6AC /* Note.swift in Sources */,
 				B05C3330253C3597004E9923 /* LoginView.swift in Sources */,
 				B0D75CB425581FDC00555B03 /* RegisterPersonCall.swift in Sources */,
+				B07DDDCF256FB9E20003F139 /* ChangeFinePayedCall.swift in Sources */,
 				B020C7BA24AE744F008940FE /* ListData2.swift in Sources */,
 				B020C7BE24AF1C31008940FE /* PersonLogin.swift in Sources */,
 				B0D75CBA25581FE900555B03 /* NewClubCall.swift in Sources */,

@@ -87,6 +87,16 @@ extension NewPerson: NewListType {
         self.signInData = codableSelf.signInData?.signInData
     }
     
+    /// Get person list of ListData
+    static func getDataList() -> [NewPerson]? {
+        NewListData.person.list
+    }
+    
+    /// Change person list of ListData
+    static func changeHandler(_ newList: [NewPerson]?) {
+        NewListData.person.list = newList
+    }
+    
     /// Parameters for database change call
     var callParameters: NewParameters {
         NewParameters { parameters in

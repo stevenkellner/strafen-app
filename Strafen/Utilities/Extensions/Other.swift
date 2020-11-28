@@ -330,6 +330,19 @@ extension Bool: Identifiable {
     public var id: Bool { self }
 }
 
+/// View modifier to set screen size
+struct ScreenSizeModifier: ViewModifier {
+    
+    /// Screen size
+    @State var screenSize: CGSize?
+    
+    func body(content: Content) -> some View {
+        GeometryReader { geometry in
+            content.screenSize($screenSize, geometry: geometry)
+        }
+    }
+}
+
 // Extension of View to set screen size
 extension View {
     
@@ -338,6 +351,11 @@ extension View {
         frame(size: screenSize.wrappedValue ?? geometry.size).onAppear {
             screenSize.wrappedValue = geometry.size
         }
+    }
+    
+    /// Sets screen size
+    var setScreenSize: some View {
+        ModifiedContent(content: self, modifier: ScreenSizeModifier())
     }
 }
 
@@ -458,16 +476,28 @@ extension URL {
 extension View {
     
     /// Toggle a boolean value on tap gesture
-    func toggleOnTapGesture(_ binding: Binding<Bool>) -> some View {
+    func toggleOnTapGesture(_ binding: Binding<Bool>, animation: Animation? = nil) -> some View {
         onTapGesture {
-            binding.wrappedValue.toggle()
+            if let animation = animation {
+                withAnimation(animation) {
+                    binding.wrappedValue.toggle()
+                }
+            } else {
+                binding.wrappedValue.toggle()
+            }
         }
     }
     
     /// Set value on tap gesture
-    func setOnTapGesture<T>(_ binding: Binding<T>, to value: T) -> some View {
+    func setOnTapGesture<T>(_ binding: Binding<T>, to value: T, animation: Animation? = nil) -> some View {
         onTapGesture {
-            binding.wrappedValue = value
+            if let animation = animation {
+                withAnimation(animation) {
+                    binding.wrappedValue = value
+                }
+            } else {
+                binding.wrappedValue = value
+            }
         }
     }
 }
@@ -517,5 +547,37 @@ extension Date {
         formatter.locale = Locale.current
         formatter.dateStyle = .long
         return formatter.string(from: self)
+    }
+}
+
+/// Modifier to set dismiss handler
+struct SetDismissHandlerModifier: ViewModifier {
+    
+    ///Dismiss handler
+    @Binding var dismissHandler: DismissHandler
+    
+    /// Presentation mode
+    @Environment(\.presentationMode) var presentationMode
+    
+    func body(content: Content) -> some View {
+        content
+            .onAppear {
+                dismissHandler = {
+                    presentationMode.wrappedValue.dismiss()
+                }
+            }
+    }
+}
+
+extension View {
+    
+    /// Set dismiss handler
+    func setDismissHandler(_ dismissHandler: Binding<DismissHandler>) -> some View {
+        ModifiedContent(content: self, modifier: SetDismissHandlerModifier(dismissHandler: dismissHandler))
+    }
+    
+    /// ignore all safe areas and set max frame to infinity
+    var maxFrame: some View {
+        edgesIgnoringSafeArea(.all).frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 }

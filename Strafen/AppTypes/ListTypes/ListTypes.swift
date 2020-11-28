@@ -42,6 +42,12 @@ protocol NewListType: Identifiable where ID == UUID {
     /// Init with id and codable self
     init(with id: UUID, codableSelf: CodableSelf)
     
+    /// Get list of ListData of this type
+    static func getDataList() -> [Self]?
+    
+    /// Change list of ListData of this type
+    static func changeHandler(_ newList: [Self]?)
+    
     /// Url for database refernce
     ///
     /// - Note: Don't use this url when no person is logged in

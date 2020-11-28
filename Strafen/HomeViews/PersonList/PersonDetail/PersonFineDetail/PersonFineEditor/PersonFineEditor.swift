@@ -95,7 +95,7 @@ struct PersonFineEditor: View {
                     Spacer()
                     
                     // Importance changer
-                    ImportanceChanger(importance: $importance)
+                    ImportanceChanger2(importance: $importance)
                         .frame(width: 258, height: 25)
                     
                     Spacer()

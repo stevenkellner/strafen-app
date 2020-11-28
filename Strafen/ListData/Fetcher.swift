@@ -107,8 +107,12 @@ struct NewFetcher {
         Database.database().reference(withPath: url.path).observe(.childAdded) { snapshot in
             guard let data = snapshot.value else { return }
             if let item: Type = decodeFetchedItem(from: data, key: snapshot.key) {
-                var list = getList()
-                list?.append(item)
+                guard var list = getList() else { return }
+                if list.contains(where: { $0.id == item.id }) {
+                    list.mapped { $0.id == item.id ? item : $0 }
+                } else {
+                    list.append(item)
+                }
                 changeHandler(list)
             }
         }

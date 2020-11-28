@@ -47,7 +47,7 @@ struct CustomDatePicker: UIViewRepresentable {
     func makeUIView(context: Context) -> UIDatePicker {
         datePicker.datePickerMode = .date
         datePicker.maximumDate = Date()
-        datePicker.locale = Locale(identifier: "de")
+        datePicker.locale = Locale.current
         datePicker.addTarget(context.coordinator, action: #selector(Coordinator.changed), for: .valueChanged)
         datePicker.preferredDatePickerStyle = style
         datePicker.sizeToFit()

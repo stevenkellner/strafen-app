@@ -75,25 +75,7 @@ struct ProfileDetail: View {
                     }
                     
                     // Underlines
-                    VStack(spacing: 5) {
-                        
-                        // Top Underline
-                        HStack {
-                            Rectangle()
-                                .frame(width: 300, height: 2)
-                                .border(settings.properties.style == .default ? Color.custom.darkGreen : (colorScheme == .dark ? Color.plain.lightGray : Color.plain.darkGray), width: 1)
-                            Spacer()
-                        }
-                        
-                        // Bottom Underline
-                        HStack {
-                            Rectangle()
-                                .frame(width: 275, height: 2)
-                                .border(settings.properties.style == .default ? Color.custom.darkGreen : (colorScheme == .dark ? Color.plain.lightGray : Color.plain.darkGray), width: 1)
-                            Spacer()
-                        }
-                        
-                    }
+                    Underlines()
                     
                     if let personId = settings.properties.person?.id, let fineList = fineListData.list {
                         

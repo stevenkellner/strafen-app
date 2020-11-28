@@ -26,15 +26,37 @@ struct Amount {
     var doubleValue: Double {
         Double(value) + Double(subUnitValue) / 100
     }
+    
+    /// String value
+    var stringValue: String {
+        if subUnitValue == 0 {
+            return "\(value)"
+        } else if (1..<10).contains(subUnitValue) {
+            return "\(value),0\(subUnitValue)"
+        } else {
+            return "\(value),\(subUnitValue)"
+        }
+    }
 }
 
 // Extension of Amount to confirm to CustomStringConvertible
 extension Amount: CustomStringConvertible {
     
+    /// Locale
+    static var locale: Locale {
+        let countryCodeKey = NewSettings.shared.properties.person?.clubProperties.regionCode ?? "DE"
+        let languageCodeKey = Locale.current.languageCode ?? "de"
+        let identifier = Locale.identifier(fromComponents: [
+            "kCFLocaleCountryCodeKey": countryCodeKey,
+            "kCFLocaleLanguageCodeKey": languageCodeKey
+        ])
+        return Locale(identifier: identifier)
+    }
+    
     /// Description
     var description: String {
         let numberFormatter = NumberFormatter()
-        numberFormatter.locale = Locale(identifier: "de_DE") // TODO
+        numberFormatter.locale = Amount.locale
         numberFormatter.numberStyle = .currency
         return numberFormatter.string(from: NSNumber(value: doubleValue)) ?? numberFormatter.string(from: 0)!
     }

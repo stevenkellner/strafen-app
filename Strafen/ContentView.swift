@@ -111,7 +111,6 @@ struct ContentView: View {
                 .onOpenURL { url in
                     homeTabs.active = url.pathComponents.first == "profileDetail" ? .profileDetail : homeTabs.active
                 }
-                .onAppear(perform: changeAppereanceStyle)
         }
     }
 }

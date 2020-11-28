@@ -66,7 +66,7 @@ struct LoginEntryView: View {
 func changeAppereanceStyle() {
     let appearances: [Settings.Appearance] = [.dark, .light]
     let styles: [Settings.Style] = [.default, .plain]
-    let isCashiers: [Bool] = [false, true]
+    let isCashiers: [Bool] = [true]//[false, true]
     let appStyle = appearances.permutate(with: styles, permutate: {($0, $1)}).permutate(with: isCashiers, permutate: {($0.0, $0.1, $1)})
     
     for (index, (appereance, style, isCashier)) in appStyle.enumerated() {
