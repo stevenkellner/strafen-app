@@ -93,15 +93,14 @@ struct ProfileDetail: View {
                                 ForEach(fineList.sortedForList(of: personId, with: reasonListData.list)) { fine in
                                     FineListRow(of: fine, selectedForLargeDesign: $selectedForLargeDesign, withOpenUrl: true, dismissHandler: $dismissHandler)
                                 }
-                            }.padding(.bottom, 20)
-                                .padding(.top, 5)
-                        }
+                            }.padding(.bottom, 10)
+                        }.padding(.top, 10)
                         
                     } else {
                         Text("No available view")
                     }
                     
-                    Spacer()
+                    Spacer(minLength: 0)
                 }.padding(.top, 40)
                 
             }.edgesIgnoringSafeArea(.all)
@@ -132,7 +131,7 @@ struct ProfileDetail: View {
         @State var showImagePicker = false
         
         /// Size of the image
-        let imageSize = CGSize(square: 100)
+        let imageSize: CGSize = .square(100)
         
         var body: some View {
             HStack(spacing: 0) {

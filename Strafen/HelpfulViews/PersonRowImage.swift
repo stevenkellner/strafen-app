@@ -17,7 +17,7 @@ struct PersonRowImage: View {
     @Environment(\.colorScheme) var colorScheme
     
     /// Observed Object that contains all settings of the app of this device
-    @ObservedObject var settings = Settings.shared
+    @ObservedObject var settings = NewSettings.shared
     
     var body: some View {
         VStack(spacing: 0) {
@@ -31,7 +31,7 @@ struct PersonRowImage: View {
                     .clipShape(Circle())
                     .overlay(
                         Circle()
-                            .stroke(settings.style.strokeColor(colorScheme), lineWidth: settings.style.lineWidth)
+                            .stroke(settings.properties.style.strokeColor(colorScheme), lineWidth: settings.properties.style.lineWidth)
                             .frame(width: 36, height: 36)
                     )
             } else {
@@ -44,7 +44,7 @@ struct PersonRowImage: View {
                         .resizable()
                         .frame(width: 30, height: 30)
                         .scaledToFit()
-                        .foregroundColor(settings.style.strokeColor(colorScheme))
+                        .foregroundColor(settings.properties.style.strokeColor(colorScheme))
                         .padding(.horizontal, 2)
                     
                     Spacer()

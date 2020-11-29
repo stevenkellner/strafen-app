@@ -443,24 +443,21 @@ struct AddNewListItemButton<ListType, AddNewSheetContent>: View where AddNewShee
     /// Content of add new sheet
     let addNewSheetContent: AddNewSheetContent
     
-    /// Color scheme to get appearance of this device
-    @Environment(\.colorScheme) var colorScheme
-    
-    /// Observed Object that contains all settings of the app of this device
-    @ObservedObject var settings = Settings.shared
-    
-    /// Indicates if addNewNote sheet is shown
-    @State var isAddNewNoteSheetShown = false
-    
     init(list: Binding<[ListType]?>, listFilter: ((ListType) -> Bool)? = nil, @ViewBuilder addNewSheetContent: () -> AddNewSheetContent) {
         _list = list
         self.listFilter = listFilter ?? { _ in true }
         self.addNewSheetContent = addNewSheetContent()
     }
     
+    /// Observed Object that contains all settings of the app of this device
+    @ObservedObject var settings = NewSettings.shared
+    
+    /// Indicates if addNewNote sheet is shown
+    @State var isAddNewNoteSheetShown = false
+    
     var body: some View {
         VStack(spacing: 0) {
-            if settings.person!.isCashier {
+            if settings.properties.person?.isCashier ?? false {
                 Spacer()
                 HStack(spacing: 0) {
                     Spacer()
@@ -473,30 +470,29 @@ struct AddNewListItemButton<ListType, AddNewSheetContent>: View where AddNewShee
                             .padding(.trailing, 25)
                             .font(.system(size: 50, weight: .thin))
                             .foregroundColor(Color.custom.red)
-                            .offset(y: -10)
+                            // .offset(y: -10)
                     }
                     
                     // Add New Button
-                    RoundedCorners()
-                        .strokeColor(settings.style.strokeColor(colorScheme))
-                        .fillColor(settings.style.fillColor(colorScheme, defaultStyle: Color.custom.lightGreen))
-                        .lineWidth(settings.style == .default ? 1.5 : 0.5)
-                        .radius(settings.style.radius)
-                        .frame(width: 45, height: 45)
-                        .overlay(
-                            Image(systemName: "text.badge.plus")
-                                .font(.system(size: 25, weight: .light))
-                                .foregroundColor(.textColor)
-                        )
-                        .padding([.trailing, .bottom], 20)
+                    ZStack {
+                        
+                        // Outline
+                        Outline()
+                        
+                        // Image
+                        Image(systemName: "text.badge.plus")
+                            .font(.system(size: 25, weight: .light))
+                            .foregroundColor(.textColor)
+                    }.frame(size: .square(45))
                         .onTapGesture {
                             isAddNewNoteSheetShown = true
+                            UIApplication.shared.dismissKeyboard()
                         }
                         .sheet(isPresented: $isAddNewNoteSheetShown) {
                             addNewSheetContent
                         }
                     
-                }
+                }.padding([.trailing, .bottom], 30)
             }
         }
     }

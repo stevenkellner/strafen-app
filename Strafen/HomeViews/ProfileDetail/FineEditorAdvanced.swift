@@ -45,7 +45,7 @@ struct FineEditorAdvanced: View {
                     // Date picker
                     CustomDatePicker(date: $fineInputProperties.date)
                         .style(.inline)
-                        .frame(size: CGSize(square: UIScreen.main.bounds.width * 0.9))
+                        .frame(size: .square(UIScreen.main.bounds.width * 0.9))
                     
                     Spacer()
                 }.padding(.vertical, 10)

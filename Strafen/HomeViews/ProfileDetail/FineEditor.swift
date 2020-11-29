@@ -239,7 +239,6 @@ struct FineEditor: View {
             .onAppear {
                 fineInputProperties.setProperties(of: fine, with: reasonListData.list)
             }
-        .onAppear(perform: changeAppereanceStyle)
     }
     
     /// Handles fine delete

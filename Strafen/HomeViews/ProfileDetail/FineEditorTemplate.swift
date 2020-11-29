@@ -67,14 +67,16 @@ struct FineEditorTemplate: View {
                                     completionHandler(reason)
                                     presentationMode.wrappedValue.dismiss()
                                 }
-                        }.animation(.none)
+                        }
                     }.padding(.bottom, 10)
                     
                 }.padding(.vertical, 10)
-                    .animation(.default)
+                
+            } else {
+                Text("No available view")
             }
             
-            Spacer()
+            Spacer(minLength: 0)
             
             // Cancel Button
             CancelButton()

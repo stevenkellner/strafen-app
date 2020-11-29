@@ -514,9 +514,9 @@ extension View {
 // Extension of CGSize to init with same edge length
 extension CGSize: _VectorMath {
     
-    /// Init with same edge length
-    init(square edgeLength: CGFloat) {
-        self.init(width: edgeLength, height: edgeLength)
+    /// CGSize with same edge length
+    static func square(_ edgeLength: CGFloat) -> CGSize {
+        CGSize(width: edgeLength, height: edgeLength)
     }
 }
 

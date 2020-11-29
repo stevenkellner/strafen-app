@@ -27,8 +27,7 @@ struct HomeTabsView: View {
             if listData.connectionState == .passed && homeTabs.active == .profileDetail {
                 ProfileDetail(dismissHandler: $dismissHandler)
             } else if listData.connectionState == .passed && homeTabs.active == .personList {
-                Spacer()
-                // PersonList(dismissHandler: $dismissHandler) TODO
+                PersonList(dismissHandler: $dismissHandler)
             } else if listData.connectionState == .passed && homeTabs.active == .reasonList {
                 // ReasonList() TODO
             } else if listData.connectionState == .passed && homeTabs.active == .addNewFine {

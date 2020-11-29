@@ -43,6 +43,7 @@ struct ContentView: View {
                 ContentHomeView()
                     .onAppear {
                         NewListData.shared.setup()
+                        HomeTabs.shared.active = .personList // TODO
                     }
                 
             } else {
