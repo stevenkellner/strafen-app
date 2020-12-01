@@ -65,12 +65,9 @@
 		B061754124CC639400382D9C /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B061754024CC639400382D9C /* Extensions.swift */; };
 		B061754424CC658200382D9C /* WidgetUrls.swift in Sources */ = {isa = PBXBuildFile; fileRef = B061754324CC658200382D9C /* WidgetUrls.swift */; };
 		B0619BFB24C0B62B008969A1 /* PersonEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0619BFA24C0B62B008969A1 /* PersonEditor.swift */; };
-		B0619BFE24C0B999008969A1 /* PersonFineEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0619BFD24C0B999008969A1 /* PersonFineEditor.swift */; };
 		B0619C0024C0BD16008969A1 /* ImportanceChanger.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0619BFF24C0BD16008969A1 /* ImportanceChanger.swift */; };
 		B0619C0224C0C1E2008969A1 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0619C0124C0C1E2008969A1 /* String.swift */; };
-		B0619C0424C186FC008969A1 /* PersonFineTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0619C0324C186FC008969A1 /* PersonFineTemplate.swift */; };
 		B0619C0824C1CAB9008969A1 /* CustomDatePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0619C0724C1CAB9008969A1 /* CustomDatePicker.swift */; };
-		B0619C0A24C1E62C008969A1 /* PersonFineAdvanced.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0619C0924C1E62C008969A1 /* PersonFineAdvanced.swift */; };
 		B0619C0D24C20C4B008969A1 /* ReasonList.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0619C0C24C20C4B008969A1 /* ReasonList.swift */; };
 		B0619C0F24C20EAA008969A1 /* ReasonAddNew.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0619C0E24C20EAA008969A1 /* ReasonAddNew.swift */; };
 		B0619C1124C21463008969A1 /* ReasonEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0619C1024C21463008969A1 /* ReasonEditor.swift */; };
@@ -94,7 +91,6 @@
 		B077B58E24CB0714003844CE /* Provider.swift in Sources */ = {isa = PBXBuildFile; fileRef = B077B58C24CB06FE003844CE /* Provider.swift */; };
 		B077B59824CB0804003844CE /* WidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B077B59624CB0801003844CE /* WidgetView.swift */; };
 		B077B59A24CB0A7E003844CE /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0C1C51824A78C90007B584B /* Color.swift */; };
-		B07938D624BEF4C300F86E86 /* PersonFineDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = B07938D524BEF4C300F86E86 /* PersonFineDetail.swift */; };
 		B07938D824BF037900F86E86 /* PersonAddNew.swift in Sources */ = {isa = PBXBuildFile; fileRef = B07938D724BF037900F86E86 /* PersonAddNew.swift */; };
 		B07DDDCF256FB9E20003F139 /* ChangeFinePayedCall.swift in Sources */ = {isa = PBXBuildFile; fileRef = B07DDDCE256FB9E20003F139 /* ChangeFinePayedCall.swift */; };
 		B07DDDEF256FF8CF0003F139 /* FineEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = B07DDDEE256FF8CF0003F139 /* FineEditor.swift */; };
@@ -280,12 +276,9 @@
 		B061754024CC639400382D9C /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		B061754324CC658200382D9C /* WidgetUrls.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetUrls.swift; sourceTree = "<group>"; };
 		B0619BFA24C0B62B008969A1 /* PersonEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonEditor.swift; sourceTree = "<group>"; };
-		B0619BFD24C0B999008969A1 /* PersonFineEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonFineEditor.swift; sourceTree = "<group>"; };
 		B0619BFF24C0BD16008969A1 /* ImportanceChanger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportanceChanger.swift; sourceTree = "<group>"; };
 		B0619C0124C0C1E2008969A1 /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
-		B0619C0324C186FC008969A1 /* PersonFineTemplate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonFineTemplate.swift; sourceTree = "<group>"; };
 		B0619C0724C1CAB9008969A1 /* CustomDatePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDatePicker.swift; sourceTree = "<group>"; };
-		B0619C0924C1E62C008969A1 /* PersonFineAdvanced.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonFineAdvanced.swift; sourceTree = "<group>"; };
 		B0619C0C24C20C4B008969A1 /* ReasonList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReasonList.swift; sourceTree = "<group>"; };
 		B0619C0E24C20EAA008969A1 /* ReasonAddNew.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReasonAddNew.swift; sourceTree = "<group>"; };
 		B0619C1024C21463008969A1 /* ReasonEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReasonEditor.swift; sourceTree = "<group>"; };
@@ -310,7 +303,6 @@
 		B077B58924CACA78003844CE /* StrafenWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = StrafenWidgetExtension.entitlements; sourceTree = "<group>"; };
 		B077B58C24CB06FE003844CE /* Provider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Provider.swift; sourceTree = "<group>"; };
 		B077B59624CB0801003844CE /* WidgetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetView.swift; sourceTree = "<group>"; };
-		B07938D524BEF4C300F86E86 /* PersonFineDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonFineDetail.swift; sourceTree = "<group>"; };
 		B07938D724BF037900F86E86 /* PersonAddNew.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonAddNew.swift; sourceTree = "<group>"; };
 		B07DDDCE256FB9E20003F139 /* ChangeFinePayedCall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeFinePayedCall.swift; sourceTree = "<group>"; };
 		B07DDDEE256FF8CF0003F139 /* FineEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FineEditor.swift; sourceTree = "<group>"; };
@@ -546,7 +538,6 @@
 			isa = PBXGroup;
 			children = (
 				B042D44424BCD80B0029F2D5 /* PersonDetail.swift */,
-				B07938D424BEF4AF00F86E86 /* PersonFineDetail */,
 				B0619BFA24C0B62B008969A1 /* PersonEditor.swift */,
 			);
 			path = PersonDetail;
@@ -619,16 +610,6 @@
 			path = Utilities;
 			sourceTree = "<group>";
 		};
-		B0619BFC24C0B981008969A1 /* PersonFineEditor */ = {
-			isa = PBXGroup;
-			children = (
-				B0619BFD24C0B999008969A1 /* PersonFineEditor.swift */,
-				B0619C0924C1E62C008969A1 /* PersonFineAdvanced.swift */,
-				B0619C0324C186FC008969A1 /* PersonFineTemplate.swift */,
-			);
-			path = PersonFineEditor;
-			sourceTree = "<group>";
-		};
 		B0619C0B24C20C3A008969A1 /* ReasonList */ = {
 			isa = PBXGroup;
 			children = (
@@ -681,15 +662,6 @@
 				B077B57B24CAC655003844CE /* Info.plist */,
 			);
 			path = Controller;
-			sourceTree = "<group>";
-		};
-		B07938D424BEF4AF00F86E86 /* PersonFineDetail */ = {
-			isa = PBXGroup;
-			children = (
-				B07938D524BEF4C300F86E86 /* PersonFineDetail.swift */,
-				B0619BFC24C0B981008969A1 /* PersonFineEditor */,
-			);
-			path = PersonFineDetail;
 			sourceTree = "<group>";
 		};
 		B099522D254472C700833EA4 /* Products */ = {
@@ -1329,7 +1301,6 @@
 				B0C554052505646400BA3E26 /* AppDelegate.swift in Sources */,
 				B020C7C424B0C5E6008940FE /* ImageFetcher.swift in Sources */,
 				B0F3449F251E00EA002214DF /* DeleteClubChange.swift in Sources */,
-				B07938D624BEF4C300F86E86 /* PersonFineDetail.swift in Sources */,
 				B020C7C624B0C8BE008940FE /* ImageData.swift in Sources */,
 				B0D75CC625581FFE00555B03 /* GetPersonPropertiesCall.swift in Sources */,
 				B020C7C224B0B9D0008940FE /* PersonRowImage.swift in Sources */,
@@ -1373,7 +1344,6 @@
 				B04D4AA22546AFB900658924 /* SignInNameInput.swift in Sources */,
 				B0C1C51B24A78CC2007B584B /* Settings.swift in Sources */,
 				B042D43324BB19E10029F2D5 /* ProfileDetail.swift in Sources */,
-				B0619C0A24C1E62C008969A1 /* PersonFineAdvanced.swift in Sources */,
 				B042D44524BCD80C0029F2D5 /* PersonDetail.swift in Sources */,
 				B0F4331D2502CA7500B0AAA7 /* HomeViews.swift in Sources */,
 				B0B117CC24FA962C006A22F2 /* SignInWithApple.swift in Sources */,
@@ -1381,7 +1351,6 @@
 				B006920624C615D500AE2EF0 /* HomeTabs.swift in Sources */,
 				B0619C0F24C20EAA008969A1 /* ReasonAddNew.swift in Sources */,
 				B0B4822224A8D61300CB7A1A /* CustomTextField.swift in Sources */,
-				B0619BFE24C0B999008969A1 /* PersonFineEditor.swift in Sources */,
 				B020C7C024AF7CC6008940FE /* Person.swift in Sources */,
 				B0619C0D24C20C4B008969A1 /* ReasonList.swift in Sources */,
 				B04D4AA82546E89E00658924 /* SignInClubInput.swift in Sources */,
@@ -1395,7 +1364,6 @@
 				B042D43B24BB27EF0029F2D5 /* FormattedDate.swift in Sources */,
 				B0619C1624C236C2008969A1 /* AddNewFinePerson.swift in Sources */,
 				B0D75C85255716FB00555B03 /* Fetcher.swift in Sources */,
-				B0619C0424C186FC008969A1 /* PersonFineTemplate.swift in Sources */,
 				B0B84C822544818C000B94BA /* SignInPersonSelection.swift in Sources */,
 				B0619C1124C21463008969A1 /* ReasonEditor.swift in Sources */,
 				B0C1C51D24A7910F007B584B /* AppUrls.swift in Sources */,

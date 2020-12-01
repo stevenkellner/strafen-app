@@ -81,10 +81,10 @@ struct ProfileDetail: View {
                         
                         // Empty List Text
                         if fineList.isEmpty({ $0.assoiatedPersonId == personId }) {
-                         Text("Du hast keine Strafen.")
-                             .configurate(size: 25)
-                             .padding(.horizontal, 15)
-                             .padding(.top, 20)
+                            Text("Du hast keine Strafen.")
+                                .configurate(size: 25)
+                                .padding(.horizontal, 15)
+                                .padding(.top, 20)
                         }
                         
                         // Fine list
@@ -94,6 +94,7 @@ struct ProfileDetail: View {
                                     FineListRow(of: fine, selectedForLargeDesign: $selectedForLargeDesign, withOpenUrl: true, dismissHandler: $dismissHandler)
                                 }
                             }.padding(.bottom, 10)
+                                .padding(.top, 5)
                         }.padding(.top, 10)
                         
                     } else {
@@ -121,44 +122,15 @@ struct ProfileDetail: View {
         /// Observed Object that contains all settings of the app of this device
         @ObservedObject var settings = NewSettings.shared
         
-        /// Color scheme to get appearance of this device
-        @Environment(\.colorScheme) var colorScheme
-        
-        /// True if image detail is showed
-        @State var showImageDetail = false
-        
         /// Indicate if image picker is shown
         @State var showImagePicker = false
-        
-        /// Size of the image
-        let imageSize: CGSize = .square(100)
         
         var body: some View {
             HStack(spacing: 0) {
                 
                 // Image
-                if let image = image {
-                    Image(uiImage: image)
-                        .resizable()
-                        .aspectRatio(image.size, contentMode: .fill)
-                        .frame(size: imageSize)
-                        .clipShape(Circle())
-                        .toggleOnTapGesture($showImageDetail)
-                        .overlay(Circle().stroke(settings.properties.style.strokeColor(colorScheme), lineWidth: settings.properties.style.lineWidth).frame(size: imageSize))
-                        .sheet(isPresented: $showImageDetail) {
-                            PersonDetail.ImageDetail(image: image, personName: settings.properties.person?.name ?? .unknown) // TODO improve image detail
-                        }
-                } else {
-                    Image(systemName: "person")
-                        .resizable()
-                        .font(.system(size: imageSize.height * 0.45, weight: .thin))
-                        .frame(size: imageSize * 0.45)
-                        .scaledToFit()
-                        .offset(y: -imageSize.height * 0.03)
-                        .foregroundColor(settings.properties.style.strokeColor(colorScheme))
-                        .overlay(Circle().stroke(settings.properties.style.strokeColor(colorScheme), lineWidth: settings.properties.style.lineWidth).frame(size: imageSize * 0.75))
-                        .padding(.leading, 25)
-                }
+                PersonDetail.PersonImage(image: $image, personName: settings.properties.person?.name ?? .unknown)
+                    .padding(.leading, image == nil ? 25 : 0)
                 
                 Spacer()
                 
@@ -182,7 +154,7 @@ struct ProfileDetail: View {
                         }
                     }
                 
-            }.frame(height: imageSize.height)
+            }.frame(height: 100)
                 .padding(.horizontal, 30)
         }
     }

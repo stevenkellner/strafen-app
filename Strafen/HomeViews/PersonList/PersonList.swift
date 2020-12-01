@@ -69,7 +69,7 @@ struct PersonList: View {
                             
                             LazyVStack(spacing: 15) {
                                 ForEach(personList.sortedForList(with: searchText, settings: settings)) { person in
-                                    PersonListRow(person: person, dismissHandler: $dismissHandler)
+                                    PersonListRow(person: person, searchText: $searchText, dismissHandler: $dismissHandler)
                                 }
                             }.padding(.bottom, 10)
                             
@@ -91,7 +91,6 @@ struct PersonList: View {
         }.edgesIgnoringSafeArea(.all)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .setScreenSize
-            //.onAppear(perform: changeAppereanceStyle)
     }
     
     
@@ -100,6 +99,9 @@ struct PersonList: View {
         
         /// Contains details of the person
         let person: NewPerson
+        
+        /// Text searched in search bar
+        @Binding var searchText: String
         
         ///Dismiss handler
         @Binding var dismissHandler: DismissHandler
@@ -121,7 +123,7 @@ struct PersonList: View {
                 
                 // Navigation link to person detail
                 EmptyNavigationLink(isActive: $isLinkActive) {
-                    Text(person.name.formatted) // PersonDetail(person: person, dismissHandler: $dismissHandler) TODO
+                    PersonDetail(person: person, dismissHandler: $dismissHandler)
                 }
                 
                 GeometryReader { geometry in
@@ -167,7 +169,11 @@ struct PersonList: View {
                         
                     }
                 }.frame(width: UIScreen.main.bounds.width * 0.95, height: 50)
-                    .toggleOnTapGesture($isLinkActive)
+                    .onTapGesture {
+                        UIApplication.shared.dismissKeyboard()
+                        searchText = ""
+                        isLinkActive = true
+                    }
                 
 //            }.onAppear { TODO
 //                ImageData.shared.fetch(of: person.id) { image in

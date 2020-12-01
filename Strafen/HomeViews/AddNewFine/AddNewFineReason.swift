@@ -146,12 +146,12 @@ struct AddNewFineReason: View {
                                 templateSheetShowing = true
                             }
                             .sheet(isPresented: $templateSheetShowing) {
-                                PersonFineTemplate { template in
-                                    reason = template.reason
-                                    amount = template.amount
-                                    amountString = template.amount.stringValue
-                                    importance = template.importance
-                                    templateId = template.id
+                                FineEditorTemplate { reason in
+//                                    self.reason = reason.reason
+//                                    amount = reason.amount
+//                                    amountString = amount.stringValue
+//                                    importance = reason.importance
+//                                    templateId = reason.id
                                 }
                             }
                         

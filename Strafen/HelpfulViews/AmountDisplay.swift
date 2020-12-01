@@ -120,18 +120,19 @@ struct AmountDisplay: View {
         }
         
         /// Amount sum of the state
-        func amount(of personId: UUID, _ fineList: [Fine]) -> Euro {
+        func amount(of personId: UUID, _ fineList: [NewFine]?, with reasonList: [ReasonTemplate]?) -> Amount {
+            guard let amountSum = fineList?.amountSum(of: personId, with: reasonList) else { return .zero }
             switch self {
             case .total:
-                return fineList.totalAmountSum(of: personId)
+                return amountSum.total
             case .payed:
-                return fineList.payedAmountSum(of: personId)
+                return amountSum.payed
             case .high:
-                return fineList.highAmountSum(of: personId)
+                return amountSum.high
             case .medium:
-                return fineList.mediumAmountSum(of: personId)
+                return amountSum.medium
             case .low:
-                return fineList.unpayedAmountSum(of: personId)
+                return amountSum.unpayed
             }
         }
     }
@@ -140,7 +141,7 @@ struct AmountDisplay: View {
     @State var currentDisplay: AmountDisplayState = .total
     
     /// Time stamp of last dragging
-    @State var dragTimeStamp = Date().timeIntervalSince1970
+    @State var dragTimeStamp = Date().timeIntervalSinceReferenceDate
     
     var body: some View {
         ZStack {
@@ -159,8 +160,8 @@ struct AmountDisplay: View {
     /// Go to next display
     func tapToNextDisplay() {
         withAnimation {
-            if Date().timeIntervalSince1970 - dragTimeStamp >= 0.25 {
-                dragTimeStamp = Date().timeIntervalSince1970
+            if Date().timeIntervalSinceReferenceDate - dragTimeStamp >= 0.25 {
+                dragTimeStamp = Date().timeIntervalSinceReferenceDate
                 currentDisplay.toNextState()
             }
         }
@@ -169,8 +170,8 @@ struct AmountDisplay: View {
     /// Go to next or previous diplay depending on value
     func dragToAdjacentDisplay(value: DragGesture.Value) {
         withAnimation {
-            if Date().timeIntervalSince1970 - dragTimeStamp >= 0.25 {
-                dragTimeStamp = Date().timeIntervalSince1970
+            if Date().timeIntervalSinceReferenceDate - dragTimeStamp >= 0.25 {
+                dragTimeStamp = Date().timeIntervalSinceReferenceDate
                 if value.translation.width >= 50 {
                     currentDisplay.toPreviousState()
                 } else if value.translation.width <= -50 {
@@ -193,7 +194,10 @@ struct AmountDisplay: View {
         @Binding var currentDisplay: AmountDisplayState
         
         /// Fine List Data
-        @ObservedObject var fineListData = ListData.fine
+        @ObservedObject var fineListData = NewListData.fine
+        
+        /// Reason List Data
+        @ObservedObject var reasonListData = NewListData.reason
         
         var body: some View {
             GeometryReader { geometry in
@@ -207,11 +211,13 @@ struct AmountDisplay: View {
                         Outline(.left)
                         
                         // Inside
-                        Text(state.text)
-                            .foregroundColor(.textColor)
-                            .font(.text(20))
-                            .lineLimit(1)
-                            .padding(.horizontal, 5)
+                        HStack(spacing: 0) {
+                            Text(state.text)
+                                .configurate(size: 20)
+                                .lineLimit(1)
+                                .padding(.horizontal, 25)
+                            Spacer()
+                        }
                         
                     }.frame(width: UIScreen.main.bounds.width * 0.675)
                 
@@ -223,7 +229,7 @@ struct AmountDisplay: View {
                             .fillColor(state.color)
                         
                         // Inside
-                        Text(String(describing: state.amount(of: personId, fineListData.list!)))
+                        Text(describing: state.amount(of: personId, fineListData.list, with: reasonListData.list))
                             .foregroundColor(plain: state.color)
                             .font(.text(20))
                             .lineLimit(1)
