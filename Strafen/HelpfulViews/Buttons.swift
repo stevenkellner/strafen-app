@@ -223,6 +223,17 @@ struct CancelConfirmButton: View {
         cancelConfirmButton.confirmButtonHandler = confirmButtonHandler
         return cancelConfirmButton
     }
+    
+    /// Set confirm button handler
+    public func onConfirmPress<AlertType>(_ alertType: Binding<AlertType?>, value: AlertType, condition: @escaping () -> Bool = { true }) -> CancelConfirmButton where AlertType: AlertTypeProtocol {
+        var cancelConfirmButton = self
+        cancelConfirmButton.confirmButtonHandler = {
+            if condition() {
+                alertType.wrappedValue = value
+            }
+        }
+        return cancelConfirmButton
+    }
 }
 
 /// Red Delete and confirm button
@@ -347,9 +358,13 @@ struct DeleteConfirmButton: View {
     }
     
     /// Set confirm button handler
-    public func onConfirmPress<AlertType>(_ alertType: Binding<AlertType?>, value: AlertType) -> DeleteConfirmButton where AlertType: AlertTypeProtocol {
+    public func onConfirmPress<AlertType>(_ alertType: Binding<AlertType?>, value: AlertType, condition: @escaping () -> Bool = { true }) -> DeleteConfirmButton where AlertType: AlertTypeProtocol {
         var deleteConfirmButton = self
-        deleteConfirmButton.confirmButtonHandler = { alertType.wrappedValue = value }
+        deleteConfirmButton.confirmButtonHandler = {
+            if condition() {
+                alertType.wrappedValue = value
+            }
+        }
         return deleteConfirmButton
     }
 }

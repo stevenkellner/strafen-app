@@ -581,3 +581,25 @@ extension View {
         edgesIgnoringSafeArea(.all).frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 }
+
+/// Precedencegroup for |!| - operator
+precedencegroup LogicalDisjunctionBothPrecedence {
+    higherThan: LogicalDisjunctionPrecedence
+    associativity: left
+    assignment: false
+}
+
+/// Works like || - operator (logical disjunction), but evalutates also the right side if left side is already true
+infix operator |!|: LogicalDisjunctionBothPrecedence
+
+// Extension of Bool to get |!| - operator
+extension Bool {
+    
+    /// Works like || - operator (logical disjunction), but evalutates also the right side if left side is already true
+    static func |!|(lhs: Bool, rhs: Bool) -> Bool {
+        var isTrue = false
+        isTrue = lhs || isTrue
+        isTrue = rhs || isTrue
+        return isTrue
+    }
+}

@@ -10,176 +10,252 @@ import SwiftUI
 /// View to add a new person
 struct PersonAddNew: View {
     
+    /// Properties of inputed person
+    struct PersonInputProperties {
+        
+        /// Input first Name
+        var firstName = ""
+        
+        /// Input last Name
+        var lastName = ""
+        
+        /// Image of the person
+        var image: UIImage?
+        
+        /// Progess of image upload
+        var imageUploadProgess: Double?
+        
+        /// Type of first name textfield error
+        var firstNameErrorMessages: ErrorMessages? = nil
+        
+        /// Type of last name textfield error
+        var lastNameErrorMessages: ErrorMessages? = nil
+        
+        /// Type of function call error
+        var functionCallErrorMessages: ErrorMessages? = nil
+        
+        /// State of data task connection
+        var connectionState: ConnectionState = .passed
+        
+        /// Checks if an error occurs while first name input
+        @discardableResult mutating func evaluteFirstNameError() -> Bool {
+            if firstName.isEmpty {
+                firstNameErrorMessages = .emptyField
+            } else {
+                firstNameErrorMessages = nil
+                return false
+            }
+            return true
+        }
+        
+        /// Checks if an error occurs while last name input
+        @discardableResult mutating func evaluteLastNameError() -> Bool {
+            if lastName.isEmpty {
+                lastNameErrorMessages = .emptyField
+            } else {
+                lastNameErrorMessages = nil
+                return false
+            }
+            return true
+        }
+        
+        /// Checks if an error occurs
+        mutating func errorOccurred() -> Bool {
+            evaluteFirstNameError() |!| evaluteLastNameError()
+        }
+    }
+    
+    /// Alert type
+    enum AlertType: AlertTypeProtocol {
+        
+        /// Alert when confirm button is pressed
+        case confirmButton(action: () -> Void)
+        
+        /// Id for Identifiable
+        var id: Int {
+            switch self {
+            case .confirmButton(action: _):
+                return 0
+            }
+        }
+        
+        /// Alert of all alert types
+        var alert: Alert {
+            switch self {
+            case .confirmButton(action: let action):
+                return Alert(title: Text("Person Hinzufügen"),
+                             message: Text("Möchtest du diese Person wirklich hinzufügen?"),
+                             primaryButton: .destructive(Text("Abbrechen")),
+                             secondaryButton: .default(Text("Bestätigen"), action: action))
+            }
+        }
+    }
+    
     /// Presentation mode
     @Environment(\.presentationMode) var presentationMode
     
     /// Color scheme to get appearance of this device
     @Environment(\.colorScheme) var colorScheme
     
-    /// Observed Object that contains all settings of the app of this device
-    @ObservedObject var settings = Settings.shared
+    /// Properties of inputed person
+    @State var personInputProperties = PersonInputProperties()
     
-    /// Image of the person
-    @State var image: UIImage?
-    
-    /// Input first Name
-    @State var firstName = ""
-    
-    /// Input last Name
-    @State var lastName = ""
-    
-    /// True if empty String in first name field
-    @State var isFirstNameError = false
-    
-    /// True if empty String in last name field
-    @State var isLastNameError = false
-    
-    /// True if keybord of firstName field is shown
-    @State var isFirstNameKeyboardShown = false
-    
-    /// True if keybord of lastName field is shown
-    @State var isLastNameKeyboardShown = false
-    
-    /// Indicates if cofirm button is pressed and the alert is shown
-    @State var confirmAlertShown = false
-    
-    /// State of data task connection
-    @State var connectionState: ConnectionState = .passed
-    
-    /// Indicates if no connection alert is shown
-    @State var noConnectionAlert = false
-    
-    /// PersonId
-    let personId = UUID()
-    
-    /// Screen size
-    @State var screenSize: CGSize?
+    /// Alert type
+    @State var alertType: AlertType? = nil
     
     var body: some View {
-        GeometryReader { geometry in
+        ZStack {
+            
+            // Background color
+            colorScheme.backgroundColor
+            
             VStack(spacing: 0) {
                 
                 // Bar to wipe sheet down
                 SheetBar()
                 
-                // Title
+                // Header
                 Header("Person Hinzufügen")
                 
                 // Image and Name
-                VStack(spacing: 0) {
-                    Spacer()
+                VStack(spacing: 20) {
                     
                     // Image
-                    ImageSelector(image: $image)
-                        .frame(width: 120, height: 120)
-                    
-                    Spacer()
-                    
-                    // First Name
-                    VStack(spacing: 0) {
+                    VStack(spacing: 5) {
                         
-                        // Title
-                        HStack(spacing: 0) {
-                            Text("Name:")
-                                .foregroundColor(.textColor)
-                                .font(.text(20))
-                                .padding(.leading, 10)
-                            Spacer()
+                        ImageSelector(image: $personInputProperties.image, uploadProgress: $personInputProperties.imageUploadProgess)
+                            .frame(width: 120, height: 120)
+                            .padding(.bottom, 20)
+                        
+                        // Progress bar
+                        if let imageUploadProgess = personInputProperties.imageUploadProgess {
+                            VStack(spacing: 5) {
+                                Text("Bild hochladen")
+                                    .configurate(size: 15)
+                                    .padding(.horizontal, 20)
+                                    .lineLimit(1)
+                                ProgressView(value: imageUploadProgess)
+                                    .progressViewStyle(LinearProgressViewStyle())
+                                    .frame(width: UIScreen.main.bounds.width * 0.95)
+                            }
                         }
                         
-                        // Text Field
-                        CustomTextField("Vorname", text: $firstName, keyboardOnScreen: $isFirstNameKeyboardShown) {
-                            isFirstNameError = firstName == ""
-                        }.frame(width: UIScreen.main.bounds.width * 0.95, height: 50)
-                            .padding(.top, 5)
-                        
-                        // Error Text
-                        if isFirstNameError {
-                            Text("Dieses Feld darf nicht leer sein!")
-                                .foregroundColor(Color.custom.red)
-                                .font(.text(20))
-                                .lineLimit(1)
-                                .padding(.horizontal, 15)
-                                .padding(.top, 5)
-                        }
                     }
                     
-                    // Last Name
-                    VStack(spacing: 0) {
+                    // Name
+                    TitledContent("Name") {
                         
-                        // Text Field
-                        CustomTextField("Nachname", text: $lastName, keyboardOnScreen: $isLastNameKeyboardShown) {
-                            isLastNameError = lastName == ""
-                        }.frame(width: UIScreen.main.bounds.width * 0.95, height: 50)
-                            .padding(.top, 5)
+                        // First name
+                        CustomTextField()
+                            .title("Vorname")
+                            .textBinding($personInputProperties.firstName)
+                            .errorMessages($personInputProperties.firstNameErrorMessages)
+                            .textFieldSize(width: UIScreen.main.bounds.width * 0.95, height: 50)
+                            .onCompletion { personInputProperties.evaluteFirstNameError() }
                         
-                        // Error Text
-                        if isLastNameError {
-                            Text("Dieses Feld darf nicht leer sein!")
-                                .foregroundColor(Color.custom.red)
-                                .font(.text(20))
-                                .lineLimit(1)
-                                .padding(.horizontal, 15)
-                                .padding(.top, 5)
-                        }
+                        // Last name
+                        CustomTextField()
+                            .title("Nachname")
+                            .textBinding($personInputProperties.lastName)
+                            .errorMessages($personInputProperties.lastNameErrorMessages)
+                            .textFieldSize(width: UIScreen.main.bounds.width * 0.95, height: 50)
+                            .onCompletion { personInputProperties.evaluteLastNameError() }
                         
-                    }.padding(.top, 10)
+                    }
                     
                     Spacer()
-                    
-                }.offset(y: isFirstNameKeyboardShown ? -50 : isLastNameKeyboardShown ? -125 : 0)
+                }.keyboardAdaptiveOffset
+                    .padding(.top, 10)
                     .clipped()
                     .padding(.top, 10)
-                    .alert(isPresented: $noConnectionAlert) {
-                        Alert(title: Text("Kein Internet"), message: Text("Für diese Aktion benötigst du eine Internetverbindung."), primaryButton: .destructive(Text("Abbrechen")), secondaryButton: .default(Text("Erneut versuchen"), action: handleSave))
-                    }
                 
-                CancelConfirmButton(connectionState: $connectionState) {
-                    presentationMode.wrappedValue.dismiss()
-                } confirmButtonHandler: {
-                    isFirstNameError = firstName == ""
-                    isLastNameError = lastName == ""
-                    confirmAlertShown = true
-                }.padding(.bottom, 50)
-                    .alert(isPresented: $confirmAlertShown) {
-                        if isFirstNameError || isLastNameError {
-                            return Alert(title: Text("Eingabefehler"), message: Text("Es gab ein Fehler in der Eingabe des Namens."), dismissButton: .default(Text("Verstanden")))
+                VStack(spacing: 5) {
+                    
+                    // Cancel and confim button
+                    CancelConfirmButton()
+                        .connectionState($personInputProperties.connectionState)
+                        .onCancelPress { presentationMode.wrappedValue.dismiss() }
+                        .onConfirmPress($alertType, value: .confirmButton(action: handleSave)) {
+                            !personInputProperties.errorOccurred()
                         }
-                        return Alert(title: Text("Person Hinzufügen"), message: Text("Möchtest du diese Person wirklich hinzufügen?"), primaryButton: .destructive(Text("Abbrechen")), secondaryButton: .default(Text("Bestätigen"), action: handleSave))
-                    }
-            }.frame(size: screenSize ?? geometry.size)
-                .onAppear {
-                    screenSize = geometry.size
-                }
-        }.background(colorScheme.backgroundColor)
+                        .alert(item: $alertType)
+                    
+                    // Error messages
+                    ErrorMessageView(errorMessages: $personInputProperties.functionCallErrorMessages)
+                    
+                }.padding(.bottom, personInputProperties.functionCallErrorMessages == nil ? 50 : 25)
+                    
+            }
+            
+        }.edgesIgnoringSafeArea(.all)
+            .animation(.default)
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .setScreenSize
     }
     
     /// Handles person and image saving
     func handleSave() {
-        connectionState = .loading
-        let dispathGroup = DispatchGroup()
-        dispathGroup.enter()
-        let person = Person(firstName: firstName, lastName: lastName, id: personId)
-        let changeItem = ServerListChange(changeType: .add, item: person)
-        Changer.shared.change(changeItem) {
-            dispathGroup.leave()
-        } failedHandler: {
-            connectionState = .failed
-            noConnectionAlert = true
-        }
-        if let image = image {
-            dispathGroup.enter()
-            let changeItem = PersonImageChange(changeType: .add, image: image, personId: personId)
-            Changer.shared.change(changeItem) {
-                dispathGroup.leave()
-            } failedHandler: {
-                connectionState = .failed
-                noConnectionAlert = true
-            }
-        }
-        dispathGroup.notify(queue: .main) {
-            connectionState = .passed
-            presentationMode.wrappedValue.dismiss()
+        guard personInputProperties.connectionState != .loading,
+            !personInputProperties.errorOccurred(),
+            let clubId = NewSettings.shared.properties.person?.clubProperties.id else { return }
+        personInputProperties.connectionState = .loading
+        
+        let personId = UUID()
+        
+        // Set person image
+        setPersonImage(of: personId, clubId: clubId) {
+            
+            // Create new person in database
+            createNewPerson(of: personId, clubId: clubId)
+            
         }
     }
+    
+    /// Set person image
+    func setPersonImage(of personId: UUID, clubId: UUID, completionHandler: @escaping () -> Void) {
+        let dispatchGroup = DispatchGroup()
+        if let image = personInputProperties.image {
+            personInputProperties.imageUploadProgess = .zero
+            dispatchGroup.enter()
+            ImageStorage.shared.store(at: .personImage(with: personId, clubId: clubId), image: image) { _ in
+                
+                // Success
+                dispatchGroup.leave()
+                personInputProperties.imageUploadProgess = nil
+                
+            } failedHandler: { _ in
+                
+                // Error
+                personInputProperties.functionCallErrorMessages = .internalErrorSave
+                personInputProperties.connectionState = .failed
+                personInputProperties.imageUploadProgess = nil
+                
+            } progressChangeHandler: { progress in
+                personInputProperties.imageUploadProgess = progress
+            }
+
+        }
+        dispatchGroup.notify(queue: .main) {
+            completionHandler()
+        }
+    }
+    
+    /// Create new person in database
+    func createNewPerson(of personId: UUID, clubId: UUID) {
+        
+        // New person call item
+        let name = PersonName(firstName: personInputProperties.firstName, lastName: personInputProperties.lastName)
+        let person = NewPerson(id: personId, name: name, signInData: nil)
+        let callItem = ChangeListCall(clubId: clubId, changeType: .add, changeItem: person)
+        
+        // Create new person in database
+        FunctionCaller.shared.call(callItem) { _ in
+            personInputProperties.connectionState = .passed
+            personInputProperties.imageUploadProgess = nil
+            presentationMode.wrappedValue.dismiss()
+        } failedHandler: { _ in
+            personInputProperties.connectionState = .failed
+            personInputProperties.functionCallErrorMessages = .internalErrorSave
+        }
+}
 }

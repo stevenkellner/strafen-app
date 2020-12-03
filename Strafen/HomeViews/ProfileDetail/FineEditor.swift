@@ -226,7 +226,9 @@ struct FineEditor: View {
                     .deleteConnectionState($fineInputProperties.connectionStateDelete)
                     .confirmConnectionState($fineInputProperties.connectionStateUpdate)
                     .onDeletePress($alertType, value: .deleteButton(action: handleFineDelete))
-                    .onConfirmPress($alertType, value: .confirmButton(action: handleFineUpdate))
+                    .onConfirmPress($alertType, value: .confirmButton(action: handleFineUpdate)) {
+                        fineInputProperties.getFine(old: fine, with: reasonListData.list) != nil
+                    }
                     .alert(item: $alertType)
                 
                 // Error messages

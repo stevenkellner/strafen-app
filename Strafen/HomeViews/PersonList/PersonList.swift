@@ -84,7 +84,7 @@ struct PersonList: View {
                 
                 // Add New Person Button
                 AddNewListItemButton(list: $personListData.list) {
-                    Text("Test") // PersonAddNew() TODO
+                    PersonAddNew()
                 }
                 
             }.hideNavigationBarTitle()
