@@ -210,8 +210,14 @@ enum ErrorMessages {
     /// Internal error
     case internalErrorSave
     
+    /// Internal error
+    case internalErrorDelete
+    
     /// Amount mustn't be zero
     case amountZero
+    
+    /// Person is undeleteable
+    case personUndeletable
     
     /// Message of the error
     var message: String {
@@ -254,8 +260,12 @@ enum ErrorMessages {
             return "Keine Region angegeben!"
         case .internalErrorSave:
             return "Es gab ein Problem beim Speichern!"
+        case .internalErrorDelete:
+            return "Es gab ein Problem beim Löschen!"
         case .amountZero:
             return "Betrag darf nicht Null sein!"
+        case .personUndeletable:
+            return "Nicht löschbar, da sie bereits registriert ist!"
         }
     }
 }

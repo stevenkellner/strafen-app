@@ -16,16 +16,20 @@ struct ImageSelector: View {
     /// Indicates image upload progress
     @Binding var uploadProgress: Double?
     
+    /// Completion handler
+    let completionHandler: (() -> Void)?
+    
     /// Indicate if image picker is shown
     @State var showImagePicker = false
     
     /// Observed Object that contains all settings of the app of this device
-    @ObservedObject var settings = Settings.shared
+    @ObservedObject var settings = NewSettings.shared
     
     /// Init with image and upload progress binding
-    init(image: Binding<UIImage?>, uploadProgress: Binding<Double?> = .constant(nil)) {
+    init(image: Binding<UIImage?>, uploadProgress: Binding<Double?> = .constant(nil), completionHandler: (() -> Void)? = nil) {
         _image = image
         _uploadProgress = uploadProgress
+        self.completionHandler = completionHandler
     }
     
     var body: some View {
@@ -44,7 +48,7 @@ struct ImageSelector: View {
                             .clipShape(Circle())
                             .overlay(
                                 Circle()
-                                    .stroke(Color.custom.gray, lineWidth: settings.style == .default ? 4 : 2)
+                                    .stroke(Color.custom.gray, lineWidth: settings.properties.style == .default ? 4 : 2)
                                     .frame(width: geometry.size.width, height: geometry.size.height)
                             )
                             .frame(width: geometry.size.width, height: geometry.size.height)
@@ -53,14 +57,14 @@ struct ImageSelector: View {
                     } else {
                         Image(systemName: "person")
                             .resizable()
-                            .font(.system(size: geometry.size.width * 0.6, weight: settings.style == .default ? .thin : .ultraLight))
+                            .font(.system(size: geometry.size.width * 0.6, weight: settings.properties.style == .default ? .thin : .ultraLight))
                             .frame(width: geometry.size.width * 0.6, height: geometry.size.height * 0.6)
                             .scaledToFit()
                             .offset(y: -6)
                             .foregroundColor(Color.custom.gray)
                             .overlay(
                                 Circle()
-                                    .stroke(Color.custom.gray, lineWidth: settings.style == .default ? 4 : 2)
+                                    .stroke(Color.custom.gray, lineWidth: settings.properties.style == .default ? 4 : 2)
                                     .frame(width: geometry.size.width, height: geometry.size.height)
                             )
                             .frame(width: geometry.size.width, height: geometry.size.height)
@@ -82,14 +86,16 @@ struct ImageSelector: View {
                         }
                     }
                     .sheet(isPresented: self.$showImagePicker) {
-                        ImagePicker($image)
+                        ImagePicker($image) { _, _ in
+                            if let completionHandler = completionHandler { completionHandler() }
+                        }
                     }
                 
                 // remove image button
                 if image != nil && uploadProgress == nil {
                     Image(systemName: "xmark.circle")
                         .foregroundColor(Color.custom.red)
-                        .font(.system(size: geometry.size.width / 3, weight: settings.style == .default ? .light : .thin))
+                        .font(.system(size: geometry.size.width / 3, weight: settings.properties.style == .default ? .light : .thin))
                         .padding(.leading, geometry.size.width / 10)
                         .onTapGesture {
                             withAnimation {

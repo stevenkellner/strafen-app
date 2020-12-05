@@ -257,9 +257,8 @@ struct FineEditor: View {
             presentationMode.wrappedValue.dismiss()
         } failedHandler: { _ in
             fineInputProperties.connectionStateDelete = .failed
-            fineInputProperties.functionCallErrorMessages = .internalErrorSave
+            fineInputProperties.functionCallErrorMessages = .internalErrorDelete
         }
-
     }
     
     /// Handles fine update

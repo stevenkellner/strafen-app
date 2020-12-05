@@ -297,6 +297,13 @@ exports.changeList = functions.region('europe-west1').https.onCall(async (data, 
                 importance: data.importance
             }
         }
+    } else if (data.changeType == 'delete' && data.listType == 'person') {
+        if (await existsData(itemRef.child('signInData'))) {
+            throw new functions.https.HttpsError(
+                'unavailable', 
+                'Person is already signed in!'
+            );
+        }
     }
 
     // Set item
