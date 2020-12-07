@@ -435,14 +435,14 @@ extension Locale {
 extension URL {
     
     /// Path to club image file in server
-    static func clubImage(with id: UUID) -> URL {
+    static func clubImage(with id: NewClub.ID) -> URL {
         URL(string: "images")!
             .appendingPathComponent("club")
             .appendingPathComponent(id.uuidString.uppercased())
     }
     
     /// Path to person image file in server
-    static func personImage(with id: UUID, clubId: UUID) -> URL {
+    static func personImage(with id: NewPerson.ID, clubId: NewClub.ID) -> URL {
         URL(string: "images")!
             .appendingPathComponent("person")
             .appendingPathComponent(clubId.uuidString.uppercased())
@@ -452,22 +452,22 @@ extension URL {
 
 // Extension of URL to get path to list of person / reason / fine
 extension URL {
-    private static func baseList(with id: UUID) -> URL {
+    private static func baseList(with id: NewClub.ID) -> URL {
         URL(string: "clubs")!.appendingPathComponent(id.uuidString.uppercased())
     }
     
     /// Path to person list of club with given id
-    static func personList(with id: UUID) -> URL {
+    static func personList(with id: NewClub.ID) -> URL {
         baseList(with: id).appendingPathComponent("persons")
     }
     
     /// Path to reason list of club with given id
-    static func reasonList(with id: UUID) -> URL {
+    static func reasonList(with id: NewClub.ID) -> URL {
         baseList(with: id).appendingPathComponent("reasons")
     }
     
     /// Path to fine list of club with given id
-    static func fineList(with id: UUID) -> URL {
+    static func fineList(with id: NewClub.ID) -> URL {
         baseList(with: id).appendingPathComponent("fines")
     }
 }

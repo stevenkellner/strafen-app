@@ -10,8 +10,11 @@ import Foundation
 /// Contains all properties of a reason
 struct ReasonTemplate {
     
+    /// Type of Id
+    typealias Id = Tagged<(ReasonTemplate, id: Void), UUID>
+    
     /// Id
-    let id: UUID
+    let id: Id
     
     /// Reason of this template
     let reason: String
@@ -35,7 +38,7 @@ extension ReasonTemplate: NewListType {
     }
     
     /// Init with id and codable self
-    init(with id: UUID, codableSelf: CodableSelf) {
+    init(with id: ID, codableSelf: CodableSelf) {
         self.id = id
         self.reason = codableSelf.reason
         self.importance = codableSelf.importance

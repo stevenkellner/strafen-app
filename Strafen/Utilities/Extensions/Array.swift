@@ -69,9 +69,9 @@ extension Array where Element == NewFine {
         private let reasonList: [ReasonTemplate]?
         
         /// Person id
-        private let personId: UUID
+        private let personId: NewPerson.ID
         
-        init(of personId: UUID, fineList: [NewFine], reasonList: [ReasonTemplate]?) {
+        init(of personId: NewPerson.ID, fineList: [NewFine], reasonList: [ReasonTemplate]?) {
             self.personId = personId
             self.fineList = fineList
             self.reasonList = reasonList
@@ -124,7 +124,7 @@ extension Array where Element == NewFine {
     }
     
     /// Sum of amount of a fine list
-    func amountSum(of personId: UUID, with reasonList: [ReasonTemplate]?) -> AmountSum {
+    func amountSum(of personId: NewPerson.ID, with reasonList: [ReasonTemplate]?) -> AmountSum {
         AmountSum(of: personId, fineList: self, reasonList: reasonList)
     }
 }

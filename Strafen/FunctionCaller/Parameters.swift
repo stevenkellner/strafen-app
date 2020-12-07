@@ -107,3 +107,12 @@ extension Date: ParameterableObject {
         return Double(String(data: data, encoding: .utf8)!)!
     }
 }
+
+// Extension of Tagged to confirm to ParameterableObject
+extension Tagged: ParameterableObject where RawValue: ParameterableObject {
+    
+    /// Object call with Firebase function as Parameter
+    var parameterableObject: _ParameterableObject {
+        rawValue.parameterableObject
+    }
+}

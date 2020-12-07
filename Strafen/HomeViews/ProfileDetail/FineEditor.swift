@@ -32,7 +32,7 @@ struct FineEditor: View {
         var date = Date()
         
         /// Template id
-        var templateId: UUID?
+        var templateId: ReasonTemplate.ID?
         
         /// Type of reason textfield error
         var reasonErrorMessages: ErrorMessages? = nil

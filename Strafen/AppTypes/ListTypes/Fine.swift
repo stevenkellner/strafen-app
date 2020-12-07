@@ -370,11 +370,14 @@ extension Fine {
 /// Contains all properties of a fine
 struct NewFine {
     
+    /// Type of Id
+    typealias Id = Tagged<(ReasonTemplate, id: Void), UUID>
+    
     /// Id
-    let id: UUID
+    let id: Id
     
     /// Id of the associated person
-    let assoiatedPersonId: UUID
+    let assoiatedPersonId: NewPerson.ID
     
     /// Date this fine was issued
     let date: Date
@@ -416,7 +419,7 @@ extension NewFine: NewListType {
     }
     
     /// Init with id and codable self
-    init(with id: UUID, codableSelf: CodableSelf) {
+    init(with id: ID, codableSelf: CodableSelf) {
         self.id = id
         self.assoiatedPersonId = codableSelf.personId
         self.date = codableSelf.date
@@ -456,7 +459,7 @@ extension NewFine {
     struct CodableSelf: Decodable {
         
         /// Id of the associated person
-        let personId: UUID
+        let personId: NewPerson.ID
         
         /// Date this fine was issued
         let date: Date

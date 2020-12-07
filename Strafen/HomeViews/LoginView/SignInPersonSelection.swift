@@ -23,7 +23,7 @@ struct SignInPersonSelection: View {
     @State var personList: [NewPerson]? = nil
     
     /// Id of selected person
-    @State var selectedPersonId: UUID? = nil
+    @State var selectedPersonId: NewPerson.ID? = nil
     
     /// Screen size of this view
     @State var screenSize: CGSize?
@@ -106,7 +106,7 @@ struct SignInPersonSelection: View {
         signInConnectionState = .loading
         Logging.shared.log(with: .info, "Started to sign in.")
         
-        let personId = selectedPersonId ?? UUID()
+        let personId = selectedPersonId ?? NewPerson.ID(rawValue: UUID())
         let cachedProperties = SignInCache.shared.cachedStatus?.property as! SignInCache.PropertyUserIdNameClubId
         
         // Register person to database
@@ -134,7 +134,7 @@ struct SignInPersonSelection: View {
         let personList: [NewPerson]
         
         /// Id of selected person
-        @Binding var selectedPersonId: UUID?
+        @Binding var selectedPersonId: NewPerson.ID?
         
         /// Error messages
         @Binding var errorMessages: ErrorMessages?
@@ -182,7 +182,7 @@ struct SignInPersonSelection: View {
         let person: NewPerson
         
         /// Id of selected person
-        @Binding var selectedPersonId: UUID?
+        @Binding var selectedPersonId: NewPerson.ID?
         
         /// Image of the person
         @State var image: UIImage?

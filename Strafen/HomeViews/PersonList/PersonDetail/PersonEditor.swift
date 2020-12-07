@@ -275,7 +275,7 @@ struct PersonEditor: View {
     }
     
     /// Delete person, execute completion handler only at success
-    func deletePerson(clubId: UUID, completionHandler: @escaping () -> Void) {
+    func deletePerson(clubId: NewClub.ID, completionHandler: @escaping () -> Void) {
         let callItem = ChangeListCall(clubId: clubId, changeType: .delete, changeItem: person)
         FunctionCaller.shared.call(callItem) { _ in
             completionHandler()
@@ -296,14 +296,14 @@ struct PersonEditor: View {
     }
     
     /// Delete person image, execute completion handler at success and failure
-    func deleteImage(clubId: UUID, completionHandler: @escaping () -> Void) {
+    func deleteImage(clubId: NewClub.ID, completionHandler: @escaping () -> Void) {
         ImageStorage.shared.delete(at: .personImage(with: person.id, clubId: clubId)) { _ in
             completionHandler()
         }
     }
     
     /// Delete fines of person, execute completion handler at success and failure
-    func deleteFines(clubId: UUID, completionHandler: @escaping () -> Void) {
+    func deleteFines(clubId: NewClub.ID, completionHandler: @escaping () -> Void) {
         fineListData.list?.filter { fine in
             fine.assoiatedPersonId == person.id
         }.forEach { fine in
@@ -346,7 +346,7 @@ struct PersonEditor: View {
     }
     
     /// Update person in database
-    func updatePerson(clubId: UUID, completionHandler: @escaping () -> Void) {
+    func updatePerson(clubId: NewClub.ID, completionHandler: @escaping () -> Void) {
         let personName = PersonName(firstName: personInputProperties.firstName, lastName: personInputProperties.lastName)
         let updatedPerson = NewPerson(id: person.id, name: personName, signInData: person.signInData)
         let callItem = ChangeListCall(clubId: clubId, changeType: .update, changeItem: updatedPerson)
@@ -360,7 +360,7 @@ struct PersonEditor: View {
     }
     
     /// Set person image in database
-    func setPersonImage(image: UIImage, clubId: UUID, completionHandler: @escaping () -> Void) {
+    func setPersonImage(image: UIImage, clubId: NewClub.ID, completionHandler: @escaping () -> Void) {
         personInputProperties.imageUploadProgess = .zero
         ImageStorage.shared.store(at: .personImage(with: person.id, clubId: clubId), image: image) { _ in
             

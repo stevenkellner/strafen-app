@@ -200,7 +200,7 @@ struct PersonAddNew: View {
             let clubId = NewSettings.shared.properties.person?.clubProperties.id else { return }
         personInputProperties.connectionState = .loading
         
-        let personId = UUID()
+        let personId = NewPerson.ID(rawValue: UUID())
         
         // Set person image
         setPersonImage(of: personId, clubId: clubId) {
@@ -212,7 +212,7 @@ struct PersonAddNew: View {
     }
     
     /// Set person image
-    func setPersonImage(of personId: UUID, clubId: UUID, completionHandler: @escaping () -> Void) {
+    func setPersonImage(of personId: NewPerson.ID, clubId: NewClub.ID, completionHandler: @escaping () -> Void) {
         let dispatchGroup = DispatchGroup()
         if let image = personInputProperties.image {
             personInputProperties.imageUploadProgess = .zero
@@ -241,7 +241,7 @@ struct PersonAddNew: View {
     }
     
     /// Create new person in database
-    func createNewPerson(of personId: UUID, clubId: UUID) {
+    func createNewPerson(of personId: NewPerson.ID, clubId: NewClub.ID) {
         
         // New person call item
         let name = PersonName(firstName: personInputProperties.firstName, lastName: personInputProperties.lastName)

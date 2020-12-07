@@ -11,10 +11,10 @@ import Foundation
 struct ChangeFinePayedCall: FunctionCallable {
     
     /// Club id
-    let clubId: UUID
+    let clubId: NewClub.ID
     
     /// Fine id
-    let fineId: UUID
+    let fineId: NewFine.ID
     
     /// Payed
     let payed: Payed

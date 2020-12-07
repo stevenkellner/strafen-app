@@ -29,7 +29,7 @@ struct PersonDetail: View {
     @ObservedObject var reasonListData = NewListData.reason
     
     /// Id of selected row for large design
-    @State var selectedForLargeDesign: UUID? = nil
+    @State var selectedForLargeDesign: NewFine.ID? = nil
     
     /// Person image
     @State var image: UIImage?
@@ -236,7 +236,7 @@ struct PersonDetail: View {
 extension Array where Element == NewFine {
     
     /// Filtered and sorted for person list
-    fileprivate func sortedForList(of personId: UUID, with reasonList: [ReasonTemplate]?) -> [Element] {
+    fileprivate func sortedForList(of personId: NewPerson.ID, with reasonList: [ReasonTemplate]?) -> [Element] {
         filter {
             $0.assoiatedPersonId == personId
         }.sorted {

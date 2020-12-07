@@ -46,6 +46,9 @@ struct Person: ListTypes, Identifiable, Equatable {
 /// Contains all properties of a person
 struct NewPerson {
     
+    /// Type of Id
+    typealias ID = Tagged<(NewPerson, id: Void), UUID>
+    
     /// Data if person is signed in
     struct SignInData: Codable {
         
@@ -60,7 +63,7 @@ struct NewPerson {
     }
     
     /// Id
-    let id: UUID
+    let id: ID
     
     /// Name
     let name: PersonName
@@ -81,7 +84,7 @@ extension NewPerson: NewListType {
     }
     
     /// Init with id and codable self
-    init(with id: UUID, codableSelf: CodableSelf) {
+    init(with id: ID, codableSelf: CodableSelf) {
         self.id = id
         self.name = codableSelf.name.personName
         self.signInData = codableSelf.signInData?.signInData

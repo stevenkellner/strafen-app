@@ -58,7 +58,7 @@ struct NewFineReasonCustom: NewFineReason, Equatable {
 struct NewFineReasonTemplate: NewFineReason, Equatable {
     
     /// Template id
-    let templateId: UUID
+    let templateId: ReasonTemplate.ID
     
     /// Reason
     func reason(with reasonList: [ReasonTemplate]?) -> String {
@@ -96,7 +96,7 @@ struct NewCodableFineReason: Decodable {
     let importance: Importance?
     
     /// Template id
-    let templateId: UUID?
+    let templateId: ReasonTemplate.ID?
     
     /// Custom or template fine reason
     var fineReason: NewFineReason {

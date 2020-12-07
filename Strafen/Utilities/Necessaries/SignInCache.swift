@@ -52,10 +52,10 @@ struct SignInCache {
         let name: PersonName
         
         /// Club id
-        let clubId: UUID
+        let clubId: NewClub.ID
         
         /// Init with PropertyUserIdName and clubId
-        init(userIdName: PropertyUserIdName, clubId: UUID) {
+        init(userIdName: PropertyUserIdName, clubId: NewClub.ID) {
             self.userId = userIdName.userId
             self.name = userIdName.name
             self.clubId = clubId

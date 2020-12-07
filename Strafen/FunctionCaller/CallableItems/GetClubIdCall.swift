@@ -11,7 +11,7 @@ import Foundation
 struct GetClubIdCall: FunctionCallable, FunctionCallResult {
     
     /// Result type
-    typealias CallResult = UUID
+    typealias CallResult = NewClub.ID
     
     /// Club identifier
     let identifier: String

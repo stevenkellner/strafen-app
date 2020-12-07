@@ -11,7 +11,7 @@ import Foundation
 struct ChangeListCall<Type>: FunctionCallable where Type: NewListType {
     
     /// Club id
-    let clubId: UUID
+    let clubId: NewClub.ID
     
     /// Change type
     let changeType: ChangeType

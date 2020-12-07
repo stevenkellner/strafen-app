@@ -138,7 +138,7 @@ struct SignInClubInput: View {
         }
         
         // Id of new club
-        let clubId = UUID()
+        let clubId = NewClub.ID(rawValue: UUID())
         
         // Check if club identifer already exists
         checkClubIdentifierExists {
@@ -172,7 +172,7 @@ struct SignInClubInput: View {
     }
     
     /// Set club image
-    func setClubImage(of clubId: UUID, completionHandler: @escaping () -> Void) {
+    func setClubImage(of clubId: NewClub.ID, completionHandler: @escaping () -> Void) {
         let dispatchGroup = DispatchGroup()
         if let image = clubCredentials.image {
             imageUploadProgess = .zero
@@ -202,11 +202,11 @@ struct SignInClubInput: View {
     }
     
     /// Create new club in database
-    func createNewClub(of clubId: UUID) {
+    func createNewClub(of clubId: NewClub.ID) {
         
         // New club call item
         let cachedProperty = SignInCache.shared.cachedStatus?.property as! SignInCache.PropertyUserIdName
-        let personId = UUID()
+        let personId = NewPerson.ID(rawValue: UUID())
         let callItem = NewClubCall(cachedProperties: cachedProperty, clubCredentials: clubCredentials, clubId: clubId, personId: personId)
         
         // Create new club in database

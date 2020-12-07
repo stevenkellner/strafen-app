@@ -14,7 +14,7 @@ struct FineListRow: View {
     let fine: NewFine
     
     /// Id of selected row for large design
-    @Binding var selectedForLargeDesign: UUID?
+    @Binding var selectedForLargeDesign: NewFine.ID?
     
     /// With open url
     let withOpenUrl: Bool
@@ -22,7 +22,7 @@ struct FineListRow: View {
     ///Dismiss handler
     @Binding var dismissHandler: DismissHandler
     
-    init(of fine: NewFine, selectedForLargeDesign: Binding<UUID?>, withOpenUrl: Bool = false, dismissHandler: Binding<DismissHandler>) {
+    init(of fine: NewFine, selectedForLargeDesign: Binding<NewFine.ID?>, withOpenUrl: Bool = false, dismissHandler: Binding<DismissHandler>) {
         self.fine = fine
         self._selectedForLargeDesign = selectedForLargeDesign
         self.withOpenUrl = withOpenUrl

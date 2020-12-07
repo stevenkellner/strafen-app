@@ -27,7 +27,7 @@ struct RegisterPersonCall: FunctionCallable, FunctionCallResult {
     let cachedProperties: SignInCache.PropertyUserIdNameClubId
     
     /// Person id
-    let personId: UUID
+    let personId: NewPerson.ID
     
     /// Function name
     let functionName = "registerPerson"

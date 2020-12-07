@@ -73,8 +73,9 @@ struct NewFetcher {
             dictionary = nil
         }
         let list = dictionary.map { dictionary in
-            dictionary.map { idString, item in
-                Type.init(with: UUID(uuidString: idString)!, codableSelf: item)
+            dictionary.map { idString, item -> Type in
+                let id = Type.ID(rawValue: UUID(uuidString: idString)!)
+                return Type.init(with: id, codableSelf: item)
             }
         }
         return list
@@ -134,7 +135,8 @@ struct NewFetcher {
     private func observeChildRemove<Type>(of url: URL, getList: @escaping () -> [Type]?, onChange changeHandler: @escaping ([Type]?) -> Void) where Type: NewListType {
         Database.database().reference(withPath: url.path).observe(.childRemoved) { snapshot in
             var list = getList()
-            list?.filtered { $0.id != UUID(uuidString: snapshot.key)! }
+            let id = Type.ID(rawValue: UUID(uuidString: snapshot.key)!)
+            list?.filtered { $0.id != id }
             changeHandler(list)
         }
     }
@@ -143,6 +145,7 @@ struct NewFetcher {
     private func decodeFetchedItem<Type>(from data: Any, key: String) -> Type? where Type: NewListType {
         let decoder = FirebaseDecoder()
         guard let item = try? decoder.decode(Type.CodableSelf.self, from: data) else { return nil }
-        return Type.init(with: UUID(uuidString: key)!, codableSelf: item)
+        let id = Type.ID(rawValue: UUID(uuidString: key)!)
+        return Type.init(with: id, codableSelf: item)
     }
 }

@@ -37,8 +37,11 @@ extension NewSettings {
         /// Club properties
         struct ClubProperties: Codable {
             
+            /// Type of Id
+            typealias ID = Tagged<(ClubProperties, id: Void), UUID>
+            
             /// Id of the club
-            let id: UUID
+            let id: ID
             
             /// Name of the club
             let name: String
@@ -54,7 +57,7 @@ extension NewSettings {
         var clubProperties: ClubProperties
         
         /// Id of the person
-        let id: UUID
+        let id: NewPerson.ID
         
         /// Name of the person
         let name: PersonName
@@ -66,3 +69,5 @@ extension NewSettings {
         var isCashier: Bool
     }
 }
+
+typealias NewClub = NewSettings.Person.ClubProperties

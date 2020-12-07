@@ -11,7 +11,7 @@ import SwiftUI
 struct AmountDisplay: View {
     
     /// Id of the person
-    let personId: UUID
+    let personId: NewPerson.ID
     
     /// State of amount display
     enum AmountDisplayState: Int {
@@ -120,7 +120,7 @@ struct AmountDisplay: View {
         }
         
         /// Amount sum of the state
-        func amount(of personId: UUID, _ fineList: [NewFine]?, with reasonList: [ReasonTemplate]?) -> Amount {
+        func amount(of personId: NewPerson.ID, _ fineList: [NewFine]?, with reasonList: [ReasonTemplate]?) -> Amount {
             guard let amountSum = fineList?.amountSum(of: personId, with: reasonList) else { return .zero }
             switch self {
             case .total:
@@ -188,7 +188,7 @@ struct AmountDisplay: View {
         let state: AmountDisplayState
         
         /// Id of the person
-        let personId: UUID
+        let personId: NewPerson.ID
         
         /// Current shown display state
         @Binding var currentDisplay: AmountDisplayState

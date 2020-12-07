@@ -33,14 +33,21 @@ protocol LocalListTypes: Codable, Identifiable {
     static var listData: ListDataLocalListType<Self> { get }
 }
 
+/// Id List type
+protocol ListTypeId {
+    
+    /// Init from uuid
+    init(rawValue: UUID)
+}
+
 /// Protocol for a list type of database
-protocol NewListType: Identifiable where ID == UUID {
+protocol NewListType: Identifiable where ID: ListTypeId {
     
     /// Codable list type
     associatedtype CodableSelf: Decodable
     
     /// Init with id and codable self
-    init(with id: UUID, codableSelf: CodableSelf)
+    init(with id: ID, codableSelf: CodableSelf)
     
     /// Get list of ListData of this type
     static func getDataList() -> [Self]?
