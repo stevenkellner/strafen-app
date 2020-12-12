@@ -333,12 +333,15 @@ extension Bool: Identifiable {
 /// View modifier to set screen size
 struct ScreenSizeModifier: ViewModifier {
     
+    /// Deadline
+    let deadline: Double
+    
     /// Screen size
     @State var screenSize: CGSize?
     
     func body(content: Content) -> some View {
         GeometryReader { geometry in
-            content.screenSize($screenSize, geometry: geometry)
+            content.screenSize($screenSize, geometry: geometry, after: deadline)
         }
     }
 }
@@ -347,15 +350,22 @@ struct ScreenSizeModifier: ViewModifier {
 extension View {
     
     /// Sets screen size
-    func screenSize(_ screenSize: Binding<CGSize?>, geometry: GeometryProxy) -> some View {
+    func screenSize(_ screenSize: Binding<CGSize?>, geometry: GeometryProxy, after deadline: Double = 0) -> some View {
         frame(size: screenSize.wrappedValue ?? geometry.size).onAppear {
-            screenSize.wrappedValue = geometry.size
+            DispatchQueue.main.asyncAfter(deadline: .now() + deadline) {
+                screenSize.wrappedValue = geometry.size
+            }
         }
     }
     
     /// Sets screen size
     var setScreenSize: some View {
-        ModifiedContent(content: self, modifier: ScreenSizeModifier())
+        ModifiedContent(content: self, modifier: ScreenSizeModifier(deadline: 0))
+    }
+    
+    /// Sets screen size
+    func setScreenSize(after deadline: Double) -> some View {
+        ModifiedContent(content: self, modifier: ScreenSizeModifier(deadline: deadline))
     }
 }
 

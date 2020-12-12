@@ -29,7 +29,7 @@ struct HomeTabsView: View {
             } else if listData.connectionState == .passed && homeTabs.active == .personList {
                 PersonList(dismissHandler: $dismissHandler)
             } else if listData.connectionState == .passed && homeTabs.active == .reasonList {
-                // ReasonList() TODO
+                ReasonList()
             } else if listData.connectionState == .passed && homeTabs.active == .addNewFine {
                 /*ZStack { TODO
                     colorScheme.backgroundColor

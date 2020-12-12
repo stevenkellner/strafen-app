@@ -124,6 +124,17 @@ struct ConfirmButton: View {
         return confirmButton
     }
     
+    /// Set confirm button handler
+    public func onButtonPress<AlertType>(_ alertType: Binding<AlertType?>, value: AlertType, condition: @escaping () -> Bool = { true }) -> ConfirmButton where AlertType: AlertTypeProtocol {
+        var confirmButton = self
+        confirmButton.buttonHandler = {
+            if condition() {
+                alertType.wrappedValue = value
+            }
+        }
+        return confirmButton
+    }
+    
     /// Set error messages
     public func errorMessages(_ errorMessages: Binding<ErrorMessages?>) -> ConfirmButton {
         var confirmButton = self
@@ -485,7 +496,6 @@ struct AddNewListItemButton<ListType, AddNewSheetContent>: View where AddNewShee
                             .padding(.trailing, 25)
                             .font(.system(size: 50, weight: .thin))
                             .foregroundColor(Color.custom.red)
-                            // .offset(y: -10)
                     }
                     
                     // Add New Button
@@ -509,6 +519,8 @@ struct AddNewListItemButton<ListType, AddNewSheetContent>: View where AddNewShee
                     
                 }.padding([.trailing, .bottom], 30)
             }
-        }
+        }.setScreenSize(after: 0.1)
+            .edgesIgnoringSafeArea(.all)
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 }

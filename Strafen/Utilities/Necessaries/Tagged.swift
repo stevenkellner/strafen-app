@@ -274,8 +274,4 @@ extension Tagged: Sequence where RawValue: Sequence {
     }
 }
 
-extension Tagged: ListTypeId where RawValue == UUID {
-    var uuid: UUID {
-        rawValue
-    }
-}
+extension Tagged: ListTypeId where RawValue == UUID {}

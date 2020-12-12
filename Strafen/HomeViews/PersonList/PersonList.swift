@@ -60,19 +60,21 @@ struct PersonList: View {
                         
                         // Search Bar and list
                         ScrollView {
-                            
-                            // Search Bar
-                            if !personList.isEmpty {
-                                SearchBar(searchText: $searchText)
-                                    .frame(width: UIScreen.main.bounds.width * 0.95 + 15)
-                            }
-                            
-                            LazyVStack(spacing: 15) {
-                                ForEach(personList.sortedForList(with: searchText, settings: settings)) { person in
-                                    PersonListRow(person: person, searchText: $searchText, dismissHandler: $dismissHandler)
+                            VStack(spacing: 0) {
+                                    
+                                // Search Bar
+                                if !personList.isEmpty {
+                                    SearchBar(searchText: $searchText)
+                                        .frame(width: UIScreen.main.bounds.width * 0.95 + 15)
                                 }
-                            }.padding(.bottom, 10)
-                            
+                                
+                                LazyVStack(spacing: 15) {
+                                    ForEach(personList.sortedForList(with: searchText, settings: settings)) { person in
+                                        PersonListRow(person: person, searchText: $searchText, dismissHandler: $dismissHandler)
+                                    }
+                                }.padding(.bottom, 10)
+                                
+                            }
                         }.padding(.top, 10)
                         
                     } else {
@@ -87,12 +89,11 @@ struct PersonList: View {
                     PersonAddNew()
                 }
                 
-            }.hideNavigationBarTitle()
-        }.edgesIgnoringSafeArea(.all)
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .setScreenSize
+            }.edgesIgnoringSafeArea(.all)
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .hideNavigationBarTitle()
+        }.setScreenSize
     }
-    
     
     /// A Row of person list with details of one person.
     struct PersonListRow: View {
@@ -172,7 +173,9 @@ struct PersonList: View {
                     .onTapGesture {
                         UIApplication.shared.dismissKeyboard()
                         searchText = ""
-                        isLinkActive = true
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                            isLinkActive = true
+                        }
                     }
                 
 //            }.onAppear { TODO

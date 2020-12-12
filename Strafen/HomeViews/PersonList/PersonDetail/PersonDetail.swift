@@ -98,7 +98,7 @@ struct PersonDetail: View {
                     Text("No available view")
                 }
                 
-                Spacer()
+                Spacer(minLength: 0)
             }
             
             // Add New Fine Button
