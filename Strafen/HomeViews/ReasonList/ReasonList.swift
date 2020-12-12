@@ -150,7 +150,7 @@ struct ReasonList: View {
                         }
                     }
                     .sheet(isPresented: $isEditorSheetShown) {
-                        Text("Reason editor") // ReasonEditor(reasonToEdit: reason) TODO
+                        ReasonEditor(reasonToEdit: reason)
                     }
             }.frame(width: UIScreen.main.bounds.width * 0.95, height: 50)
         }

@@ -165,6 +165,7 @@ struct ReasonAddNew: View {
             !reasonInputProperties.errorOccurred(),
             let clubId = NewSettings.shared.properties.person?.clubProperties.id else { return }
         reasonInputProperties.connectionState = .loading
+        reasonInputProperties.functionCallErrorMessages = nil
         
         let reasonId = ReasonTemplate.ID(rawValue: UUID())
         let reason = ReasonTemplate(id: reasonId, reason: reasonInputProperties.reason, importance: reasonInputProperties.importance, amount: reasonInputProperties.amount)
