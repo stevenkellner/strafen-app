@@ -10,95 +10,187 @@ import SwiftUI
 /// View to select reason for new fine
 struct AddNewFineReason: View {
     
-    /// Previous selected Fine Reason
-    let oldFineReason: FineReason?
+    /// Fine Reason input properties
+    struct FineReasonInputProperties {
+        
+        /// Input importance
+        var importance: Importance = .medium
+        
+        /// Input reason
+        var reason = ""
+        
+        /// Input amount
+        var amount: Amount = .zero
+        
+        /// Input amount string
+        var amountString = Amount.zero.stringValue
+        
+        /// Id of selected template
+        var templateId: ReasonTemplate.ID?
+        
+        /// Type of reason textfield error
+        var reasonErrorMessages: ErrorMessages? = nil
+        
+        /// Type of amount textfield error
+        var amountErrorMessages: ErrorMessages? = nil
+        
+        /// Set properties of given fine reason
+        mutating func setProperties(of fineReason: NewFineReason?, reasonList: [ReasonTemplate]?) {
+            templateId = (fineReason as? NewFineReasonTemplate)?.templateId
+            guard let complete = fineReason?.complete(with: reasonList) else { return }
+            importance = complete.importance
+            reason = complete.reason
+            amount = complete.amount
+            amountString = amount.stringValue
+        }
+        
+        /// Checks if an error occurs while reason input
+        @discardableResult mutating func evaluteReasonError() -> Bool {
+            if reason.isEmpty {
+                reasonErrorMessages = .emptyField
+            } else {
+                reasonErrorMessages = nil
+                return false
+            }
+            return true
+        }
+        
+        /// Parse amount from amount string and checks if an error occurs while amount input
+        @discardableResult mutating func evaluteAmountError() -> Bool {
+            amount = amountString.amountValue
+            amountString = amount.stringValue
+            if amount == .zero {
+                amountErrorMessages = .amountZero
+            } else {
+                amountErrorMessages = nil
+                return false
+            }
+            return true
+        }
+        
+        /// Checks if an error occurs
+        mutating func errorOccurred() -> Bool {
+            evaluteReasonError() |!|
+                evaluteAmountError()
+        }
+    }
+    
+    /// Old fine reason
+    let oldFineReason: NewFineReason?
     
     /// Handles reason selection
-    let completionHandler: (FineReason) -> ()
+    let completionHandler: (NewFineReason) -> Void
+    
+    init(with fineReason: NewFineReason?, completion completionHandler: @escaping (NewFineReason) -> Void) {
+        self.oldFineReason = fineReason
+        self.completionHandler = completionHandler
+    }
+    
+    /// Fine reason input properties
+    @State var fineReasonInputProperties = FineReasonInputProperties()
+    
+    /// Reason List Data
+    @ObservedObject var reasonListData = NewListData.reason
     
     /// Presentation mode
     @Environment(\.presentationMode) var presentationMode
     
-    /// Color scheme to get appearance of this device
-    @Environment(\.colorScheme) var colorScheme
-    
-    /// Observed Object that contains all settings of the app of this device
-    @ObservedObject var settings = Settings.shared
-    
-    /// Input importance
-    @State var importance: Fine.Importance = .high
-    
-    /// Input reason
-    @State var reason = ""
-    
-    /// Input amount
-    @State var amount: Euro = .zero
-    
-    /// Input amount string
-    @State var amountString = Euro.zero.stringValue
-    
-    /// Id of selected template
-    @State var templateId: UUID?
-    
-    /// Indicated if amount keyboard is on screen
-    @State var isAmountKeyboardOnScreen = false
-    
-    /// Indicated if template sheet is shown
-    @State var templateSheetShowing = false
-    
-    /// Indicates if confirm button is pressed and shows the confirm alert
-    @State var showConfirmAlert = false
-    
-    /// Screen size
-    @State var screenSize: CGSize?
-    
-    init(fineReason: FineReason?, completionHandler: @escaping (FineReason) -> ()) {
-        oldFineReason = fineReason
-        self.completionHandler = completionHandler
-    }
-    
     var body: some View {
-        GeometryReader { geometry in
-            VStack(spacing: 0) {
-                
-                // Bar to wipe sheet down
-                SheetBar()
-                
-                // Title
-                Header("Strafe Auswählen")
-                
-                VStack(spacing: 0) {
-                    Spacer()
+        VStack(spacing: 0) {
+            
+            // Bar to wipe sheet down
+            SheetBar()
+            
+            // Header
+            Header("Strafe Auswählen")
+            
+            ScrollView {
+                VStack(spacing: 20) {
                     
                     // Importance changer
-                    ImportanceChanger2(importance: $importance)
-                        .frame(width: UIScreen.main.bounds.width * 0.7, height: 25)
-                    
-                    Spacer()
+                    TitledContent("Wichtigkeit") {
+                        ImportanceChanger(importance: $fineReasonInputProperties.importance)
+                            .frame(width: 258, height: 25)
+                    }
                     
                     // Reason
-                    CustomTextField("Grund", text: $reason)
-                        .frame(width: UIScreen.main.bounds.width * 0.95, height: 50)
-                    
-                    Spacer()
+                    TitledContent("Grund") {
+                        CustomTextField()
+                            .title("Grund")
+                            .textBinding($fineReasonInputProperties.reason)
+                            .errorMessages($fineReasonInputProperties.reasonErrorMessages)
+                            .textFieldSize(width: UIScreen.main.bounds.width * 0.95, height: 50)
+                            .onCompletion { fineReasonInputProperties.evaluteReasonError() }
+                    }
                     
                     // Amount
-                    HStack(spacing: 0) {
+                    AmountInput(fineReasonInputProperties: $fineReasonInputProperties)
+
+                    // Template button
+                    TemplateButton(fineReasonInputProperties: $fineReasonInputProperties)
+                        .padding(.top, 10)
+                    
+                }.padding(.vertical, 10)
+                    .keyboardAdaptiveOffset
+            }.padding(.vertical, 10)
+                .animation(.default)
+            
+            Spacer()
+            
+            // Cancel and Confirm button
+            CancelConfirmButton()
+                .onCancelPress { presentationMode.wrappedValue.dismiss() }
+                .onConfirmPress {
+                    guard !fineReasonInputProperties.errorOccurred() else { return }
+                    var fineReason: NewFineReason = NewFineReasonCustom(reason: fineReasonInputProperties.reason, amount: fineReasonInputProperties.amount, importance: fineReasonInputProperties.importance)
+                    if let templateId = fineReasonInputProperties.templateId {
+                        let fineReasonTemplate = NewFineReasonTemplate(templateId: templateId)
+                        let complete = fineReasonTemplate.complete(with: reasonListData.list)
+                        if fineReason as? NewFineReasonCustom == complete {
+                            fineReason = fineReasonTemplate
+                        }
+                    }
+                    completionHandler(fineReason)
+                    presentationMode.wrappedValue.dismiss()
+                }
+                .padding(.bottom, 50)
+                    
+        }.setScreenSize
+            .onAppear {
+                fineReasonInputProperties.setProperties(of: oldFineReason, reasonList: reasonListData.list)
+            }
+    }
+    
+    /// Amount input
+    struct AmountInput: View {
+        
+        /// Properties of inputed fine
+        @Binding var fineReasonInputProperties: FineReasonInputProperties
+        
+        /// Indicated if amount keyboard is on screen
+        @State var isAmountKeyboardOnScreen = false
+        
+        var body: some View {
+            TitledContent("Betrag") {
+                VStack(spacing: 5) {
+                    
+                    HStack(spacing: 15) {
                         
                         // Text Field
-                        CustomTextField("Betrag", text: $amountString, keyboardType: .decimalPad, keyboardOnScreen: $isAmountKeyboardOnScreen) {
-                            amount = amountString.euroValue
-                            amountString = amount.stringValue
-                        }.frame(width: UIScreen.main.bounds.width * 0.45, height: 50)
-                            .padding(.leading, 15)
-                        
-                        // € - Sign
-                        Text("€")
-                            .frame(height: 50)
-                            .foregroundColor(.textColor)
-                            .font(.text(25))
+                        CustomTextField()
+                            .title("Betrag")
+                            .textBinding($fineReasonInputProperties.amountString)
+                            .keyboardOnScreen($isAmountKeyboardOnScreen)
+                            .errorMessages($fineReasonInputProperties.amountErrorMessages)
+                            .showErrorMessage(false)
+                            .textFieldSize(width: 148)
+                            .keyboardType(.decimalPad)
+                            .onCompletion { fineReasonInputProperties.evaluteAmountError() }
+
+                        // Currency sign
+                        Text(Amount.locale.currencySymbol ?? "€")
+                            .configurate(size: 25)
                             .lineLimit(1)
-                            .padding(.leading, 5)
                         
                         // Done button
                         if isAmountKeyboardOnScreen {
@@ -106,94 +198,68 @@ struct AddNewFineReason: View {
                                 .foregroundColor(Color.custom.darkGreen)
                                 .font(.text(25))
                                 .lineLimit(1)
-                                .padding(.leading, 15)
                                 .onTapGesture {
-                                    UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+                                    UIApplication.shared.dismissKeyboard()
                                 }
                         }
                         
-                    }
+                    }.frame(height: 50)
                     
-                    Spacer()
+                    // Error messages
+                    ErrorMessageView(errorMessages: $fineReasonInputProperties.amountErrorMessages)
                     
-                    // Template button
-                    HStack(spacing: 0) {
-                        Spacer()
-                        Spacer()
-                        
-                        Text("Bevorzugt:")
-                            .foregroundColor(.textColor)
-                            .font(.text(20))
-                            .lineLimit(1)
-                            .padding(.trailing, 15)
-                            .frame(height: 35)
-                        
-                        // Template button
-                        ZStack {
-                            
-                            // Outline
-                            Outline()
-                                .fillColor(Color.custom.yellow)
-                            
-                            // Text
-                            Text("Strafe Auswählen")
-                                .foregroundColor(settings.style == .default ? .textColor : Color.custom.yellow)
-                                .font(.text(15))
-                                .lineLimit(1)
-                            
-                        }.frame(width: 150, height: 35)
-                            .onTapGesture {
-                                templateSheetShowing = true
-                            }
-                            .sheet(isPresented: $templateSheetShowing) {
-                                FineEditorTemplate { reason in
-//                                    self.reason = reason.reason
-//                                    amount = reason.amount
-//                                    amountString = amount.stringValue
-//                                    importance = reason.importance
-//                                    templateId = reason.id
-                                }
-                            }
-                        
-                        Spacer()
-                    }
-                    
-                    Spacer()
                 }
+            }
+        }
+    }
+    
+    /// Template button
+    struct TemplateButton: View {
+        
+        /// Properties of inputed fine reason
+        @Binding var fineReasonInputProperties: FineReasonInputProperties
+        
+        /// Reason List Data
+        @ObservedObject var reasonListData = NewListData.reason
+        
+        /// Indicated if template sheet is shown
+        @State var templateSheetShowing = false
+        
+        var body: some View {
+            HStack(spacing: 0) {
+                Spacer()
                 
-                CancelConfirmButton {
-                    presentationMode.wrappedValue.dismiss()
-                } confirmButtonHandler: {
-                    if reason.isEmpty || amount == .zero {
-                        showConfirmAlert = true
-                    } else {
-                        var fineReason: FineReason = FineReasonCustom(reason: reason, amount: amount, importance: importance)
-                        if let templateId = templateId {
-                            if let template = ListData.reason.list?.first(where: { $0.id == templateId }) {
-                                if reason == template.reason && amount == template.amount && importance == template.importance {
-                                    fineReason = FineReasonTemplate(templateId: templateId)
-                                }
-                            }
+                Text("Bevorzugt:")
+                    .configurate(size: 20)
+                    .lineLimit(1)
+                    .padding(.trailing, 15)
+                    .frame(height: 35)
+                
+                // Template button
+                ZStack {
+                    
+                    // Outline
+                    Outline()
+                        .fillColor(Color.custom.yellow)
+                    
+                    // Text
+                    Text("Strafe Auswählen")
+                        .foregroundColor(plain: Color.custom.yellow)
+                        .font(.text(15))
+                        .lineLimit(1)
+                    
+                }.frame(width: 150, height: 35)
+                    .padding(.trailing, 15)
+                    .toggleOnTapGesture($templateSheetShowing)
+                    .sheet(isPresented: $templateSheetShowing) {
+                        FineEditorTemplate { reason in
+                            let fineReason = NewFineReasonTemplate(templateId: reason.id)
+                            fineReasonInputProperties.setProperties(of: fineReason, reasonList: reasonListData.list)
+                            fineReasonInputProperties.evaluteReasonError()
+                            fineReasonInputProperties.evaluteAmountError()
                         }
-                        completionHandler(fineReason)
-                        presentationMode.wrappedValue.dismiss()
                     }
-                }.padding(.bottom, 50)
-                    .alert(isPresented: $showConfirmAlert) {
-                        if reason.isEmpty {
-                            return Alert(title: Text("Keinen Grund Angegeben"), message: Text("Bitte gebe einen Grund für diese Strafe ein."), dismissButton: .default(Text("Verstanden")))
-                        }
-                        return Alert(title: Text("Betrag ist Null"), message: Text("Bitte gebe einen Bertag ein, der nicht gleich Null ist."), dismissButton: .default(Text("Verstanden")))
-                    }
-            }.frame(size: screenSize ?? geometry.size)
-                .onAppear {
-                    screenSize = geometry.size
-                }
-        }.onAppear {
-            reason = oldFineReason?.reason ?? ""
-            amount = oldFineReason?.amount ?? .zero
-            amountString = amount.stringValue
-            importance = oldFineReason?.importance ?? .high
+            }
         }
     }
 }

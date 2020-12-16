@@ -139,13 +139,14 @@ struct AddNewFine: View {
         }
     }
     
+    /// Init with person id
+    let initPersonId: NewPerson.ID?
+    
     /// Default init
-    init() {}
+    init() { initPersonId = nil }
     
     /// Init with person id
-    init(with personId: NewPerson.ID) {
-        fineInputProperties.personIds.append(personId)
-    }
+    init(with personId: NewPerson.ID) { initPersonId = personId }
     
     /// Properties for fine input
     @State var fineInputProperties = FineInputProperties()
@@ -207,6 +208,10 @@ struct AddNewFine: View {
             }.padding(.bottom, fineInputProperties.functionCallErrorMessages == nil ? 35 : 10)
                 .animation(.default)
             
+        }.onAppear {
+            if let initPersonId = initPersonId {
+                fineInputProperties.personIds.append(initPersonId)
+            }
         }.onAppear(perform: changeAppereanceStyle)
     }
     
@@ -409,12 +414,12 @@ struct AddNewFine: View {
                 ErrorMessageView(errorMessages: $fineInputProperties.fineReasonErrorMessages)
                 
             }.animation(.default)
-//                .sheet(isPresented: $showReasonSelectorSheet) { TODO
-//                    AddNewFineReason(fineReason: fineReason) { fineReason in
-//                        fineInputProperties.evaluateReasonError()
-//                        self.fineReason = fineReason
-//                    }
-//                }
+                .sheet(isPresented: $showReasonSelectorSheet) {
+                    AddNewFineReason(with: fineInputProperties.fineReason) { fineReason in
+                        fineInputProperties.fineReason = fineReason
+                        fineInputProperties.evaluateFineReasonError()
+                    }
+                }
         }
         
         /// Fine reason
