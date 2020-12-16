@@ -11,10 +11,10 @@ import Foundation
 struct ReasonTemplate {
     
     /// Type of Id
-    typealias Id = Tagged<(ReasonTemplate, id: Void), UUID>
+    typealias ID = Tagged<(ReasonTemplate, id: Void), UUID>
     
     /// Id
-    let id: Id
+    let id: ID
     
     /// Reason of this template
     let reason: String

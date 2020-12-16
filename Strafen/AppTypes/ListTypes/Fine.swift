@@ -371,10 +371,10 @@ extension Fine {
 struct NewFine {
     
     /// Type of Id
-    typealias Id = Tagged<(ReasonTemplate, id: Void), UUID>
+    typealias ID = Tagged<(ReasonTemplate, id: Void), UUID>
     
     /// Id
-    let id: Id
+    let id: ID
     
     /// Id of the associated person
     let assoiatedPersonId: NewPerson.ID

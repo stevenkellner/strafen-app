@@ -204,7 +204,7 @@ struct AddNewFine: View {
                 // Error messages
                 ErrorMessageView(errorMessages: $fineInputProperties.functionCallErrorMessages)
                 
-            }.padding(.bottom, fineInputProperties.functionCallErrorMessages == nil ? 50 : 25)
+            }.padding(.bottom, fineInputProperties.functionCallErrorMessages == nil ? 35 : 10)
                 .animation(.default)
             
         }.onAppear(perform: changeAppereanceStyle)
@@ -221,7 +221,7 @@ struct AddNewFine: View {
         
         let dispatchGroup = DispatchGroup()
         for personId in fineInputProperties.personIds {
-            let fineId = NewFine.Id(rawValue: UUID())
+            let fineId = NewFine.ID(rawValue: UUID())
             let fine = NewFine(id: fineId, assoiatedPersonId: personId, date: fineInputProperties.date, payed: .unpayed, number: fineInputProperties.number, fineReason: fineReason)
             dispatchGroup.enter()
             let callItem = ChangeListCall(clubId: clubId, changeType: .add, changeItem: fine)
@@ -326,11 +326,12 @@ struct AddNewFine: View {
                 ErrorMessageView(errorMessages: $fineInputProperties.personIdErrorMessages)
                 
             }.animation(.default)
-//                .sheet(isPresented: $showPersonSelectorSheet) { TODO
-//                    AddNewFinePerson(forSeveralPersons: !personIds.isEmpty, personIds: personIds) { personIds in
-//                        self.personIds = personIds
-//                    }
-//                }
+                .sheet(isPresented: $showPersonSelectorSheet) {
+                    AddNewFinePerson(forSeveralPersons: !fineInputProperties.personIds.isEmpty, personIds: fineInputProperties.personIds) { personIds in
+                        fineInputProperties.personIds = personIds
+                        fineInputProperties.evaluatePersonIdError()
+                    }
+                }
         }
         
         /// First person name
@@ -410,6 +411,7 @@ struct AddNewFine: View {
             }.animation(.default)
 //                .sheet(isPresented: $showReasonSelectorSheet) { TODO
 //                    AddNewFineReason(fineReason: fineReason) { fineReason in
+//                        fineInputProperties.evaluateReasonError()
 //                        self.fineReason = fineReason
 //                    }
 //                }

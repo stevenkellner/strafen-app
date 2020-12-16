@@ -258,3 +258,16 @@ extension Array {
         return list
     }
 }
+
+// Extension of Array to toggle if an element is in the list
+extension Array where Element: Equatable {
+    
+    /// Toggle if an element is in the list
+    mutating func toggle(_ element: Element) {
+        if let index = firstIndex(of: element) {
+            remove(at: index)
+        } else {
+            append(element)
+        }
+    }
+}

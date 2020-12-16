@@ -103,7 +103,6 @@ struct PersonDetail: View {
             
             // Add New Fine Button
             AddNewListItemButton(list: $fineListData.list, listFilter: { $0.assoiatedPersonId == person.id }) {
-                Text("Test")
                 VStack(spacing: 0) {
 
                     // Bar to wipe sheet down
@@ -111,6 +110,7 @@ struct PersonDetail: View {
 
                     // Content
                     AddNewFine(with: person.id)
+                        .padding(.bottom, 15)
 
                 }
             }
