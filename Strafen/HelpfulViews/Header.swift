@@ -16,12 +16,6 @@ struct Header: View {
     /// Line limit
     private var lineLimit: Int? = 1
     
-    /// Color scheme to get appearance of this device
-    @Environment(\.colorScheme) private var colorScheme
-    
-    /// Observed Object that contains all settings of the app of this device
-    @ObservedObject private var settings = Settings.shared
-    
     public init(_ title: String) {
         self.title = title
     }
@@ -82,6 +76,9 @@ struct TitledContent<Content>: View where Content: View {
     /// Content
     private let content: Content
     
+    /// Frame of content
+    private var contentFrame: (width: CGFloat?, height: CGFloat?) = (width: nil, height: nil)
+    
     init(_ title: String, @ViewBuilder content: () -> Content) {
         self.title = title
         self.content = content()
@@ -94,9 +91,23 @@ struct TitledContent<Content>: View where Content: View {
             Title(title)
             
             // Content
-            content
+            content.frame(width: contentFrame.width, height: contentFrame.height)
             
         }
+    }
+    
+    /// Set frame of content
+    func contentFrame(size: CGSize) -> TitledContent {
+        var content = self
+        content.contentFrame = (width: size.width, height: size.height)
+        return content
+    }
+    
+    /// Set frame of content
+    func contentFrame(width: CGFloat? = nil, height: CGFloat? = nil) -> TitledContent {
+        var content = self
+        content.contentFrame = (width: width, height: height)
+        return content
     }
 }
 
@@ -219,6 +230,18 @@ enum ErrorMessages {
     /// Person is undeleteable
     case personUndeletable
     
+    /// No persons are selected
+    case noPersonsSelected
+    
+    /// No reason given
+    case noReasonGiven
+    
+    /// Future date
+    case futureDate
+    
+    /// Invalid number range
+    case invalidNumberRange
+    
     /// Message of the error
     var message: String {
         switch self {
@@ -266,6 +289,14 @@ enum ErrorMessages {
             return "Betrag darf nicht Null sein!"
         case .personUndeletable:
             return "Nicht löschbar, da sie bereits registriert ist!"
+        case .noPersonsSelected:
+            return "Keine Person ausgewählt!"
+        case .noReasonGiven:
+            return "Keine Strafe angegeben!"
+        case .futureDate:
+            return "Datum darf nicht in der Zukunft liegen!"
+        case .invalidNumberRange:
+            return "Anzahl muss zwischen 1 und 99 liegen!"
         }
     }
 }

@@ -31,11 +31,11 @@ struct HomeTabsView: View {
             } else if listData.connectionState == .passed && homeTabs.active == .reasonList {
                 ReasonList()
             } else if listData.connectionState == .passed && homeTabs.active == .addNewFine {
-                /*ZStack { TODO
+                ZStack {
                     colorScheme.backgroundColor
                     AddNewFine()
                         .padding(.top, 50)
-                }*/
+                }
             } else if homeTabs.active == .settings {
                 //SettingsView(dismissHandler: $dismissHandler) TODO
             } else if listData.connectionState == .loading {

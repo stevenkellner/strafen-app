@@ -13,11 +13,8 @@ struct Outline: View {
     /// Set of rounded corners
     let cornerSet: RoundedCorners.CornerSet
     
-    /// Set fill color only in default style
-    private var onlyDefault = true
-    
     /// Fill Color of the Outline
-    private var fillColor: Color? = nil
+    private var fillColor: FillColor? = nil
     
     /// Stroke Color of the outline
     private var strokeColor: Color? = nil
@@ -39,15 +36,38 @@ struct Outline: View {
         RoundedCorners(cornerSet)
             .radius(settings.properties.style.radius)
             .lineWidth(lineWidth ?? settings.properties.style.lineWidth)
-            .fillColor(onlyDefault ? settings.properties.style.fillColor(colorScheme, defaultStyle: fillColor) : fillColor!)
+            .fillColor(fillColor?.color(settings) ?? settings.properties.style.fillColor(colorScheme))
             .strokeColor(strokeColor ?? settings.properties.style.strokeColor(colorScheme))
     }
     
     /// Set fill color
     func fillColor(_ fillColor: Color?, onlyDefault: Bool = true) -> Outline {
         var outline = self
-        outline.fillColor = fillColor
-        outline.onlyDefault = onlyDefault
+        outline.fillColor = FillColor1(onlyDefault: onlyDefault, fillColor: fillColor)
+        return outline
+    }
+    
+    /// Set fill color
+    func fillColor(default color: Color) -> Outline {
+        var outline = self
+        if var fillColor = outline.fillColor as? FillColor2 {
+            fillColor.defaultColor = color
+            outline.fillColor = fillColor
+        } else {
+            outline.fillColor = FillColor2(defaultColor: color, plainColor: nil)
+        }
+        return outline
+    }
+    
+    /// Set fill color
+    func fillColor(plain color: Color) -> Outline {
+        var outline = self
+        if var fillColor = outline.fillColor as? FillColor2 {
+            fillColor.plainColor = color
+            outline.fillColor = fillColor
+        } else {
+            outline.fillColor = FillColor2(defaultColor: nil, plainColor: color)
+        }
         return outline
     }
     
@@ -64,6 +84,42 @@ struct Outline: View {
         outline.lineWidth = lineWidth
         return outline
     }
+    
+    func errorMessages(_ errorMessages: Binding<ErrorMessages?>) -> Outline {
+        strokeColor(errorMessages.wrappedValue.map { _ in Color.custom.red })
+            .lineWidth(errorMessages.wrappedValue.map { _ in CGFloat(2) })
+    }
+}
+
+fileprivate protocol FillColor {
+    func color(_ settings: NewSettings) -> Color?
+}
+
+fileprivate struct FillColor1: FillColor {
+    
+    /// Set fill color only in default style
+    let onlyDefault: Bool
+    
+    /// Fill Color of the Outline
+    let fillColor: Color?
+    
+    func color(_ settings: NewSettings) -> Color? {
+        guard !onlyDefault || settings.properties.style == .default else { return nil }
+        return fillColor
+    }
+}
+
+fileprivate struct FillColor2: FillColor {
+    
+    /// Default color
+    var defaultColor: Color?
+    
+    /// Plain color
+    var plainColor: Color?
+    
+    func color(_ settings: NewSettings) -> Color? {
+        settings.properties.style == .default ? defaultColor : plainColor
+    }
 }
 
 /// Bar to wipe sheet down
@@ -73,13 +129,13 @@ struct SheetBar: View {
     @Environment(\.colorScheme) var colorScheme
     
     /// Observed Object that contains all settings of the app of this device
-    @ObservedObject var settings = Settings.shared
+    @ObservedObject var settings = NewSettings.shared
     
     var body: some View {
         RoundedCorners()
             .radius(2.5)
             .lineWidth(2.5)
-            .strokeColor(settings.style.strokeColor(colorScheme))
+            .strokeColor(settings.properties.style.strokeColor(colorScheme))
             .frame(width: 75, height: 2.5)
             .padding(.vertical, 20)
     }

@@ -23,6 +23,16 @@ protocol NewFineReason {
     var callParameters: NewParameters { get }
 }
 
+extension NewFineReason {
+    
+    /// Complete reason
+    func complete(with reasonList: [ReasonTemplate]?) -> NewFineReasonCustom {
+        NewFineReasonCustom(reason: reason(with: reasonList),
+                       amount: amount(with: reasonList),
+                       importance: importance(with: reasonList))
+    }
+}
+
 /// Fine Reason for reason / amount / importance
 struct NewFineReasonCustom: NewFineReason, Equatable {
     
