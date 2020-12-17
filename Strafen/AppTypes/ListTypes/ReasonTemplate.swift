@@ -31,7 +31,7 @@ extension ReasonTemplate: NewListType {
     
     /// Url for database refernce
     static var url: URL {
-        guard let clubId = NewSettings.shared.properties.person?.clubProperties.id else {
+        guard let clubId = NewSettings.shared.person?.clubProperties.id else {
             fatalError("No person is logged in.")
         }
         return URL.reasonList(with: clubId)

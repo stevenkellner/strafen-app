@@ -214,7 +214,7 @@ struct LoginView: View {
                     Logging.shared.log(with: .info, "With return person: \(person)")
                     connectionState = .passed
                     SignInCache.shared.setState(to: nil)
-                    NewSettings.shared.properties.person = person
+                    NewSettings.shared.person = person
                     
                 } failedHandler: { error in
                     handleEmailSignInGetIdsCallError(error: error)
@@ -275,7 +275,7 @@ struct LoginView: View {
                 Logging.shared.log(with: .info, "With return person: \(person)")
                 connectionState = .passed
                 SignInCache.shared.setState(to: nil)
-                NewSettings.shared.properties.person = person
+                NewSettings.shared.person = person
                 
             } failedHandler: { error in
                 let cacheProperty = SignInCache.PropertyUserId(userId: userId, name: name)

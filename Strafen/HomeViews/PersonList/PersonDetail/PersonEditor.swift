@@ -245,7 +245,7 @@ struct PersonEditor: View {
     func handlePersonDelete() {
         guard personInputProperties.connectionStateDelete != .loading,
               personInputProperties.connectionStateConfirm != .loading,
-              let clubId = NewSettings.shared.properties.person?.clubProperties.id else { return }
+              let clubId = NewSettings.shared.person?.clubProperties.id else { return }
         personInputProperties.connectionStateDelete = .loading
         personInputProperties.resetErrorMessages()
         
@@ -319,7 +319,7 @@ struct PersonEditor: View {
         guard personInputProperties.connectionStateDelete != .loading,
               personInputProperties.connectionStateConfirm != .loading,
               !personInputProperties.errorOccurred(),
-              let clubId = NewSettings.shared.properties.person?.clubProperties.id else { return }
+              let clubId = NewSettings.shared.person?.clubProperties.id else { return }
         personInputProperties.connectionStateConfirm = .loading
         
         let dispatchGroup = DispatchGroup()

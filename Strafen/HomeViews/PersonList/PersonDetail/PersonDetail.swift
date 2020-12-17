@@ -76,7 +76,7 @@ struct PersonDetail: View {
                         VStack(spacing: 20) {
                             Text("Diese Person hat keine Strafen.")
                                 .configurate(size: 25).lineLimit(2)
-                            if settings.properties.person?.isCashier ?? false {
+                            if settings.person?.isCashier ?? false {
                                 Text("Füge eine Neue mit der Taste unten rechts hinzu.")
                                 .configurate(size: 25).lineLimit(2)
                             }
@@ -156,7 +156,7 @@ struct PersonDetail: View {
                         .frame(size: imageSize)
                         .clipShape(Circle())
                         .toggleOnTapGesture($showImageDetail)
-                        .overlay(Circle().stroke(settings.properties.style.strokeColor(colorScheme), lineWidth: settings.properties.style.lineWidth).frame(size: imageSize))
+                        .overlay(Circle().stroke(settings.style.strokeColor(colorScheme), lineWidth: settings.style.lineWidth).frame(size: imageSize))
                         .sheet(isPresented: $showImageDetail) {
                             ImageDetail(image: image, personName: personName)
                         }
@@ -167,8 +167,8 @@ struct PersonDetail: View {
                         .frame(size: imageSize * 0.45)
                         .scaledToFit()
                         .offset(y: -imageSize.height * 0.03)
-                        .foregroundColor(settings.properties.style.strokeColor(colorScheme))
-                        .overlay(Circle().stroke(settings.properties.style.strokeColor(colorScheme), lineWidth: settings.properties.style.lineWidth).frame(size: imageSize * 0.75))
+                        .foregroundColor(settings.style.strokeColor(colorScheme))
+                        .overlay(Circle().stroke(settings.style.strokeColor(colorScheme), lineWidth: settings.style.lineWidth).frame(size: imageSize * 0.75))
                 }
             }
         }
@@ -207,7 +207,7 @@ struct PersonDetail: View {
                         .aspectRatio(image.size, contentMode: .fit)
                         .overlay(
                             Rectangle()
-                                .stroke(settings.properties.style.strokeColor(colorScheme), lineWidth: 3)
+                                .stroke(settings.style.strokeColor(colorScheme), lineWidth: 3)
                         )
                         .contextMenu {
                             Button(action: {

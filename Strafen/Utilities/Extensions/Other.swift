@@ -305,7 +305,7 @@ struct TextForegroudColor: ViewModifier {
     @ObservedObject private var settings = NewSettings.shared
     
     func body(content: Content) -> some View {
-        content.foregroundColor(color == nil || settings.properties.style == .default ? .textColor : color!)
+        content.foregroundColor(color == nil || settings.style == .default ? .textColor : color!)
     }
 }
 

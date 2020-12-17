@@ -30,7 +30,7 @@ struct LatePaymentInterestChange: Changeable, Parameterable {
             parameters["clubId"] = clubId.uuidString
         }
         if let latePaymentInterest = latePaymentInterest {
-            parameters.add(latePaymentInterest.parameters)
+            parameters.add(latePaymentInterest.parameters2)
         }
         return parameters
     }

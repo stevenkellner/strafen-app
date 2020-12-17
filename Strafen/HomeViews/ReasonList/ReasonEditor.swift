@@ -209,7 +209,7 @@ struct ReasonEditor: View {
         reasonInputProperties.resetErrors()
         guard reasonInputProperties.connectionStateDelete != .loading,
               reasonInputProperties.connectionStateUpdate != .loading,
-              let clubId = NewSettings.shared.properties.person?.clubProperties.id else { return }
+              let clubId = NewSettings.shared.person?.clubProperties.id else { return }
         reasonInputProperties.connectionStateDelete = .loading
         
         guard !(NewListData.fine.list?.contains(where: { ($0.fineReason as? NewFineReasonTemplate)?.templateId == reasonToEdit.id }) ?? true) else {
@@ -233,7 +233,7 @@ struct ReasonEditor: View {
         guard reasonInputProperties.connectionStateDelete != .loading,
               reasonInputProperties.connectionStateUpdate != .loading,
               !reasonInputProperties.errorOccurred(),
-              let clubId = NewSettings.shared.properties.person?.clubProperties.id else { return }
+              let clubId = NewSettings.shared.person?.clubProperties.id else { return }
         reasonInputProperties.connectionStateUpdate = .loading
         
         let reason = ReasonTemplate(id: reasonToEdit.id, reason: reasonInputProperties.reason, importance: reasonInputProperties.importance, amount: reasonInputProperties.amount)

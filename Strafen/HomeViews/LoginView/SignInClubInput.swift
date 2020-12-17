@@ -217,7 +217,7 @@ struct SignInClubInput: View {
             imageUploadProgess = nil
             SignInCache.shared.setState(to: nil)
             let clubProperties = NewSettings.Person.ClubProperties(id: clubId, name: clubCredentials.clubName, identifier: clubCredentials.clubIdentifier, regionCode: clubCredentials.regionCode!)
-            NewSettings.shared.properties.person = .init(clubProperties: clubProperties, id: personId, name: cachedProperty.name, signInDate: Date(), isCashier: true)
+            NewSettings.shared.person = .init(clubProperties: clubProperties, id: personId, name: cachedProperty.name, signInDate: Date(), isCashier: true)
             
         } failedHandler: { error in
             handleCallError(error)

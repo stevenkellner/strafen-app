@@ -212,7 +212,7 @@ struct AddNewFine: View {
             if let initPersonId = initPersonId {
                 fineInputProperties.personIds.append(initPersonId)
             }
-        }.onAppear(perform: changeAppereanceStyle)
+        }
     }
     
     /// Handles fine saving
@@ -221,7 +221,7 @@ struct AddNewFine: View {
         guard fineInputProperties.connectionState != .loading,
             !fineInputProperties.errorOccurred(),
             let fineReason = fineInputProperties.fineReason,
-            let clubId = NewSettings.shared.properties.person?.clubProperties.id else { return }
+            let clubId = NewSettings.shared.person?.clubProperties.id else { return }
         fineInputProperties.connectionState = .loading
         
         let dispatchGroup = DispatchGroup()

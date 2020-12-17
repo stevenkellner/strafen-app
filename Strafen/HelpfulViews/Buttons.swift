@@ -414,7 +414,7 @@ struct BackAndEditButton<EditSheetContent>: View where EditSheetContent: View {
                 Spacer()
                 
                 // EditButton
-                if settings.properties.person?.isCashier ?? false {
+                if settings.person?.isCashier ?? false {
                     Text("Bearbeiten")
                         .configurate(size: 25)
                         .padding(.trailing, 10)
@@ -483,7 +483,7 @@ struct AddNewListItemButton<ListType, AddNewSheetContent>: View where AddNewShee
     
     var body: some View {
         VStack(spacing: 0) {
-            if settings.properties.person?.isCashier ?? false {
+            if settings.person?.isCashier ?? false {
                 Spacer()
                 HStack(spacing: 0) {
                     Spacer()

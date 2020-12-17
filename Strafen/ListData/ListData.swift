@@ -120,7 +120,7 @@ class NewListData: ObservableObject {
     ///     - Set late payment interest
     ///     - Set region code
     private func checkPersonProperties() {
-        guard let loggedInPerson = NewSettings.shared.properties.person else {
+        guard let loggedInPerson = NewSettings.shared.person else {
             fatalError("No person is signed in.")
         }
         
@@ -152,13 +152,13 @@ class NewListData: ObservableObject {
         dispatchGroup.enter()
         Database.database().reference(withPath: basePath + "/latePaymentInterest").observeSingleEvent(of: .value) { snapshot in
             guard snapshot.exists(), let data = snapshot.value else {
-                NewSettings.shared.properties.latePaymentInterest = nil
+                NewSettings.shared.latePaymentInterest = nil
                 dispatchGroup.leave()
                 return
             }
             let decoder = FirebaseDecoder()
             let latePaymentInterest = try? decoder.decode(Settings.LatePaymentInterest?.self, from: data)
-            NewSettings.shared.properties.latePaymentInterest = latePaymentInterest
+            NewSettings.shared.latePaymentInterest = latePaymentInterest
             dispatchGroup.leave()
         }
         
@@ -171,7 +171,7 @@ class NewListData: ObservableObject {
             }
             let decoder = FirebaseDecoder()
             let regionCode = try! decoder.decode(String.self, from: data)
-            NewSettings.shared.properties.person?.clubProperties.regionCode = regionCode
+            NewSettings.shared.person?.clubProperties.regionCode = regionCode
             dispatchGroup.leave()
         }
         

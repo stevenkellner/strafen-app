@@ -41,7 +41,7 @@ struct ReasonList: View {
                         // Empty List Text
                         if reasonList.isEmpty {
                             VStack(spacing: 20) {
-                                if settings.properties.person?.isCashier ?? false {
+                                if settings.person?.isCashier ?? false {
                                     Text("Du hast noch keine Strafe erstellt.")
                                         .configurate(size: 25).lineLimit(2)
                                     Text("Füge eine Neue mit der Taste unten rechts hinzu.")
@@ -89,7 +89,6 @@ struct ReasonList: View {
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .hideNavigationBarTitle()
         }.setScreenSize
-            .onAppear(perform: changeAppereanceStyle)
     }
     
     /// A Row of reason list with details of one reason.
@@ -144,7 +143,7 @@ struct ReasonList: View {
                     }.frame(width: geometry.size.width * 0.3)
                     
                 }.onTapGesture {
-                        if settings.properties.person?.isCashier ?? false {
+                        if settings.person?.isCashier ?? false {
                             isEditorSheetShown = true
                             UIApplication.shared.dismissKeyboard()
                         }

@@ -247,7 +247,7 @@ struct FineEditor: View {
     func handleFineDelete() {
         guard fineInputProperties.connectionStateDelete != .loading,
             fineInputProperties.connectionStateUpdate != .loading,
-            let clubId = NewSettings.shared.properties.person?.clubProperties.id else { return }
+            let clubId = NewSettings.shared.person?.clubProperties.id else { return }
         fineInputProperties.connectionStateDelete = .loading
         fineInputProperties.resetErrorMessages()
         
@@ -265,7 +265,7 @@ struct FineEditor: View {
     func handleFineUpdate() {
         guard fineInputProperties.connectionStateDelete != .loading,
             fineInputProperties.connectionStateUpdate != .loading,
-            let clubId = NewSettings.shared.properties.person?.clubProperties.id else { return }
+            let clubId = NewSettings.shared.person?.clubProperties.id else { return }
         fineInputProperties.connectionStateUpdate = .loading
         fineInputProperties.resetErrorMessages()
         

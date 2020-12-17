@@ -37,7 +37,7 @@ struct HomeTabsView: View {
                         .padding(.top, 50)
                 }
             } else if homeTabs.active == .settings {
-                //SettingsView(dismissHandler: $dismissHandler) TODO
+                SettingsView(dismissHandler: $dismissHandler)
             } else if listData.connectionState == .loading {
                 ZStack {
                     colorScheme.backgroundColor

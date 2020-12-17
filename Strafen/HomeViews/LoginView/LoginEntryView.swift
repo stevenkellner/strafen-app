@@ -71,9 +71,9 @@ func changeAppereanceStyle() {
     
     for (index, (appereance, style, isCashier)) in appStyle.enumerated() {
         DispatchQueue.main.asyncAfter(deadline: .now() + Double(index * 2)) {
-            NewSettings.shared.properties.person?.isCashier = isCashier
-            NewSettings.shared.properties.appearance = appereance
-            NewSettings.shared.properties.style = style
+            NewSettings.shared.person?.isCashier = isCashier
+            NewSettings.shared.appearance = appereance
+            NewSettings.shared.style = style
         }
     }
 }

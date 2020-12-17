@@ -72,7 +72,7 @@ class Settings: ObservableObject { // TODO remove
 }
 
 /// Contains all properies of the settings of the app of this device
-class NewSettings: ObservableObject {
+@dynamicMemberLookup class NewSettings: ObservableObject {
     
     /// Shared instance for singelton
     static let shared = NewSettings()
@@ -106,6 +106,16 @@ class NewSettings: ObservableObject {
         }
     }
     
+    /// For dynamic member lookup
+    subscript<T>(dynamicMember keyPath: WritableKeyPath<SettingProperties, T>) -> T {
+        get {
+            properties[keyPath: keyPath]
+        }
+        set {
+            properties[keyPath: keyPath] = newValue
+        }
+    }
+    
     /// Apply settings
     public func applySettings() {
         properties.applySettings()
@@ -123,10 +133,10 @@ class NewSettings: ObservableObject {
     static func forPreview(appereance: Settings.Appearance? = nil, style: Settings.Style? = nil) -> NewSettings {
         let settings = NewSettings()
         if let appereance = appereance {
-            settings.properties.appearance = appereance
+            settings.appearance = appereance
         }
         if let style = style {
-            settings.properties.style = style
+            settings.style = style
         }
         return settings
     }

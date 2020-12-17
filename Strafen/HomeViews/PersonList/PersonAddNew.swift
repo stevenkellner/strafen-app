@@ -197,7 +197,7 @@ struct PersonAddNew: View {
     func handleSave() {
         guard personInputProperties.connectionState != .loading,
             !personInputProperties.errorOccurred(),
-            let clubId = NewSettings.shared.properties.person?.clubProperties.id else { return }
+            let clubId = NewSettings.shared.person?.clubProperties.id else { return }
         personInputProperties.connectionState = .loading
         
         let personId = NewPerson.ID(rawValue: UUID())

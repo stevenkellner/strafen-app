@@ -412,7 +412,7 @@ extension NewFine: NewListType {
     
     /// Url for database refernce
     static var url: URL {
-        guard let clubId = NewSettings.shared.properties.person?.clubProperties.id else {
+        guard let clubId = NewSettings.shared.person?.clubProperties.id else {
             fatalError("No person is logged in.")
         }
         return URL.fineList(with: clubId)
@@ -513,7 +513,7 @@ extension NewFine {
     
     /// Late payment interest
     func latePaymentInterestAmount(with reasonList: [ReasonTemplate]?) -> Amount? {
-        guard let interest = NewSettings.shared.properties.latePaymentInterest else { return nil }
+        guard let interest = NewSettings.shared.latePaymentInterest else { return nil }
         return latePaymentInterestAmount(with: interest, reasonList: reasonList)
     }
 }

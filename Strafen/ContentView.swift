@@ -37,13 +37,13 @@ struct ContentView: View {
                 // TODO
                 
             }
-            if settings.properties.person != nil && Auth.auth().currentUser != nil {
+            if settings.person != nil && Auth.auth().currentUser != nil {
                 
                 // Home Tabs View and Tab Bar
                 ContentHomeView()
                     .onAppear {
                         NewListData.shared.setup()
-                        HomeTabs.shared.active = .addNewFine // TODO
+                        HomeTabs.shared.active = .settings // TODO
                     }
                 
             } else {

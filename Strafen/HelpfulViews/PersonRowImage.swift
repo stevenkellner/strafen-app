@@ -31,7 +31,7 @@ struct PersonRowImage: View {
                     .clipShape(Circle())
                     .overlay(
                         Circle()
-                            .stroke(settings.properties.style.strokeColor(colorScheme), lineWidth: settings.properties.style.lineWidth)
+                            .stroke(settings.style.strokeColor(colorScheme), lineWidth: settings.style.lineWidth)
                             .frame(width: 36, height: 36)
                     )
             } else {
@@ -44,7 +44,7 @@ struct PersonRowImage: View {
                         .resizable()
                         .frame(width: 30, height: 30)
                         .scaledToFit()
-                        .foregroundColor(settings.properties.style.strokeColor(colorScheme))
+                        .foregroundColor(settings.style.strokeColor(colorScheme))
                         .padding(.horizontal, 2)
                     
                     Spacer()

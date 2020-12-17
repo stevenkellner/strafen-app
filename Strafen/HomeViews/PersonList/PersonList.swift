@@ -45,7 +45,7 @@ struct PersonList: View {
                         // Empty List Text
                         if personList.isEmpty {
                             VStack(spacing: 20) {
-                                if settings.properties.person?.isCashier ?? false {
+                                if settings.person?.isCashier ?? false {
                                     Text("Du hast noch keine Person erstellt.")
                                         .configurate(size: 25).lineLimit(2)
                                     Text("Füge eine Neue mit der Taste unten rechts hinzu.")
@@ -213,7 +213,7 @@ extension Array where Element == NewPerson {
     
     /// Filtered and sorted for person list
     fileprivate func sortedForList(with searchText: String, settings: NewSettings) -> [Element] {
-        filter(for: searchText, at: \.name.formatted).sorted(for: settings.properties.person)
+        filter(for: searchText, at: \.name.formatted).sorted(for: settings.person)
     }
     
     /// Sort Array so that the logged in person is at start

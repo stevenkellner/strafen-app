@@ -34,10 +34,10 @@ struct Outline: View {
     
     var body: some View {
         RoundedCorners(cornerSet)
-            .radius(settings.properties.style.radius)
-            .lineWidth(lineWidth ?? settings.properties.style.lineWidth)
-            .fillColor(fillColor?.color(settings) ?? settings.properties.style.fillColor(colorScheme))
-            .strokeColor(strokeColor ?? settings.properties.style.strokeColor(colorScheme))
+            .radius(settings.style.radius)
+            .lineWidth(lineWidth ?? settings.style.lineWidth)
+            .fillColor(fillColor?.color(settings) ?? settings.style.fillColor(colorScheme))
+            .strokeColor(strokeColor ?? settings.style.strokeColor(colorScheme))
     }
     
     /// Set fill color
@@ -104,7 +104,7 @@ fileprivate struct FillColor1: FillColor {
     let fillColor: Color?
     
     func color(_ settings: NewSettings) -> Color? {
-        guard !onlyDefault || settings.properties.style == .default else { return nil }
+        guard !onlyDefault || settings.style == .default else { return nil }
         return fillColor
     }
 }
@@ -118,7 +118,7 @@ fileprivate struct FillColor2: FillColor {
     var plainColor: Color?
     
     func color(_ settings: NewSettings) -> Color? {
-        settings.properties.style == .default ? defaultColor : plainColor
+        settings.style == .default ? defaultColor : plainColor
     }
 }
 
@@ -135,7 +135,7 @@ struct SheetBar: View {
         RoundedCorners()
             .radius(2.5)
             .lineWidth(2.5)
-            .strokeColor(settings.properties.style.strokeColor(colorScheme))
+            .strokeColor(settings.style.strokeColor(colorScheme))
             .frame(width: 75, height: 2.5)
             .padding(.vertical, 20)
     }
@@ -155,7 +155,7 @@ struct Indicator: View {
     
     var body: some View {
         RoundedCorners()
-            .strokeColor(settings.properties.style == .default ? Color.custom.gray : Color.plain.strokeColor(colorScheme))
+            .strokeColor(settings.style == .default ? Color.custom.gray : Color.plain.strokeColor(colorScheme))
             .lineWidth(2.5)
             .radius(2.5)
             .frame(width: width, height: 2.5)

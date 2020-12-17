@@ -127,7 +127,7 @@ struct Underlines: View {
             HStack {
                 Rectangle()
                     .frame(width: 300, height: 2)
-                    .border(settings.properties.style == .default ? Color.custom.darkGreen : (colorScheme == .dark ? Color.plain.lightGray : Color.plain.darkGray), width: 1)
+                    .border(settings.style == .default ? Color.custom.darkGreen : (colorScheme == .dark ? Color.plain.lightGray : Color.plain.darkGray), width: 1)
                 Spacer()
             }
             
@@ -135,7 +135,7 @@ struct Underlines: View {
             HStack {
                 Rectangle()
                     .frame(width: 275, height: 2)
-                    .border(settings.properties.style == .default ? Color.custom.darkGreen : (colorScheme == .dark ? Color.plain.lightGray : Color.plain.darkGray), width: 1)
+                    .border(settings.style == .default ? Color.custom.darkGreen : (colorScheme == .dark ? Color.plain.lightGray : Color.plain.darkGray), width: 1)
                 Spacer()
             }
             
@@ -242,6 +242,12 @@ enum ErrorMessages {
     /// Invalid number range
     case invalidNumberRange
     
+    /// Late payment interest rate is zero
+    case rateIsZero
+    
+    /// Late payment interest period is zero
+    case periodIsZero
+    
     /// Message of the error
     var message: String {
         switch self {
@@ -297,6 +303,10 @@ enum ErrorMessages {
             return "Datum darf nicht in der Zukunft liegen!"
         case .invalidNumberRange:
             return "Anzahl muss zwischen 1 und 99 liegen!"
+        case .rateIsZero:
+            return "Zinssatz darf nicht null sein!"
+        case .periodIsZero:
+            return "Zeitraum darf nicht null sein!"
         }
     }
 }

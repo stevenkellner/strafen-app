@@ -45,7 +45,7 @@ struct ProfileDetail: View {
                     
                     // Name
                     HStack {
-                        Text((settings.properties.person?.name ?? .unknown).formatted)
+                        Text((settings.person?.name ?? .unknown).formatted)
                             .configurate(size: 35)
                             .padding(.horizontal, 15)
                             .lineLimit(1)
@@ -77,7 +77,7 @@ struct ProfileDetail: View {
                     // Underlines
                     Underlines()
                     
-                    if let personId = settings.properties.person?.id, let fineList = fineListData.list {
+                    if let personId = settings.person?.id, let fineList = fineListData.list {
                         
                         // Empty List Text
                         if fineList.isEmpty({ $0.assoiatedPersonId == personId }) {
@@ -129,7 +129,7 @@ struct ProfileDetail: View {
             HStack(spacing: 0) {
                 
                 // Image
-                PersonDetail.PersonImage(image: $image, personName: settings.properties.person?.name ?? .unknown)
+                PersonDetail.PersonImage(image: $image, personName: settings.person?.name ?? .unknown)
                     .padding(.leading, image == nil ? 25 : 0)
                 
                 Spacer()
@@ -200,7 +200,7 @@ struct ProfileDetail: View {
             
             /// Amount sum
             func amountSum(with fineList: [NewFine]?, reasonList: [ReasonTemplate]?) -> Amount? {
-                guard let personId = NewSettings.shared.properties.person?.id else { return nil }
+                guard let personId = NewSettings.shared.person?.id else { return nil }
                 guard let amountSum = fineList?.amountSum(of: personId, with: reasonList) else { return nil }
                 switch self {
                 case .payed:

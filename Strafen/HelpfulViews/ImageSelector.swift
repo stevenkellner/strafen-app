@@ -48,7 +48,7 @@ struct ImageSelector: View {
                             .clipShape(Circle())
                             .overlay(
                                 Circle()
-                                    .stroke(Color.custom.gray, lineWidth: settings.properties.style == .default ? 4 : 2)
+                                    .stroke(Color.custom.gray, lineWidth: settings.style == .default ? 4 : 2)
                                     .frame(width: geometry.size.width, height: geometry.size.height)
                             )
                             .frame(width: geometry.size.width, height: geometry.size.height)
@@ -57,14 +57,14 @@ struct ImageSelector: View {
                     } else {
                         Image(systemName: "person")
                             .resizable()
-                            .font(.system(size: geometry.size.width * 0.6, weight: settings.properties.style == .default ? .thin : .ultraLight))
+                            .font(.system(size: geometry.size.width * 0.6, weight: settings.style == .default ? .thin : .ultraLight))
                             .frame(width: geometry.size.width * 0.6, height: geometry.size.height * 0.6)
                             .scaledToFit()
                             .offset(y: -6)
                             .foregroundColor(Color.custom.gray)
                             .overlay(
                                 Circle()
-                                    .stroke(Color.custom.gray, lineWidth: settings.properties.style == .default ? 4 : 2)
+                                    .stroke(Color.custom.gray, lineWidth: settings.style == .default ? 4 : 2)
                                     .frame(width: geometry.size.width, height: geometry.size.height)
                             )
                             .frame(width: geometry.size.width, height: geometry.size.height)
@@ -95,7 +95,7 @@ struct ImageSelector: View {
                 if image != nil && uploadProgress == nil {
                     Image(systemName: "xmark.circle")
                         .foregroundColor(Color.custom.red)
-                        .font(.system(size: geometry.size.width / 3, weight: settings.properties.style == .default ? .light : .thin))
+                        .font(.system(size: geometry.size.width / 3, weight: settings.style == .default ? .light : .thin))
                         .padding(.leading, geometry.size.width / 10)
                         .onTapGesture {
                             withAnimation {

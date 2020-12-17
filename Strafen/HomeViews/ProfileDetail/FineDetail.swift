@@ -227,7 +227,7 @@ struct FineDetail: View {
         /// Handles save to unpayed
         func handleSaveToUnpayed() {
             guard connectionStateToUnpayed != .loading,
-                let signedInPerson = settings.properties.person,
+                let signedInPerson = settings.person,
                   signedInPerson.isCashier,
                   fine.isPayed else { return }
             connectionStateToUnpayed = .loading
@@ -247,7 +247,7 @@ struct FineDetail: View {
         /// Handles save to payed
         func handleSaveToPayed() {
             guard connectionStateToPayed != .loading,
-                let signedInPerson = settings.properties.person,
+                let signedInPerson = settings.person,
                   signedInPerson.isCashier,
                   !fine.isPayed else { return }
             connectionStateToPayed = .loading

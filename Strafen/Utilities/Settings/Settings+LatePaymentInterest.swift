@@ -13,7 +13,7 @@ extension Settings {
     struct LatePaymentInterest: Codable, Equatable {
         
         /// Compontents of date (day / month / year)
-        enum DateComponent: String, CaseIterable, Identifiable, Codable {
+        enum DateComponent: String, CaseIterable, Identifiable, Codable, ParameterableObject {
             
             /// Day
             case day
@@ -85,6 +85,11 @@ extension Settings {
                 let components = calender.dateComponents([dateComponentFlag], from: startDate, to: endDate)
                 return components[keyPath: dateComponentKeyPath] ?? 0
             }
+            
+            /// Parameterable object
+            var parameterableObject: _ParameterableObject {
+                rawValue
+            }
         }
         
         /// Contains value and unit of a time period
@@ -115,7 +120,7 @@ extension Settings {
         }
         
         /// POST parameters
-        var parameters: [String : Any] {
+        var parameters2: [String : Any] {
             [
                 "interestFreeValue": interestFreePeriod.value,
                 "interestFreeUnit": interestFreePeriod.unit.rawValue,
@@ -124,6 +129,18 @@ extension Settings {
                 "interestUnit": interestPeriod.unit.rawValue,
                 "compoundInterest": compoundInterest
             ]
+        }
+        
+        /// Parameters
+        var parameters: NewParameters {
+            NewParameters { parameters in
+                parameters["interestFreeValue"] = interestFreePeriod.value
+                parameters["interestFreeUnit"] = interestFreePeriod.unit
+                parameters["interestRate"] = interestRate
+                parameters["interestValue"] = interestPeriod.value
+                parameters["interestUnit"] = interestPeriod.unit
+                parameters["compoundInterest"] = compoundInterest
+            }
         }
     }
 }

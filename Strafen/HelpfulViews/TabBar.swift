@@ -25,7 +25,7 @@ struct TabBar: View {
     var body: some View {
         ZStack {
             
-            if settings.properties.style == .plain {
+            if settings.style == .plain {
                 if colorScheme == .light {
                     Color.plain.lightLightGray
                         .frame(height: 65)
@@ -42,7 +42,7 @@ struct TabBar: View {
             }
             
             // Outline in default style
-            if settings.properties.style == .default {
+            if settings.style == .default {
                 GeometryReader { geometry in
                     Path { path in
                         path.move(to: CGPoint(x: 0, y: 72))
@@ -60,7 +60,7 @@ struct TabBar: View {
                 VStack(spacing: 0) {
                     
                     // Outline in plain style
-                    if settings.properties.style == .plain {
+                    if settings.style == .plain {
                         Rectangle()
                             .frame(width: geometry.size.width, height: 1)
                             .border(Color.plain.strokeColor(colorScheme), width: 0.5)
@@ -75,7 +75,7 @@ struct TabBar: View {
                         }
                         
                         // Left Divider
-                        if settings.properties.style == .default {
+                        if settings.style == .default {
                             Rectangle()
                                 .frame(width: 2, height: geometry.size.height * 3 / 4)
                                 .border(Color.custom.darkGreen, width: 1)
@@ -87,7 +87,7 @@ struct TabBar: View {
                         }
                         
                         // Middle Divider
-                        if settings.properties.style == .default {
+                        if settings.style == .default {
                             Rectangle()
                                 .frame(width: 2, height: geometry.size.height * 3 / 4)
                                 .border(Color.custom.darkGreen, width: 1)
@@ -96,10 +96,10 @@ struct TabBar: View {
                         // Reason Button
                         ButtonContent(tab: .reasonList, size: geometry.size, tabHandler: nil)
                     
-                        if settings.properties.person?.isCashier ?? false {
+                        if settings.person?.isCashier ?? false {
                             
                             // Add New Fine Button
-                            if settings.properties.style == .default {
+                            if settings.style == .default {
                                 ZStack {
                                     Circle()
                                         .overlay(
@@ -115,12 +115,12 @@ struct TabBar: View {
                                     .onTapGesture {
                                         homeTabs.active = .addNewFine
                                     }
-                            } else if settings.properties.style == .plain {
+                            } else if settings.style == .plain {
                                 ButtonContent(tab: .addNewFine, size: geometry.size, tabHandler: nil)
                             }
                             
                         // Right Divider
-                        } else if settings.properties.style == .default {
+                        } else if settings.style == .default {
                             Rectangle()
                                 .frame(width: 2, height: geometry.size.height * 3 / 4)
                                 .border(Color.custom.darkGreen, width: 1)
@@ -135,7 +135,7 @@ struct TabBar: View {
                     
                 }
             }.frame(height: 65)
-        }.background(settings.properties.style == .plain ? colorScheme == .light ? Color.plain.lightLightGray : Color.plain.darkDarkGray : colorScheme.backgroundColor)
+        }.background(settings.style == .plain ? colorScheme == .light ? Color.plain.lightLightGray : Color.plain.darkDarkGray : colorScheme.backgroundColor)
     }
     
     /// Content of TabBar Button
@@ -177,7 +177,7 @@ struct TabBar: View {
                         .padding(.top, 8)
                         .padding(.horizontal, 2)
                     
-                }.frame(width: settings.properties.person?.isCashier ?? false ? size.width / 5 : size.width / 4, height: size.height)
+                }.frame(width: settings.person?.isCashier ?? false ? size.width / 5 : size.width / 4, height: size.height)
             }.buttonStyle(PlainButtonStyle())
         }
     }
