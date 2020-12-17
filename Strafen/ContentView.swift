@@ -12,12 +12,12 @@ import FirebaseAuth
 struct ContentView: View {
     
     /// Observed Object that contains all settings of the app of this device
-    @ObservedObject var settings = NewSettings.shared
+    @ObservedObject var settings = Settings.shared
     
     /// List data that contains all datas of the different lists
-    @ObservedObject var listData = NewListData.shared
+    @ObservedObject var listData = ListData.shared
     
-    @ObservedObject var fineDataList = NewListData.fine
+    @ObservedObject var fineDataList = ListData.fine
     
     @State var amount = Amount(10, subUnit: 50)
     
@@ -42,8 +42,7 @@ struct ContentView: View {
                 // Home Tabs View and Tab Bar
                 ContentHomeView()
                     .onAppear {
-                        NewListData.shared.setup()
-                        HomeTabs.shared.active = .settings // TODO
+                        ListData.shared.setup()
                     }
                 
             } else {
@@ -54,7 +53,7 @@ struct ContentView: View {
                 
             }
         }.onAppear {
-            NewSettings.shared.applySettings()
+            Settings.shared.applySettings()
         }
     }
     

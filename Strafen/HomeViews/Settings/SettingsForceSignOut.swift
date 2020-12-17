@@ -41,7 +41,7 @@ struct SettingsForceSignOut: View {
     @Binding var dismissHandler: DismissHandler
     
     /// Person list data
-    @ObservedObject var personListData = NewListData.person
+    @ObservedObject var personListData = ListData.person
     
     /// Presentation mode
     @Environment(\.presentationMode) var presentationMode
@@ -53,7 +53,7 @@ struct SettingsForceSignOut: View {
     @State var alertType: AlertType? = nil
     
     /// Ids of selected persons
-    @State var personIds = [NewPerson.ID]()
+    @State var personIds = [Person.ID]()
     
     /// Type of function call error
     @State var functionCallErrorMessages: ErrorMessages? = nil
@@ -80,7 +80,7 @@ struct SettingsForceSignOut: View {
                 Header("Abmelden Erzwingen")
                     .padding(.top, 75)
                 
-                if let personList = personListData.list?.filter({ $0.signInData != nil && $0.id != NewSettings.shared.person?.id }) {
+                if let personList = personListData.list?.filter({ $0.signInData != nil && $0.id != Settings.shared.person?.id }) {
                     
                     // Empty List Text
                     if personList.isEmpty {
@@ -124,7 +124,7 @@ struct SettingsForceSignOut: View {
                         .connectionState($connectionState)
                         .onCancelPress { presentationMode.wrappedValue.dismiss() }
                         .onConfirmPress($alertType, value: .confirmButton(count: personIds.count, action: handleConfirm)) {
-                            guard !(personListData.list?.filter({ $0.signInData != nil && $0.id != NewSettings.shared.person?.id }).isEmpty ?? true) else {
+                            guard !(personListData.list?.filter({ $0.signInData != nil && $0.id != Settings.shared.person?.id }).isEmpty ?? true) else {
                                 presentationMode.wrappedValue.dismiss()
                                 return false
                             }
@@ -155,7 +155,7 @@ struct SettingsForceSignOut: View {
         functionCallErrorMessages = nil
         guard !personIds.isEmpty else { return functionCallErrorMessages = .noPersonsSelected }
         guard connectionState != .loading,
-              let clubId = NewSettings.shared.person?.clubProperties.id else { return }
+              let clubId = Settings.shared.person?.clubProperties.id else { return }
         connectionState = .loading
         
         let dispatchGroup = DispatchGroup()
@@ -181,10 +181,10 @@ struct SettingsForceSignOut: View {
     struct SettingsForceSignOutRow: View {
         
         /// Person of this row
-        let person: NewPerson
+        let person: Person
 
         /// Ids of selected persons
-        @Binding var personIds: [NewPerson.ID]
+        @Binding var personIds: [Person.ID]
         
         /// Image of the person
         @State var image: UIImage?
@@ -193,7 +193,7 @@ struct SettingsForceSignOut: View {
         @Environment(\.colorScheme) var colorScheme
         
         /// Observed Object that contains all settings of the app of this device
-        @ObservedObject var settings = NewSettings.shared
+        @ObservedObject var settings = Settings.shared
         
         var body: some View {
             ZStack {
@@ -233,7 +233,7 @@ struct SettingsForceSignOut: View {
 }
 
 // Extension of Array to filter and sort it for person list
-extension Array where Element == NewPerson {
+extension Array where Element == Person {
     
     /// Filtered and sorted for person list
     fileprivate func sortedForList(with searchText: String) -> [Element] {

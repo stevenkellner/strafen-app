@@ -11,7 +11,7 @@ import Foundation
 struct GetPersonPropertiesCall: FunctionCallable, FunctionCallResult {
     
     /// Function call result
-    typealias CallResult = NewSettings.Person
+    typealias CallResult = Settings.Person
     
     /// User id
     let userId: String
@@ -20,8 +20,8 @@ struct GetPersonPropertiesCall: FunctionCallable, FunctionCallResult {
     let functionName = "getPersonProperties"
     
     /// Parameters
-    var parameters: NewParameters {
-        NewParameters { parameters in
+    var parameters: Parameters {
+        Parameters { parameters in
             parameters["userId"] = userId
         }
     }

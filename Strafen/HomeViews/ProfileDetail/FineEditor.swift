@@ -50,11 +50,11 @@ struct FineEditor: View {
         var connectionStateUpdate: ConnectionState = .passed
         
         /// Set properties of given fine
-        mutating func setProperties(of fine: NewFine, with reasonList: [ReasonTemplate]?) {
+        mutating func setProperties(of fine: Fine, with reasonList: [ReasonTemplate]?) {
             importance = fine.fineReason.importance(with: reasonList)
             reason = fine.fineReason.reason(with: reasonList)
             amount = fine.fineReason.amount(with: reasonList)
-            templateId = (fine.fineReason as? NewFineReasonTemplate)?.templateId
+            templateId = (fine.fineReason as? FineReasonTemplate)?.templateId
             amountString = amount.stringValue
             number = fine.number
             date = fine.date
@@ -94,15 +94,15 @@ struct FineEditor: View {
         }
         
         /// Get updated fine with inputed properties
-        mutating func getFine(old oldFine: NewFine, with reasonList: [ReasonTemplate]?) -> NewFine? {
+        mutating func getFine(old oldFine: Fine, with reasonList: [ReasonTemplate]?) -> Fine? {
             var isError = false
             isError = evaluteReasonError() || isError
             isError = evaluteAmount() || isError
             guard !isError else { return nil }
             
-            var fineReason: NewFineReason = NewFineReasonCustom(reason: reason, amount: amount, importance: importance)
+            var fineReason: FineReason = FineReasonCustom(reason: reason, amount: amount, importance: importance)
             if let templateId = templateId {
-                let fineReasonTemplate = NewFineReasonTemplate(templateId: templateId)
+                let fineReasonTemplate = FineReasonTemplate(templateId: templateId)
                 if fineReason.reason(with: reasonList) == fineReasonTemplate.reason(with: reasonList) &&
                     fineReason.amount(with: reasonList) == fineReasonTemplate.amount(with: reasonList) &&
                     fineReason.importance(with: reasonList) == fineReasonTemplate.importance(with: reasonList) {
@@ -110,7 +110,7 @@ struct FineEditor: View {
                 }
             }
             
-            return NewFine(id: oldFine.id, assoiatedPersonId: oldFine.assoiatedPersonId, date: date, payed: oldFine.payed, number: number, fineReason: fineReason)
+            return Fine(id: oldFine.id, assoiatedPersonId: oldFine.assoiatedPersonId, date: date, payed: oldFine.payed, number: number, fineReason: fineReason)
         }
         
         /// Reset all error messages
@@ -158,7 +158,7 @@ struct FineEditor: View {
     }
     
     /// Fine to edit
-    let fine: NewFine
+    let fine: Fine
     
     /// Properties of inputed fine
     @State var fineInputProperties = FineInputProperties()
@@ -167,7 +167,7 @@ struct FineEditor: View {
     @State var alertType: AlertType? = nil
     
     /// Reason List Data
-    @ObservedObject var reasonListData = NewListData.reason
+    @ObservedObject var reasonListData = ListData.reason
     
     /// Presentation mode
     @Environment(\.presentationMode) var presentationMode
@@ -247,7 +247,7 @@ struct FineEditor: View {
     func handleFineDelete() {
         guard fineInputProperties.connectionStateDelete != .loading,
             fineInputProperties.connectionStateUpdate != .loading,
-            let clubId = NewSettings.shared.person?.clubProperties.id else { return }
+            let clubId = Settings.shared.person?.clubProperties.id else { return }
         fineInputProperties.connectionStateDelete = .loading
         fineInputProperties.resetErrorMessages()
         
@@ -265,7 +265,7 @@ struct FineEditor: View {
     func handleFineUpdate() {
         guard fineInputProperties.connectionStateDelete != .loading,
             fineInputProperties.connectionStateUpdate != .loading,
-            let clubId = NewSettings.shared.person?.clubProperties.id else { return }
+            let clubId = Settings.shared.person?.clubProperties.id else { return }
         fineInputProperties.connectionStateUpdate = .loading
         fineInputProperties.resetErrorMessages()
         

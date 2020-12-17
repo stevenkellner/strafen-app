@@ -14,7 +14,7 @@ protocol FunctionCallable {
     var functionName: String { get }
     
     /// Change parametes
-    var parameters: NewParameters { get }
+    var parameters: Parameters { get }
     
     /// Handler called after function call is succeded
     func successHandler()

@@ -11,7 +11,7 @@ import Foundation
 struct GetClubIdCall: FunctionCallable, FunctionCallResult {
     
     /// Result type
-    typealias CallResult = NewClub.ID
+    typealias CallResult = Club.ID
     
     /// Club identifier
     let identifier: String
@@ -20,8 +20,8 @@ struct GetClubIdCall: FunctionCallable, FunctionCallResult {
     let functionName = "getClubId"
     
     /// Parameters
-    var parameters: NewParameters {
-        NewParameters { parameters in
+    var parameters: Parameters {
+        Parameters { parameters in
             parameters["identifier"] = identifier
         }
     }

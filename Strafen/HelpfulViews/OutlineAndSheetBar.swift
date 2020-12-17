@@ -26,7 +26,7 @@ struct Outline: View {
     @Environment(\.colorScheme) var colorScheme
     
     /// Observed Object that contains all settings of the app of this device
-    @ObservedObject var settings = NewSettings.shared
+    @ObservedObject var settings = Settings.shared
     
     init(_ cornerSet: RoundedCorners.CornerSet = .all) {
         self.cornerSet = cornerSet
@@ -92,7 +92,7 @@ struct Outline: View {
 }
 
 fileprivate protocol FillColor {
-    func color(_ settings: NewSettings) -> Color?
+    func color(_ settings: Settings) -> Color?
 }
 
 fileprivate struct FillColor1: FillColor {
@@ -103,7 +103,7 @@ fileprivate struct FillColor1: FillColor {
     /// Fill Color of the Outline
     let fillColor: Color?
     
-    func color(_ settings: NewSettings) -> Color? {
+    func color(_ settings: Settings) -> Color? {
         guard !onlyDefault || settings.style == .default else { return nil }
         return fillColor
     }
@@ -117,7 +117,7 @@ fileprivate struct FillColor2: FillColor {
     /// Plain color
     var plainColor: Color?
     
-    func color(_ settings: NewSettings) -> Color? {
+    func color(_ settings: Settings) -> Color? {
         settings.style == .default ? defaultColor : plainColor
     }
 }
@@ -129,7 +129,7 @@ struct SheetBar: View {
     @Environment(\.colorScheme) var colorScheme
     
     /// Observed Object that contains all settings of the app of this device
-    @ObservedObject var settings = NewSettings.shared
+    @ObservedObject var settings = Settings.shared
     
     var body: some View {
         RoundedCorners()
@@ -148,7 +148,7 @@ struct Indicator: View {
     let width: CGFloat
     
     /// Observed Object that contains all settings of the app of this device
-    @ObservedObject var settings = NewSettings.shared
+    @ObservedObject var settings = Settings.shared
     
     /// Color scheme to get appearance of this device
     @Environment(\.colorScheme) var colorScheme

@@ -11,7 +11,7 @@ import SwiftUI
 struct FineDetail: View {
     
     /// Fine
-    @State var fine: NewFine
+    @State var fine: Fine
     
     ///Dismiss handler
     @Binding var dismissHandler: DismissHandler
@@ -20,13 +20,13 @@ struct FineDetail: View {
     @Environment(\.colorScheme) var colorScheme
     
     /// Fine List Data
-    @ObservedObject var fineListData = NewListData.fine
+    @ObservedObject var fineListData = ListData.fine
     
     /// Person List Data
-    @ObservedObject var personListData = NewListData.person
+    @ObservedObject var personListData = ListData.person
     
     /// Reason List Data
-    @ObservedObject var reasonListData = NewListData.reason
+    @ObservedObject var reasonListData = ListData.reason
     
     /// Presentation mode
     @Environment(\.presentationMode) var presentationMode
@@ -117,10 +117,10 @@ struct FineDetail: View {
     struct AmountText: View {
         
         /// Fine
-        @Binding var fine: NewFine
+        @Binding var fine: Fine
         
         /// Reason List Data
-        @ObservedObject var reasonListData = NewListData.reason
+        @ObservedObject var reasonListData = ListData.reason
         
         var body: some View {
             VStack(spacing: 5) {
@@ -155,13 +155,13 @@ struct FineDetail: View {
     struct PayedDisplay: View {
         
         /// Fine
-        @Binding var fine: NewFine
+        @Binding var fine: Fine
         
         /// Reason List Data
-        @ObservedObject var reasonListData = NewListData.reason
+        @ObservedObject var reasonListData = ListData.reason
         
         /// Observed Object that contains all settings of the app of this device
-        @ObservedObject var settings = NewSettings.shared
+        @ObservedObject var settings = Settings.shared
         
         /// State of data task connection
         @State var connectionStateToPayed: ConnectionState = .passed

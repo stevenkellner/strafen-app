@@ -138,7 +138,7 @@ struct SignInClubInput: View {
         }
         
         // Id of new club
-        let clubId = NewClub.ID(rawValue: UUID())
+        let clubId = Club.ID(rawValue: UUID())
         
         // Check if club identifer already exists
         checkClubIdentifierExists {
@@ -172,7 +172,7 @@ struct SignInClubInput: View {
     }
     
     /// Set club image
-    func setClubImage(of clubId: NewClub.ID, completionHandler: @escaping () -> Void) {
+    func setClubImage(of clubId: Club.ID, completionHandler: @escaping () -> Void) {
         let dispatchGroup = DispatchGroup()
         if let image = clubCredentials.image {
             imageUploadProgess = .zero
@@ -202,11 +202,11 @@ struct SignInClubInput: View {
     }
     
     /// Create new club in database
-    func createNewClub(of clubId: NewClub.ID) {
+    func createNewClub(of clubId: Club.ID) {
         
         // New club call item
         let cachedProperty = SignInCache.shared.cachedStatus?.property as! SignInCache.PropertyUserIdName
-        let personId = NewPerson.ID(rawValue: UUID())
+        let personId = Person.ID(rawValue: UUID())
         let callItem = NewClubCall(cachedProperties: cachedProperty, clubCredentials: clubCredentials, clubId: clubId, personId: personId)
         
         // Create new club in database
@@ -216,8 +216,8 @@ struct SignInClubInput: View {
             connectionState = .passed
             imageUploadProgess = nil
             SignInCache.shared.setState(to: nil)
-            let clubProperties = NewSettings.Person.ClubProperties(id: clubId, name: clubCredentials.clubName, identifier: clubCredentials.clubIdentifier, regionCode: clubCredentials.regionCode!)
-            NewSettings.shared.person = .init(clubProperties: clubProperties, id: personId, name: cachedProperty.name, signInDate: Date(), isCashier: true)
+            let clubProperties = Settings.Person.ClubProperties(id: clubId, name: clubCredentials.clubName, identifier: clubCredentials.clubIdentifier, regionCode: clubCredentials.regionCode!)
+            Settings.shared.person = .init(clubProperties: clubProperties, id: personId, name: cachedProperty.name, signInDate: Date(), isCashier: true)
             
         } failedHandler: { error in
             handleCallError(error)

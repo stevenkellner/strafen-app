@@ -17,16 +17,16 @@ struct ProfileDetail: View {
     @Environment(\.colorScheme) var colorScheme
     
     /// Observed Object that contains all settings of the app of this device
-    @ObservedObject var settings = NewSettings.shared
+    @ObservedObject var settings = Settings.shared
     
     /// Fine List Data
-    @ObservedObject var fineListData = NewListData.fine
+    @ObservedObject var fineListData = ListData.fine
     
     /// Reason List Data
-    @ObservedObject var reasonListData = NewListData.reason
+    @ObservedObject var reasonListData = ListData.reason
     
     /// Id of selected row for large design
-    @State var selectedForLargeDesign: NewFine.ID? = nil
+    @State var selectedForLargeDesign: Fine.ID? = nil
     
     /// Person image
     @State var image: UIImage? = nil
@@ -120,7 +120,7 @@ struct ProfileDetail: View {
         @Binding var image: UIImage?
         
         /// Observed Object that contains all settings of the app of this device
-        @ObservedObject var settings = NewSettings.shared
+        @ObservedObject var settings = Settings.shared
         
         /// Indicate if image picker is shown
         @State var showImagePicker = false
@@ -199,8 +199,8 @@ struct ProfileDetail: View {
             }
             
             /// Amount sum
-            func amountSum(with fineList: [NewFine]?, reasonList: [ReasonTemplate]?) -> Amount? {
-                guard let personId = NewSettings.shared.person?.id else { return nil }
+            func amountSum(with fineList: [Fine]?, reasonList: [ReasonTemplate]?) -> Amount? {
+                guard let personId = Settings.shared.person?.id else { return nil }
                 guard let amountSum = fineList?.amountSum(of: personId, with: reasonList) else { return nil }
                 switch self {
                 case .payed:
@@ -217,10 +217,10 @@ struct ProfileDetail: View {
         let displayType: DisplayType
         
         /// Fine List Data
-        @ObservedObject var fineListData = NewListData.fine
+        @ObservedObject var fineListData = ListData.fine
         
         /// Reason List Data
-        @ObservedObject var reasonListData = NewListData.reason
+        @ObservedObject var reasonListData = ListData.reason
         
         var body: some View {
             HStack(spacing: 0) {
@@ -260,10 +260,10 @@ struct ProfileDetail: View {
 }
 
 // Extension of Array to filter and sort it for profile detail fine list
-extension Array where Element == NewFine {
+extension Array where Element == Fine {
     
     /// Filtered and sorted for profile detail fine list
-    fileprivate func sortedForList(of personId: NewPerson.ID, with reasonList: [ReasonTemplate]?) -> [Element] {
+    fileprivate func sortedForList(of personId: Person.ID, with reasonList: [ReasonTemplate]?) -> [Element] {
         filter {
             $0.assoiatedPersonId == personId
         }.sorted(byValue: { fine in

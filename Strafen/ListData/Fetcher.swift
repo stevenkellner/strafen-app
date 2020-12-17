@@ -10,7 +10,7 @@ import FirebaseDatabase
 import CodableFirebase
 
 /// Fetches list from database
-struct NewFetcher {
+struct Fetcher {
     
     /// Data event type set with childAdded, childChanged, childRemoved
     struct DataEventTypeSet: OptionSet {
@@ -38,7 +38,7 @@ struct NewFetcher {
     private init() {}
     
     /// Fetches a list of list type from database
-    func fetch<Type>(from url: URL, wait waitingTime: Double? = nil, completion completionHandler: @escaping ([Type]?) -> Void) where Type: NewListType {
+    func fetch<Type>(from url: URL, wait waitingTime: Double? = nil, completion completionHandler: @escaping ([Type]?) -> Void) where Type: ListType {
         
         /// Indicates if task should be executed
         var executeTask = true
@@ -62,7 +62,7 @@ struct NewFetcher {
     }
     
     /// Decodes fetched data from database to list
-    private func decodeFetchedList<Type>(from data: Any) -> [Type]? where Type: NewListType {
+    private func decodeFetchedList<Type>(from data: Any) -> [Type]? where Type: ListType {
         let decoder = FirebaseDecoder()
         // let dictionary = try? decoder.decode(Dictionary<String, Type.CodableSelf>.self, from: data)
         let dictionary: Dictionary<String, Type.CodableSelf>?
@@ -82,7 +82,7 @@ struct NewFetcher {
     }
     
     /// Observe a list of database and change local list if database list changed
-    func observe<Type>(of url: URL, eventTypes: DataEventTypeSet = .all, list listBinding: Binding<[Type]?>) where Type: NewListType {
+    func observe<Type>(of url: URL, eventTypes: DataEventTypeSet = .all, list listBinding: Binding<[Type]?>) where Type: ListType {
         observeChildAdded(of: url) {
             listBinding.wrappedValue
         } onChange: { changedList in
@@ -91,7 +91,7 @@ struct NewFetcher {
     }
     
     /// Observe a list of database and change local list if database list changed
-    func observe<Type>(of url: URL, eventTypes: DataEventTypeSet = .all, getList: @escaping () -> [Type]?, onChange changeHandler: @escaping ([Type]?) -> Void) where Type: NewListType {
+    func observe<Type>(of url: URL, eventTypes: DataEventTypeSet = .all, getList: @escaping () -> [Type]?, onChange changeHandler: @escaping ([Type]?) -> Void) where Type: ListType {
         if eventTypes.contains(.childAdded) {
             observeChildAdded(of: url, getList: getList, onChange: changeHandler)
         }
@@ -104,7 +104,7 @@ struct NewFetcher {
     }
     
     /// Observe a list of database if a child was added and change local list
-    private func observeChildAdded<Type>(of url: URL, getList: @escaping () -> [Type]?, onChange changeHandler: @escaping ([Type]?) -> Void) where Type: NewListType {
+    private func observeChildAdded<Type>(of url: URL, getList: @escaping () -> [Type]?, onChange changeHandler: @escaping ([Type]?) -> Void) where Type: ListType {
         Database.database().reference(withPath: url.path).observe(.childAdded) { snapshot in
             guard let data = snapshot.value else { return }
             if let item: Type = decodeFetchedItem(from: data, key: snapshot.key) {
@@ -120,7 +120,7 @@ struct NewFetcher {
     }
     
     /// Observe a list of database if a child was changed and change local list
-    private func observeChildChanged<Type>(of url: URL, getList: @escaping () -> [Type]?, onChange changeHandler: @escaping ([Type]?) -> Void) where Type: NewListType {
+    private func observeChildChanged<Type>(of url: URL, getList: @escaping () -> [Type]?, onChange changeHandler: @escaping ([Type]?) -> Void) where Type: ListType {
         Database.database().reference(withPath: url.path).observe(.childChanged) { snapshot in
             guard let data = snapshot.value else { return }
             if let item: Type = decodeFetchedItem(from: data, key: snapshot.key) {
@@ -132,7 +132,7 @@ struct NewFetcher {
     }
     
     /// Observe a list of database if a child was removed and change local list
-    private func observeChildRemove<Type>(of url: URL, getList: @escaping () -> [Type]?, onChange changeHandler: @escaping ([Type]?) -> Void) where Type: NewListType {
+    private func observeChildRemove<Type>(of url: URL, getList: @escaping () -> [Type]?, onChange changeHandler: @escaping ([Type]?) -> Void) where Type: ListType {
         Database.database().reference(withPath: url.path).observe(.childRemoved) { snapshot in
             var list = getList()
             let id = Type.ID(rawValue: UUID(uuidString: snapshot.key)!)
@@ -142,7 +142,7 @@ struct NewFetcher {
     }
     
     /// Decodes fetched data from database to list type item
-    private func decodeFetchedItem<Type>(from data: Any, key: String) -> Type? where Type: NewListType {
+    private func decodeFetchedItem<Type>(from data: Any, key: String) -> Type? where Type: ListType {
         let decoder = FirebaseDecoder()
         guard let item = try? decoder.decode(Type.CodableSelf.self, from: data) else { return nil }
         let id = Type.ID(rawValue: UUID(uuidString: key)!)

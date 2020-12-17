@@ -8,12 +8,12 @@
 import SwiftUI
 
 /// Parameters for change
-struct NewParameters {
+struct Parameters {
     
     /// Parameters
     var parameters: [String : ParameterableObject]
     
-    init(_ parameters: NewParameters? = nil, _ adding: ((inout [String : ParameterableObject]) -> Void)? = nil) {
+    init(_ parameters: Parameters? = nil, _ adding: ((inout [String : ParameterableObject]) -> Void)? = nil) {
         self.parameters = parameters?.parameters ?? [:]
         if let adding = adding {
             adding(&self.parameters)

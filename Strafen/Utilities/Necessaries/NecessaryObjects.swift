@@ -294,3 +294,48 @@ extension OSLogType {
         }
     }
 }
+
+/// State of data task
+enum TaskState {
+    
+    /// Data task passed
+    case passed
+    
+    /// Data task failed
+    case failed
+}
+
+/// State of internet connection
+enum ConnectionState {
+    
+    /// Still loading
+    case loading
+    
+    /// No connection
+    case failed
+    
+    /// All loaded
+    case passed
+}
+
+/// Type of the change
+enum ChangeType: String {
+    
+    /// Adds item
+    case add
+    
+    /// Updates item
+    case update
+    
+    /// Deletes item
+    case delete
+}
+
+// Extension of Change Type to confirm to ParameterableObject
+extension ChangeType: ParameterableObject {
+    
+    // Object call with Firebase function as Parameter
+    var parameterableObject: _ParameterableObject {
+        rawValue
+    }
+}

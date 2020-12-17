@@ -387,7 +387,7 @@ struct BackAndEditButton<EditSheetContent>: View where EditSheetContent: View {
     private let editSheetContent: EditSheetContent
     
     /// Observed Object that contains all settings of the app of this device
-    @ObservedObject private var settings = NewSettings.shared
+    @ObservedObject private var settings = Settings.shared
     
     /// Presentation mode
     @Environment(\.presentationMode) private var presentationMode
@@ -476,7 +476,7 @@ struct AddNewListItemButton<ListType, AddNewSheetContent>: View where AddNewShee
     }
     
     /// Observed Object that contains all settings of the app of this device
-    @ObservedObject var settings = NewSettings.shared
+    @ObservedObject var settings = Settings.shared
     
     /// Indicates if addNewNote sheet is shown
     @State var isAddNewNoteSheetShown = false

@@ -20,8 +20,8 @@ struct UserIdAlreadyExistsCall: FunctionCallable, FunctionCallResult {
     let functionName = "existsPersonWithUserId"
     
     /// Parameters
-    var parameters: NewParameters {
-        NewParameters { parameters in
+    var parameters: Parameters {
+        Parameters { parameters in
             parameters["userId"] = userId
         }
     }

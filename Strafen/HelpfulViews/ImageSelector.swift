@@ -23,7 +23,7 @@ struct ImageSelector: View {
     @State var showImagePicker = false
     
     /// Observed Object that contains all settings of the app of this device
-    @ObservedObject var settings = NewSettings.shared
+    @ObservedObject var settings = Settings.shared
     
     /// Init with image and upload progress binding
     init(image: Binding<UIImage?>, uploadProgress: Binding<Double?> = .constant(nil), completionHandler: (() -> Void)? = nil) {

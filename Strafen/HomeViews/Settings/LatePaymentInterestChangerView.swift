@@ -45,7 +45,7 @@ struct LatePaymentInterestChangerView: View {
         @State var connectionState: ConnectionState = .passed
         
         mutating func setProperties() {
-            let latePaymentInterest = NewSettings.shared.latePaymentInterest
+            let latePaymentInterest = Settings.shared.latePaymentInterest
             interestsActive = latePaymentInterest != nil
             interestFreePeriod = latePaymentInterest?.interestPeriod ?? TimePeriod(value: 0, unit: .day)
             interestRate = latePaymentInterest?.interestRate ?? 0
@@ -206,7 +206,7 @@ struct LatePaymentInterestChangerView: View {
                         .connectionState($inputProperties.connectionState)
                         .onCancelPress { presentationMode.wrappedValue.dismiss() }
                         .onConfirmPress($alertType, value: .confirmButton(action: handleSave)) {
-                            guard NewSettings.shared.latePaymentInterest != inputProperties.latePaymentInterest else {
+                            guard Settings.shared.latePaymentInterest != inputProperties.latePaymentInterest else {
                                 presentationMode.wrappedValue.dismiss()
                                 return false
                             }
@@ -235,13 +235,13 @@ struct LatePaymentInterestChangerView: View {
         inputProperties.resetErrors()
         guard inputProperties.connectionState != .loading,
               !inputProperties.errorOccurred(),
-              let clubId = NewSettings.shared.person?.clubProperties.id else { return }
+              let clubId = Settings.shared.person?.clubProperties.id else { return }
         inputProperties.connectionState = .loading
         
         let callItem = LatePaymentInterestCall(latePaymentInterest: inputProperties.latePaymentInterest, clubId: clubId)
         FunctionCaller.shared.call(callItem) { _ in
             inputProperties.connectionState = .passed
-            NewSettings.shared.latePaymentInterest = inputProperties.latePaymentInterest
+            Settings.shared.latePaymentInterest = inputProperties.latePaymentInterest
             presentationMode.wrappedValue.dismiss()
         } failedHandler: { _ in
             inputProperties.connectionState = .failed

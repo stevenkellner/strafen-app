@@ -197,10 +197,10 @@ struct PersonAddNew: View {
     func handleSave() {
         guard personInputProperties.connectionState != .loading,
             !personInputProperties.errorOccurred(),
-            let clubId = NewSettings.shared.person?.clubProperties.id else { return }
+            let clubId = Settings.shared.person?.clubProperties.id else { return }
         personInputProperties.connectionState = .loading
         
-        let personId = NewPerson.ID(rawValue: UUID())
+        let personId = Person.ID(rawValue: UUID())
         
         // Set person image
         setPersonImage(of: personId, clubId: clubId) {
@@ -212,7 +212,7 @@ struct PersonAddNew: View {
     }
     
     /// Set person image
-    func setPersonImage(of personId: NewPerson.ID, clubId: NewClub.ID, completionHandler: @escaping () -> Void) {
+    func setPersonImage(of personId: Person.ID, clubId: Club.ID, completionHandler: @escaping () -> Void) {
         let dispatchGroup = DispatchGroup()
         if let image = personInputProperties.image {
             personInputProperties.imageUploadProgess = .zero
@@ -241,11 +241,11 @@ struct PersonAddNew: View {
     }
     
     /// Create new person in database
-    func createNewPerson(of personId: NewPerson.ID, clubId: NewClub.ID) {
+    func createNewPerson(of personId: Person.ID, clubId: Club.ID) {
         
         // New person call item
         let name = PersonName(firstName: personInputProperties.firstName, lastName: personInputProperties.lastName)
-        let person = NewPerson(id: personId, name: name, signInData: nil)
+        let person = Person(id: personId, name: name, signInData: nil)
         let callItem = ChangeListCall(clubId: clubId, changeType: .add, changeItem: person)
         
         // Create new person in database

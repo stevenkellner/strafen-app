@@ -8,74 +8,11 @@
 import SwiftUI
 import WidgetKit
 
-/// Contains all settings of the app of this device
-@available(*, deprecated, message: "Use Settings instead.")
-class Settings: ObservableObject { // TODO remove
-    
-    /// Deafulf setting for first apply
-    static let `default` = CodableSettings(appearance: .system, style: .plain, person: nil, latePaymentInterest: nil)
+/// Contains all properies of the settings of the app of this device
+@dynamicMemberLookup class Settings: ObservableObject {
     
     /// Shared instance for singelton
     static let shared = Settings()
-    
-    /// Private init for singleton
-    private init() {
-        let decoder = JSONDecoder()
-        let data = FileManager.default.contents(atPath: AppUrls.shared.settingsUrl.path)!
-        let setting = try! decoder.decode(CodableSettings.self, from: data)
-        appearance = setting.appearance
-        style = setting.style
-        person = setting.person
-    }
-    
-    /// Appearance of the app (light / dark / system)
-    @Published var appearance: Appearance {
-            didSet {
-                appearance.applySettings()
-                try! codableSettings.jsonData.write(to: AppUrls.shared.settingsUrl, options: .atomic)
-            }
-        }
-    
-    /// Style of the app (default / plain)
-    @Published var style: Style {
-            didSet {
-                try! codableSettings.jsonData.write(to: AppUrls.shared.settingsUrl, options: .atomic)
-                WidgetCenter.shared.reloadTimelines(ofKind: "StrafenWidget")
-            }
-        }
-    
-    /// Person that is logged in
-    @Published var person: Person? {
-           didSet {
-               try! codableSettings.jsonData.write(to: AppUrls.shared.settingsUrl, options: .atomic)
-                WidgetCenter.shared.reloadTimelines(ofKind: "StrafenWidget")
-           }
-       }
-    
-    /// Late payment interest
-    @Published var latePaymentInterest: LatePaymentInterest? {
-        didSet {
-            try! codableSettings.jsonData.write(to: AppUrls.shared.settingsUrl, options: .atomic)
-            WidgetCenter.shared.reloadTimelines(ofKind: "StrafenWidget")
-        }
-    }
-    
-    /// Codable settings for encoding
-    var codableSettings: CodableSettings {
-        CodableSettings(appearance: appearance, style: style, person: person, latePaymentInterest: latePaymentInterest)
-    }
-    
-    /// Apply settings
-    func applySettings() {
-        appearance.applySettings()
-    }
-}
-
-/// Contains all properies of the settings of the app of this device
-@dynamicMemberLookup class NewSettings: ObservableObject {
-    
-    /// Shared instance for singelton
-    static let shared = NewSettings()
 
     /// Private init for singleton
     private init() {
@@ -130,8 +67,8 @@ class Settings: ObservableObject { // TODO remove
     
     /// Used only in swiftui preview to select active settings
     @available(*, deprecated, message: "only use it in previews.")
-    static func forPreview(appereance: Settings.Appearance? = nil, style: Settings.Style? = nil) -> NewSettings {
-        let settings = NewSettings()
+    static func forPreview(appereance: Settings.Appearance? = nil, style: Settings.Style? = nil) -> Settings {
+        let settings = Settings()
         if let appereance = appereance {
             settings.appearance = appereance
         }
@@ -152,7 +89,7 @@ struct SettingProperties {
     @SettingProperty(default: .plain) public var style: Settings.Style
     
     /// Person that is logged in
-    @SettingProperty(default: nil) public var person: NewSettings.Person?
+    @SettingProperty(default: nil) public var person: Settings.Person?
     
     /// Late payment interest
     @SettingProperty(default: nil) public var latePaymentInterest: Settings.LatePaymentInterest?
@@ -196,7 +133,7 @@ extension SettingProperties: Codable {
         if let style = try decode(Settings.Style.self, with: .style) {
             self.style = style
         }
-        if let person = try decode(NewSettings.Person?.self, with: .person) {
+        if let person = try decode(Settings.Person?.self, with: .person) {
             self.person = person
         }
         if let latePaymentInterest = try decode(Settings.LatePaymentInterest?.self, with: .latePaymentInterest) {

@@ -35,8 +35,8 @@ struct AddNewFineReason: View {
         var amountErrorMessages: ErrorMessages? = nil
         
         /// Set properties of given fine reason
-        mutating func setProperties(of fineReason: NewFineReason?, reasonList: [ReasonTemplate]?) {
-            templateId = (fineReason as? NewFineReasonTemplate)?.templateId
+        mutating func setProperties(of fineReason: FineReason?, reasonList: [ReasonTemplate]?) {
+            templateId = (fineReason as? FineReasonTemplate)?.templateId
             guard let complete = fineReason?.complete(with: reasonList) else { return }
             importance = complete.importance
             reason = complete.reason
@@ -76,12 +76,12 @@ struct AddNewFineReason: View {
     }
     
     /// Old fine reason
-    let oldFineReason: NewFineReason?
+    let oldFineReason: FineReason?
     
     /// Handles reason selection
-    let completionHandler: (NewFineReason) -> Void
+    let completionHandler: (FineReason) -> Void
     
-    init(with fineReason: NewFineReason?, completion completionHandler: @escaping (NewFineReason) -> Void) {
+    init(with fineReason: FineReason?, completion completionHandler: @escaping (FineReason) -> Void) {
         self.oldFineReason = fineReason
         self.completionHandler = completionHandler
     }
@@ -90,7 +90,7 @@ struct AddNewFineReason: View {
     @State var fineReasonInputProperties = FineReasonInputProperties()
     
     /// Reason List Data
-    @ObservedObject var reasonListData = NewListData.reason
+    @ObservedObject var reasonListData = ListData.reason
     
     /// Presentation mode
     @Environment(\.presentationMode) var presentationMode
@@ -142,11 +142,11 @@ struct AddNewFineReason: View {
                 .onCancelPress { presentationMode.wrappedValue.dismiss() }
                 .onConfirmPress {
                     guard !fineReasonInputProperties.errorOccurred() else { return }
-                    var fineReason: NewFineReason = NewFineReasonCustom(reason: fineReasonInputProperties.reason, amount: fineReasonInputProperties.amount, importance: fineReasonInputProperties.importance)
+                    var fineReason: FineReason = FineReasonCustom(reason: fineReasonInputProperties.reason, amount: fineReasonInputProperties.amount, importance: fineReasonInputProperties.importance)
                     if let templateId = fineReasonInputProperties.templateId {
-                        let fineReasonTemplate = NewFineReasonTemplate(templateId: templateId)
+                        let fineReasonTemplate = FineReasonTemplate(templateId: templateId)
                         let complete = fineReasonTemplate.complete(with: reasonListData.list)
-                        if fineReason as? NewFineReasonCustom == complete {
+                        if fineReason as? FineReasonCustom == complete {
                             fineReason = fineReasonTemplate
                         }
                     }
@@ -220,7 +220,7 @@ struct AddNewFineReason: View {
         @Binding var fineReasonInputProperties: FineReasonInputProperties
         
         /// Reason List Data
-        @ObservedObject var reasonListData = NewListData.reason
+        @ObservedObject var reasonListData = ListData.reason
         
         /// Indicated if template sheet is shown
         @State var templateSheetShowing = false
@@ -253,7 +253,7 @@ struct AddNewFineReason: View {
                     .toggleOnTapGesture($templateSheetShowing)
                     .sheet(isPresented: $templateSheetShowing) {
                         FineEditorTemplate { reason in
-                            let fineReason = NewFineReasonTemplate(templateId: reason.id)
+                            let fineReason = FineReasonTemplate(templateId: reason.id)
                             fineReasonInputProperties.setProperties(of: fineReason, reasonList: reasonListData.list)
                             fineReasonInputProperties.evaluteReasonError()
                             fineReasonInputProperties.evaluteAmountError()

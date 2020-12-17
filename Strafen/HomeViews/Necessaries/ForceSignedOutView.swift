@@ -6,14 +6,12 @@
 //
 
 import SwiftUI
+import FirebaseAuth
 
 struct ForceSignedOutView: View {
     
     /// Observed Object that contains all settings of the app of this device
     @ObservedObject var settings = Settings.shared
-    
-    /// Color scheme to get appearance of this device
-    @Environment(\.colorScheme) var colorScheme
     
     /// List data
     @ObservedObject var listData = ListData.shared
@@ -28,18 +26,16 @@ struct ForceSignedOutView: View {
             Spacer()
             
             Text("Du wurdest vom Kassier oder Trainer abgemeldet, da du dich wahrscheinlich als falsche Person angemeldet hast.")
-                .multilineTextAlignment(.center)
+                .configurate(size: 25)
                 .padding(.horizontal, 15)
-                .font(.text(25))
-                .foregroundColor(.textColor)
+                .lineLimit(2)
             
             Spacer()
             
             Text("Du kannst dich erneut registrieren und deinem Team beitreten.")
-                .multilineTextAlignment(.center)
+                .configurate(size: 25)
                 .padding(.horizontal, 15)
-                .font(.text(25))
-                .foregroundColor(.textColor)
+                .lineLimit(2)
             
             Spacer()
             
@@ -48,11 +44,11 @@ struct ForceSignedOutView: View {
                 
                 // Outline
                 Outline()
-                    .fillColor(settings.style.fillColor(colorScheme, defaultStyle: Color.custom.lightGreen))
+                    .fillColor(Color.custom.lightGreen)
                 
                 // Text
                 Text("Zurück zur Anmeldung")
-                    .foregroundColor(settings.style == .default ? Color.custom.gray : Color.custom.lightGreen)
+                    .foregroundColor(plain: Color.custom.lightGreen)
                     .font(.text(20))
                     .lineLimit(1)
                 
@@ -60,6 +56,7 @@ struct ForceSignedOutView: View {
                 .padding(.bottom, 50)
                 .onTapGesture {
                     listData.forceSignedOut = false
+                    try? Auth.auth().signOut()
                     settings.person = nil
                 }
         }

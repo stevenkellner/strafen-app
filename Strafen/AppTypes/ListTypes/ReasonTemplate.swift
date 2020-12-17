@@ -27,11 +27,11 @@ struct ReasonTemplate {
 }
 
 // Extension of ReasonTemplate to confirm to ListType
-extension ReasonTemplate: NewListType {
+extension ReasonTemplate: ListType {
     
     /// Url for database refernce
     static var url: URL {
-        guard let clubId = NewSettings.shared.person?.clubProperties.id else {
+        guard let clubId = Settings.shared.person?.clubProperties.id else {
             fatalError("No person is logged in.")
         }
         return URL.reasonList(with: clubId)
@@ -47,17 +47,17 @@ extension ReasonTemplate: NewListType {
     
     /// Get reason template list of ListData
     static func getDataList() -> [ReasonTemplate]? {
-        NewListData.reason.list
+        ListData.reason.list
     }
     
     /// Change reason template list of ListData
     static func changeHandler(_ newList: [ReasonTemplate]?) {
-        NewListData.reason.list = newList
+        ListData.reason.list = newList
     }
     
     /// Parameters for database change call
-    var callParameters: NewParameters {
-        NewParameters { parameters in
+    var callParameters: Parameters {
+        Parameters { parameters in
             parameters["itemId"] = id
             parameters["reason"] = reason
             parameters["amount"] = amount

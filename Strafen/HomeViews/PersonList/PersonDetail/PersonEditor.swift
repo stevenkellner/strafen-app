@@ -45,7 +45,7 @@ struct PersonEditor: View {
         var connectionStateConfirm: ConnectionState = .passed
         
         /// Sets properties with person
-        mutating func setProperties(with person: NewPerson) {
+        mutating func setProperties(with person: Person) {
             firstName = person.name.firstName
             lastName = person.name.lastName
         }
@@ -123,7 +123,7 @@ struct PersonEditor: View {
     }
     
     /// Person to edit
-    let person: NewPerson
+    let person: Person
     
     /// Completion handler
     let completionHandler: (UIImage?) -> Void
@@ -135,7 +135,7 @@ struct PersonEditor: View {
     @Environment(\.colorScheme) var colorScheme
     
     /// Fine List Data
-    @ObservedObject var fineListData = NewListData.fine
+    @ObservedObject var fineListData = ListData.fine
     
     /// Properties of inputed person
     @State var personInputProperties = PersonInputProperties()
@@ -245,7 +245,7 @@ struct PersonEditor: View {
     func handlePersonDelete() {
         guard personInputProperties.connectionStateDelete != .loading,
               personInputProperties.connectionStateConfirm != .loading,
-              let clubId = NewSettings.shared.person?.clubProperties.id else { return }
+              let clubId = Settings.shared.person?.clubProperties.id else { return }
         personInputProperties.connectionStateDelete = .loading
         personInputProperties.resetErrorMessages()
         
@@ -275,7 +275,7 @@ struct PersonEditor: View {
     }
     
     /// Delete person, execute completion handler only at success
-    func deletePerson(clubId: NewClub.ID, completionHandler: @escaping () -> Void) {
+    func deletePerson(clubId: Club.ID, completionHandler: @escaping () -> Void) {
         let callItem = ChangeListCall(clubId: clubId, changeType: .delete, changeItem: person)
         FunctionCaller.shared.call(callItem) { _ in
             completionHandler()
@@ -296,14 +296,14 @@ struct PersonEditor: View {
     }
     
     /// Delete person image, execute completion handler at success and failure
-    func deleteImage(clubId: NewClub.ID, completionHandler: @escaping () -> Void) {
+    func deleteImage(clubId: Club.ID, completionHandler: @escaping () -> Void) {
         ImageStorage.shared.delete(at: .personImage(with: person.id, clubId: clubId)) { _ in
             completionHandler()
         }
     }
     
     /// Delete fines of person, execute completion handler at success and failure
-    func deleteFines(clubId: NewClub.ID, completionHandler: @escaping () -> Void) {
+    func deleteFines(clubId: Club.ID, completionHandler: @escaping () -> Void) {
         fineListData.list?.filter { fine in
             fine.assoiatedPersonId == person.id
         }.forEach { fine in
@@ -319,7 +319,7 @@ struct PersonEditor: View {
         guard personInputProperties.connectionStateDelete != .loading,
               personInputProperties.connectionStateConfirm != .loading,
               !personInputProperties.errorOccurred(),
-              let clubId = NewSettings.shared.person?.clubProperties.id else { return }
+              let clubId = Settings.shared.person?.clubProperties.id else { return }
         personInputProperties.connectionStateConfirm = .loading
         
         let dispatchGroup = DispatchGroup()
@@ -346,9 +346,9 @@ struct PersonEditor: View {
     }
     
     /// Update person in database
-    func updatePerson(clubId: NewClub.ID, completionHandler: @escaping () -> Void) {
+    func updatePerson(clubId: Club.ID, completionHandler: @escaping () -> Void) {
         let personName = PersonName(firstName: personInputProperties.firstName, lastName: personInputProperties.lastName)
-        let updatedPerson = NewPerson(id: person.id, name: personName, signInData: person.signInData)
+        let updatedPerson = Person(id: person.id, name: personName, signInData: person.signInData)
         let callItem = ChangeListCall(clubId: clubId, changeType: .update, changeItem: updatedPerson)
         FunctionCaller.shared.call(callItem) { _ in
             completionHandler()
@@ -360,7 +360,7 @@ struct PersonEditor: View {
     }
     
     /// Set person image in database
-    func setPersonImage(image: UIImage, clubId: NewClub.ID, completionHandler: @escaping () -> Void) {
+    func setPersonImage(image: UIImage, clubId: Club.ID, completionHandler: @escaping () -> Void) {
         personInputProperties.imageUploadProgess = .zero
         ImageStorage.shared.store(at: .personImage(with: person.id, clubId: clubId), image: image) { _ in
             

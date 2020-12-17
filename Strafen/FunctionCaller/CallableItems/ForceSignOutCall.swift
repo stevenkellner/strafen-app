@@ -11,17 +11,17 @@ import Foundation
 struct ForceSignOutCall: FunctionCallable {
     
     /// Person id
-    let personId: NewPerson.ID
+    let personId: Person.ID
     
     /// Club id
-    let clubId: NewClub.ID
+    let clubId: Club.ID
     
     /// Function name
     let functionName: String = "forceSignOut"
     
     /// Parameters
-    var parameters: NewParameters {
-        NewParameters { parameters in
+    var parameters: Parameters {
+        Parameters { parameters in
             parameters["clubId"] = clubId
             parameters["personId"] = personId
         }

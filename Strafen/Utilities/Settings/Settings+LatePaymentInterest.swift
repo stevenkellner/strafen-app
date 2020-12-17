@@ -119,21 +119,9 @@ extension Settings {
             "\(String(interestRate).replacingOccurrences(of: ".", with: ","))% / \(interestPeriod.value) \(interestPeriod.value == 1 ? interestPeriod.unit.singular : interestPeriod.unit.plural)"
         }
         
-        /// POST parameters
-        var parameters2: [String : Any] {
-            [
-                "interestFreeValue": interestFreePeriod.value,
-                "interestFreeUnit": interestFreePeriod.unit.rawValue,
-                "interestRate": interestRate,
-                "interestValue": interestPeriod.value,
-                "interestUnit": interestPeriod.unit.rawValue,
-                "compoundInterest": compoundInterest
-            ]
-        }
-        
         /// Parameters
-        var parameters: NewParameters {
-            NewParameters { parameters in
+        var parameters: Parameters {
+            Parameters { parameters in
                 parameters["interestFreeValue"] = interestFreePeriod.value
                 parameters["interestFreeUnit"] = interestFreePeriod.unit
                 parameters["interestRate"] = interestRate

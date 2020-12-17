@@ -7,47 +7,11 @@
 
 import Foundation
 
-/// Person with name, id
-struct Person: ListTypes, Identifiable, Equatable {
-    
-    /// Url to list on server
-    static var serverListUrl = \AppUrls.listTypesUrls?.person
-    
-    /// List data of this server list type
-    static let listData = ListData.person
-    
-    /// Url to changer on server
-    static let changerUrl: KeyPath<AppUrls, URL>? = \AppUrls.changer.personList
-    
-    /// Parameters for POST method
-    var postParameters: [String : Any]? {
-        [
-            "id": id,
-            "firstName": firstName,
-            "lastName": lastName
-        ]
-    }
-    
-    /// First name
-    let firstName: String
-    
-    /// Last name
-    let lastName: String
-    
-    /// id
-    let id: UUID
-    
-    /// First and last name
-    var personName: PersonName {
-        PersonName(firstName: firstName, lastName: lastName)
-    }
-}
-
 /// Contains all properties of a person
-struct NewPerson {
+struct Person {
     
     /// Type of Id
-    typealias ID = Tagged<(NewPerson, id: Void), UUID>
+    typealias ID = Tagged<(Person, id: Void), UUID>
     
     /// Data if person is signed in
     struct SignInData: Codable {
@@ -73,11 +37,11 @@ struct NewPerson {
 }
 
 // Extension of Person to confirm to ListType
-extension NewPerson: NewListType {
+extension Person: ListType {
     
     /// Url for database refernce
     static var url: URL {
-        guard let clubId = NewSettings.shared.person?.clubProperties.id else {
+        guard let clubId = Settings.shared.person?.clubProperties.id else {
             fatalError("No person is logged in.")
         }
         return URL.personList(with: clubId)
@@ -91,18 +55,18 @@ extension NewPerson: NewListType {
     }
     
     /// Get person list of ListData
-    static func getDataList() -> [NewPerson]? {
-        NewListData.person.list
+    static func getDataList() -> [Person]? {
+        ListData.person.list
     }
     
     /// Change person list of ListData
-    static func changeHandler(_ newList: [NewPerson]?) {
-        NewListData.person.list = newList
+    static func changeHandler(_ newList: [Person]?) {
+        ListData.person.list = newList
     }
     
     /// Parameters for database change call
-    var callParameters: NewParameters {
-        NewParameters { parameters in
+    var callParameters: Parameters {
+        Parameters { parameters in
             parameters["itemId"] = id
             parameters["firstName"] = name.firstName
             parameters["lastName"] = name.lastName
@@ -112,7 +76,7 @@ extension NewPerson: NewListType {
 }
 
 // Extension of Person for CodableSelf
-extension NewPerson {
+extension Person {
     
     /// Person to fetch from database
     struct CodableSelf: Codable {

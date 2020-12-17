@@ -14,16 +14,16 @@ struct AddNewFinePerson: View {
     let forSeveralPersons: Bool
     
     /// Ids of selected persons
-    @State var personIds: [NewPerson.ID]
+    @State var personIds: [Person.ID]
     
     /// Handles person selection
-    let completionHandler: ([NewPerson.ID]) -> Void
+    let completionHandler: ([Person.ID]) -> Void
     
     /// Presentation mode
     @Environment(\.presentationMode) var presentationMode
     
     /// Person List Data
-    @ObservedObject var personListData = NewListData.person
+    @ObservedObject var personListData = ListData.person
     
     /// Text searched in search bar
     @State var searchText = ""
@@ -113,10 +113,10 @@ struct AddNewFinePerson: View {
     struct AddNewFinePersonRow: View {
         
         /// Person of this row
-        let person: NewPerson
+        let person: Person
         
         /// Ids of selected persons
-        @Binding var personIds: [NewPerson.ID]
+        @Binding var personIds: [Person.ID]
         
         /// Image of the person
         @State var image: UIImage?
@@ -155,7 +155,7 @@ struct AddNewFinePerson: View {
 }
 
 // Extension of Array to filter and sort it for person list
-extension Array where Element == NewPerson {
+extension Array where Element == Person {
     
     /// Filtered and sorted for person list
     fileprivate func sortedForList(with searchText: String) -> [Element] {

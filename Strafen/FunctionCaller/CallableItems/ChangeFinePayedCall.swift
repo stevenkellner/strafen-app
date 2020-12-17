@@ -11,10 +11,10 @@ import Foundation
 struct ChangeFinePayedCall: FunctionCallable {
     
     /// Club id
-    let clubId: NewClub.ID
+    let clubId: Club.ID
     
     /// Fine id
-    let fineId: NewFine.ID
+    let fineId: Fine.ID
     
     /// Payed
     let payed: Payed
@@ -23,8 +23,8 @@ struct ChangeFinePayedCall: FunctionCallable {
     let functionName = "changeFinePayed"
     
     /// Parameters
-    var parameters: NewParameters {
-        NewParameters { parameters in
+    var parameters: Parameters {
+        Parameters { parameters in
             parameters["clubId"] = clubId
             parameters["fineId"] = fineId
             parameters["payed"] = payed

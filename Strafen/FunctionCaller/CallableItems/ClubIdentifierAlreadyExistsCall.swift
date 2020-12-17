@@ -20,8 +20,8 @@ struct ClubIdentifierAlreadyExistsCall: FunctionCallable, FunctionCallResult {
     let functionName = "existsClubWithIdentifier"
     
     /// Parameters
-    var parameters: NewParameters {
-        NewParameters { parameters in
+    var parameters: Parameters {
+        Parameters { parameters in
             parameters["identifier"] = identifier
         }
     }

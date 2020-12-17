@@ -7,29 +7,10 @@
 
 import Foundation
 
-extension Settings { // TODO remove
-    
-    /// Logged in person
-    struct Person: Codable {
-        
-        /// Id of the person
-        let id: UUID
-        
-        /// Name of the person
-        let name: PersonName
-        
-        /// Id of the associated club
-        let clubId: UUID
-        
-        /// Name of the associated club
-        let clubName: String
-        
-        /// True if person is cashier of the club
-        var isCashier: Bool
-    }
-}
+typealias Club = Settings.Person.ClubProperties
+typealias _Person = Person
 
-extension NewSettings {
+extension Settings {
     
     /// Logged in person
     struct Person: Codable {
@@ -57,7 +38,7 @@ extension NewSettings {
         var clubProperties: ClubProperties
         
         /// Id of the person
-        let id: NewPerson.ID
+        let id: _Person.ID
         
         /// Name of the person
         let name: PersonName
@@ -69,5 +50,3 @@ extension NewSettings {
         var isCashier: Bool
     }
 }
-
-typealias NewClub = NewSettings.Person.ClubProperties

@@ -14,10 +14,10 @@ struct ReasonList: View {
     @Environment(\.colorScheme) var colorScheme
     
     /// Observed Object that contains all settings of the app of this device
-    @ObservedObject var settings = NewSettings.shared
+    @ObservedObject var settings = Settings.shared
     
     /// Reason List Data
-    @ObservedObject var reasonListData = NewListData.reason
+    @ObservedObject var reasonListData = ListData.reason
     
     /// Text searched in search bar
     @State var searchText = ""
@@ -98,7 +98,7 @@ struct ReasonList: View {
         let reason: ReasonTemplate
         
         /// Observed Object that contains all settings of the app of this device
-        @ObservedObject var settings = NewSettings.shared
+        @ObservedObject var settings = Settings.shared
         
         /// Indicates if reason editor sheet is shown
         @State var isEditorSheetShown = false

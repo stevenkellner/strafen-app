@@ -20,7 +20,7 @@ struct HomeTabsView: View {
     @ObservedObject var homeTabs = HomeTabs.shared
     
     /// List data
-    @ObservedObject var listData = NewListData.shared
+    @ObservedObject var listData = ListData.shared
     
     var body: some View {
         Group {

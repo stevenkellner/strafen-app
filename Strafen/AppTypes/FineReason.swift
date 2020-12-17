@@ -8,7 +8,7 @@
 import Foundation
 
 /// Protocol of fine reason for reason / amount / importance or templateId
-protocol NewFineReason {
+protocol FineReason {
     
     /// Reason
     func reason(with reasonList: [ReasonTemplate]?) -> String
@@ -20,21 +20,21 @@ protocol NewFineReason {
     func importance(with reasonList: [ReasonTemplate]?) -> Importance
     
     /// Parameters for database change call
-    var callParameters: NewParameters { get }
+    var callParameters: Parameters { get }
 }
 
-extension NewFineReason {
+extension FineReason {
     
     /// Complete reason
-    func complete(with reasonList: [ReasonTemplate]?) -> NewFineReasonCustom {
-        NewFineReasonCustom(reason: reason(with: reasonList),
+    func complete(with reasonList: [ReasonTemplate]?) -> FineReasonCustom {
+        FineReasonCustom(reason: reason(with: reasonList),
                        amount: amount(with: reasonList),
                        importance: importance(with: reasonList))
     }
 }
 
 /// Fine Reason for reason / amount / importance
-struct NewFineReasonCustom: NewFineReason, Equatable {
+struct FineReasonCustom: FineReason, Equatable {
     
     /// Reason
     let reason: String
@@ -55,8 +55,8 @@ struct NewFineReasonCustom: NewFineReason, Equatable {
     func importance(with reasonList: [ReasonTemplate]?) -> Importance { importance }
     
     /// Parameters for database change call
-    var callParameters: NewParameters {
-        NewParameters { parameters in
+    var callParameters: Parameters {
+        Parameters { parameters in
             parameters["reason"] = reason
             parameters["amount"] = amount
             parameters["importance"] = importance
@@ -65,7 +65,7 @@ struct NewFineReasonCustom: NewFineReason, Equatable {
 }
 
 /// Fine Reason for templateId
-struct NewFineReasonTemplate: NewFineReason, Equatable {
+struct FineReasonTemplate: FineReason, Equatable {
     
     /// Template id
     let templateId: ReasonTemplate.ID
@@ -86,15 +86,15 @@ struct NewFineReasonTemplate: NewFineReason, Equatable {
     }
     
     /// Parameters for database change call
-    var callParameters: NewParameters {
-        NewParameters { parameters in
+    var callParameters: Parameters {
+        Parameters { parameters in
             parameters["templateId"] = templateId
         }
     }
 }
 
 /// Codable fine reason to get custom or template fine reason
-struct NewCodableFineReason: Decodable {
+struct CodableFineReason: Decodable {
     
     /// Reason
     let reason: String?
@@ -109,13 +109,13 @@ struct NewCodableFineReason: Decodable {
     let templateId: ReasonTemplate.ID?
     
     /// Custom or template fine reason
-    var fineReason: NewFineReason {
+    var fineReason: FineReason {
         if let templateId = templateId {
-            return NewFineReasonTemplate(templateId: templateId)
+            return FineReasonTemplate(templateId: templateId)
         } else if let reason = reason,
                   let amount = amount,
                   let importance = importance {
-            return NewFineReasonCustom(reason: reason, amount: amount, importance: importance)
+            return FineReasonCustom(reason: reason, amount: amount, importance: importance)
         } else {
             fatalError("No template id and no properties for custom fine reason.")
         }

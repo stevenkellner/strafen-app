@@ -14,10 +14,10 @@ struct AddNewFine: View {
     struct FineInputProperties {
         
         /// Ids of associated persons
-        var personIds = [NewPerson.ID]()
+        var personIds = [Person.ID]()
         
         /// Fine Reason
-        var fineReason: NewFineReason?
+        var fineReason: FineReason?
         
         /// Input date
         var date = Date()
@@ -140,13 +140,13 @@ struct AddNewFine: View {
     }
     
     /// Init with person id
-    let initPersonId: NewPerson.ID?
+    let initPersonId: Person.ID?
     
     /// Default init
     init() { initPersonId = nil }
     
     /// Init with person id
-    init(with personId: NewPerson.ID) { initPersonId = personId }
+    init(with personId: Person.ID) { initPersonId = personId }
     
     /// Properties for fine input
     @State var fineInputProperties = FineInputProperties()
@@ -221,13 +221,13 @@ struct AddNewFine: View {
         guard fineInputProperties.connectionState != .loading,
             !fineInputProperties.errorOccurred(),
             let fineReason = fineInputProperties.fineReason,
-            let clubId = NewSettings.shared.person?.clubProperties.id else { return }
+            let clubId = Settings.shared.person?.clubProperties.id else { return }
         fineInputProperties.connectionState = .loading
         
         let dispatchGroup = DispatchGroup()
         for personId in fineInputProperties.personIds {
-            let fineId = NewFine.ID(rawValue: UUID())
-            let fine = NewFine(id: fineId, assoiatedPersonId: personId, date: fineInputProperties.date, payed: .unpayed, number: fineInputProperties.number, fineReason: fineReason)
+            let fineId = Fine.ID(rawValue: UUID())
+            let fine = Fine(id: fineId, assoiatedPersonId: personId, date: fineInputProperties.date, payed: .unpayed, number: fineInputProperties.number, fineReason: fineReason)
             dispatchGroup.enter()
             let callItem = ChangeListCall(clubId: clubId, changeType: .add, changeItem: fine)
             FunctionCaller.shared.call(callItem) { _ in
@@ -254,7 +254,7 @@ struct AddNewFine: View {
         @Binding var fineInputProperties: FineInputProperties
         
         /// Person List Data
-        @ObservedObject var personListData = NewListData.person
+        @ObservedObject var personListData = ListData.person
         
         /// Indicates if person selector sheet is shown
         @State var showPersonSelectorSheet = false
@@ -362,7 +362,7 @@ struct AddNewFine: View {
         @Binding var fineInputProperties: FineInputProperties
         
         /// Reason List Data
-        @ObservedObject var reasonListData = NewListData.reason
+        @ObservedObject var reasonListData = ListData.reason
         
         /// Indicates if reason selector sheet is shown
         @State var showReasonSelectorSheet = false
@@ -423,7 +423,7 @@ struct AddNewFine: View {
         }
         
         /// Fine reason
-        var fineReason: NewFineReasonCustom? {
+        var fineReason: FineReasonCustom? {
             fineInputProperties.fineReason?.complete(with: reasonListData.list)
         }
     }

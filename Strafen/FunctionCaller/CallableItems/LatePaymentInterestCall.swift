@@ -14,15 +14,15 @@ struct LatePaymentInterestCall: FunctionCallable {
     let latePaymentInterest: Settings.LatePaymentInterest?
     
     /// Club id
-    let clubId: NewClub.ID
+    let clubId: Club.ID
     
     /// Function name
     let functionName: String = "changeLatePaymentInterest"
     
     
     /// Parameters
-    var parameters: NewParameters {
-        NewParameters(latePaymentInterest?.parameters) { parameters in
+    var parameters: Parameters {
+        Parameters(latePaymentInterest?.parameters) { parameters in
             parameters["clubId"] = clubId
         }
     }

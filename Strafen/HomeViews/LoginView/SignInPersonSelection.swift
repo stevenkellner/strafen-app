@@ -20,10 +20,10 @@ struct SignInPersonSelection: View {
     @State var signInConnectionState: ConnectionState = .passed
     
     /// List of all persons of selected club
-    @State var personList: [NewPerson]? = nil
+    @State var personList: [Person]? = nil
     
     /// Id of selected person
-    @State var selectedPersonId: NewPerson.ID? = nil
+    @State var selectedPersonId: Person.ID? = nil
     
     /// Screen size of this view
     @State var screenSize: CGSize?
@@ -85,7 +85,7 @@ struct SignInPersonSelection: View {
         Logging.shared.log(with: .info, "Start fetching person list of clubId: \(clubId)")
         
         let url = URL.personList(with: clubId)
-        NewFetcher.shared.fetch(from: url, wait: 2) { (personList: [NewPerson]?) in
+        Fetcher.shared.fetch(from: url, wait: 2) { (personList: [Person]?) in
             guard let personList = personList else {
                 Logging.shared.log(with: .error, "Couldn't fetch person list.")
                 return fetchConnectionState = .failed
@@ -95,7 +95,7 @@ struct SignInPersonSelection: View {
             self.personList = personList
             fetchConnectionState = .passed
         }
-        NewFetcher.shared.observe(of: url, list: $personList)
+        Fetcher.shared.observe(of: url, list: $personList)
     }
     
     /// Handles sign in
@@ -106,7 +106,7 @@ struct SignInPersonSelection: View {
         signInConnectionState = .loading
         Logging.shared.log(with: .info, "Started to sign in.")
         
-        let personId = selectedPersonId ?? NewPerson.ID(rawValue: UUID())
+        let personId = selectedPersonId ?? Person.ID(rawValue: UUID())
         let cachedProperties = SignInCache.shared.cachedStatus?.property as! SignInCache.PropertyUserIdNameClubId
         
         // Register person to database
@@ -117,8 +117,8 @@ struct SignInPersonSelection: View {
             Logging.shared.log(with: .info, "With result: \(result)")
             signInConnectionState = .passed
             SignInCache.shared.setState(to: nil)
-            let clubProperties = NewSettings.Person.ClubProperties(id: cachedProperties.clubId, name: result.clubName, identifier: result.clubIdentifier, regionCode: result.regionCode)
-            NewSettings.shared.person = .init(clubProperties: clubProperties, id: personId, name: cachedProperties.name, signInDate: Date(), isCashier: false)
+            let clubProperties = Settings.Person.ClubProperties(id: cachedProperties.clubId, name: result.clubName, identifier: result.clubIdentifier, regionCode: result.regionCode)
+            Settings.shared.person = .init(clubProperties: clubProperties, id: personId, name: cachedProperties.name, signInDate: Date(), isCashier: false)
             
         } failedHandler: { error in
             Logging.shared.log(with: .error, "An error occurs, that isn't handled: \(error.localizedDescription)")
@@ -131,10 +131,10 @@ struct SignInPersonSelection: View {
     struct PersonList: View {
         
         /// List of all persons of selected club
-        let personList: [NewPerson]
+        let personList: [Person]
         
         /// Id of selected person
-        @Binding var selectedPersonId: NewPerson.ID?
+        @Binding var selectedPersonId: Person.ID?
         
         /// Error messages
         @Binding var errorMessages: ErrorMessages?
@@ -179,10 +179,10 @@ struct SignInPersonSelection: View {
     struct PersonListRow: View {
         
         /// Person of this row
-        let person: NewPerson
+        let person: Person
         
         /// Id of selected person
-        @Binding var selectedPersonId: NewPerson.ID?
+        @Binding var selectedPersonId: Person.ID?
         
         /// Image of the person
         @State var image: UIImage?

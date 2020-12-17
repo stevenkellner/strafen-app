@@ -14,7 +14,7 @@ struct TabBar: View {
     @Environment(\.colorScheme) var colorScheme
     
     /// Observed Object that contains all settings of the app of this device
-    @ObservedObject var settings = NewSettings.shared
+    @ObservedObject var settings = Settings.shared
     
     /// Active home tab
     @ObservedObject var homeTabs = HomeTabs.shared
@@ -151,7 +151,7 @@ struct TabBar: View {
         @ObservedObject var homeTabs = HomeTabs.shared
         
         /// Observed Object that contains all settings of the app of this device
-        @ObservedObject var settings = NewSettings.shared
+        @ObservedObject var settings = Settings.shared
         
         /// Handles the tab
         let tabHandler: (() -> ())?
@@ -182,23 +182,3 @@ struct TabBar: View {
         }
     }
 }
-
-/*#if DEBUG
-struct TabBar_Previews: PreviewProvider {
-    static var previews: some View {
-        
-        let phoneType = "iPhone 12"
-        let colorScheme: ColorScheme = .dark
-        
-        return Group {
-            VStack {
-                Spacer()
-                TabBar(settings: .forPreview(style: .default), homeTabs: .forPreview(.profileDetail), dismissHandler: .constant(nil))
-            }.previewDevice(.init(rawValue: phoneType))
-                .previewDisplayName(phoneType)
-                .edgesIgnoringSafeArea(.all)
-                .environment(\.colorScheme, colorScheme)
-        }
-    }
-}
-#endif*/

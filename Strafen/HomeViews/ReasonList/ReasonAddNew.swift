@@ -163,7 +163,7 @@ struct ReasonAddNew: View {
     func handleSave() {
         guard reasonInputProperties.connectionState != .loading,
             !reasonInputProperties.errorOccurred(),
-            let clubId = NewSettings.shared.person?.clubProperties.id else { return }
+            let clubId = Settings.shared.person?.clubProperties.id else { return }
         reasonInputProperties.connectionState = .loading
         reasonInputProperties.functionCallErrorMessages = nil
         

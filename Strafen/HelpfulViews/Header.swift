@@ -115,7 +115,7 @@ struct TitledContent<Content>: View where Content: View {
 struct Underlines: View {
     
     /// Observed Object that contains all settings of the app of this device
-    @ObservedObject var settings = NewSettings.shared
+    @ObservedObject var settings = Settings.shared
     
     /// Color scheme to get appearance of this device
     @Environment(\.colorScheme) var colorScheme

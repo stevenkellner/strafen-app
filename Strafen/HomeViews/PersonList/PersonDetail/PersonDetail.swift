@@ -11,7 +11,7 @@ import SwiftUI
 struct PersonDetail: View {
     
     /// Contains details of the person
-    let person: NewPerson
+    let person: Person
     
     ///Dismiss handler
     @Binding var dismissHandler: DismissHandler
@@ -20,16 +20,16 @@ struct PersonDetail: View {
     @Environment(\.colorScheme) var colorScheme
     
     /// Observed Object that contains all settings of the app of this device
-    @ObservedObject var settings = NewSettings.shared
+    @ObservedObject var settings = Settings.shared
     
     /// Fine List Data
-    @ObservedObject var fineListData = NewListData.fine
+    @ObservedObject var fineListData = ListData.fine
     
     /// Reason List Data
-    @ObservedObject var reasonListData = NewListData.reason
+    @ObservedObject var reasonListData = ListData.reason
     
     /// Id of selected row for large design
-    @State var selectedForLargeDesign: NewFine.ID? = nil
+    @State var selectedForLargeDesign: Fine.ID? = nil
     
     /// Person image
     @State var image: UIImage?
@@ -139,7 +139,7 @@ struct PersonDetail: View {
         @Environment(\.colorScheme) var colorScheme
         
         /// Observed Object that contains all settings of the app of this device
-        @ObservedObject var settings = NewSettings.shared
+        @ObservedObject var settings = Settings.shared
         
         /// Size of the image
         let imageSize: CGSize = .square(100)
@@ -187,7 +187,7 @@ struct PersonDetail: View {
         @Environment(\.colorScheme) var colorScheme
         
         /// Observed Object that contains all settings of the app of this device
-        @ObservedObject var settings = NewSettings.shared
+        @ObservedObject var settings = Settings.shared
 
         /// Presentation mode
         @Environment(\.presentationMode) var presentationMode
@@ -233,10 +233,10 @@ struct PersonDetail: View {
 }
 
 // Extension of Array to filter and sort it for person list
-extension Array where Element == NewFine {
+extension Array where Element == Fine {
     
     /// Filtered and sorted for person list
-    fileprivate func sortedForList(of personId: NewPerson.ID, with reasonList: [ReasonTemplate]?) -> [Element] {
+    fileprivate func sortedForList(of personId: Person.ID, with reasonList: [ReasonTemplate]?) -> [Element] {
         filter {
             $0.assoiatedPersonId == personId
         }.sorted {

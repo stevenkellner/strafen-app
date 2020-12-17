@@ -17,7 +17,7 @@ struct PersonRowImage: View {
     @Environment(\.colorScheme) var colorScheme
     
     /// Observed Object that contains all settings of the app of this device
-    @ObservedObject var settings = NewSettings.shared
+    @ObservedObject var settings = Settings.shared
     
     var body: some View {
         VStack(spacing: 0) {

@@ -20,13 +20,13 @@ struct FinesFormatterView: View {
     @Environment(\.colorScheme) var colorScheme
     
     /// Person List Data
-    @ObservedObject var personListData = NewListData.person
+    @ObservedObject var personListData = ListData.person
     
     /// Fine List Data
-    @ObservedObject var fineListData = NewListData.fine
+    @ObservedObject var fineListData = ListData.fine
     
     /// Reason List Data
-    @ObservedObject var reasonListData = NewListData.reason
+    @ObservedObject var reasonListData = ListData.reason
     
     /// Preview text
     @State var previewText = ""
@@ -149,7 +149,7 @@ struct FinesFormatterView: View {
     }
     
     /// Person text of given person
-    func personText(of person: NewPerson) -> String? {
+    func personText(of person: Person) -> String? {
         guard let unpayedFineList = fineListData.list?.filter({
             $0.assoiatedPersonId == person.id && !$0.isPayed
         }) else { return nil }
@@ -165,7 +165,7 @@ struct FinesFormatterView: View {
     }
     
     /// Fine text of given fine list
-    func fineText(of fineList: [NewFine]) -> String {
+    func fineText(of fineList: [Fine]) -> String {
         fineList.map { fine in
             "\t- \(fine.fineReason.reason(with: reasonListData.list)),\n\t  \(fine.date.formattedLong):\t \(fine.completeAmount(with: reasonListData.list))"
         }.joined(separator: "\n")

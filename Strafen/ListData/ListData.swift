@@ -11,19 +11,19 @@ import FirebaseDatabase
 import CodableFirebase
 
 /// Data of all list types
-class NewListData: ObservableObject {
+class ListData: ObservableObject {
     
     /// List data of person list
-    static let person = DataTypeList<NewPerson>()
+    static let person = DataTypeList<Person>()
     
     /// List data of reason list
     static let reason = DataTypeList<ReasonTemplate>()
     
     /// List data of fine list
-    static let fine = DataTypeList<NewFine>()
+    static let fine = DataTypeList<Fine>()
     
     /// Shared instace for singleton
-    static let shared = NewListData()
+    static let shared = ListData()
 
     /// Private init for singleton
     private init() {}
@@ -120,7 +120,7 @@ class NewListData: ObservableObject {
     ///     - Set late payment interest
     ///     - Set region code
     private func checkPersonProperties() {
-        guard let loggedInPerson = NewSettings.shared.person else {
+        guard let loggedInPerson = Settings.shared.person else {
             fatalError("No person is signed in.")
         }
         
@@ -152,13 +152,13 @@ class NewListData: ObservableObject {
         dispatchGroup.enter()
         Database.database().reference(withPath: basePath + "/latePaymentInterest").observeSingleEvent(of: .value) { snapshot in
             guard snapshot.exists(), let data = snapshot.value else {
-                NewSettings.shared.latePaymentInterest = nil
+                Settings.shared.latePaymentInterest = nil
                 dispatchGroup.leave()
                 return
             }
             let decoder = FirebaseDecoder()
             let latePaymentInterest = try? decoder.decode(Settings.LatePaymentInterest?.self, from: data)
-            NewSettings.shared.latePaymentInterest = latePaymentInterest
+            Settings.shared.latePaymentInterest = latePaymentInterest
             dispatchGroup.leave()
         }
         
@@ -171,7 +171,7 @@ class NewListData: ObservableObject {
             }
             let decoder = FirebaseDecoder()
             let regionCode = try! decoder.decode(String.self, from: data)
-            NewSettings.shared.person?.clubProperties.regionCode = regionCode
+            Settings.shared.person?.clubProperties.regionCode = regionCode
             dispatchGroup.leave()
         }
         

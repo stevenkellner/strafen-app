@@ -27,14 +27,14 @@ struct RegisterPersonCall: FunctionCallable, FunctionCallResult {
     let cachedProperties: SignInCache.PropertyUserIdNameClubId
     
     /// Person id
-    let personId: NewPerson.ID
+    let personId: Person.ID
     
     /// Function name
     let functionName = "registerPerson"
     
     /// Parameters
-    var parameters: NewParameters {
-        NewParameters { parameters in
+    var parameters: Parameters {
+        Parameters { parameters in
             parameters["clubId"] = cachedProperties.clubId
             parameters["id"] = personId
             parameters["firstName"] = cachedProperties.name.firstName

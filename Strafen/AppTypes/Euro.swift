@@ -5,7 +5,7 @@
 //  Created by Steven on 12.07.20.
 //
 
-import Foundation
+import Foundation // TODO remove
 
 /// UInt with max value of 99
 @propertyWrapper

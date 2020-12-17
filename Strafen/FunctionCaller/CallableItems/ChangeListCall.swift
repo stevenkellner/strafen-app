@@ -8,10 +8,10 @@
 import Foundation
 
 /// Used to change list types in database
-struct ChangeListCall<Type>: FunctionCallable where Type: NewListType {
+struct ChangeListCall<Type>: FunctionCallable where Type: ListType {
     
     /// Club id
-    let clubId: NewClub.ID
+    let clubId: Club.ID
     
     /// Change type
     let changeType: ChangeType
@@ -45,8 +45,8 @@ struct ChangeListCall<Type>: FunctionCallable where Type: NewListType {
     }
     
     /// Parameters
-    var parameters: NewParameters {
-        NewParameters(changeItem.callParameters) { parameters in
+    var parameters: Parameters {
+        Parameters(changeItem.callParameters) { parameters in
             parameters["clubId"] = clubId
             parameters["changeType"] = changeType
         }

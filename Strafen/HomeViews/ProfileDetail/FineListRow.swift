@@ -11,10 +11,10 @@ import SwiftUI
 struct FineListRow: View {
     
     /// Fine
-    let fine: NewFine
+    let fine: Fine
     
     /// Id of selected row for large design
-    @Binding var selectedForLargeDesign: NewFine.ID?
+    @Binding var selectedForLargeDesign: Fine.ID?
     
     /// With open url
     let withOpenUrl: Bool
@@ -22,7 +22,7 @@ struct FineListRow: View {
     ///Dismiss handler
     @Binding var dismissHandler: DismissHandler
     
-    init(of fine: NewFine, selectedForLargeDesign: Binding<NewFine.ID?>, withOpenUrl: Bool = false, dismissHandler: Binding<DismissHandler>) {
+    init(of fine: Fine, selectedForLargeDesign: Binding<Fine.ID?>, withOpenUrl: Bool = false, dismissHandler: Binding<DismissHandler>) {
         self.fine = fine
         self._selectedForLargeDesign = selectedForLargeDesign
         self.withOpenUrl = withOpenUrl
@@ -68,10 +68,10 @@ struct FineListRow: View {
     struct SmallRow: View {
         
         /// Fine
-        let fine: NewFine
+        let fine: Fine
         
         /// Reason List Data
-        @ObservedObject var reasonListData = NewListData.reason
+        @ObservedObject var reasonListData = ListData.reason
         
         /// Namespace for matched geometry effect
         let namespace: Namespace.ID
@@ -140,10 +140,10 @@ struct FineListRow: View {
     struct LargeRow: View {
         
         /// Fine
-        let fine: NewFine
+        let fine: Fine
         
         /// Reason List Data
-        @ObservedObject var reasonListData = NewListData.reason
+        @ObservedObject var reasonListData = ListData.reason
         
         /// Namespace for matched geometry effect
         let namespace: Namespace.ID

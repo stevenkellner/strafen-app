@@ -18,7 +18,7 @@ struct FineEditorTemplate: View {
     }
     
     /// Reason List Data
-    @ObservedObject var reasonListData = NewListData.reason
+    @ObservedObject var reasonListData = ListData.reason
     
     /// Presentation mode
     @Environment(\.presentationMode) var presentationMode

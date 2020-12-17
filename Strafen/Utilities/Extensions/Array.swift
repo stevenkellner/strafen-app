@@ -10,68 +10,19 @@ import Foundation
 // Extension of Fine Array for amount sums of given person
 extension Array where Element == Fine {
     
-    /// Payed amount sum of given person
-    func payedAmountSum(of personId: UUID) -> Euro {
-        filter {
-            $0.personId == personId && $0.payed.boolValue
-        }.reduce(Euro.zero) { result, fine in
-            result + fine.fineReason.amount * fine.number + (fine.latePaymentInterest ?? .zero)
-        }
-    }
-    
-    /// Unpayed amount sum of given person
-    func unpayedAmountSum(of personId: UUID) -> Euro {
-        filter {
-            $0.personId == personId && $0.payed == .unpayed
-        }.reduce(Euro.zero) { result, fine in
-            result + fine.fineReason.amount * fine.number + (fine.latePaymentInterest ?? .zero)
-        }
-    }
-    
-    /// Medium amount sum of given person
-    func mediumAmountSum(of personId: UUID) -> Euro {
-        filter {
-            $0.personId == personId && $0.payed == .unpayed && ($0.fineReason.importance == .high || $0.fineReason.importance == .medium)
-        }.reduce(Euro.zero) { result, fine in
-            result + fine.fineReason.amount * fine.number + (fine.latePaymentInterest ?? .zero)
-        }
-    }
-    
-    /// High amount sum of given person
-    func highAmountSum(of personId: UUID) -> Euro {
-        filter {
-            $0.personId == personId && $0.payed == .unpayed && $0.fineReason.importance == .high
-        }.reduce(Euro.zero) { result, fine in
-            result + fine.fineReason.amount * fine.number + (fine.latePaymentInterest ?? .zero)
-        }
-    }
-    
-    /// Total amount sum of given person
-    func totalAmountSum(of personId: UUID) -> Euro {
-        filter {
-            $0.personId == personId
-        }.reduce(Euro.zero) { result, fine in
-            result + fine.fineReason.amount * fine.number + (fine.latePaymentInterest ?? .zero)
-        }
-    }
-}
-
-// Extension of Fine Array for amount sums of given person
-extension Array where Element == NewFine {
-    
     /// Sum of amount of a fine list
     struct AmountSum {
         
         /// Fine list
-        private let fineList: [NewFine]
+        private let fineList: [Fine]
         
         /// Reason list
         private let reasonList: [ReasonTemplate]?
         
         /// Person id
-        private let personId: NewPerson.ID
+        private let personId: Person.ID
         
-        init(of personId: NewPerson.ID, fineList: [NewFine], reasonList: [ReasonTemplate]?) {
+        init(of personId: Person.ID, fineList: [Fine], reasonList: [ReasonTemplate]?) {
             self.personId = personId
             self.fineList = fineList
             self.reasonList = reasonList
@@ -124,7 +75,7 @@ extension Array where Element == NewFine {
     }
     
     /// Sum of amount of a fine list
-    func amountSum(of personId: NewPerson.ID, with reasonList: [ReasonTemplate]?) -> AmountSum {
+    func amountSum(of personId: Person.ID, with reasonList: [ReasonTemplate]?) -> AmountSum {
         AmountSum(of: personId, fineList: self, reasonList: reasonList)
     }
 }
@@ -208,22 +159,6 @@ extension Array where Element == String {
     /// Filter and sort array for a search text
     func filterSorted(for searchText: String, at keyPath: KeyPath<Element, String> = \.self) -> [Element] {
         filter(for: searchText, at: keyPath).sorted(by: keyPath)
-    }
-}
-
-/// Extension of Array to sort person list so that the logged in person is at start
-extension Array where Element == Person {
-    
-    /// Sort Array so that the logged in person is at start
-    func sorted(for loggedInPerson: Settings.Person) -> [Element] {
-        sorted { firstPerson, secondPerson in
-            if firstPerson.id == loggedInPerson.id {
-                return true
-            } else if secondPerson.id == loggedInPerson.id {
-                return false
-            }
-            return firstPerson.personName.formatted < secondPerson.personName.formatted
-        }
     }
 }
 

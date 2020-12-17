@@ -18,7 +18,7 @@ struct SettingsView: View {
     @Environment(\.colorScheme) var colorScheme
     
     /// Observed Object that contains all settings of the app of this device
-    @ObservedObject var settings = NewSettings.shared
+    @ObservedObject var settings = Settings.shared
     
     var body: some View {
         NavigationView {
@@ -78,7 +78,7 @@ struct SettingsView: View {
     struct ClubId: View {
         
         /// Observed Object that contains all settings of the app of this device
-        @ObservedObject var settings = NewSettings.shared
+        @ObservedObject var settings = Settings.shared
         
         var body: some View {
             VStack(spacing: 0) {
@@ -135,7 +135,7 @@ struct SettingsView: View {
         @Binding var dismissHandler: DismissHandler
         
         /// Observed Object that contains all settings of the app of this device
-        @ObservedObject var settings = NewSettings.shared
+        @ObservedObject var settings = Settings.shared
         
         var body: some View {
             VStack(spacing: 0) {
@@ -179,7 +179,7 @@ struct SettingsView: View {
         @Environment(\.colorScheme) var colorScheme
         
         /// Observed Object that contains all settings of the app of this device
-        @ObservedObject var settings = NewSettings.shared
+        @ObservedObject var settings = Settings.shared
         
         var body: some View {
             VStack(spacing: 0) {
@@ -265,7 +265,7 @@ struct SettingsView: View {
         @Environment(\.colorScheme) var colorScheme
         
         /// Settings
-        @ObservedObject var settings = NewSettings.shared
+        @ObservedObject var settings = Settings.shared
         
         var body: some View {
             VStack(spacing: 0) {
@@ -412,7 +412,7 @@ struct SettingsView: View {
     struct LogOutButton: View {
         
         /// Settings
-        @ObservedObject var settings = NewSettings.shared
+        @ObservedObject var settings = Settings.shared
         
         /// Indicates if log out alert is shown
         @State var isLogOutAlertShown = false

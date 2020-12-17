@@ -8,7 +8,7 @@
 import Foundation
 
 /// Date with formatted Style
-struct FormattedDate: Equatable {
+struct FormattedDate: Equatable { // TODO remove
     
     /// Raw date
     let date: Date

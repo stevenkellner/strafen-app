@@ -17,17 +17,17 @@ struct NewClubCall: FunctionCallable {
     let clubCredentials: SignInClubInput.ClubCredentials
     
     /// Club id
-    let clubId: NewClub.ID
+    let clubId: Club.ID
     
     /// Person id
-    let personId: NewPerson.ID
+    let personId: Person.ID
     
     /// Function name
     let functionName: String = "newClub"
     
     /// Parameters
-    var parameters: NewParameters {
-        NewParameters { parameters in
+    var parameters: Parameters {
+        Parameters { parameters in
             parameters["clubId"] = clubId
             parameters["clubName"] = clubCredentials.clubName
             parameters["regionCode"] = clubCredentials.regionCode

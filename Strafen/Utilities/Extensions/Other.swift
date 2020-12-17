@@ -87,20 +87,6 @@ extension UIImage {
     }
 }
 
-// Extension of Optioanl Euro to confirm to CustomStringConvertible
-extension Optional where Wrapped == Euro {
-    
-    /// Description
-    var text: String {
-        switch self {
-        case .none:
-            return ",-€"
-        case .some(let amount):
-            return amount.description
-        }
-    }
-}
-
 // Extension of CGSize for Multiplication with CGFloat
 extension CGSize {
     
@@ -217,22 +203,6 @@ extension PersonNameComponents {
     }
 }
 
-// Extension of URLRequest to init for url and http body
-extension URLRequest {
-    
-    /// URLRequest for url and http body
-    init(url: URL, body: Data?, boundaryId: UUID?) {
-        self.init(url: url)
-        setValue("Basic \(AppUrls.shared.loginString)", forHTTPHeaderField: "Authorization")
-        if let boundaryId = boundaryId {
-            setValue("multipart/form-data; boundary=Boundary-\(boundaryId.uuidString)", forHTTPHeaderField: "Content-Type")
-        }
-        cachePolicy = .reloadIgnoringLocalAndRemoteCacheData
-        httpMethod = "POST"
-        httpBody = body
-    }
-}
-
 // Extension of URLSession to execute a data task with task state completion
 extension URLSession {
     
@@ -246,22 +216,6 @@ extension URLSession {
             let taskState: TaskState = success ? .passed : .failed
             completionHandler(taskState)
         }.resume()
-    }
-}
-
-// Extension of UIImage to get http body with parameters, boundaryId and fileName
-extension UIImage {
-    
-    /// http body with parameters, boundaryId and fileName
-    func body(parameters: Parameters, boundaryId: UUID, fileName: String) -> Data {
-        var data = parameters.encodedForImage(boundaryId: boundaryId)
-        data.append("--Boundary-\(boundaryId.uuidString)\r\n".data(using: .utf8)!)
-        data.append("Content-Disposition: form-data; name=\"file\"; filename=\"\(fileName)\"\r\n".data(using: .utf8)!)
-        data.append("Content-Type: image/png\r\n\r\n".data(using: .utf8)!)
-        data.append(pngData()!)
-        data.append("\r\n".data(using: .utf8)!)
-        data.append("--Boundary-\(boundaryId.uuidString)--\r\n".data(using: .utf8)!)
-        return data
     }
 }
 
@@ -302,7 +256,7 @@ struct TextForegroudColor: ViewModifier {
     let color: Color?
     
     /// Observed Object that contains all settings of the app of this device
-    @ObservedObject private var settings = NewSettings.shared
+    @ObservedObject private var settings = Settings.shared
     
     func body(content: Content) -> some View {
         content.foregroundColor(color == nil || settings.style == .default ? .textColor : color!)
@@ -445,14 +399,14 @@ extension Locale {
 extension URL {
     
     /// Path to club image file in server
-    static func clubImage(with id: NewClub.ID) -> URL {
+    static func clubImage(with id: Club.ID) -> URL {
         URL(string: "images")!
             .appendingPathComponent("club")
             .appendingPathComponent(id.uuidString.uppercased())
     }
     
     /// Path to person image file in server
-    static func personImage(with id: NewPerson.ID, clubId: NewClub.ID) -> URL {
+    static func personImage(with id: Person.ID, clubId: Club.ID) -> URL {
         URL(string: "images")!
             .appendingPathComponent("person")
             .appendingPathComponent(clubId.uuidString.uppercased())
@@ -462,22 +416,22 @@ extension URL {
 
 // Extension of URL to get path to list of person / reason / fine
 extension URL {
-    private static func baseList(with id: NewClub.ID) -> URL {
+    private static func baseList(with id: Club.ID) -> URL {
         URL(string: "clubs")!.appendingPathComponent(id.uuidString.uppercased())
     }
     
     /// Path to person list of club with given id
-    static func personList(with id: NewClub.ID) -> URL {
+    static func personList(with id: Club.ID) -> URL {
         baseList(with: id).appendingPathComponent("persons")
     }
     
     /// Path to reason list of club with given id
-    static func reasonList(with id: NewClub.ID) -> URL {
+    static func reasonList(with id: Club.ID) -> URL {
         baseList(with: id).appendingPathComponent("reasons")
     }
     
     /// Path to fine list of club with given id
-    static func fineList(with id: NewClub.ID) -> URL {
+    static func fineList(with id: Club.ID) -> URL {
         baseList(with: id).appendingPathComponent("fines")
     }
 }

@@ -17,10 +17,10 @@ struct PersonList: View {
     @Environment(\.colorScheme) var colorScheme
     
     /// Observed Object that contains all settings of the app of this device
-    @ObservedObject var settings = NewSettings.shared
+    @ObservedObject var settings = Settings.shared
     
     /// Person List Data
-    @ObservedObject var personListData = NewListData.person
+    @ObservedObject var personListData = ListData.person
     
     /// Text searched in search bar
     @State var searchText = ""
@@ -99,7 +99,7 @@ struct PersonList: View {
     struct PersonListRow: View {
         
         /// Contains details of the person
-        let person: NewPerson
+        let person: Person
         
         /// Text searched in search bar
         @Binding var searchText: String
@@ -108,10 +108,10 @@ struct PersonList: View {
         @Binding var dismissHandler: DismissHandler
         
         /// Fine List Data
-        @ObservedObject var fineListData = NewListData.fine
+        @ObservedObject var fineListData = ListData.fine
         
         /// Reason List Data
-        @ObservedObject var reasonListData = NewListData.reason
+        @ObservedObject var reasonListData = ListData.reason
         
         /// Indicates if navigation link is active
         @State var isLinkActive = false
@@ -186,7 +186,7 @@ struct PersonList: View {
         }
         
         /// Amount sum of thsi person
-        var amountSum: Array<NewFine>.AmountSum? {
+        var amountSum: Array<Fine>.AmountSum? {
             fineListData.list?.amountSum(of: person.id, with: reasonListData.list)
         }
         
@@ -209,15 +209,15 @@ struct PersonList: View {
 }
 
 // Extension of Array to filter and sort it for person list
-extension Array where Element == NewPerson {
+extension Array where Element == Person {
     
     /// Filtered and sorted for person list
-    fileprivate func sortedForList(with searchText: String, settings: NewSettings) -> [Element] {
+    fileprivate func sortedForList(with searchText: String, settings: Settings) -> [Element] {
         filter(for: searchText, at: \.name.formatted).sorted(for: settings.person)
     }
     
     /// Sort Array so that the logged in person is at start
-    fileprivate func sorted(for loggedInPerson: NewSettings.Person?) -> [Element] {
+    fileprivate func sorted(for loggedInPerson: Settings.Person?) -> [Element] {
         guard let loggedInPerson = loggedInPerson else { return self }
         return sorted { firstPerson, secondPerson in
             if firstPerson.id == loggedInPerson.id {
