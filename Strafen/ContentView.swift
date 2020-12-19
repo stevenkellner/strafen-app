@@ -17,8 +17,6 @@ struct ContentView: View {
     /// List data that contains all datas of the different lists
     @ObservedObject var listData = ListData.shared
     
-    @ObservedObject var fineDataList = ListData.fine
-    
     @State var amount = Amount(10, subUnit: 50)
     
     var body: some View {
@@ -30,14 +28,14 @@ struct ContentView: View {
             if listData.forceSignedOut {
                 
                 // Force Sign Out View
-                // ContentForceSignedOutView() TODO
+                ForceSignedOutView()
                 
             } else if listData.emailNotVerificated {
                 
-                // TODO
+                /// Email not verificated view
+                EmailNotVerificatedView()
                 
-            }
-            if settings.person != nil && Auth.auth().currentUser != nil {
+            } else if settings.person != nil && Auth.auth().currentUser != nil {
                 
                 // Home Tabs View and Tab Bar
                 ContentHomeView()

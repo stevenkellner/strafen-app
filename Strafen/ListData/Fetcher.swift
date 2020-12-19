@@ -12,6 +12,7 @@ import CodableFirebase
 /// Fetches list from database
 struct Fetcher {
     
+    #if TARGET_MAIN_APP
     /// Data event type set with childAdded, childChanged, childRemoved
     struct DataEventTypeSet: OptionSet {
         
@@ -30,6 +31,7 @@ struct Fetcher {
         /// All
         static let all: DataEventTypeSet = [.childAdded, .childChanged, .childRemoved]
     }
+    #endif
     
     /// Shared instance for singelton
     static let shared = Self()
@@ -81,6 +83,7 @@ struct Fetcher {
         return list
     }
     
+    #if TARGET_MAIN_APP
     /// Observe a list of database and change local list if database list changed
     func observe<Type>(of url: URL, eventTypes: DataEventTypeSet = .all, list listBinding: Binding<[Type]?>) where Type: ListType {
         observeChildAdded(of: url) {
@@ -148,4 +151,5 @@ struct Fetcher {
         let id = Type.ID(rawValue: UUID(uuidString: key)!)
         return Type.init(with: id, codableSelf: item)
     }
+    #endif
 }

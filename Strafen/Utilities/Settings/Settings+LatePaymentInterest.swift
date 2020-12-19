@@ -13,7 +13,7 @@ extension Settings {
     struct LatePaymentInterest: Codable, Equatable {
         
         /// Compontents of date (day / month / year)
-        enum DateComponent: String, CaseIterable, Identifiable, Codable, ParameterableObject {
+        enum DateComponent: String, CaseIterable, Identifiable, Codable {
             
             /// Day
             case day
@@ -85,11 +85,6 @@ extension Settings {
                 let components = calender.dateComponents([dateComponentFlag], from: startDate, to: endDate)
                 return components[keyPath: dateComponentKeyPath] ?? 0
             }
-            
-            /// Parameterable object
-            var parameterableObject: _ParameterableObject {
-                rawValue
-            }
         }
         
         /// Contains value and unit of a time period
@@ -118,17 +113,32 @@ extension Settings {
         var description: String {
             "\(String(interestRate).replacingOccurrences(of: ".", with: ","))% / \(interestPeriod.value) \(interestPeriod.value == 1 ? interestPeriod.unit.singular : interestPeriod.unit.plural)"
         }
-        
-        /// Parameters
-        var parameters: Parameters {
-            Parameters { parameters in
-                parameters["interestFreeValue"] = interestFreePeriod.value
-                parameters["interestFreeUnit"] = interestFreePeriod.unit
-                parameters["interestRate"] = interestRate
-                parameters["interestValue"] = interestPeriod.value
-                parameters["interestUnit"] = interestPeriod.unit
-                parameters["compoundInterest"] = compoundInterest
-            }
+    }
+}
+
+#if TARGET_MAIN_APP
+// Extension of Settings.LatePaymentInterest to get parameters
+extension Settings.LatePaymentInterest {
+    
+    /// Parameters
+    var parameters: Parameters {
+        Parameters { parameters in
+            parameters["interestFreeValue"] = interestFreePeriod.value
+            parameters["interestFreeUnit"] = interestFreePeriod.unit
+            parameters["interestRate"] = interestRate
+            parameters["interestValue"] = interestPeriod.value
+            parameters["interestUnit"] = interestPeriod.unit
+            parameters["compoundInterest"] = compoundInterest
         }
     }
 }
+
+// Extension of Settings.LatePaymentInterest.DateComponent to confirm to ParameterableObject
+extension Settings.LatePaymentInterest.DateComponent: ParameterableObject {
+    
+    /// Parameterable object
+    var parameterableObject: _ParameterableObject {
+        rawValue
+    }
+}
+#endif

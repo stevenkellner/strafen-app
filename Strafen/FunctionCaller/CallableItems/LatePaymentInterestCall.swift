@@ -5,7 +5,7 @@
 //  Created by Steven on 12/16/20.
 //
 
-import Foundation
+import WidgetKit
 
 /// Late payment interest call
 struct LatePaymentInterestCall: FunctionCallable {
@@ -19,6 +19,10 @@ struct LatePaymentInterestCall: FunctionCallable {
     /// Function name
     let functionName: String = "changeLatePaymentInterest"
     
+    /// Handler called after function call is succeded
+    func successHandler() {
+        WidgetCenter.shared.reloadTimelines(ofKind: "StrafenWidget")
+    }
     
     /// Parameters
     var parameters: Parameters {

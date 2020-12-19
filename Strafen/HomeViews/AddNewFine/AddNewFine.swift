@@ -468,7 +468,7 @@ struct AddNewFine: View {
                                         .errorMessages($fineInputProperties.dateErrorMessages)
                                     
                                     // Date
-                                    Text(fineInputProperties.date.formattedDate.formatted)
+                                    Text(fineInputProperties.date.formattedLong)
                                         .configurate(size: 20)
                                         .lineLimit(1)
                                     

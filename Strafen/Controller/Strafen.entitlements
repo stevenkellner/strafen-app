@@ -10,5 +10,9 @@
 	<array>
 		<string>group.stevenkellner.Strafen.settings</string>
 	</array>
+	<key>keychain-access-groups</key>
+	<array>
+		<string>$(AppIdentifierPrefix)stevenkellner.Strafen.firebaseAuth</string>
+	</array>
 </dict>
 </plist>

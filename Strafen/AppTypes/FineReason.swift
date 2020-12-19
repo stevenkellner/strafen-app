@@ -19,8 +19,10 @@ protocol FineReason {
     /// Importance
     func importance(with reasonList: [ReasonTemplate]?) -> Importance
     
+    #if TARGET_MAIN_APP
     /// Parameters for database change call
     var callParameters: Parameters { get }
+    #endif
 }
 
 extension FineReason {
@@ -54,6 +56,7 @@ struct FineReasonCustom: FineReason, Equatable {
     /// Importance
     func importance(with reasonList: [ReasonTemplate]?) -> Importance { importance }
     
+    #if TARGET_MAIN_APP
     /// Parameters for database change call
     var callParameters: Parameters {
         Parameters { parameters in
@@ -62,6 +65,7 @@ struct FineReasonCustom: FineReason, Equatable {
             parameters["importance"] = importance
         }
     }
+    #endif
 }
 
 /// Fine Reason for templateId
@@ -85,12 +89,14 @@ struct FineReasonTemplate: FineReason, Equatable {
         reasonList?.first(where: { $0.id == templateId })?.importance ?? .low
     }
     
+    #if TARGET_MAIN_APP
     /// Parameters for database change call
     var callParameters: Parameters {
         Parameters { parameters in
             parameters["templateId"] = templateId
         }
     }
+    #endif
 }
 
 /// Codable fine reason to get custom or template fine reason

@@ -31,6 +31,15 @@ struct Fine {
     /// Fine reason for reason / amount / importance or templateId
     let fineReason: FineReason
     
+    internal init(id: Fine.ID, assoiatedPersonId: Person.ID, date: Date, payed: Payed, number: Int, fineReason: FineReason) {
+        self.id = id
+        self.assoiatedPersonId = assoiatedPersonId
+        self.date = date
+        self.payed = payed
+        self.number = number
+        self.fineReason = fineReason
+    }
+    
     /// Indicates if fine is payed
     var isPayed: Bool {
         payed != .unpayed
@@ -68,6 +77,7 @@ extension Fine: ListType {
         self.fineReason = codableSelf.reason.fineReason
     }
     
+    #if TARGET_MAIN_APP
     /// Get fine list of ListData
     static func getDataList() -> [Fine]? {
         ListData.fine.list
@@ -90,6 +100,7 @@ extension Fine: ListType {
             parameters["listType"] = "fine"
         }
     }
+    #endif
 }
 
 // Extension of Fine for CodableSelf

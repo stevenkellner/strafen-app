@@ -9,6 +9,7 @@ import Foundation
 import FirebaseAuth
 import FirebaseDatabase
 import CodableFirebase
+import WidgetKit
 
 /// Data of all list types
 class ListData: ObservableObject {
@@ -28,6 +29,7 @@ class ListData: ObservableObject {
     /// Private init for singleton
     private init() {}
     
+    #if TARGET_MAIN_APP
     /// Connection state for list fetching
     @Published var connectionState: ConnectionState = .loading
     
@@ -53,9 +55,10 @@ class ListData: ObservableObject {
             self?.observeLists()
         }
     }
+    #endif
     
     /// Fetches lists from database
-    private func fetchLists(onSuccess successHandler: @escaping () -> Void) {
+    func fetchLists(onSuccess successHandler: @escaping () -> Void) {
         Logging.shared.log(with: .info, "Start fetching lists from database")
         
         // Reset lists
@@ -72,7 +75,9 @@ class ListData: ObservableObject {
             dispatchGroup.leave()
         } failedHandler: { [weak self] in
             Logging.shared.log(with: .error, "Unable to fetch person list.")
+            #if TARGET_MAIN_APP
             self?.connectionState = .failed
+            #endif
         }
         
         // Fetch fine list
@@ -81,7 +86,9 @@ class ListData: ObservableObject {
             dispatchGroup.leave()
         } failedHandler: { [weak self] in
             Logging.shared.log(with: .error, "Unable to fetch fine list.")
+            #if TARGET_MAIN_APP
             self?.connectionState = .failed
+            #endif
         }
         
         // Fetch reason list
@@ -90,15 +97,21 @@ class ListData: ObservableObject {
             dispatchGroup.leave()
         } failedHandler: { [weak self] in
             Logging.shared.log(with: .error, "Unable to fetch reason list.")
+            #if TARGET_MAIN_APP
             self?.connectionState = .failed
+            #endif
         }
         
         // Notify dispatch group
         dispatchGroup.notify(queue: .main) {
             successHandler()
+            #if TARGET_MAIN_APP
+            WidgetCenter.shared.reloadTimelines(ofKind: "StrafenWidget")
+            #endif
         }
     }
     
+    #if TARGET_MAIN_APP
     /// Observes lists on database
     private func observeLists() {
         
@@ -180,4 +193,5 @@ class ListData: ObservableObject {
             self?.connectionState = .passed
         }
     }
+    #endif
 }

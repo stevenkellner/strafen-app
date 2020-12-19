@@ -5,7 +5,7 @@
 //  Created by Steven on 12/17/20.
 //
 
-import Foundation
+import WidgetKit
 
 /// Late payment interest call
 struct ForceSignOutCall: FunctionCallable {
@@ -19,6 +19,11 @@ struct ForceSignOutCall: FunctionCallable {
     /// Function name
     let functionName: String = "forceSignOut"
     
+    /// Handler called after function call is succeded
+    func successHandler() {
+        WidgetCenter.shared.reloadTimelines(ofKind: "StrafenWidget")
+    }
+     
     /// Parameters
     var parameters: Parameters {
         Parameters { parameters in

@@ -7,6 +7,7 @@
 
 import SwiftUI
 import FirebaseAuth
+import WidgetKit
 
 /// Setting View
 struct SettingsView: View {
@@ -433,6 +434,7 @@ struct SettingsView: View {
                                   secondaryButton: .destructive(Text("Abmelden"), action: {
                                     try? Auth.auth().signOut()
                                     settings.person = nil
+                                    WidgetCenter.shared.reloadTimelines(ofKind: "StrafenWidget")
                                   }))
                         }
                 }.frame(width: UIScreen.main.bounds.width * 0.95, height: 50)

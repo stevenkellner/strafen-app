@@ -11,23 +11,33 @@ import SwiftUI
 struct WidgetView: View {
     
     /// Widget entry
-    var entry: Provider.Entry
+    let entry: Provider.Entry
     
     /// Widget family
     @Environment(\.widgetFamily) var family
 
     var body: some View {
-        Group {
+        if let personId = personId {
             switch family {
             case .systemSmall:
-                SmallWidget(entry: entry)
+                SmallWidget(personId: personId)
             case .systemMedium:
-                MediumWidget(entry: entry)
+                MediumWidget(personId: personId)
             case .systemLarge:
-                LargeWidget(entry: entry)
+                LargeWidget(personId: personId)
             @unknown default:
-                Text("Not available!")
+                Text("No available view")
             }
+        } else {
+            NoPersonLoggedIn()
         }
+    }
+    
+    /// Person id of logged in person
+    var personId: Person.ID? {
+        if entry.style == .default, let personId = Settings.shared.person?.id {
+            return personId
+        }
+        return ListData.person.list?.first?.id ?? Person.ID(rawValue: UUID())
     }
 }

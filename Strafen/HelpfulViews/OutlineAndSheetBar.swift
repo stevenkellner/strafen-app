@@ -85,10 +85,12 @@ struct Outline: View {
         return outline
     }
     
+    #if TARGET_MAIN_APP
     func errorMessages(_ errorMessages: Binding<ErrorMessages?>) -> Outline {
         strokeColor(errorMessages.wrappedValue.map { _ in Color.custom.red })
             .lineWidth(errorMessages.wrappedValue.map { _ in CGFloat(2) })
     }
+    #endif
 }
 
 fileprivate protocol FillColor {

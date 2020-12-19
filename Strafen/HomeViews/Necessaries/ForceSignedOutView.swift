@@ -7,6 +7,7 @@
 
 import SwiftUI
 import FirebaseAuth
+import WidgetKit
 
 struct ForceSignedOutView: View {
     
@@ -21,7 +22,7 @@ struct ForceSignedOutView: View {
             
             // Header
             Header("Abgemeldet")
-                .padding(.top, 50)
+                .padding(.top, 35)
             
             Spacer()
             
@@ -58,6 +59,7 @@ struct ForceSignedOutView: View {
                     listData.forceSignedOut = false
                     try? Auth.auth().signOut()
                     settings.person = nil
+                    WidgetCenter.shared.reloadTimelines(ofKind: "StrafenWidget")
                 }
         }
     }

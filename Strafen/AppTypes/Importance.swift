@@ -59,6 +59,7 @@ extension Importance: Equatable, Comparable {
     }
 }
 
+#if TARGET_MAIN_APP
 // Extension of Importance to confirm to ParameterableObject
 extension Importance: ParameterableObject {
     
@@ -79,3 +80,4 @@ extension Importance: ParameterableObject {
         stringValue
     }
 }
+#endif

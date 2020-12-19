@@ -8,15 +8,14 @@
 import Foundation
 
 /// Used to fetch list from database of the different list types.
-class DataTypeList<DataListType>: ObservableObject where DataListType: ListType {
+class DataTypeList<Type>: ObservableObject where Type: ListType {
     
     /// List if fetch is already successful executed
-    @Published var list: [DataListType]?
+    @Published var list: [Type]?
     
     /// Fetch list from database
     func fetch(passedHandler: @escaping () -> Void, failedHandler: @escaping () -> Void) {
-        guard list == nil else { return passedHandler() }
-        Fetcher.shared.fetch(from: DataListType.url) { [weak self] (fetchedList: [DataListType]?) in
+        Fetcher.shared.fetch(from: Type.url) { [weak self] (fetchedList: [Type]?) in
             DispatchQueue.main.async {
                 if let fetchedList = fetchedList {
                     self?.list = fetchedList
@@ -28,9 +27,10 @@ class DataTypeList<DataListType>: ObservableObject where DataListType: ListType 
         }
     }
     
+    #if TARGET_MAIN_APP
     /// Observe a list on database
     func observe() {
-        Fetcher.shared.observe(of: DataListType.url) { [weak self] in
+        Fetcher.shared.observe(of: Type.url) { [weak self] in
             self?.list
         } onChange: { [weak self] changedList in
             DispatchQueue.main.async {
@@ -38,4 +38,5 @@ class DataTypeList<DataListType>: ObservableObject where DataListType: ListType 
             }
         }
     }
+    #endif
 }

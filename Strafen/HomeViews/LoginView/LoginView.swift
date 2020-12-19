@@ -124,6 +124,9 @@ struct LoginView: View {
     /// State of internet connection
     @State var connectionState: ConnectionState = .passed
     
+    /// Indicates if password reset alert is shown
+    @State var showPasswortResetAlert = false
+    
     /// Size of log in view
     @State var screenSize: CGSize?
 
@@ -143,8 +146,39 @@ struct LoginView: View {
                     // Email and password input
                     EmailPasswordInput(emailCredentials: $emailCredentials)
                     
-                    // "or" Text
-                    Text("oder").configurate(size: 20)
+                    
+                    // Forgot passwword
+                    HStack(spacing: 0) {
+                        if emailCredentials.emailErrorMessages == nil && !emailCredentials.email.isEmpty && emailCredentials.passwordErrorMessages != nil {
+                            Spacer()
+                            
+                            // "or" Text
+                            Text("oder").configurate(size: 20)
+                            
+                            Spacer()
+                            
+                            ZStack {
+                                
+                                // Outline
+                                Outline()
+                                
+                                // Text
+                                Text("Passwort vergessen")
+                                    .configurate(size: 15)
+                                    .lineLimit(1)
+                                
+                            }.frame(width: 150, height: 35)
+                                .padding(.trailing, 15)
+                                .onTapGesture {
+                                    Auth.auth().sendPasswordReset(withEmail: emailCredentials.email, completion: nil)
+                                    showPasswortResetAlert = true
+                                }.alert(isPresented: $showPasswortResetAlert) {
+                                    Alert(title: Text("Passwort zurückgesetzt"),
+                                          message: Text("Es wurde eine Email zum Zurücksetzten des Passworts an \(emailCredentials.email) gesendet."),
+                                          dismissButton: .default(Text("Verstanden")))
+                                }
+                        }
+                    }
                     
                     // Sign in with apple button
                     VStack(spacing: 5) {

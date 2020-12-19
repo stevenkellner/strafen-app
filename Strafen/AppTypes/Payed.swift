@@ -48,6 +48,7 @@ extension Payed: Decodable, Equatable {
     }
 }
 
+#if TARGET_MAIN_APP
 // Extension of Payed to confirm to ParameterableObject
 extension Payed: ParameterableObject {
     
@@ -76,3 +77,4 @@ extension Payed: ParameterableObject {
         ["state": state, "payDate": payDate?.parameterableObject]
     }
 }
+#endif

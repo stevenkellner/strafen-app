@@ -184,6 +184,7 @@ extension Amount: Encodable {
     }
 }
 
+#if TARGET_MAIN_APP
 // Extension of Amount to confirm to ParameterableObject
 extension Amount: ParameterableObject {
     
@@ -192,13 +193,4 @@ extension Amount: ParameterableObject {
         doubleValue
     }
 }
-
-// Extension of Amount to confirm to Animatable
-extension Amount: Animatable {
-    
-    /// The data to animate.
-    var animatableData: Double {
-        get { doubleValue }
-        set { self = .init(doubleValue: newValue) }
-    }
-}
+#endif

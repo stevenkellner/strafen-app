@@ -31,6 +31,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         // Configure Firebase
         FirebaseApp.configure()
+        try? Auth.auth().useUserAccessGroup("K7NTJ83ZF8.stevenkellner.Strafen.firebaseAuth")
         
         // Register for push notifications
         registerForPushNotifications()

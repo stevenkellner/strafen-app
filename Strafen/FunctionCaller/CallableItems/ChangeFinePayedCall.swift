@@ -5,7 +5,7 @@
 //  Created by Steven on 11/26/20.
 //
 
-import Foundation
+import WidgetKit
 
 /// Used to change payed of a fine
 struct ChangeFinePayedCall: FunctionCallable {
@@ -22,6 +22,11 @@ struct ChangeFinePayedCall: FunctionCallable {
     /// Function name
     let functionName = "changeFinePayed"
     
+    /// Handler called after function call is succeded
+    func successHandler() {
+        WidgetCenter.shared.reloadTimelines(ofKind: "StrafenWidget")
+    }
+     
     /// Parameters
     var parameters: Parameters {
         Parameters { parameters in

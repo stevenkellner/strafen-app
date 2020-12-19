@@ -11,6 +11,10 @@ target 'Strafen' do
   pod 'Firebase/Functions'
   pod 'Firebase/Storage'
   pod 'CodableFirebase'
+  
+  target 'StrafenWidgetExtension' do
+    inherit! :search_paths
+  end
 
   target 'StrafenTests' do
     inherit! :search_paths

@@ -13,6 +13,8 @@ extension Array where Element == Fine {
     /// Sum of amount of a fine list
     struct AmountSum {
         
+        static var zero = AmountSum(of: Person.ID(rawValue: UUID()), fineList: [], reasonList: [])
+        
         /// Fine list
         private let fineList: [Fine]
         
@@ -130,6 +132,7 @@ extension Array {
     }
 }
 
+#if TARGET_MAIN_APP
 /// Extension of Array to filter for a search text
 extension Array {
     
@@ -161,6 +164,7 @@ extension Array where Element == String {
         filter(for: searchText, at: keyPath).sorted(by: keyPath)
     }
 }
+#endif
 
 // Extension of Array to get a new array with unique elemets
 extension Array where Element: Hashable {

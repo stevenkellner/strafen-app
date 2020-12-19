@@ -25,6 +25,84 @@ extension ColorScheme {
     }
 }
 
+/// Extension of Text to configurate it with text color and given font size
+extension Text {
+    
+    /// Configurate it with text color and given font size
+    func configurate(size: CGFloat) -> some View {
+        foregroundColor(.textColor).font(.text(size)).multilineTextAlignment(.center)
+    }
+}
+
+// Extension of UIImage to init from optioal data
+extension UIImage {
+    
+    /// Init UIImage from optional data
+    convenience init?(data: Data?) {
+        guard let data = data else { return nil }
+        self.init(data: data)
+    }
+}
+
+extension Text {
+    init<Subject>(describing instance: Subject) {
+        self.init(String(describing: instance))
+    }
+    
+    init<Subject>(describing instance: Subject) where Subject : CustomStringConvertible {
+        self.init(String(describing: instance))
+    }
+    
+    init<Subject>(describing instance: Subject) where Subject : TextOutputStreamable {
+        self.init(String(describing: instance))
+    }
+    
+    init<Subject>(describing instance: Subject) where Subject : CustomStringConvertible, Subject : TextOutputStreamable {
+        self.init(String(describing: instance))
+    }
+}
+
+/// View modifer for plain foreground color
+struct TextForegroudColor: ViewModifier {
+    
+    /// Color for plain style
+    let color: Color?
+    
+    /// Observed Object that contains all settings of the app of this device
+    @ObservedObject private var settings = Settings.shared
+    
+    func body(content: Content) -> some View {
+        content.foregroundColor(color == nil || settings.style == .default ? .textColor : color!)
+    }
+}
+
+// Extension of View for custom foreground color
+extension View {
+    func foregroundColor(plain color: Color?) -> some View {
+        ModifiedContent(content: self, modifier: TextForegroudColor(color: color))
+    }
+}
+
+// Extension of URL to get path to club and person image files in server
+extension URL {
+    
+    /// Path to club image file in server
+    static func clubImage(with id: Club.ID) -> URL {
+        URL(string: "images")!
+            .appendingPathComponent("club")
+            .appendingPathComponent(id.uuidString.uppercased())
+    }
+    
+    /// Path to person image file in server
+    static func personImage(with id: Person.ID, clubId: Club.ID) -> URL {
+        URL(string: "images")!
+            .appendingPathComponent("person")
+            .appendingPathComponent(clubId.uuidString.uppercased())
+            .appendingPathComponent(id.uuidString.uppercased())
+    }
+}
+
+#if TARGET_MAIN_APP
 // Extension of Dictionary for encoding parameters for post method
 extension Dictionary where Key == String {
     
@@ -77,16 +155,6 @@ extension UIImage {
     }
 }
 
-// Extension of UIImage to init from optioal data
-extension UIImage {
-    
-    /// Init UIImage from optional data
-    convenience init?(data: Data?) {
-        guard let data = data else { return nil }
-        self.init(data: data)
-    }
-}
-
 // Extension of CGSize for Multiplication with CGFloat
 extension CGSize {
     
@@ -105,24 +173,6 @@ extension Path {
         let modifiedStart = startAngle - rotationAdjustment
         let modifiedEnd = endAngle - rotationAdjustment
         addArc(center: center, radius: radius, startAngle: modifiedStart, endAngle: modifiedEnd, clockwise: clockwise)
-    }
-}
-
-// Extension of Date to get formatted date
-extension Date {
-    
-    /// Formatted date struct
-    var formattedDate: FormattedDate {
-        FormattedDate(date: self)
-    }
-}
-
-// Extension of FileManager to get shared container Url
-extension FileManager {
-    
-    /// Url of shared container
-    var sharedContainerUrl: URL {
-        FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: "group.stevenkellner.Strafen.settings")!
     }
 }
 
@@ -249,36 +299,6 @@ extension View {
     }
 }
 
-/// View modifer for plain foreground color
-struct TextForegroudColor: ViewModifier {
-    
-    /// Color for plain style
-    let color: Color?
-    
-    /// Observed Object that contains all settings of the app of this device
-    @ObservedObject private var settings = Settings.shared
-    
-    func body(content: Content) -> some View {
-        content.foregroundColor(color == nil || settings.style == .default ? .textColor : color!)
-    }
-}
-
-// Extension of View for custom foreground color
-extension View {
-    func foregroundColor(plain color: Color?) -> some View {
-        ModifiedContent(content: self, modifier: TextForegroudColor(color: color))
-    }
-}
-
-/// Extension of Text to configurate it with text color and given font size
-extension Text {
-    
-    /// Configurate it with text color and given font size
-    func configurate(size: CGFloat) -> some View {
-        foregroundColor(.textColor).font(.text(size)).multilineTextAlignment(.center)
-    }
-}
-
 // Extension of Bool to confirm to Identifiable
 extension Bool: Identifiable {
     public var id: Bool { self }
@@ -395,47 +415,6 @@ extension Locale {
     }
 }
 
-// Extension of URL to get path to club and person image files in server
-extension URL {
-    
-    /// Path to club image file in server
-    static func clubImage(with id: Club.ID) -> URL {
-        URL(string: "images")!
-            .appendingPathComponent("club")
-            .appendingPathComponent(id.uuidString.uppercased())
-    }
-    
-    /// Path to person image file in server
-    static func personImage(with id: Person.ID, clubId: Club.ID) -> URL {
-        URL(string: "images")!
-            .appendingPathComponent("person")
-            .appendingPathComponent(clubId.uuidString.uppercased())
-            .appendingPathComponent(id.uuidString.uppercased())
-    }
-}
-
-// Extension of URL to get path to list of person / reason / fine
-extension URL {
-    private static func baseList(with id: Club.ID) -> URL {
-        URL(string: "clubs")!.appendingPathComponent(id.uuidString.uppercased())
-    }
-    
-    /// Path to person list of club with given id
-    static func personList(with id: Club.ID) -> URL {
-        baseList(with: id).appendingPathComponent("persons")
-    }
-    
-    /// Path to reason list of club with given id
-    static func reasonList(with id: Club.ID) -> URL {
-        baseList(with: id).appendingPathComponent("reasons")
-    }
-    
-    /// Path to fine list of club with given id
-    static func fineList(with id: Club.ID) -> URL {
-        baseList(with: id).appendingPathComponent("fines")
-    }
-}
-
 // Extension of View to toggle a boolean value on tap gesture
 extension View {
     
@@ -481,24 +460,6 @@ extension CGSize: _VectorMath {
     /// CGSize with same edge length
     static func square(_ edgeLength: CGFloat) -> CGSize {
         CGSize(width: edgeLength, height: edgeLength)
-    }
-}
-
-extension Text {
-    init<Subject>(describing instance: Subject) {
-        self.init(String(describing: instance))
-    }
-    
-    init<Subject>(describing instance: Subject) where Subject : CustomStringConvertible {
-        self.init(String(describing: instance))
-    }
-    
-    init<Subject>(describing instance: Subject) where Subject : TextOutputStreamable {
-        self.init(String(describing: instance))
-    }
-    
-    init<Subject>(describing instance: Subject) where Subject : CustomStringConvertible, Subject : TextOutputStreamable {
-        self.init(String(describing: instance))
     }
 }
 
@@ -567,3 +528,4 @@ extension Bool {
         return isTrue
     }
 }
+#endif

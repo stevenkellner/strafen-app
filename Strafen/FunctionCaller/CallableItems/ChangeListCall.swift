@@ -5,7 +5,7 @@
 //  Created by Steven on 11/8/20.
 //
 
-import Foundation
+import WidgetKit
 
 /// Used to change list types in database
 struct ChangeListCall<Type>: FunctionCallable where Type: ListType {
@@ -42,6 +42,7 @@ struct ChangeListCall<Type>: FunctionCallable where Type: ListType {
             list?.filtered { $0.id != changeItem.id }
             Type.changeHandler(list)
         }
+        WidgetCenter.shared.reloadTimelines(ofKind: "StrafenWidget")
     }
     
     /// Parameters

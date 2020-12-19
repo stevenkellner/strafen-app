@@ -1,18 +1,15 @@
 //
-//  MediumWidgetNoPersonLoggedIn.swift
+//  NoPersonLoggedIn.swift
 //  StrafenWidgetExtension
 //
-//  Created by Steven on 27.07.20.
+//  Created by Steven on 12/17/20.
 //
 
 import SwiftUI
 import WidgetKit
 
-/// Medium widget view with no person logged in entry type of Strafen Widget
-struct MediumWidgetNoPersonLoggedIn: View {
-    
-    /// Widget Style
-    let style: WidgetUrls.CodableSettings.Style
+/// View with no person logged
+struct NoPersonLoggedIn: View {
     
     /// Color scheme to get appearance of this device
     @Environment(\.colorScheme) var colorScheme
@@ -20,10 +17,9 @@ struct MediumWidgetNoPersonLoggedIn: View {
     var body: some View {
         VStack(spacing: 0) {
             Text("Niemand Ist Angemeldet")
-                .font(.text(20))
-                .foregroundColor(.textColor)
+                .configurate(size: 20)
+                .lineLimit(2)
                 .padding(.horizontal, 10)
-                .multilineTextAlignment(.center)
                 .unredacted()
         }.edgesIgnoringSafeArea(.all)
             .frame(maxWidth: .infinity, maxHeight: .infinity)

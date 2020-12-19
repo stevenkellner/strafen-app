@@ -54,6 +54,7 @@ extension Person: ListType {
         self.signInData = codableSelf.signInData?.signInData
     }
     
+    #if TARGET_MAIN_APP
     /// Get person list of ListData
     static func getDataList() -> [Person]? {
         ListData.person.list
@@ -73,6 +74,7 @@ extension Person: ListType {
             parameters["listType"] = "person"
         }
     }
+    #endif
 }
 
 // Extension of Person for CodableSelf

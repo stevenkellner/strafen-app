@@ -24,22 +24,12 @@ import WidgetKit
         }
     }
     
+    #if TARGET_MAIN_APP
     /// All settings properties
     @Published public var properties: SettingProperties {
         didSet {
             applySettings()
             saveProperties()
-        }
-    }
-    
-    /// Saves properties to file
-    private func saveProperties() {
-        let encoder = JSONEncoder()
-        let jsonData = try! encoder.encode(properties)
-        if FileManager.default.fileExists(atPath: Self.settingsUrl.path) {
-            try! jsonData.write(to: Self.settingsUrl, options: .atomic)
-        } else {
-            FileManager.default.createFile(atPath: Self.settingsUrl.path, contents: jsonData)
         }
     }
     
@@ -52,11 +42,35 @@ import WidgetKit
             properties[keyPath: keyPath] = newValue
         }
     }
+    #else
+    /// All settings properties
+    @Published public var properties: SettingProperties
+    
+    /// For dynamic member lookup
+    subscript<T>(dynamicMember keyPath: WritableKeyPath<SettingProperties, T>) -> T {
+        get {
+            properties[keyPath: keyPath]
+        }
+    }
+    #endif
+    
+    #if TARGET_MAIN_APP
+    /// Saves properties to file
+    private func saveProperties() {
+        let encoder = JSONEncoder()
+        let jsonData = try! encoder.encode(properties)
+        if FileManager.default.fileExists(atPath: Self.settingsUrl.path) {
+            try! jsonData.write(to: Self.settingsUrl, options: .atomic)
+        } else {
+            FileManager.default.createFile(atPath: Self.settingsUrl.path, contents: jsonData)
+        }
+    }
     
     /// Apply settings
     public func applySettings() {
         properties.applySettings()
     }
+    #endif
     
     /// Url for settings file
     static private var settingsUrl: URL {
@@ -65,25 +79,22 @@ import WidgetKit
             .appendingPathExtension("json")
     }
     
-    /// Used only in swiftui preview to select active settings
-    @available(*, deprecated, message: "only use it in previews.")
-    static func forPreview(appereance: Settings.Appearance? = nil, style: Settings.Style? = nil) -> Settings {
-        let settings = Settings()
-        if let appereance = appereance {
-            settings.appearance = appereance
+    /// Reload settings
+    func reload() {
+        if let propertiesData = FileManager.default.contents(atPath: Self.settingsUrl.path) {
+            let decoder = JSONDecoder()
+            properties = try! decoder.decode(SettingProperties.self, from: propertiesData)
         }
-        if let style = style {
-            settings.style = style
-        }
-        return settings
     }
 }
 
 /// Contains all settings of the app of this device
 struct SettingProperties {
     
+    #if TARGET_MAIN_APP
     /// Appearance of the app (light / dark / system)
     @SettingProperty(default: .system) public var appearance: Settings.Appearance
+    #endif
     
     /// Style of the app (default / plain)
     @SettingProperty(default: .plain) public var style: Settings.Style
@@ -94,10 +105,12 @@ struct SettingProperties {
     /// Late payment interest
     @SettingProperty(default: nil) public var latePaymentInterest: Settings.LatePaymentInterest?
     
+    #if TARGET_MAIN_APP
     /// Apply settings
     func applySettings() {
         appearance.applySettings()
     }
+    #endif
 }
  
 // Extension of SettingProperties to confirm to Codable
@@ -106,8 +119,10 @@ extension SettingProperties: Codable {
     /// Coding keys for codable
     private enum CodingKeys: CodingKey {
         
+        #if TARGET_MAIN_APP
         /// For appearance
         case appearance
+        #endif
         
         /// For stype
         case style
@@ -127,9 +142,11 @@ extension SettingProperties: Codable {
             }
             return nil
         }
+        #if TARGET_MAIN_APP
         if let appearance = try decode(Settings.Appearance.self, with: .appearance) {
             self.appearance = appearance
         }
+        #endif
         if let style = try decode(Settings.Style.self, with: .style) {
             self.style = style
         }
@@ -143,7 +160,9 @@ extension SettingProperties: Codable {
     
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
+        #if TARGET_MAIN_APP
         try container.encode(_appearance.value, forKey: .appearance)
+        #endif
         try container.encode(_style.value, forKey: .style)
         try container.encode(_person.value, forKey: .person)
         try container.encode(_latePaymentInterest.value, forKey: .latePaymentInterest)
@@ -175,9 +194,20 @@ extension SettingProperties: Codable {
         }
         set {
             value = newValue
+            #if TARGET_MAIN_APP
             if reloadWidget {
                 WidgetCenter.shared.reloadTimelines(ofKind: "StrafenWidget")
             }
+            #endif
         }
+    }
+}
+
+// Extension of FileManager to get shared container Url
+extension FileManager {
+    
+    /// Url of shared container
+    var sharedContainerUrl: URL {
+        FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: "group.stevenkellner.Strafen.settings")!
     }
 }

@@ -45,6 +45,7 @@ extension ReasonTemplate: ListType {
         self.amount = codableSelf.amount
     }
     
+    #if TARGET_MAIN_APP
     /// Get reason template list of ListData
     static func getDataList() -> [ReasonTemplate]? {
         ListData.reason.list
@@ -65,6 +66,7 @@ extension ReasonTemplate: ListType {
             parameters["listType"] = "reason"
         }
     }
+    #endif
 }
 
 // Extension of ReasonTemplate for CodableSelf
