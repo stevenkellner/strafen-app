@@ -44,6 +44,7 @@ class ListData: ObservableObject {
         
         // Set connection state
         connectionState = .loading
+        HomeTabs.shared.active = .profileDetail
         
         // Fetch lists from database
         fetchLists { [weak self] in
