@@ -113,17 +113,32 @@ extension Settings {
         var description: String {
             "\(String(interestRate).replacingOccurrences(of: ".", with: ","))% / \(interestPeriod.value) \(interestPeriod.value == 1 ? interestPeriod.unit.singular : interestPeriod.unit.plural)"
         }
-        
-        /// POST parameters
-        var parameters: [String : Any] {
-            [
-                "interestFreeValue": interestFreePeriod.value,
-                "interestFreeUnit": interestFreePeriod.unit.rawValue,
-                "interestRate": interestRate,
-                "interestValue": interestPeriod.value,
-                "interestUnit": interestPeriod.unit.rawValue,
-                "compoundInterest": compoundInterest
-            ]
+    }
+}
+
+#if TARGET_MAIN_APP
+// Extension of Settings.LatePaymentInterest to get parameters
+extension Settings.LatePaymentInterest {
+    
+    /// Parameters
+    var parameters: Parameters {
+        Parameters { parameters in
+            parameters["interestFreeValue"] = interestFreePeriod.value
+            parameters["interestFreeUnit"] = interestFreePeriod.unit
+            parameters["interestRate"] = interestRate
+            parameters["interestValue"] = interestPeriod.value
+            parameters["interestUnit"] = interestPeriod.unit
+            parameters["compoundInterest"] = compoundInterest
         }
     }
 }
+
+// Extension of Settings.LatePaymentInterest.DateComponent to confirm to ParameterableObject
+extension Settings.LatePaymentInterest.DateComponent: ParameterableObject {
+    
+    /// Parameterable object
+    var parameterableObject: _ParameterableObject {
+        rawValue
+    }
+}
+#endif

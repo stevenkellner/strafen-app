@@ -5,7 +5,7 @@
 //  Created by Steven on 16.07.20.
 //
 
-import CryptoSwift
+import Foundation
 
 // Extension of String to validate if string is an email
 extension String {
@@ -15,24 +15,6 @@ extension String {
         let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
         let emailPred = NSPredicate(format:"SELF MATCHES %@", emailRegEx)
         return emailPred.evaluate(with: self)
-    }
-}
-
-// Extension of String to de- / encrypt it
-extension String {
-    
-    /// Encrypted String with base 64 cipher
-    var encrypted: String {
-        let base64cipher = try! Rabbit(key: AppUrls.shared.cipherKey)
-        return try! encryptToBase64(cipher: base64cipher)!
-    }
-    
-    /// Encrypted String with base 64 cipher
-    ///
-    /// nil if error in decrypting
-    var decrypted: String? {
-        let base64cipher = try! Rabbit(key: AppUrls.shared.cipherKey)
-        return try? decryptBase64ToString(cipher: base64cipher)
     }
 }
 
@@ -52,17 +34,17 @@ extension String {
     }
 }
 
-// Extension of String for formatted as an Euro value
+// Extension of String for formatted as an Amount value
 extension String {
     
-    /// Formatted as an Euro value
-    var euroValue: Euro {
+    /// Formatted as an Amount value
+    var amountValue: Amount {
         
         var commaPassed = false
         var newString = ""
         
         // Filter all invalid characters out
-        let validCharacters = Array(0..<11).map({ $0 != 10 ? Character(String($0)) : "," })
+        let validCharacters = (0..<10).map({ Character(String($0)) }).appending(",")
         for char in self where validCharacters.contains(char) {
             if char == "," && commaPassed {
                 continue
@@ -72,35 +54,54 @@ extension String {
             newString.append(char)
         }
         
-        // No cent value
-        if !commaPassed && !newString.isEmpty { return Euro(euro: UInt(newString)!, cent: .zero)  }
+        // No subunit value
+        if !commaPassed && !newString.isEmpty {
+            guard let value = Int(newString) else { return .zero }
+            return Amount(value, subUnit: .zero)
+        }
         
-        // With cent value
+        // With subunit value
         if commaPassed && newString.count != 1 {
             
-            // Get euro and cent value
-            let components = newString.components(separatedBy: ",")
-            let euro = components.first!.isEmpty ? .zero : UInt(components.first!)!
-            let centString = components[1]
+            // Get value and subunit value
+            var componentsIterator = newString.components(separatedBy: ",").makeIterator()
+            guard let valueString = componentsIterator.next(),
+                  let value = valueString.isEmpty ? .zero : Int(valueString),
+                  let subUnitString = componentsIterator.next() else { return .zero }
             
-            // Empty cent string
-            if centString.isEmpty { return Euro(euro: euro, cent: .zero) }
-                
+            // Empty subunit string
+            if subUnitString.isEmpty { return Amount(value, subUnit: .zero) }
+            
             // Only decimal digit
-            if centString.count == 1 { return Euro(euro: euro, cent: UInt(centString)! * 10) }
+            if subUnitString.count == 1 {
+                guard let subUnitValue = Int(subUnitString) else { return .zero }
+                return Amount(value, subUnit: subUnitValue * 10)
+                
+            }
                 
             // Both digits
-            if centString.count == 2 { return Euro(euro: euro, cent: UInt(centString)!) }
-                
-            // More than two digit
-            let decimal = UInt(String(centString.first!))! * 10 + UInt(String(centString[centString.index(after: centString.startIndex)]))!
-            if Int(String(centString[centString.index(after: centString.index(after: centString.startIndex))]))! >= 5 {
-                if decimal == 99 {
-                    return Euro(euro: euro + 1, cent: .zero)
-                }
-                return Euro(euro: euro, cent: decimal + 1)
+            if subUnitString.count == 2 {
+                guard let subUnitValue = Int(subUnitString) else { return .zero }
+                return Amount(value, subUnit: subUnitValue)
             }
-            return Euro(euro: euro, cent: decimal)
+            
+            // More than two digit
+            var subUnitIterator = subUnitString.makeIterator()
+            guard let tenthCharacter = subUnitIterator.next(),
+                  let hundredthCharacter = subUnitIterator.next(),
+                  let thousandthCharacter = subUnitIterator.next(),
+                  let tenth = Int(String(tenthCharacter)),
+                  let hundredth = Int(String(hundredthCharacter)),
+                  let thousandth = Int(String(thousandthCharacter))
+                  else { return .zero }
+            let decimal = tenth * 10 + hundredth
+            if thousandth >= 5 {
+                if decimal == 99 {
+                    return Amount(value + 1, subUnit: .zero)
+                }
+                return Amount(value, subUnit: decimal + 1)
+            }
+            return Amount(value, subUnit: decimal)
             
         }
         
@@ -151,5 +152,12 @@ extension String {
         }
         
         return min(Double(newString) ?? .zero, 100)
+    }
+}
+
+extension String {
+    init?(data: Data?, encoding: Encoding) {
+        guard let data = data else { return nil }
+        self.init(data: data, encoding: encoding)
     }
 }

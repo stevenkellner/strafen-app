@@ -19,8 +19,8 @@ struct TabBar: View {
     /// Active home tab
     @ObservedObject var homeTabs = HomeTabs.shared
     
-    ///Dismiss handler
-    @Binding var dismissHandler: (() -> ())?
+    /// Handler to dimiss from a subview to the previous view.
+    @Binding var dismissHandler: DismissHandler
     
     var body: some View {
         ZStack {
@@ -119,15 +119,8 @@ struct TabBar: View {
                                 ButtonContent(tab: .addNewFine, size: geometry.size, tabHandler: nil)
                             }
                             
-                            // Notes Button
-                            ButtonContent(tab: .notes, size: geometry.size) {
-                                if let dismissHandler = dismissHandler { dismissHandler() }
-                            }
-                            
-                        }
-                        
                         // Right Divider
-                        if settings.style == .default {
+                        } else if settings.style == .default {
                             Rectangle()
                                 .frame(width: 2, height: geometry.size.height * 3 / 4)
                                 .border(Color.custom.darkGreen, width: 1)
@@ -184,49 +177,8 @@ struct TabBar: View {
                         .padding(.top, 8)
                         .padding(.horizontal, 2)
                     
-                }.frame(width: settings.person?.isCashier ?? false ? size.width / 6 : size.width / 4, height: size.height)
+                }.frame(width: settings.person?.isCashier ?? false ? size.width / 5 : size.width / 4, height: size.height)
             }.buttonStyle(PlainButtonStyle())
         }
     }
 }
-
-#if DEBUG
-struct TabBar_Previews: PreviewProvider {
-    static var previews: some View {
-        
-        let phoneType = "iPhone 11"
-        let colorScheme: ColorScheme = .light
-        
-        return Group {
-            VStack {
-                Spacer()
-                // TabBar(settings: .constant(Settings(style: .default, isCashier: false)), activeHomeTab: .constant(.profileDetail), dismissHandler: .constant(nil))
-            }.previewDevice(.init(rawValue: phoneType))
-                .previewDisplayName(phoneType)
-                .edgesIgnoringSafeArea(.all)
-                .environment(\.colorScheme, colorScheme)
-            VStack {
-                Spacer()
-                // TabBar(settings: .constant(Settings(style: .default, isCashier: true)), activeHomeTab: .constant(.profileDetail), dismissHandler: .constant(nil))
-            }.previewDevice(.init(rawValue: phoneType))
-                .previewDisplayName(phoneType)
-                .edgesIgnoringSafeArea(.all)
-                .environment(\.colorScheme, colorScheme)
-            VStack {
-                Spacer()
-                // TabBar(settings: .constant(Settings(style: .plain, isCashier: false)), activeHomeTab: .constant(.profileDetail), dismissHandler: .constant(nil))
-            }.previewDevice(.init(rawValue: phoneType))
-                .previewDisplayName(phoneType)
-                .edgesIgnoringSafeArea(.all)
-                .environment(\.colorScheme, colorScheme)
-            VStack {
-                Spacer()
-                // TabBar(settings: .constant(Settings(style: .plain, isCashier: true)), activeHomeTab: .constant(.profileDetail), dismissHandler: .constant(nil))
-            }.previewDevice(.init(rawValue: phoneType))
-                .previewDisplayName(phoneType)
-                .edgesIgnoringSafeArea(.all)
-                .environment(\.colorScheme, colorScheme)
-        }
-    }
-}
-#endif

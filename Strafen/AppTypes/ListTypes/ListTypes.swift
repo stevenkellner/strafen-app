@@ -7,28 +7,57 @@
 
 import Foundation
 
-/// Protocol for all list types (club / fine / reason / person)
-protocol ListTypes: Decodable, Identifiable {
+/// Id List type
+protocol ListTypeId {
     
-    /// Url to list on server
-    static var serverListUrl: KeyPath<AppUrls, URL?> { get }
-    
-    /// List data of this server list type
-    static var listData: ListDataListType<Self> { get }
-    
-    /// Url to changer on server
-    static var changerUrl: KeyPath<AppUrls, URL>? { get }
-    
-    /// Parameters for POST method
-    var postParameters: [String : Any]? { get }
+    /// Init from uuid
+    init(rawValue: UUID)
 }
 
-/// Protocol for all local list types (notes)
-protocol LocalListTypes: Codable, Identifiable {
+/// Protocol for a list type of database
+protocol ListType: Identifiable where ID: ListTypeId {
     
-    /// Url to local list
-    static var localListUrl: KeyPath<AppUrls, URL> { get }
+    /// Codable list type
+    associatedtype CodableSelf: Decodable
     
-    /// List data of this local list type
-    static var listData: ListDataLocalListType<Self> { get }
+    /// Init with id and codable self
+    init(with id: ID, codableSelf: CodableSelf)
+    
+    /// Url for database refernce
+    ///
+    /// - Note: Don't use this url when no person is logged in
+    static var url: URL { get }
+    
+    #if TARGET_MAIN_APP
+    /// Get list of ListData of this type
+    static func getDataList() -> [Self]?
+    
+    /// Change list of ListData of this type
+    static func changeHandler(_ newList: [Self]?)
+    
+    /// Parameters for database change call
+    var callParameters: Parameters { get }
+    #endif
+}
+
+// Extension of URL to get path to list of person / reason / fine
+extension URL {
+    private static func baseList(with id: Club.ID) -> URL {
+        URL(string: "clubs")!.appendingPathComponent(id.uuidString.uppercased())
+    }
+    
+    /// Path to person list of club with given id
+    static func personList(with id: Club.ID) -> URL {
+        baseList(with: id).appendingPathComponent("persons")
+    }
+    
+    /// Path to reason list of club with given id
+    static func reasonList(with id: Club.ID) -> URL {
+        baseList(with: id).appendingPathComponent("reasons")
+    }
+    
+    /// Path to fine list of club with given id
+    static func fineList(with id: Club.ID) -> URL {
+        baseList(with: id).appendingPathComponent("fines")
+    }
 }

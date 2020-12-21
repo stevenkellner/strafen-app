@@ -14,7 +14,7 @@ struct HomeTabsView: View {
     @Environment(\.colorScheme) var colorScheme
     
     ///Dismiss handler
-    @Binding var dismissHandler: (() -> ())?
+    @Binding var dismissHandler: DismissHandler
     
     /// Active home tab
     @ObservedObject var homeTabs = HomeTabs.shared
@@ -36,8 +36,6 @@ struct HomeTabsView: View {
                     AddNewFine()
                         .padding(.top, 50)
                 }
-            } else if homeTabs.active == .notes {
-                NoteList(dismissHandler: $dismissHandler)
             } else if homeTabs.active == .settings {
                 SettingsView(dismissHandler: $dismissHandler)
             } else if listData.connectionState == .loading {
@@ -46,7 +44,7 @@ struct HomeTabsView: View {
                     ProgressView("Laden")
                 }
             } else if listData.connectionState == .failed {
-                ZStack {
+                /*ZStack { TODO
                     colorScheme.backgroundColor
                     VStack(spacing: 30) {
                         Spacer()
@@ -63,9 +61,9 @@ struct HomeTabsView: View {
                             .onTapGesture(perform: ListData.shared.fetchLists)
                         Spacer()
                     }
-                }
+                }*/
             } else {
-                Text("No available home view")
+                Text("No available view")
             }
         }
     }

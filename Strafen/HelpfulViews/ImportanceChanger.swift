@@ -11,13 +11,7 @@ import SwiftUI
 struct ImportanceChanger: View {
     
     /// Importance to change
-    @Binding var importance: Fine.Importance
-    
-    /// Color scheme to get appearance of this device
-    @Environment(\.colorScheme) var colorScheme
-    
-    /// Observed Object that contains all settings of the app of this device
-    @ObservedObject var settings = Settings.shared
+    @Binding var importance: Importance
     
     var body: some View {
         GeometryReader { geometry in
@@ -28,40 +22,24 @@ struct ImportanceChanger: View {
                     Outline(.left)
                         .fillColor(Color.custom.red, onlyDefault: false)
                         .frame(width: geometry.size.width / 3, height: geometry.size.height)
-                        .onTapGesture {
-                            withAnimation {
-                                importance = .high
-                            }
-                        }
+                        .setOnTapGesture($importance, to: .high, animation: .default)
                     
                     // Middle Part
                     Outline(.none)
                         .fillColor(Color.custom.orange, onlyDefault: false)
                         .frame(width: geometry.size.width / 3, height: geometry.size.height)
-                        .onTapGesture {
-                            withAnimation {
-                                importance = .medium
-                            }
-                        }
+                        .setOnTapGesture($importance, to: .medium, animation: .default)
                     
                     // Right Part
                     Outline(.right)
                         .fillColor(Color.custom.yellow, onlyDefault: false)
                         .frame(width: geometry.size.width / 3, height: geometry.size.height)
-                        .onTapGesture {
-                            withAnimation {
-                                importance = .low
-                            }
-                        }
+                        .setOnTapGesture($importance, to: .low, animation: .default)
                     
                 }
                 
                 // Indicator
-                RoundedCorners()
-                    .strokeColor(.textColor)
-                    .lineWidth(2.5)
-                    .radius(2.5)
-                    .frame(width: geometry.size.width / 8, height: 2.5)
+                Indicator(width: geometry.size.width / 8)
                     .offset(x: importance == .high ? -geometry.size.width / 3 : importance == .low ? geometry.size.width / 3 : 0)
                 
             }

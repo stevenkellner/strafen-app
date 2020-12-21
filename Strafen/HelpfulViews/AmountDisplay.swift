@@ -11,7 +11,7 @@ import SwiftUI
 struct AmountDisplay: View {
     
     /// Id of the person
-    let personId: UUID
+    let personId: Person.ID
     
     /// State of amount display
     enum AmountDisplayState: Int {
@@ -120,33 +120,28 @@ struct AmountDisplay: View {
         }
         
         /// Amount sum of the state
-        func amount(of personId: UUID, _ fineList: [Fine]) -> Euro {
+        func amount(of personId: Person.ID, _ fineList: [Fine]?, with reasonList: [ReasonTemplate]?) -> Amount {
+            guard let amountSum = fineList?.amountSum(of: personId, with: reasonList) else { return .zero }
             switch self {
             case .total:
-                return fineList.totalAmountSum(of: personId)
+                return amountSum.total
             case .payed:
-                return fineList.payedAmountSum(of: personId)
+                return amountSum.payed
             case .high:
-                return fineList.highAmountSum(of: personId)
+                return amountSum.high
             case .medium:
-                return fineList.mediumAmountSum(of: personId)
+                return amountSum.medium
             case .low:
-                return fineList.unpayedAmountSum(of: personId)
+                return amountSum.unpayed
             }
         }
     }
-    
-    /// Color scheme to get appearance of this device
-    @Environment(\.colorScheme) var colorScheme
-    
-    /// Observed Object that contains all settings of the app of this device
-    @ObservedObject var settings = Settings.shared
     
     /// Current shown display state
     @State var currentDisplay: AmountDisplayState = .total
     
     /// Time stamp of last dragging
-    @State var dragTimeStamp = Date().timeIntervalSince1970
+    @State var dragTimeStamp = Date().timeIntervalSinceReferenceDate
     
     var body: some View {
         ZStack {
@@ -158,29 +153,32 @@ struct AmountDisplay: View {
         }.frame(height: 52)
             .frame(maxWidth: .infinity)
             .clipped()
-            .onTapGesture {
-                withAnimation {
-                    if Date().timeIntervalSince1970 - dragTimeStamp >= 0.25 {
-                        dragTimeStamp = Date().timeIntervalSince1970
-                        currentDisplay.toNextState()
-                    }
+            .onTapGesture(perform: tapToNextDisplay)
+            .gesture(DragGesture().onChanged(dragToAdjacentDisplay))
+    }
+    
+    /// Go to next display
+    func tapToNextDisplay() {
+        withAnimation {
+            if Date().timeIntervalSinceReferenceDate - dragTimeStamp >= 0.25 {
+                dragTimeStamp = Date().timeIntervalSinceReferenceDate
+                currentDisplay.toNextState()
+            }
+        }
+    }
+    
+    /// Go to next or previous diplay depending on value
+    func dragToAdjacentDisplay(value: DragGesture.Value) {
+        withAnimation {
+            if Date().timeIntervalSinceReferenceDate - dragTimeStamp >= 0.25 {
+                dragTimeStamp = Date().timeIntervalSinceReferenceDate
+                if value.translation.width >= 50 {
+                    currentDisplay.toPreviousState()
+                } else if value.translation.width <= -50 {
+                    currentDisplay.toNextState()
                 }
             }
-            .gesture(
-                DragGesture()
-                    .onChanged { value in
-                        withAnimation {
-                            if Date().timeIntervalSince1970 - dragTimeStamp >= 0.25 {
-                                dragTimeStamp = Date().timeIntervalSince1970
-                                if value.translation.width >= 50 {
-                                    currentDisplay.toPreviousState()
-                                } else if value.translation.width <= -50 {
-                                    currentDisplay.toNextState()
-                                }
-                            }
-                        }
-                    }
-            )
+        }
     }
     
     /// Amount display field
@@ -190,16 +188,16 @@ struct AmountDisplay: View {
         let state: AmountDisplayState
         
         /// Id of the person
-        let personId: UUID
+        let personId: Person.ID
         
         /// Current shown display state
         @Binding var currentDisplay: AmountDisplayState
         
-        /// Observed Object that contains all settings of the app of this device
-        @ObservedObject var settings = Settings.shared
-        
         /// Fine List Data
         @ObservedObject var fineListData = ListData.fine
+        
+        /// Reason List Data
+        @ObservedObject var reasonListData = ListData.reason
         
         var body: some View {
             GeometryReader { geometry in
@@ -213,11 +211,13 @@ struct AmountDisplay: View {
                         Outline(.left)
                         
                         // Inside
-                        Text(state.text)
-                            .foregroundColor(.textColor)
-                            .font(.text(20))
-                            .lineLimit(1)
-                            .padding(.horizontal, 5)
+                        HStack(spacing: 0) {
+                            Text(state.text)
+                                .configurate(size: 20)
+                                .lineLimit(1)
+                                .padding(.horizontal, 25)
+                            Spacer()
+                        }
                         
                     }.frame(width: UIScreen.main.bounds.width * 0.675)
                 
@@ -229,8 +229,8 @@ struct AmountDisplay: View {
                             .fillColor(state.color)
                         
                         // Inside
-                        Text(String(describing: state.amount(of: personId, fineListData.list!)))
-                            .foregroundColor(settings.style == .default ? .textColor : state.color)
+                        Text(describing: state.amount(of: personId, fineListData.list, with: reasonListData.list))
+                            .foregroundColor(plain: state.color)
                             .font(.text(20))
                             .lineLimit(1)
                         
@@ -245,12 +245,3 @@ struct AmountDisplay: View {
         
     }
 }
-
-#if DEBUG
-struct AmountDisplay_Previews: PreviewProvider {
-    static var previews: some View {
-        AmountDisplay(personId: UUID(uuidString: "ADB004F2-ACD2-42E2-8FB5-3591A43C6F9C")!)
-            .previewDevice("iPhone 11")
-    }
-}
-#endif

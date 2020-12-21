@@ -14,60 +14,127 @@ struct LatePaymentInterestChangerView: View {
     
     typealias TimePeriod = Settings.LatePaymentInterest.TimePeriod
     
+    /// Input properties
+    struct InputProperties {
+        
+        /// Indicates whether interests are active
+        var interestsActive = false
+        
+        /// Interest free period
+        var interestFreePeriod = TimePeriod(value: 0, unit: .day)
+        
+        /// Interest rate
+        var interestRate: Double = 0
+        
+        /// Interest period
+        var interestPeriod = TimePeriod(value: 1, unit: .month)
+        
+        /// Compound interest
+        var compoundInterest = false
+        
+        /// Type of interest rate error
+        var rateErrorMessages: ErrorMessages? = nil
+        
+        /// Type of interest period error
+        var periodErrorMessages: ErrorMessages? = nil
+        
+        /// Type of function call error
+        var functionCallErrorMessages: ErrorMessages? = nil
+        
+        /// State of data task connection
+        @State var connectionState: ConnectionState = .passed
+        
+        mutating func setProperties() {
+            let latePaymentInterest = Settings.shared.latePaymentInterest
+            interestsActive = latePaymentInterest != nil
+            interestFreePeriod = latePaymentInterest?.interestPeriod ?? TimePeriod(value: 0, unit: .day)
+            interestRate = latePaymentInterest?.interestRate ?? 0
+            interestPeriod = latePaymentInterest?.interestPeriod ?? TimePeriod(value: 1, unit: .month)
+            compoundInterest = latePaymentInterest?.compoundInterest ?? false
+        }
+        
+        /// Checks if an error occurs while rate input
+        @discardableResult mutating func evaluteRateError() -> Bool {
+            if interestRate == 0 {
+                rateErrorMessages = .rateIsZero
+            } else {
+                rateErrorMessages = nil
+                return false
+            }
+            return true
+        }
+        
+        /// Checks if an error occurs while period input
+        @discardableResult mutating func evalutePeriodError() -> Bool {
+            if interestPeriod.value == 0 {
+                periodErrorMessages = .periodIsZero
+            } else {
+                periodErrorMessages = nil
+                return false
+            }
+            return true
+        }
+        
+        /// Late payment interest
+        var latePaymentInterest: Settings.LatePaymentInterest? {
+            guard interestsActive else { return nil }
+            return .init(interestFreePeriod: interestFreePeriod, interestRate: interestRate, interestPeriod: interestPeriod, compoundInterest: compoundInterest)
+        }
+        
+        /// Checks if an error occurs
+        mutating func errorOccurred() -> Bool {
+            evaluteRateError() |!|
+                evalutePeriodError()
+        }
+        
+        /// Reset all error messges
+        mutating func resetErrors() {
+            periodErrorMessages = nil
+            rateErrorMessages = nil
+            functionCallErrorMessages = nil
+        }
+    }
+    
     /// Alert type
-    enum AlertType {
-        
-        /// Confirm
-        case confirm
-        
-        /// Interest rate is zero
-        case rateIsZero
-        
-        /// Interest period value is zero
-        case periodIsZero
-        
-        /// No connection
-        case noConnection
+    enum AlertType: AlertTypeProtocol {
+
+        /// Alert when confirm button is pressed
+        case confirmButton(action: () -> Void)
+
+        /// Id for Identifiable
+        var id: Int {
+            switch self {
+            case .confirmButton(action: _):
+                return 0
+            }
+        }
+
+        /// Alert of all alert types
+        var alert: Alert {
+            switch self {
+            case .confirmButton(action: let action):
+                return Alert(title: Text("Verzugszinsen Ändern"),
+                             message: Text("Möchtest du die Verzugszinsen wirklich ändern?"),
+                             primaryButton: .destructive(Text("Abbrechen")),
+                             secondaryButton: .default(Text("Bestätigen"), action: action))
+            }
+        }
     }
     
     ///Dismiss handler
-    @Binding var dismissHandler: (() -> ())?
+    @Binding var dismissHandler: DismissHandler
+    
+    /// Input properties
+    @State var inputProperties = InputProperties()
+    
+    /// Alert type
+    @State var alertType: AlertType? = nil
     
     /// Presentation mode
     @Environment(\.presentationMode) var presentationMode
     
     /// Color scheme to get appearance of this device
     @Environment(\.colorScheme) var colorScheme
-    
-    /// Indicates whether interests are active
-    @State var interestsActive = true
-    
-    /// Interest free period
-    @State var interestFreePeriod = TimePeriod(value: 0, unit: .day)
-    
-    /// Interest rate
-    @State var interestRate: Double = 0
-    
-    /// Interest period
-    @State var interestPeriod = TimePeriod(value: 1, unit: .month)
-    
-    /// Compound interest
-    @State var compoundInterest = false
-    
-    /// Indicates whether keyboard is on screen for edit interest free period
-    @State var isInterestFreePeriodKeyboardOnScreen = false
-    
-    /// Indicates whether keyboard is on screen for edit interest period
-    @State var isInterestPeriodKeyboardOnScreen = false
-    
-    /// State of data task connection
-    @State var connectionState: ConnectionState = .passed
-    
-    /// Indicates whether an alert is shown
-    @State var showAlert = false
-    
-    /// Type of the alert
-    @State var alertType: AlertType = .confirm
     
     var body: some View {
         ZStack {
@@ -95,21 +162,21 @@ struct LatePaymentInterestChangerView: View {
                             SettingsView.Title("Verzugszinsen")
                             
                             // Changer
-                            BooleanChanger(boolToChange: $interestsActive)
+                            BooleanChanger(boolToChange: $inputProperties.interestsActive)
                                 .frame(width: UIScreen.main.bounds.width * 0.7, height: 25)
                             
                         }
                         
-                        if interestsActive {
+                        if inputProperties.interestsActive {
                             
                             // Interest free period changer
-                            InterestPeriod(title: "Zinsfreie Zeit", interestPeriod: $interestFreePeriod, editMode: $isInterestFreePeriodKeyboardOnScreen)
+                            InterestFreePeriod(inputProperties: $inputProperties)
                             
                             // Interest rate
-                            InterestRate(interestRate: $interestRate)
+                            InterestRate(inputProperties: $inputProperties)
                             
                             // Interest period changer
-                            InterestPeriod(title: "Zins Zeitraum", interestPeriod: $interestPeriod, editMode: $isInterestPeriodKeyboardOnScreen)
+                            InterestPeriod(inputProperties: $inputProperties)
                             
                             // Compound interest changer
                             VStack(spacing: 0) {
@@ -118,111 +185,81 @@ struct LatePaymentInterestChangerView: View {
                                 SettingsView.Title("Zinseszins")
                                 
                                 // Changer
-                                BooleanChanger(boolToChange: $compoundInterest)
+                                BooleanChanger(boolToChange: $inputProperties.compoundInterest)
                                     .frame(width: UIScreen.main.bounds.width * 0.7, height: 25)
                                 
                             }
                             
                         }
-                    }.padding(.vertical, 20)
-                        .offset(y: isInterestPeriodKeyboardOnScreen ? -25 : 0)
+                        
+                        Spacer()
+                    }.padding(.vertical, 10)
+                        .keyboardAdaptiveOffset
                     
-                    Spacer()
                 }.padding(.vertical, 10)
                 
                 // Cancel and Confirm Button
-                CancelConfirmButton(connectionState: $connectionState) {
-                    presentationMode.wrappedValue.dismiss()
-                } confirmButtonHandler: {
-                    handleConfirm()
-                }.padding(.bottom, 30)
-                    .alert(isPresented: $showAlert) {
-                        switch alertType {
-                        case .confirm:
-                            return Alert(title: Text("Verzugszinsen Ändern"), message: Text("Möchtest du die Verzugszinsen wirklich ändern?"), primaryButton: .destructive(Text("Abbrechen")), secondaryButton: .default(Text("Bestätigen"), action: handleSave))
-                        case .rateIsZero:
-                            return Alert(title: Text("Falscher Zinssatz"), message: Text("Zinssatz darf nicht null sein."), dismissButton: .default(Text("Verstanden")))
-                        case .periodIsZero:
-                            return Alert(title: Text("Falscher Zeitraum"), message: Text("Zeitraum darf nicht null sein."), dismissButton: .default(Text("Verstanden")))
-                        case .noConnection:
-                            return Alert(title: Text("Kein Internet"), message: Text("Für diese Aktion benötigst du eine Internetverbindung."), primaryButton: .destructive(Text("Abbrechen")), secondaryButton: .default(Text("Erneut versuchen"), action: handleSave))
+                VStack(spacing: 5) {
+                    
+                    // Cancel and Confirm button
+                    CancelConfirmButton()
+                        .connectionState($inputProperties.connectionState)
+                        .onCancelPress { presentationMode.wrappedValue.dismiss() }
+                        .onConfirmPress($alertType, value: .confirmButton(action: handleSave)) {
+                            guard Settings.shared.latePaymentInterest != inputProperties.latePaymentInterest else {
+                                presentationMode.wrappedValue.dismiss()
+                                return false
+                            }
+                            return !inputProperties.errorOccurred()
                         }
-                    }
+                        .alert(item: $alertType)
+                    
+                    // Error messages
+                    ErrorMessageView(errorMessages: $inputProperties.functionCallErrorMessages)
+                    
+                }.padding(.bottom, inputProperties.functionCallErrorMessages == nil ? 35 : 10)
+                    .animation(.default)
                 
             }
             
         }.edgesIgnoringSafeArea(.all)
-            .navigationTitle("title")
-            .navigationBarHidden(true)
+            .hideNavigationBarTitle()
             .onAppear {
-                dismissHandler = {
-                    presentationMode.wrappedValue.dismiss()
-                }
-                let latePaymentInterest = Settings.shared.latePaymentInterest
-                interestsActive = latePaymentInterest != nil
-                interestFreePeriod = latePaymentInterest?.interestFreePeriod ?? TimePeriod(value: 0, unit: .day)
-                interestRate = latePaymentInterest?.interestRate ?? 0
-                interestPeriod = latePaymentInterest?.interestPeriod ?? TimePeriod(value: 1, unit: .month)
-                compoundInterest = latePaymentInterest?.compoundInterest ?? false
+                dismissHandler = { presentationMode.wrappedValue.dismiss() }
+                inputProperties.setProperties()
             }
-    }
-    
-    /// Handles confirm button clicked
-    func handleConfirm() {
-        if interestsActive {
-            let latePaymentInterest = Settings.LatePaymentInterest(interestFreePeriod: interestFreePeriod, interestRate: interestRate, interestPeriod: interestPeriod, compoundInterest: compoundInterest)
-            if Settings.shared.latePaymentInterest == latePaymentInterest {
-                return presentationMode.wrappedValue.dismiss()
-            } else if interestRate == 0 {
-                alertType = .rateIsZero
-            } else if interestPeriod.value == 0 {
-                alertType = .periodIsZero
-            } else {
-                alertType = .confirm
-            }
-        } else {
-            if Settings.shared.latePaymentInterest == nil {
-                return presentationMode.wrappedValue.dismiss()
-            } else {
-                alertType = .confirm
-            }
-        }
-        showAlert = true
     }
     
     /// Handles interest saving
     func handleSave() {
-        connectionState = .loading
-        var latePaymentInterest: Settings.LatePaymentInterest?
-        if interestsActive {
-            latePaymentInterest = .init(interestFreePeriod: interestFreePeriod, interestRate: interestRate, interestPeriod: interestPeriod, compoundInterest: compoundInterest)
-        }
-        let changeItem = LatePaymentInterestChange(latePaymentInterest: latePaymentInterest)
-        Changer.shared.change(changeItem) {
-            connectionState = .passed
-            Settings.shared.latePaymentInterest = latePaymentInterest
+        inputProperties.resetErrors()
+        guard inputProperties.connectionState != .loading,
+              !inputProperties.errorOccurred(),
+              let clubId = Settings.shared.person?.clubProperties.id else { return }
+        inputProperties.connectionState = .loading
+        
+        let callItem = LatePaymentInterestCall(latePaymentInterest: inputProperties.latePaymentInterest, clubId: clubId)
+        FunctionCaller.shared.call(callItem) { _ in
+            inputProperties.connectionState = .passed
+            Settings.shared.latePaymentInterest = inputProperties.latePaymentInterest
             presentationMode.wrappedValue.dismiss()
-        } failedHandler: {
-            connectionState = .failed
-            alertType = .noConnection
-            showAlert = true
+        } failedHandler: { _ in
+            inputProperties.connectionState = .failed
+            inputProperties.functionCallErrorMessages = .internalErrorSave
         }
     }
     
-    /// Interest period
-    struct InterestPeriod: View {
+    /// Interest free period
+    struct InterestFreePeriod: View {
         
-        /// Title
-        let title: String
-        
-        /// Interest period
-        @Binding var interestPeriod: TimePeriod
+        /// Input properties
+        @Binding var inputProperties: InputProperties
         
         /// String of value of interest free period
         @State var interestValueString = ""
         
-        /// Indicates whether keyboard is on screen or unit is on edit
-        @Binding var editMode: Bool
+        /// Indicates whether value is on edit
+        @State var valueEditMode = false
         
         /// Indicates whether unit is on edit
         @State var unitEditMode = false
@@ -231,15 +268,21 @@ struct LatePaymentInterestChangerView: View {
             VStack(spacing: 0) {
                 
                 // Title
-                SettingsView.Title(title)
+                SettingsView.Title("Zinsfreie Zeit")
                 
                 HStack(spacing: 0) {
                     
                     // Value Text Field
-                    CustomTextField(title, text: $interestValueString, keyboardType: .decimalPad, keyboardOnScreen: $editMode) {
-                        interestPeriod.value = interestValueString.positiveInt
-                        interestValueString = String(interestPeriod.value)
-                    }.frame(width: UIScreen.main.bounds.width * (editMode || unitEditMode ? 0.3 : 0.45), height: 50)
+                    CustomTextField()
+                        .title("Zinsfreie Zeit")
+                        .textBinding($interestValueString)
+                        .keyboardType(.decimalPad)
+                        .keyboardOnScreen($valueEditMode)
+                        .onCompletion {
+                            inputProperties.interestFreePeriod.value = interestValueString.positiveInt
+                            interestValueString = String(inputProperties.interestFreePeriod.value)
+                        }
+                        .frame(width: UIScreen.main.bounds.width * (valueEditMode || unitEditMode ? 0.3 : 0.45), height: 50)
                     
                     // Unit Text
                     ZStack {
@@ -248,21 +291,22 @@ struct LatePaymentInterestChangerView: View {
                         Outline()
                         
                         // Text
-                        Text(interestPeriod.value == 1 ? interestPeriod.unit.singular : interestPeriod.unit.plural)
-                            .foregroundColor(.textColor)
-                            .font(.text(20))
+                        Text(unitName)
+                            .configurate(size: 20)
                             .lineLimit(1)
+                        
                     }.frame(width: UIScreen.main.bounds.width * 0.3, height: 50)
                         .padding(.horizontal, 15)
                         .onTapGesture {
                             withAnimation {
                                 unitEditMode.toggle()
+                                valueEditMode = false
                             }
-                            UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+                            UIApplication.shared.dismissKeyboard()
                         }
                     
                     // Done button
-                    if editMode || unitEditMode {
+                    if unitEditMode || valueEditMode {
                         Text("Fertig")
                             .foregroundColor(Color.custom.darkGreen)
                             .font(.text(25))
@@ -270,15 +314,17 @@ struct LatePaymentInterestChangerView: View {
                             .onTapGesture {
                                 withAnimation {
                                     unitEditMode = false
+                                    valueEditMode = false
                                 }
-                                UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+                                UIApplication.shared.dismissKeyboard()
                             }
                     }
+                    
                 }
                 
                 // Unit Picker
                 if unitEditMode {
-                    Picker("title", selection: $interestPeriod.unit) {
+                    Picker("title", selection: $inputProperties.interestFreePeriod.unit) {
                         ForEach(DateComponents.allCases) { component in
                             Text(component.singular)
                                 .tag(component)
@@ -290,7 +336,16 @@ struct LatePaymentInterestChangerView: View {
                 }
                 
             }.onAppear {
-                interestValueString = String(interestPeriod.value)
+                interestValueString = String(inputProperties.interestFreePeriod.value)
+            }
+        }
+        
+        /// Unit name
+        var unitName: String {
+            if inputProperties.interestFreePeriod.value == 1 {
+                return inputProperties.interestFreePeriod.unit.singular
+            } else {
+                return inputProperties.interestFreePeriod.unit.plural
             }
         }
     }
@@ -298,8 +353,8 @@ struct LatePaymentInterestChangerView: View {
     /// Interest rate
     struct InterestRate: View {
         
-        /// Interest rate
-        @Binding var interestRate: Double
+        /// Input properties
+        @Binding var inputProperties: InputProperties
         
         /// Interest rate string
         @State var interestRateString = ""
@@ -316,19 +371,27 @@ struct LatePaymentInterestChangerView: View {
                 HStack(spacing: 0) {
                     
                     // Text Field
-                    CustomTextField("Zinssatz", text: $interestRateString, keyboardType: .decimalPad, keyboardOnScreen: $keyboardOnScreen) {
-                        interestRate = interestRateString.interestRateValue
-                        interestRateString = interestRate.stringValue
-                    }.frame(width: UIScreen.main.bounds.width * 0.45, height: 50)
+                    CustomTextField()
+                        .title("Zinssatz")
+                        .textBinding($interestRateString)
+                        .keyboardType(.decimalPad)
+                        .keyboardOnScreen($keyboardOnScreen)
+                        .errorMessages($inputProperties.rateErrorMessages)
+                        .showErrorMessage(false)
+                        .onCompletion {
+                            inputProperties.interestRate = interestRateString.interestRateValue
+                            interestRateString = inputProperties.interestRate.stringValue
+                            inputProperties.evaluteRateError()
+                        }
+                        .frame(width: UIScreen.main.bounds.width * 0.45, height: 50)
                         .padding(.leading, 15)
                     
                     // % - Sign
                     Text("%")
-                        .frame(height: 50)
-                        .foregroundColor(.textColor)
-                        .font(.text(25))
+                        .configurate(size: 25)
                         .lineLimit(1)
                         .padding(.leading, 5)
+                        .frame(height: 50)
                     
                     // Done button
                     if keyboardOnScreen {
@@ -338,13 +401,124 @@ struct LatePaymentInterestChangerView: View {
                             .lineLimit(1)
                             .padding(.leading, 15)
                             .onTapGesture {
-                                UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+                                UIApplication.shared.dismissKeyboard()
                             }
                     }
                     
                 }
+                
+                // Error Messages
+                ErrorMessageView(errorMessages: $inputProperties.rateErrorMessages)
+                
             }.onAppear {
-                interestRateString = interestRate.stringValue
+                interestRateString = inputProperties.interestRate.stringValue
+            }
+        }
+    }
+    
+    /// Interest period
+    struct InterestPeriod: View {
+        
+        /// Input properties
+        @Binding var inputProperties: InputProperties
+        
+        /// String of value of interest free period
+        @State var interestValueString = ""
+        
+        /// Indicates whether value is on edit
+        @State var valueEditMode = false
+        
+        /// Indicates whether unit is on edit
+        @State var unitEditMode = false
+        
+        var body: some View {
+            VStack(spacing: 0) {
+                
+                // Title
+                SettingsView.Title("Zins Zeitraum")
+                
+                HStack(spacing: 0) {
+                    
+                    // Value Text Field
+                    CustomTextField()
+                        .title("Zins Zeitraum")
+                        .textBinding($interestValueString)
+                        .keyboardType(.decimalPad)
+                        .keyboardOnScreen($valueEditMode)
+                        .errorMessages($inputProperties.periodErrorMessages)
+                        .showErrorMessage(false)
+                        .onCompletion {
+                            inputProperties.interestPeriod.value = interestValueString.positiveInt
+                            interestValueString = String(inputProperties.interestPeriod.value)
+                            inputProperties.evalutePeriodError()
+                        }
+                        .frame(width: UIScreen.main.bounds.width * (valueEditMode || unitEditMode ? 0.3 : 0.45), height: 50)
+                    
+                    // Unit Text
+                    ZStack {
+                        
+                        // Outline
+                        Outline()
+                        
+                        // Text
+                        Text(unitName)
+                            .configurate(size: 20)
+                            .lineLimit(1)
+                        
+                    }.frame(width: UIScreen.main.bounds.width * 0.3, height: 50)
+                        .padding(.horizontal, 15)
+                        .onTapGesture {
+                            withAnimation {
+                                unitEditMode.toggle()
+                                valueEditMode = false
+                            }
+                            UIApplication.shared.dismissKeyboard()
+                        }
+                    
+                    // Done button
+                    if unitEditMode || valueEditMode {
+                        Text("Fertig")
+                            .foregroundColor(Color.custom.darkGreen)
+                            .font(.text(25))
+                            .lineLimit(1)
+                            .onTapGesture {
+                                withAnimation {
+                                    unitEditMode = false
+                                    valueEditMode = false
+                                }
+                                UIApplication.shared.dismissKeyboard()
+                            }
+                    }
+                    
+                }
+                
+                // Unit Picker
+                if unitEditMode {
+                    Picker("title", selection: $inputProperties.interestPeriod.unit) {
+                        ForEach(DateComponents.allCases) { component in
+                            Text(component.singular)
+                                .tag(component)
+                        }
+                    }.pickerStyle(SegmentedPickerStyle())
+                        .labelsHidden()
+                        .padding(.top, 10)
+                        .frame(width: UIScreen.main.bounds.width * 0.95)
+                }
+                
+                // Error messages
+                ErrorMessageView(errorMessages: $inputProperties.periodErrorMessages)
+                
+            }.onAppear {
+                interestValueString = String(inputProperties.interestPeriod.value)
+            }
+        }
+        
+        /// Unit name
+        var unitName: String {
+            if inputProperties.interestPeriod.value == 1 {
+                return inputProperties.interestPeriod.unit.singular
+            } else {
+                return inputProperties.interestPeriod.unit.plural
             }
         }
     }

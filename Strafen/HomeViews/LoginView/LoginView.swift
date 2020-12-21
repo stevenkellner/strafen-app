@@ -2,125 +2,134 @@
 //  LoginView.swift
 //  Strafen
 //
-//  Created by Steven on 27.06.20.
+//  Created by Steven on 10/18/20.
 //
 
 import SwiftUI
-
-/// First View in login
-struct LoginEntryView: View {
-    
-    /// Color scheme to get appearance of this device
-    @Environment(\.colorScheme) var colorScheme
-    
-    /// State of internet connection
-    @State var connectionState: ConnectionState = .loading
-    
-    var body: some View {
-        VStack(spacing: 0) {
-            switch connectionState {
-            case .loading:
-                
-                // Loading
-                ZStack {
-                    colorScheme.backgroundColor
-                    ProgressView("Laden")
-                }.edgesIgnoringSafeArea(.all)
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-            case .failed:
-                
-                // No internet connection
-                ZStack {
-                    colorScheme.backgroundColor
-                    VStack(spacing: 30) {
-                        Spacer()
-                        Text("Keine Internetverbindung")
-                            .font(.text(25))
-                            .foregroundColor(.textColor)
-                            .padding(.horizontal, 15)
-                            .multilineTextAlignment(.center)
-                        Text("Erneut versuchen")
-                            .font(.text(25))
-                            .foregroundColor(Color.custom.red)
-                            .padding(.horizontal, 15)
-                            .multilineTextAlignment(.center)
-                            .onTapGesture(perform: fetchLists)
-                        Spacer()
-                    }
-                }.edgesIgnoringSafeArea(.all)
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-            case .passed:
-                LoginView()
-            }
-        }.onAppear {
-            fetchLists()
-        }
-    }
-    
-    /// Fetch all list data
-    func fetchLists() {
-        connectionState = .loading
-        ListData.club.list = nil
-        ListData.club.fetch {
-            connectionState = .passed
-        } failedHandler: {
-            connectionState = .failed
-        }
-    }
-}
+import FirebaseAuth
+import FirebaseFunctions
 
 /// View  for login
 struct LoginView: View {
     
-    /// Types of email login error
-    enum LoginErrorType {
+    /// Credentials of email log in (Email and Password) and errors types
+    struct EmailCredentials {
         
-        /// Wrong password
-        case wrongPassword
+        /// Email address
+        var email: String = ""
         
-        /// Person not registriered
-        case notRegistriered
+        /// Password
+        var password: String = ""
         
-        /// Person not with apple registriered
-        case notRegistrieredApple
+        /// Type of  email textfield error
+        var emailErrorMessages: ErrorMessages? = nil
+        
+        /// Type of password textfield error
+        var passwordErrorMessages: ErrorMessages? = nil
+        
+        /// Checks if email and password are empty
+        mutating func checkEmpty() -> Bool {
+            var isEmpty = false
+            
+            // Check if input email is empty
+            if email.isEmpty {
+                isEmpty = true
+                emailErrorMessages = .emptyField
+                Logging.shared.log(with: .info, "Email textfield is empty.")
+            }
+            
+            // Check if input password is empty
+            if password.isEmpty {
+                isEmpty = true
+                passwordErrorMessages = .emptyField
+                Logging.shared.log(with: .info, "Password textfield is empty.")
+            }
+            
+            return isEmpty
+        }
+        
+        /// Checks if email is empty
+        mutating func evaluteEmailError() {
+            if email.isEmpty {
+                Logging.shared.log(with: .info, "Email textfield is empty.")
+                emailErrorMessages = .emptyField
+            } else {
+                emailErrorMessages = nil
+            }
+        }
+        
+        /// Checks if password is empty
+        mutating func evalutePasswordError() {
+            if password.isEmpty {
+                Logging.shared.log(with: .info, "Password textfield is empty.")
+                passwordErrorMessages = .emptyField
+            } else {
+                passwordErrorMessages = nil
+            }
+        }
+        
+        /// Checks if an error occured while logging in
+        mutating func evaluteErrorCode(of _error: Error) {
+            
+            /// Get auth error code
+            guard let error = _error as NSError?, error.domain == AuthErrorDomain else {
+                Logging.shared.log(with: .error, "An error occurs, that hasn't the auth error domain: \(_error.localizedDescription)")
+                return emailErrorMessages = .internalErrorSignIn
+            }
+            let errorCode = AuthErrorCode(rawValue: error.code)
+            
+            switch errorCode {
+            
+            // Email is invalid
+            case .invalidEmail:
+                emailErrorMessages = .invalidEmail
+                Logging.shared.log(with: .debug, "Email is invalid.")
+                
+            // Wrong password
+            case .wrongPassword:
+                passwordErrorMessages = .incorrectPassword
+                Logging.shared.log(with: .debug, "Password is incorrect.")
+                
+            default:
+                emailErrorMessages = .internalErrorLogIn
+                Logging.shared.log(with: .error, "An error occurs, that isn't handled: \(error.localizedDescription)")
+            }
+        }
+        
+        /// Reset error types
+        mutating func resetErrorTypes() {
+            emailErrorMessages = nil
+            passwordErrorMessages = nil
+        }
     }
     
-    /// Input email
-    @State var email = ""
+    /// Indicates if sign in sheet is shown
+    @Binding var showSignInSheet: Bool
     
-    /// Input password
-    @State var password = ""
+    /// Indicates if cached sign in view is shown
+    @Binding var showCachedState: Bool
     
-    /// Used to indicate whether signIn sheet is displayed or not
-    @State var showSignInSheet = false
+    /// Credentials of email log in (Email and Password)
+    @State var emailCredentials = EmailCredentials()
     
-    /// Alert if email login fails
-    @State var emailLoginAlert = false
-    
-    /// Type of email login error
-    @State var emailLoginErrorType: LoginErrorType = .wrongPassword
-    
-    /// Club list data
-    @ObservedObject var clubListData = ListData.club
+    /// Sign in with apple error type
+    @State var signInWithAppleErrorMessages: ErrorMessages? = nil
     
     /// Color scheme to get appearance of this device
     @Environment(\.colorScheme) var colorScheme
     
-    /// Observed Object that contains all settings of the app of this device
-    @ObservedObject var settings = Settings.shared
-    
-    /// Active home tab
-    @ObservedObject var homeTabs = HomeTabs.shared
-    
-    /// List data
-    @ObservedObject var listData = ListData.shared
-    
+    /// UIWindow
+    @Environment(\.window) var window
+
     /// State of internet connection
     @State var connectionState: ConnectionState = .passed
     
-    /// Screen size
-    @State var screenSize: CGSize?
+    /// Indicates if password reset alert is shown
+    @State var showPasswortResetAlert = false
     
+    /// Size of log in view
+    @State var screenSize: CGSize?
+
     var body: some View {
         GeometryReader { geometry in
             VStack(spacing: 0) {
@@ -128,161 +137,303 @@ struct LoginView: View {
                 // Header
                 Header("Anmelden")
                     .padding(.top, 50)
-                
+                    
                 Spacer()
                 
-                // Email
-                VStack(spacing: 0) {
+                // Email and password input, Sign in with apple button and sign in button
+                VStack(spacing: 15) {
                     
-                    // Title
+                    // Email and password input
+                    EmailPasswordInput(emailCredentials: $emailCredentials)
+                    
+                    
+                    // Forgot passwword
                     HStack(spacing: 0) {
-                        Text("Email:")
-                            .foregroundColor(Color.textColor)
-                            .font(.text(20))
-                            .padding(.leading, 10)
-                        Spacer()
-                    }
-                    
-                    // Text Field
-                    CustomTextField("Email", text: $email, keyboardType: .emailAddress)
-                        .frame(width: UIScreen.main.bounds.width * 0.95, height: 50)
-                        .padding(.top, 5)
-                }
-                
-                // Password
-                VStack(spacing: 0) {
-                    
-                    // Title
-                    HStack(spacing: 0) {
-                        Text("Passwort:")
-                            .foregroundColor(Color.textColor)
-                            .font(.text(20))
-                            .padding(.leading, 10)
-                        Spacer()
-                    }
-                    
-                    // Text Field
-                    CustomSecureField(text: $password, placeholder: "Passwort")
-                        .frame(width: UIScreen.main.bounds.width * 0.95, height: 50)
-                        .padding(.top, 5)
-                }.padding(.top, 20)
-                
-                // "oder" Text
-                Text("oder")
-                    .foregroundColor(.textColor)
-                    .font(.text(20))
-                    .padding(.top, 20)
-                
-                SignInWithApple(type: .logIn, alsoForAutomatedLogIn: true) { userId, _ in
-                    connectionState = .loading
-                    if let club = clubListData.list!.first(where: { $0.allPersons.contains(where: { ($0.login.personLogin as? PersonLoginApple)?.appleIdentifier == userId }) }) {
-                        let person = club.allPersons.first(where: { ($0.login.personLogin as? PersonLoginApple)?.appleIdentifier == userId })!
-                        connectionState = .passed
-                        listData.connectionState = .loading
-                        Settings.shared.person = .init(id: person.id, name: person.personName, clubId: club.id, clubName: club.name, isCashier: person.isCashier)
-                        homeTabs.active = .profileDetail
-                    } else {
-                        connectionState = .failed
-                        emailLoginErrorType = .notRegistrieredApple
-                        emailLoginAlert = true
-                    }
-                }.frame(width: UIScreen.main.bounds.width * 0.95, height: 50)
-                    .padding(.top, 20)
-                
-                // SignIn Button
-                HStack(spacing: 0) {
-                    
-                    // "Stattdessen" text
-                    Text("Stattdessen")
-                        .foregroundColor(.textColor)
-                        .font(.text(20))
-                    
-                    // SignIn Button
-                    ZStack {
-                        
-                        // Outline
-                        RoundedCorners()
-                            .radius(settings.style == .default ? 5 : 2.5)
-                            .lineWidth(settings.style.lineWidth)
-                            .fillColor(settings.style.fillColor(colorScheme))
-                            .strokeColor(settings.style.strokeColor(colorScheme))
-                        
-                        // Text
-                        Text("Registrieren")
-                            .foregroundColor(.textColor)
-                            .font(.text(20))
-                        
-                    }.frame(width: 150, height: 30)
-                        .padding(.leading, 10)
-                        .onTapGesture {
-                            showSignInSheet = true
+                        if emailCredentials.emailErrorMessages == nil && !emailCredentials.email.isEmpty && emailCredentials.passwordErrorMessages != nil {
+                            Spacer()
+                            
+                            // "or" Text
+                            Text("oder").configurate(size: 20)
+                            
+                            Spacer()
+                            
+                            ZStack {
+                                
+                                // Outline
+                                Outline()
+                                
+                                // Text
+                                Text("Passwort vergessen")
+                                    .configurate(size: 15)
+                                    .lineLimit(1)
+                                
+                            }.frame(width: 150, height: 35)
+                                .padding(.trailing, 15)
+                                .onTapGesture {
+                                    Auth.auth().sendPasswordReset(withEmail: emailCredentials.email, completion: nil)
+                                    showPasswortResetAlert = true
+                                }.alert(isPresented: $showPasswortResetAlert) {
+                                    Alert(title: Text("Passwort zurückgesetzt"),
+                                          message: Text("Es wurde eine Email zum Zurücksetzten des Passworts an \(emailCredentials.email) gesendet."),
+                                          dismissButton: .default(Text("Verstanden")))
+                                }
                         }
-                        .sheet(isPresented: $showSignInSheet) {
-                            SignInView(showSignInSheet: $showSignInSheet)
-                        }
+                    }
                     
-                }.padding(.top, 20)
+                    // Sign in with apple button
+                    VStack(spacing: 5) {
+                            
+                        // Sign in with Apple button
+                        SignInWithAppleButton(type: .logIn, alsoForAutomatedLogIn: true, signInHandler: handleAppleLogIn)
+                            .frame(width: UIScreen.main.bounds.width * 0.95, height: 50)
+                        
+                        // Error Message
+                        ErrorMessageView(errorMessages: $signInWithAppleErrorMessages)
+                            
+                    }
+                    
+                    // Sign in button
+                    SignInButton(showSignInSheet: $showSignInSheet, showCachedState: $showCachedState)
+                    
+                }.animation(.default)
                 
                 Spacer()
                 
                 // Confirm Button
-                ConfirmButton("Anmelden", connectionState: $connectionState) {
-                    connectionState = .loading
-                    if let club = clubListData.list!.first(where: { $0.allPersons.contains(where: { ($0.login.personLogin as? PersonLoginEmail)?.email == email }) }) {
-                        let person = club.allPersons.first(where: { ($0.login.personLogin as? PersonLoginEmail)?.email == email })!
-                        if (person.login.personLogin as! PersonLoginEmail).password == password.encrypted {
-                            connectionState = .passed
-                            listData.connectionState = .loading
-                            Settings.shared.person = .init(id: person.id, name: person.personName, clubId: club.id, clubName: club.name, isCashier: person.isCashier)
-                            homeTabs.active = .profileDetail
-                        } else {
-                            connectionState = .failed
-                            emailLoginErrorType = .wrongPassword
-                            emailLoginAlert = true
-                        }
-                    } else {
-                        connectionState = .failed
-                        emailLoginErrorType = .notRegistriered
-                        emailLoginAlert = true
-                    }
-                }.padding(.bottom, 50)
-                    .alert(isPresented: $emailLoginAlert) {
-                        switch emailLoginErrorType {
-                        case .wrongPassword:
-                            return
-                                Alert(title: Text("Falsches Passwort"), message: Text("Das Passwort ist falsch."), dismissButton: .default(Text("Verstanden")))
-                        case .notRegistriered:
-                            return Alert(title: Text("Email Nicht Registriert"), message: Text("Diese Email ist nicht registriert."), dismissButton: .default(Text("Verstanden")))
-                        case .notRegistrieredApple:
-                            return Alert(title: Text("Apple-ID Nicht Registriert"), message: Text("Deine Apple-ID ist nicht registriert"), dismissButton: .default(Text("Verstanden")))
-                        }
-                    }
+                ConfirmButton()
+                    .title("Anmelden")
+                    .connectionState($connectionState)
+                    .onButtonPress(handleEmailLogIn)
+                    .padding(.bottom, 50)
                 
-            }.frame(size: screenSize ?? geometry.size)
-                .onAppear {
-                    screenSize = geometry.size
-                }
-        }.background(colorScheme.backgroundColor)
+            }.screenSize($screenSize, geometry: geometry)
+            
+        }.frame(maxWidth: .infinity, maxHeight: .infinity)
+            .background(colorScheme.backgroundColor)
     }
-}
-
-#if DEBUG
-struct LoginView_Previews: PreviewProvider {
-    static var previews: some View {
-        Group {
+    
+    /// Handles log in with email
+    func handleEmailLogIn() {
+        guard connectionState != .loading else { return }
+        connectionState = .loading
+        Logging.shared.log(with: .info, "Log in with email is started to handle.")
+        Logging.shared.log(with: .info, "With properties: \(emailCredentials)")
+        
+        // Check if email and password aren't empty
+        signInWithAppleErrorMessages = nil
+        emailCredentials.resetErrorTypes()
+        guard !emailCredentials.checkEmpty() else {
+            return DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                connectionState = .failed
+            }
+        }
+        
+        // Sign in with email
+        Auth.auth().signIn(withEmail: emailCredentials.email, password: emailCredentials.password) { result, error in
             
-            // IPhone 11
-            LoginView()
-                .previewDevice(.init(rawValue: "iPhone 11"))
-                .previewDisplayName("iPhone 11")
-                .edgesIgnoringSafeArea(.all)
+            // Error occured
+            if let error = error {
+                emailCredentials.evaluteErrorCode(of: error)
+                connectionState = .failed
+                
+            // Handle sign in with apple result
+            } else if let userId = result?.user.uid {
+                
+                // Get properties of signed in person
+                let callItem = GetPersonPropertiesCall(userId: userId)
+                FunctionCaller.shared.call(callItem) { (person: GetPersonPropertiesCall.CallResult) in
+                    
+                    // Reset cached state and set settings person
+                    Logging.shared.log(with: .info, "Get person properties call succeeded.")
+                    Logging.shared.log(with: .info, "With return person: \(person)")
+                    connectionState = .passed
+                    SignInCache.shared.setState(to: nil)
+                    Settings.shared.person = person
+                    
+                } failedHandler: { error in
+                    handleEmailSignInGetIdsCallError(error: error)
+                    connectionState = .failed
+                }
             
-//            // IPhone 8
-//            LoginView()
-//                .previewDevice(.init(rawValue: "iPhone 8"))
-//                .previewDisplayName("iPhone 8")
-//                .edgesIgnoringSafeArea(.all)
+            // Internal error occurs
+            } else {
+                Logging.shared.log(with: .fault, "No result and no error is given back to sign in closure.")
+                emailCredentials.emailErrorMessages = .internalErrorLogIn
+                connectionState = .failed
+            }
+        }
+    }
+    
+    /// Handle email sign in get ids call error
+    func handleEmailSignInGetIdsCallError(error: Error) {
+        if let error = error as NSError? ,
+           error.domain == FunctionsErrorDomain,
+           let errorCode = FunctionsErrorCode(rawValue: error.code),
+           errorCode == .notFound {
+            
+            // Person user id isn't found in database
+            Logging.shared.log(with: .error, "Person user id not found in database.")
+            emailCredentials.emailErrorMessages = .notSignedIn
+            
+        } else {
+            Logging.shared.log(with: .error, "Unhandled error uccured: \(error.localizedDescription)")
+            emailCredentials.emailErrorMessages = .internalErrorLogIn
+        }
+    }
+    
+    /// Handles log in with apple
+    func handleAppleLogIn(result: Result<(userId: String, name: PersonNameComponents), SignInWithAppleButton.SignInWithAppleError>) {
+        guard connectionState != .loading else { return }
+        connectionState = .loading
+        Logging.shared.log(with: .info, "Log in with apple is started to handle.")
+        Logging.shared.log(with: .info, "With result: \(result)")
+        
+        signInWithAppleErrorMessages = nil
+        emailCredentials.resetErrorTypes()
+        switch result {
+        
+        // Log in ended with an error
+        case .failure(let error):
+            connectionState = .failed
+            signInWithAppleErrorMessages = .internalErrorLogIn
+            Logging.shared.log(with: .error, "Unhandled error uccured: \(error.localizedDescription)")
+            
+        case .success((userId: let userId, name: let name)):
+            
+            // Get person properties from database
+            let callItem = GetPersonPropertiesCall(userId: userId)
+            FunctionCaller.shared.call(callItem) { (person: GetPersonPropertiesCall.CallResult) in
+                
+                // Reset cached state and set settings person
+                Logging.shared.log(with: .info, "Get person properties call succeeded.")
+                Logging.shared.log(with: .info, "With return person: \(person)")
+                connectionState = .passed
+                SignInCache.shared.setState(to: nil)
+                Settings.shared.person = person
+                
+            } failedHandler: { error in
+                let cacheProperty = SignInCache.PropertyUserId(userId: userId, name: name)
+                handleAppleSignInGetIdsCallError(error: error, cacheProperty: cacheProperty)
+                connectionState = .failed
+            }
+            
+        }
+    }
+    
+    /// Handle apple sign in get ids call error
+    func handleAppleSignInGetIdsCallError(error: Error, cacheProperty: SignInCache.PropertyUserId) {
+        if let error = error as NSError?,
+           error.domain == FunctionsErrorDomain,
+           let errorCode = FunctionsErrorCode(rawValue: error.code),
+           errorCode == .notFound {
+            
+            // Person user id isn't found in database
+            Logging.shared.log(with: .error, "Person user id not found in database.")
+            var state: SignInCache.Status = .nameInput(property: cacheProperty)
+            if let cachedStatus = SignInCache.shared.cachedStatus {
+                state = cachedStatus
+            }
+            SignInCache.shared.setState(to: state)
+            showCachedState = true
+            signInWithAppleErrorMessages = .notSignedIn
+            
+        } else {
+            Logging.shared.log(with: .error, "Unhandled error uccured: \(error.localizedDescription)")
+            signInWithAppleErrorMessages = .internalErrorLogIn
+        }
+    }
+    
+    /// View to input email and password
+    struct EmailPasswordInput: View {
+        
+        /// Credentials of email log in (Email and Password)
+        @Binding var emailCredentials: EmailCredentials
+        
+        var body: some View {
+            VStack(spacing: 15) {
+                
+                // Email
+                VStack(spacing: 5) {
+                    
+                    // Title
+                    Title("Email")
+                    
+                    // Text Field
+                    CustomTextField()
+                        .title("Email")
+                        .textBinding($emailCredentials.email)
+                        .errorMessages($emailCredentials.emailErrorMessages)
+                        .keyboardType(.emailAddress)
+                        .textFieldSize(width: UIScreen.main.bounds.width * 0.95, height: 50)
+                        .onCompletion {
+                            emailCredentials.evaluteEmailError()
+                        }
+                    
+                }
+                
+                // Password
+                VStack(spacing: 5) {
+                    
+                    // Title
+                    Title("Passwort")
+                    
+                    // Text Field
+                    CustomSecureField()
+                        .title("Passwort")
+                        .textBinding($emailCredentials.password)
+                        .errorMessages($emailCredentials.passwordErrorMessages)
+                        .textFieldSize(width: UIScreen.main.bounds.width * 0.95, height: 50)
+                        .onCompletion {
+                            emailCredentials.evalutePasswordError()
+                        }
+                    
+                }
+                
+            }
+        }
+    }
+    
+    /// Sign in button
+    struct SignInButton: View {
+        
+        /// Indicates if sign in sheet is shown
+        @Binding var showSignInSheet: Bool
+        
+        /// Indicates if cached sign in view is shown
+        @Binding var showCachedState: Bool
+        
+        var body: some View {
+            HStack(spacing: 0) {
+                
+                // "instead" text
+                Text("Stattdessen")
+                    .foregroundColor(.textColor)
+                    .font(.text(20))
+                
+                // SignIn Button
+                ZStack {
+                    
+                    // Outline
+                    Outline()
+                    
+                    // Text
+                    Text("Registrieren")
+                        .foregroundColor(.textColor)
+                        .font(.text(20))
+                    
+                }.frame(width: 150, height: 30)
+                    .padding(.leading, 10)
+                    .onTapGesture {
+                        let isCached = SignInCache.shared.cachedStatus != nil
+                        Logging.shared.log(with: .info, "Sign in button pressed and \(isCached ? "something" : "nothing") is cached.")
+                        if isCached {
+                            showCachedState = true
+                        } else {
+                            showSignInSheet = true
+                        }
+                    }
+                    
+            }
         }
     }
 }
-#endif

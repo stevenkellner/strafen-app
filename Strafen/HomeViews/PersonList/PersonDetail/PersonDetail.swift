@@ -14,7 +14,7 @@ struct PersonDetail: View {
     let person: Person
     
     ///Dismiss handler
-    @Binding var dismissHandler: (() -> ())?
+    @Binding var dismissHandler: DismissHandler
     
     /// Color scheme to get appearance of this device
     @Environment(\.colorScheme) var colorScheme
@@ -22,11 +22,14 @@ struct PersonDetail: View {
     /// Observed Object that contains all settings of the app of this device
     @ObservedObject var settings = Settings.shared
     
-    /// Presentation mode
-    @Environment(\.presentationMode) var presentationMode
-    
     /// Fine List Data
     @ObservedObject var fineListData = ListData.fine
+    
+    /// Reason List Data
+    @ObservedObject var reasonListData = ListData.reason
+    
+    /// Id of selected row for large design
+    @State var selectedForLargeDesign: Fine.ID? = nil
     
     /// Person image
     @State var image: UIImage?
@@ -48,95 +51,78 @@ struct PersonDetail: View {
             VStack(spacing: 0) {
                 
                 // Image
-                PersonImage(image: $image, personName: person.personName)
+                PersonImage(image: $image, personName: person.name)
+                    .padding(.top, 60)
                     .padding(.vertical, image == nil ? 20 : 10)
                 
                 // Name
-                Text(person.personName.formatted)
-                    .foregroundColor(.textColor)
-                    .font(.text(35))
+                Text(person.name.formatted)
+                    .configurate(size: 35)
                     .lineLimit(1)
                     .padding(.horizontal, 25)
                 
                 // Amount Display
                 AmountDisplay(personId: person.id)
-                    .animation(.default)
                     .padding(.top, 15)
                 
-                // Top Underline
-                HStack {
-                    Rectangle()
-                        .frame(width: 300, height: 2)
-                        .border(settings.style == .default ? Color.custom.darkGreen : (colorScheme == .dark ? Color.plain.lightGray : Color.plain.darkGray), width: 1)
-                    Spacer()
-                }.padding(.top, 10)
+                // Underlines
+                Underlines()
+                    .padding(.top, 10)
                 
-                // Bottom Underline
-                HStack {
-                    Rectangle()
-                        .frame(width: 275, height: 2)
-                        .border(settings.style == .default ? Color.custom.darkGreen : (colorScheme == .dark ? Color.plain.lightGray : Color.plain.darkGray), width: 1)
-                    Spacer()
-                }.padding(.top, 5)
-                
-                // Empty List Text
-                if fineListData.list!.filter({ $0.personId == person.id }).isEmpty {
-                    Text("Diese Person hat keine Strafen.")
-                        .font(.text(25))
-                        .foregroundColor(.textColor)
-                        .padding(.horizontal, 15)
-                        .multilineTextAlignment(.center)
-                        .padding(.top, 30)
-                    if settings.person!.isCashier {
-                        Text("Füge eine Neue mit der Taste unten rechts hinzu.")
-                            .font(.text(25))
-                            .foregroundColor(.textColor)
-                            .padding(.horizontal, 15)
-                            .multilineTextAlignment(.center)
-                            .padding(.top, 20)
+                if let fineList = fineListData.list {
+                    
+                    // Empty List Text
+                    if fineList.filter({ $0.assoiatedPersonId == person.id }).isEmpty {
+                        VStack(spacing: 20) {
+                            Text("Diese Person hat keine Strafen.")
+                                .configurate(size: 25).lineLimit(2)
+                            if settings.person?.isCashier ?? false {
+                                Text("Füge eine Neue mit der Taste unten rechts hinzu.")
+                                .configurate(size: 25).lineLimit(2)
+                            }
+                        }.padding(.horizontal, 15)
+                            .padding(.top, 30)
                     }
+                    
+                    // Fine List
+                    ScrollView {
+                        LazyVStack(spacing: 15) {
+                            ForEach(fineList.sortedForList(of: person.id, with: reasonListData.list)) { fine in
+                                FineListRow(of: fine, selectedForLargeDesign: $selectedForLargeDesign, dismissHandler: $dismissHandler)
+                            }
+                        }.padding(.bottom, 10)
+                            .padding(.top, 5)
+                    }.padding(.top, 10)
+                    
+                } else {
+                    Text("No available view")
                 }
                 
-                // Fine List
-                ScrollView {
-                    LazyVStack(spacing: 15) {
-                        ForEach(fineListData.list!.filter({ $0.personId == person.id }).sorted(by: \.fineReason.reason.localizedUppercase)) { fine in
-                            NavigationLink(destination: PersonFineDetail(personName: person.personName, fine: fine, dismissHandler: $dismissHandler)) {
-                                PersonDetailRow(fine: fine)
-                            }.buttonStyle(PlainButtonStyle())
-                        }
-                    }.padding(.bottom, 20)
-                        .padding(.top, 5)
-                }.padding(.top, 10)
-                
-                Spacer()
-            }.padding(.top, 60)
-                .animation(.none)
+                Spacer(minLength: 0)
+            }
             
-            // Add New fine button
-            AddNewListItemButton(list: $fineListData.list, listFilter: { $0.personId == person.id }) {
+            // Add New Fine Button
+            AddNewListItemButton(list: $fineListData.list, listFilter: { $0.assoiatedPersonId == person.id }) {
                 VStack(spacing: 0) {
-                    
+
                     // Bar to wipe sheet down
                     SheetBar()
-                    
+
                     // Content
-                    AddNewFine(personIds: [person.id])
-                    
+                    AddNewFine(with: person.id)
+                        .padding(.bottom, 15)
+
                 }
             }
             
         }.edgesIgnoringSafeArea(.all)
-            .navigationTitle("Title")
-            .navigationBarHidden(true)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .setDismissHandler($dismissHandler)
+            .setScreenSize
             .onAppear {
-                dismissHandler = {
-                    presentationMode.wrappedValue.dismiss()
-                }
-                ImageData.shared.fetch(of: person.id) { image in
-                    self.image = image
-                }
+//                ImageData.shared.fetch(of: person.id) { image in TODO
+//                    self.image = image
+//                }
             }
     }
     
@@ -155,6 +141,9 @@ struct PersonDetail: View {
         /// Observed Object that contains all settings of the app of this device
         @ObservedObject var settings = Settings.shared
         
+        /// Size of the image
+        let imageSize: CGSize = .square(100)
+        
         /// True if image detail is showed
         @State var showImageDetail = false
         
@@ -164,38 +153,28 @@ struct PersonDetail: View {
                     Image(uiImage: image)
                         .resizable()
                         .aspectRatio(image.size, contentMode: .fill)
-                        .frame(width: 100, height: 100)
+                        .frame(size: imageSize)
                         .clipShape(Circle())
-                        .overlay(
-                            Circle()
-                                .stroke(settings.style.strokeColor(colorScheme), lineWidth: 2)
-                                .frame(width: 100, height: 100)
-                        )
-                        .onTapGesture {
-                            showImageDetail = true
-                        }
+                        .toggleOnTapGesture($showImageDetail)
+                        .overlay(Circle().stroke(settings.style.strokeColor(colorScheme), lineWidth: settings.style.lineWidth).frame(size: imageSize))
                         .sheet(isPresented: $showImageDetail) {
                             ImageDetail(image: image, personName: personName)
                         }
                 } else {
                     Image(systemName: "person")
                         .resizable()
-                        .font(.system(size: 45, weight: .thin))
-                        .frame(width: 45, height: 45)
+                        .font(.system(size: imageSize.height * 0.45, weight: .thin))
+                        .frame(size: imageSize * 0.45)
                         .scaledToFit()
-                        .offset(y: -3)
+                        .offset(y: -imageSize.height * 0.03)
                         .foregroundColor(settings.style.strokeColor(colorScheme))
-                        .overlay(
-                            Circle()
-                                .stroke(settings.style.strokeColor(colorScheme), lineWidth: settings.style == .default ? 3 : 2)
-                                .frame(width: 75, height: 75)
-                        )
+                        .overlay(Circle().stroke(settings.style.strokeColor(colorScheme), lineWidth: settings.style.lineWidth).frame(size: imageSize * 0.75))
                 }
             }
         }
     }
     
-    /// Detail of the Image
+    /// Detail of the Image  // TODO improve image detail
     struct ImageDetail: View {
         
         /// Image
@@ -253,96 +232,15 @@ struct PersonDetail: View {
     }
 }
 
-/// Row of PersonDetail that shows details of one fine of this person
-struct PersonDetailRow: View {
+// Extension of Array to filter and sort it for person list
+extension Array where Element == Fine {
     
-    /// Contains details of the fine
-    let fine: Fine
-    
-    /// Color scheme to get appearance of this device
-    @Environment(\.colorScheme) var colorScheme
-    
-    /// Observed Object that contains all settings of the app of this device
-    @ObservedObject var settings = Settings.shared
-    
-    var body: some View {
-        HStack(spacing: 0) {
-            
-            // Left of the divider
-            ZStack {
-                
-                // Outline
-                Outline(.left)
-                
-                // Inside
-                HStack(spacing: 0) {
-                    Text(fine.fineReason.reason)
-                        .foregroundColor(.textColor)
-                        .font(.text(20))
-                        .padding(.leading, 15)
-                        .lineLimit(1)
-                    Spacer()
-                }
-                
-            }.frame(width: UIScreen.main.bounds.width * 0.675)
-            
-            // Right of the divider
-            ZStack {
-                
-                // Outline
-                Outline(.right)
-                    .fillColor(fine.payed.boolValue ? Color.custom.lightGreen : fine.fineReason.importance.color)
-                
-                // Inside
-                Text(String(describing: fine.fineReason.amount * fine.number + (fine.latePaymentInterest ?? .zero)))
-                    .foregroundColor(settings.style == .default ? .textColor : fine.payed.boolValue ? Color.custom.lightGreen : fine.fineReason.importance.color)
-                    .font(.text(20))
-                    .lineLimit(1)
-                
-            }.frame(width: UIScreen.main.bounds.width * 0.275)
-            
-        }.frame(width: UIScreen.main.bounds.width * 0.95, height: 50)
-            .padding(.horizontal, 1)
-    }
-}
-
-/*#if DEBUG
-struct PersonDetail_Previews: PreviewProvider {
-    static var previews: some View {
-        
-        let phoneType = "iPhone 11"
-        let colorScheme: ColorScheme = .light
-        
-        return Group {
-            VStack(spacing: 0) {
-                PersonDetail(person: Person(firstName: "Steven", lastName: "Kellner", id: UUID()), dismissHandler: .constant(nil), settings: .constant(Settings(style: .default, isCashier: false)))
-                TabBar(dismissHandler: .constant(nil))
-            }.previewDevice(.init(rawValue: phoneType))
-                .previewDisplayName(phoneType)
-                .edgesIgnoringSafeArea(.all)
-                .environment(\.colorScheme, colorScheme)
-            VStack(spacing: 0) {
-                PersonDetail(person: Person(firstName: "Steven", lastName: "Kellner", id: UUID()), dismissHandler: .constant(nil), settings: .constant(Settings(style: .default, isCashier: true)))
-                TabBar(dismissHandler: .constant(nil))
-            }.previewDevice(.init(rawValue: phoneType))
-                .previewDisplayName(phoneType)
-                .edgesIgnoringSafeArea(.all)
-                .environment(\.colorScheme, colorScheme)
-            VStack(spacing: 0) {
-                PersonDetail(person: Person(firstName: "Steven", lastName: "Kellner", id: UUID()), dismissHandler: .constant(nil), settings: .constant(Settings(style: .plain, isCashier: false)))
-                TabBar(dismissHandler: .constant(nil))
-            }.previewDevice(.init(rawValue: phoneType))
-                .previewDisplayName(phoneType)
-                .edgesIgnoringSafeArea(.all)
-                .environment(\.colorScheme, colorScheme)
-            VStack(spacing: 0) {
-                PersonDetail(person: Person(firstName: "Steven", lastName: "Kellner", id: UUID()), dismissHandler: .constant(nil), settings: .constant(Settings(style: .plain, isCashier: true)))
-                TabBar(dismissHandler: .constant(nil))
-            }.previewDevice(.init(rawValue: phoneType))
-                .previewDisplayName(phoneType)
-                .edgesIgnoringSafeArea(.all)
-                .environment(\.colorScheme, colorScheme)
+    /// Filtered and sorted for person list
+    fileprivate func sortedForList(of personId: Person.ID, with reasonList: [ReasonTemplate]?) -> [Element] {
+        filter {
+            $0.assoiatedPersonId == personId
+        }.sorted {
+            $0.fineReason.reason(with: reasonList).localizedUppercase
         }
     }
 }
-#endif*/

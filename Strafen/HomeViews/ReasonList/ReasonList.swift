@@ -22,11 +22,8 @@ struct ReasonList: View {
     /// Text searched in search bar
     @State var searchText = ""
     
-    /// Screen size
-    @State var screenSize: CGSize?
-    
     var body: some View {
-        GeometryReader { geometry in
+        NavigationView {
             ZStack {
                 
                 // Background color
@@ -39,129 +36,131 @@ struct ReasonList: View {
                     Header("Verfügbare Strafen")
                         .padding(.top, 50)
                     
-                    // Empty List Text
-                    if reasonListData.list!.isEmpty  {
-                        if settings.person!.isCashier {
-                            Text("Du hast noch keine Strafe erstellt.")
-                                .font(.text(25))
-                                .foregroundColor(.textColor)
-                                .padding(.horizontal, 15)
-                                .multilineTextAlignment(.center)
-                                .padding(.top, 50)
-                            Text("Füge eine Neue mit der Taste unten rechts hinzu.")
-                                .font(.text(25))
-                                .foregroundColor(.textColor)
-                                .padding(.horizontal, 15)
-                                .multilineTextAlignment(.center)
-                                .padding(.top, 20)
-                        } else {
-                            Text("Es gibt keine verfügbare Strafen.")
-                                .font(.text(25))
-                                .foregroundColor(.textColor)
-                                .padding(.horizontal, 15)
-                                .multilineTextAlignment(.center)
+                    if let reasonList = reasonListData.list {
+                        
+                        // Empty List Text
+                        if reasonList.isEmpty {
+                            VStack(spacing: 20) {
+                                if settings.person?.isCashier ?? false {
+                                    Text("Du hast noch keine Strafe erstellt.")
+                                        .configurate(size: 25).lineLimit(2)
+                                    Text("Füge eine Neue mit der Taste unten rechts hinzu.")
+                                        .configurate(size: 25).lineLimit(2)
+                                } else {
+                                    Text("Es gibt keine verfügbare Strafen.")
+                                        .configurate(size: 25).lineLimit(2)
+                                }
+                            }.padding(.horizontal, 15)
                                 .padding(.top, 50)
                         }
+                        
+                        // Search Bar and list
+                        ScrollView {
+                            VStack(spacing: 0) {
+                                
+                                // Search Bar
+                                if !reasonList.isEmpty {
+                                    SearchBar(searchText: $searchText)
+                                        .frame(width: UIScreen.main.bounds.width * 0.95 + 15)
+                                }
+                                
+                                LazyVStack(spacing: 15) {
+                                    ForEach(reasonList.sortedForList(with: searchText)) { reason in
+                                        ReasonListRow(reason: reason)
+                                    }
+                                }.padding(.bottom, 10)
+                                
+                            }
+                        }.padding(.top, 10)
+                        
+                    } else {
+                        Text("No available view")
                     }
                     
-                    // SearchBar and Template List
-                    ScrollView {
-                        
-                        // Search Bar
-                        if !reasonListData.list!.isEmpty {
-                            SearchBar(searchText: $searchText)
-                                .frame(width: UIScreen.main.bounds.width * 0.95 + 15)
-                        }
-                        
-                        // Template List
-                        LazyVStack(spacing: 15) {
-                            ForEach(reasonListData.list!.filter(for: searchText, at: \.reason).sorted(by: \.reason.localizedUppercase)) { reason in
-                                ReasonListRow(reason: reason)
-                            }.animation(.none)
-                        }.padding(.bottom, 20)
-                            .padding(.top, 5)
-                            .animation(.default)
-                        
-                    }.padding(.top, 10)
-                    
-                    Spacer()
+                    Spacer(minLength: 0)
                 }
                 
                 // Add New Reason Button
                 AddNewListItemButton(list: $reasonListData.list) {
                     ReasonAddNew()
                 }
-            }.frame(size: screenSize ?? geometry.size)
-                .onAppear {
-                    screenSize = geometry.size
-                }
-        }.edgesIgnoringSafeArea(.all)
+                
+            }.edgesIgnoringSafeArea(.all)
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .hideNavigationBarTitle()
+        }.setScreenSize
+    }
+    
+    /// A Row of reason list with details of one reason.
+    struct ReasonListRow: View {
+        
+        /// Contains details of the reason
+        let reason: ReasonTemplate
+        
+        /// Observed Object that contains all settings of the app of this device
+        @ObservedObject var settings = Settings.shared
+        
+        /// Indicates if reason editor sheet is shown
+        @State var isEditorSheetShown = false
+        
+        var body: some View {
+            GeometryReader { geometry in
+                HStack(spacing: 0) {
+                    
+                    // Left of the divider
+                    ZStack {
+                        
+                        // Outline
+                        Outline(.left)
+                        
+                        // Inside
+                        HStack(spacing: 0) {
+                            
+                            // Name
+                            Text(reason.reason)
+                                .configurate(size: 20)
+                                .lineLimit(1)
+                                .padding(.horizontal, 15)
+                            
+                            Spacer()
+                        }
+                        
+                    }.frame(width: geometry.size.width * 0.7)
+                    
+                    // Right of the divider
+                    ZStack {
+                        
+                        // Outline
+                        Outline(.right)
+                            .fillColor(reason.importance.color)
+                        
+                        // Inside
+                        Text(String(describing: reason.amount))
+                            .foregroundColor(plain: reason.importance.color)
+                            .font(.text(20))
+                            .lineLimit(1)
+                        
+                    }.frame(width: geometry.size.width * 0.3)
+                    
+                }.onTapGesture {
+                        if settings.person?.isCashier ?? false {
+                            isEditorSheetShown = true
+                            UIApplication.shared.dismissKeyboard()
+                        }
+                    }
+                    .sheet(isPresented: $isEditorSheetShown) {
+                        ReasonEditor(reasonToEdit: reason)
+                    }
+            }.frame(width: UIScreen.main.bounds.width * 0.95, height: 50)
+        }
     }
 }
 
-/// A Row of reason list with details of one reason.
-struct ReasonListRow: View {
+// Extension of Array to filter and sort it for reason list
+extension Array where Element == ReasonTemplate {
     
-    /// Contains details of the reason
-    let reason: Reason
-    
-    /// Color scheme to get appearance of this device
-    @Environment(\.colorScheme) var colorScheme
-    
-    /// Observed Object that contains all settings of the app of this device
-    @ObservedObject var settings = Settings.shared
-    
-    /// Indicates if reason editor sheet is shown
-    @State var isEditorSheetShown = false
-    
-    var body: some View {
-        HStack(spacing: 0) {
-            
-            // Left of the divider
-            ZStack {
-                
-                // Outline
-                Outline(.left)
-                
-                // Inside
-                HStack(spacing: 0) {
-                    
-                    // Name
-                    Text(reason.reason)
-                        .foregroundColor(.textColor)
-                        .font(.text(20))
-                        .lineLimit(1)
-                        .padding(.horizontal, 15)
-                    
-                    Spacer()
-                }
-                
-            }.frame(width: UIScreen.main.bounds.width * 0.675)
-            
-            // Right of the divider
-            ZStack {
-                
-                // Outline
-                Outline(.right)
-                    .fillColor(settings.style.fillColor(colorScheme, defaultStyle: reason.importance.color))
-                
-                // Inside
-                Text(String(describing: reason.amount))
-                    .foregroundColor(settings.style == .default ? .textColor : reason.importance.color)
-                    .font(.text(20))
-                    .lineLimit(1)
-                
-            }.frame(width: UIScreen.main.bounds.width * 0.275)
-            
-        }.frame(width: UIScreen.main.bounds.width * 0.5, height: 50)
-            .padding(.horizontal, 1)
-            .onTapGesture {
-                if settings.person!.isCashier {
-                    isEditorSheetShown = true
-                }
-            }
-            .sheet(isPresented: $isEditorSheetShown) {
-                ReasonEditor(reasonToEdit: reason)
-            }
+    /// Filtered and sorted for reason list
+    fileprivate func sortedForList(with searchText: String) -> [Element] {
+        filter(for: searchText, at: \.reason).sorted(by: \.reason.localizedUppercase)
     }
 }

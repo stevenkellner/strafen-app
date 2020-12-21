@@ -31,7 +31,7 @@ struct SearchBar: View {
                     .padding(.trailing, 5)
                     .onTapGesture {
                         searchText = ""
-                        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+                        UIApplication.shared.dismissKeyboard()
                     }
             }
         }
@@ -62,7 +62,9 @@ struct SearchBarView: UIViewRepresentable {
         }
         
         func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-            text = searchText
+            withAnimation {
+                text = searchText
+            }
         }
         
         func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
@@ -99,6 +101,8 @@ struct SearchBarView: UIViewRepresentable {
 
     /// update view
     func updateUIView(_ uiView: UISearchBar, context: UIViewRepresentableContext<SearchBarView>) {
-        uiView.text = text
+        withAnimation {
+            uiView.text = text
+        }
     }
 }

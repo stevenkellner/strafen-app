@@ -2,279 +2,176 @@
 //  SignInView.swift
 //  Strafen
 //
-//  Created by Steven on 30.06.20.
+//  Created by Steven on 10/19/20.
 //
 
 import SwiftUI
 
-/// View  for signIn
+/// View  for signing in
 struct SignInView: View {
     
-    /// Used to indicate whether signIn sheet is displayed or not
+    /// Indicates if sign in sheet is shown
     @Binding var showSignInSheet: Bool
-    
-    /// Used to indicate whether signIn with EMail sheet is displayed or not
-    @State var showSignInEMailSheet = false
-    
-    /// Presentation mode
-    @Environment(\.presentationMode) var presentationMode
-    
-    /// Color scheme to get appearance of this device
-    @Environment(\.colorScheme) var colorScheme
-    
-    /// Observed Object that contains all settings of the app of this device
-    @ObservedObject var settings = Settings.shared
-    
-    /// Club list data
-    @ObservedObject var clubListData = ListData.club
-    
-    /// Idetifier for sign in with apple
-    @State var appleIdentifier: String?
-    
-    /// Person name from sign in with apple
-    @State var personName: PersonName?
-    
-    /// Indicates if sign in with apple navigation link is active
-    @State var isSignInWithAppleNavigationLinkActive = false
-    
-    /// Indicates if person name input is shown
-    @State var showPersonNameInput = false
-    
-    /// First name for person name input
-    @State var firstName = ""
-    
-    /// Last name for person name input
-    @State var lastName = ""
-    
-    /// True if empty String in first name field
-    @State var isFirstNameError = false
-    
-    /// True if empty String in last name field
-    @State var isLastNameError = false
-    
-    /// Indicate whether the error alert is for 'appleId already registered' or 'error in text fields'
-    @State var isErrorAlertAlreadyRegistered = false
-    
-    /// Inidcate whether the error alert is shown
-    @State var showErrorAlert = false
-    
-    /// Indicates if name input keyboard is on screen
-    @State var nameKeyboardOnScreen = false
-    
-    /// Screen size
-    @State var screenSize: CGSize?
     
     var body: some View {
         NavigationView {
+            VStack(spacing: 0) {
+                
+                // Bar to wipe sheet down
+                SheetBar()
+                            
+                // Header
+                Header("Registrieren")
+                
+                Spacer()
+                
+                // Sign in buttons
+                SignInButtonsView()
+                
+                Spacer()
+                
+                // Cancel Button
+                CancelButton()
+                    .onButtonPress {
+                        showSignInSheet = false
+                    }
+                    .padding(.bottom, 50)
+                
+            }.navigationTitle("Title")
+                .navigationBarHidden(true)
+        }
+    }
+
+    /// Sign in with Email and Apple Buttons
+    struct SignInButtonsView: View {
+        
+        /// Active navigation links
+        struct ActiveNavigationLinks {
+            
+            /// For sign in with email
+            var emailCredentialInput = false
+            
+            /// For name input
+            var nameInput = false
+            
+            /// For club selection
+            var clubSelction = false
+            
+        }
+        
+        /// Active navigation links
+        @State var activeNavigationLinks = ActiveNavigationLinks()
+        
+        /// Sign in with apple error type
+        @State var signInWithAppleErrorMessages: ErrorMessages? = nil
+        
+        var body: some View {
             ZStack {
                 
-                // Navigation Link for sign in with email
-                NavigationLink(destination: SignInEMailView(showSignInSheet: $showSignInSheet), isActive: $showSignInEMailSheet) {
-                        EmptyView()
-                }.frame(width: 0, height: 0)
-                
-                // Navigation Link for sign in with apple
-                if let personName = personName, let appleIdentifier = appleIdentifier {
-                    NavigationLink(destination: SignInEMailValidationView(email: .constant(""), personName: personName, personLogin: PersonLoginApple(appleIdentifier: appleIdentifier), showSignInSheet: $showSignInSheet, state: .joinClub), isActive: $isSignInWithAppleNavigationLinkActive) {
-                        EmptyView()
-                    }.frame(size: .zero)
+                // Navigation link for sign in with email
+                EmptyNavigationLink(isActive: $activeNavigationLinks.emailCredentialInput) {
+                    SignInEMailView()
                 }
                 
-                // Content
-                GeometryReader { geometry in
-                    VStack(spacing: 0) {
-                        
-                        // Bar to wipe sheet down
-                        SheetBar()
-                        
-                        // Header
-                        Header("Registrieren")
-                            .padding(.top, 30)
-                        
-                        ZStack {
-                        
-                            // Sign in with Email and Apple
-                            VStack(spacing: 0) {
-                                Spacer()
-                                
-                                // Sign in with Email
-                                ZStack {
-                                    
-                                    // Outline
-                                    Outline()
-                                        .fillColor(Color.custom.orange)
-                                    
-                                    // Text
-                                    Text("Mit E-Mail Registrieren")
-                                        .foregroundColor(settings.style == .default ? .textColor : Color.custom.orange)
-                                        .font(.text(20))
-                                        .lineLimit(1)
-                                        .padding(.horizontal, 15)
-                                    
-                                }.frame(width: UIScreen.main.bounds.width * 0.95, height: 50)
-                                    .onTapGesture {
-                                        showSignInEMailSheet = true
-                                    }
-                                
-                                // "oder" Text
-                                Text("oder")
-                                    .foregroundColor(.textColor)
-                                    .font(.text(20))
-                                    .padding(.top, 20)
-                                
-                                // Sign in with Apple
-                                SignInWithApple(type: .signIn, alsoForAutomatedLogIn: false) { userId, personNameComponents in
-                                    if clubListData.list!.flatMap(\.allPersons).contains(where: { ($0.login.personLogin as? PersonLoginApple)?.appleIdentifier == userId }) {
-                                        isErrorAlertAlreadyRegistered = true
-                                        showErrorAlert = true
-                                    } else {
-                                        appleIdentifier = userId
-                                        if let personName = personNameComponents?.personName {
-                                            self.personName = personName
-                                            isSignInWithAppleNavigationLinkActive = true
-                                        } else {
-                                            firstName = personNameComponents?.givenName ?? ""
-                                            lastName = personNameComponents?.familyName ?? ""
-                                            withAnimation {
-                                                showPersonNameInput = true
-                                            }
-                                        }
-                                    }
-                                }.frame(width: UIScreen.main.bounds.width * 0.95, height: 50)
-                                    .padding(.top, 20)
-                                
-                                Spacer()
-                            }.opacity(showPersonNameInput ? 0 : 1)
-                                .offset(y: showPersonNameInput ? -100 : 0)
-                                .clipShape(Rectangle())
-                            
-                            // First and last name imput
-                            VStack(spacing: 0) {
-                                Spacer()
-                                
-                                Text("Dein Name wird für die Registrierung benötigt.")
-                                    .foregroundColor(.textColor)
-                                    .font(.text(20))
-                                    .multilineTextAlignment(.center)
-                                    .padding(.horizontal, 15)
-                                
-                                Spacer()
-                                
-                                // Title
-                                HStack(spacing: 0) {
-                                    Text("Name:")
-                                        .foregroundColor(Color.textColor)
-                                        .font(.text(20))
-                                        .padding(.leading, 10)
-                                    Spacer()
-                                }.padding(.top, 5)
-                                
-                                // First name
-                                CustomTextField("Vorname", text: $firstName, keyboardOnScreen: $nameKeyboardOnScreen) {
-                                    isFirstNameError = firstName == ""
-                                }.frame(width: UIScreen.main.bounds.width * 0.95, height: 50)
-                                
-                                // Error Text
-                                if isFirstNameError {
-                                    Text("Dieses Feld darf nicht leer sein!")
-                                        .foregroundColor(Color.custom.red)
-                                        .font(.text(20))
-                                        .lineLimit(1)
-                                        .padding(.horizontal, 15)
-                                        .padding(.top, 5)
-                                }
-                                
-                                // Last name
-                                CustomTextField("Nachname", text: $lastName, keyboardOnScreen: $nameKeyboardOnScreen) {
-                                    isLastNameError = lastName == ""
-                                }.frame(width: UIScreen.main.bounds.width * 0.95, height: 50)
-                                    .padding(.top, 10)
-                                
-                                // Error Text
-                                if isLastNameError {
-                                    Text("Dieses Feld darf nicht leer sein!")
-                                        .foregroundColor(Color.custom.red)
-                                        .font(.text(20))
-                                        .lineLimit(1)
-                                        .padding(.horizontal, 15)
-                                        .padding(.top, 5)
-                                }
-                                
-                                Spacer()
-                            }.opacity(showPersonNameInput ? 1 : 0)
-                                .offset(y: showPersonNameInput ? nameKeyboardOnScreen ? -100 : 0 : 100)
-                                .clipShape(Rectangle())
-                                .padding(.vertical, 5)
-                        }.alert(isPresented: $showErrorAlert) {
-                            if isErrorAlertAlreadyRegistered {
-                                return Alert(title: Text("Apple-ID existiert bereit"), message: Text("Es ist bereits eine Person unter dieser Apple-ID registriert."), dismissButton: .default(Text("Verstanden")))
-                            } else {
-                                return Alert(title: Text("Eingabefehler"), message: Text("Es gab ein Fehler in der Eingabe des Namens."), dismissButton: .default(Text("Verstanden")))
-                            }
-                        }
-                        
-                        // Cancel and Confirm Button
-                        if showPersonNameInput {
-                            
-                            // Cancel and Confirm Button
-                            CancelConfirmButton {
-                                presentationMode.wrappedValue.dismiss()
-                            } confirmButtonHandler: {
-                                isFirstNameError = firstName == ""
-                                isLastNameError = lastName == ""
-                                if isFirstNameError || isLastNameError {
-                                    isErrorAlertAlreadyRegistered = false
-                                    showErrorAlert = true
-                                } else {
-                                    personName = PersonName(firstName: firstName, lastName: lastName)
-                                    isSignInWithAppleNavigationLinkActive = true
-                                }
-                            }.padding(.bottom, 50)
-                            
-                        } else {
-                            
-                            // Cancel Button
-                            CancelButton {
-                                presentationMode.wrappedValue.dismiss()
-                            }.padding(.bottom, 50)
-                        }
-                        
-                    }.frame(size: screenSize ?? geometry.size)
-                        .onAppear {
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                                screenSize = geometry.size
-                            }
-                        }
+                // Navigation link for name input
+                EmptyNavigationLink(swipeBack: false, isActive: $activeNavigationLinks.nameInput) {
+                    SignInNameInput()
                 }
-            }.background(colorScheme.backgroundColor)
-                .navigationTitle("title")
-                .navigationBarHidden(true)
-                .onAppear {
-                    firstName = ""
-                    lastName = ""
-                    showPersonNameInput = false
+                
+                // Navigation link for club selection
+                EmptyNavigationLink(swipeBack: false, isActive: $activeNavigationLinks.clubSelction) {
+                    SignInClubSelection()
                 }
+                
+                VStack(spacing: 20) {
+                    Spacer()
+                    
+                    // Sign in with Email Button
+                    ZStack {
+                        
+                        // Outline
+                        Outline()
+                            .fillColor(Color.custom.orange)
+                        
+                        // Text
+                        Text("Mit E-Mail Registrieren")
+                            .foregroundColor(plain: Color.custom.orange)
+                            .font(.text(20))
+                            .lineLimit(1)
+                            .padding(.horizontal, 15)
+                        
+                    }.frame(width: UIScreen.main.bounds.width * 0.95, height: 50)
+                        .onTapGesture {
+                            activeNavigationLinks.emailCredentialInput = true
+                        }
+                    
+                    // "or" Text
+                    Text("oder").configurate(size: 20)
+                    
+                    VStack(spacing: 5) {
+                        
+                        // Sign in with Apple Button
+                        SignInWithAppleButton(type: .signIn, alsoForAutomatedLogIn: false, signInHandler: handleSignInWithApple)
+                            .frame(width: UIScreen.main.bounds.width * 0.95, height: 50)
+                        
+                        // Error Message
+                        ErrorMessageView(errorMessages: $signInWithAppleErrorMessages)
+                    }
+                    
+                    Spacer()
+                }
+            }
+        }
+        
+        /// Handles sign in with apple button click
+        func handleSignInWithApple(result: Result<(userId: String, name: PersonNameComponents), SignInWithAppleButton.SignInWithAppleError>) {
+            signInWithAppleErrorMessages = nil
+            Logging.shared.log(with: .info, "Sign in with apple is started to handle.")
+            Logging.shared.log(with: .info, "With result: \(result)")
+            
+            switch result {
+            
+            // Sign in ended with an error
+            case .failure(let error):
+                signInWithAppleErrorMessages = .internalErrorSignIn
+                Logging.shared.log(with: .error, "Unhandled error uccured: \(error.localizedDescription)")
+                
+            case .success((userId: let userId, name: let name)):
+                
+                // Check if user id already exists
+                let callItem = UserIdAlreadyExistsCall(userId: userId)
+                FunctionCaller.shared.call(callItem) { (personExists: UserIdAlreadyExistsCall.CallResult) in
+                    
+                    Logging.shared.log(with: .debug, "Person does\(personExists ? "" : "n't") exitsts in database.")
+                    if !personExists {
+                        handleSetStatus(userId: userId, name: name)
+                    } else {
+                        signInWithAppleErrorMessages = .alreadySignedInApple
+                    }
+                    
+                } failedHandler: { error in
+                    signInWithAppleErrorMessages = .internalErrorSignIn
+                    Logging.shared.log(with: .error, "Unhandled error uccured: \(error.localizedDescription)")
+                }
+            }
+        }
+        
+        /// Handles status set and navigation to next view
+        func handleSetStatus(userId: String, name: PersonNameComponents) {
+            
+            Logging.shared.log(with: .info, "Sign in with apple succeeded.")
+            Logging.shared.log(with: .info, "With userId: \(userId), name: \(name)")
+            let state: SignInCache.Status
+            if let personName = name.personName {
+                let cacheProperty = SignInCache.PropertyUserIdName(userId: userId, name: personName)
+                state = .clubSelection(property: cacheProperty)
+                activeNavigationLinks.clubSelction = true
+            } else {
+                let cacheProperty = SignInCache.PropertyUserId(userId: userId, name: name)
+                state = .nameInput(property: cacheProperty)
+                activeNavigationLinks.nameInput = true
+            }
+            SignInCache.shared.setState(to: state)
         }
     }
 }
-
-#if DEBUG
-struct SignInView_Previews: PreviewProvider {
-    static var previews: some View {
-        Group {
-            
-            // IPhone 11
-            SignInView(showSignInSheet: .constant(false))
-                .previewDevice(.init(rawValue: "iPhone 11"))
-                .previewDisplayName("iPhone 11")
-                .edgesIgnoringSafeArea(.all)
-            
-//            // IPhone 8
-//            SignInView()
-//                .previewDevice(.init(rawValue: "iPhone 8"))
-//                .previewDisplayName("iPhone 8")
-//                .edgesIgnoringSafeArea(.all)
-        }
-    }
-}
-#endif

@@ -11,7 +11,7 @@ import SwiftUI
 struct FinesFormatterView: View {
     
     ///Dismiss handler
-    @Binding var dismissHandler: (() -> ())?
+    @Binding var dismissHandler: DismissHandler
     
     /// Presentation mode
     @Environment(\.presentationMode) var presentationMode
@@ -24,6 +24,9 @@ struct FinesFormatterView: View {
     
     /// Fine List Data
     @ObservedObject var fineListData = ListData.fine
+    
+    /// Reason List Data
+    @ObservedObject var reasonListData = ListData.reason
     
     /// Preview text
     @State var previewText = ""
@@ -62,9 +65,7 @@ struct FinesFormatterView: View {
                             BooleanChanger(boolToChange: $showHeaderText)
                                 .frame(width: UIScreen.main.bounds.width * 0.7, height: 25)
                                 .onChange(of: showHeaderText) { _ in
-                                    withAnimation {
-                                        previewText = shareText
-                                    }
+                                    withAnimation { previewText = shareText }
                                 }
                         }
                         
@@ -76,9 +77,7 @@ struct FinesFormatterView: View {
                             BooleanChanger(boolToChange: $showExpandedText)
                                 .frame(width: UIScreen.main.bounds.width * 0.7, height: 25)
                                 .onChange(of: showExpandedText) { _ in
-                                    withAnimation {
-                                        previewText = shareText
-                                    }
+                                    withAnimation { previewText = shareText }
                                 }
                         }
                         
@@ -100,8 +99,7 @@ struct FinesFormatterView: View {
                         
                     }
                     
-                }.padding(.top, 20)
-                    .padding(.bottom, 10)
+                }.padding(.vertical, 10)
                 
                 Spacer()
                 
@@ -116,12 +114,9 @@ struct FinesFormatterView: View {
             }
             
         }.edgesIgnoringSafeArea(.all)
-            .navigationTitle("title")
-            .navigationBarHidden(true)
+            .hideNavigationBarTitle()
             .onAppear {
-                dismissHandler = {
-                    presentationMode.wrappedValue.dismiss()
-                }
+                dismissHandler = { presentationMode.wrappedValue.dismiss() }
                 previewText = shareText
             }
     }
@@ -148,21 +143,21 @@ struct FinesFormatterView: View {
     
     /// Person list text
     var personListText: String {
-        personListData.list!.sorted(by: \.personName.formatted).compactMap { person in
+        personListData.list?.sorted(by: \.name.formatted).compactMap { person in
             personText(of: person)
-        }.joined(separator: showExpandedText ? "\n\n" : "\n")
+        }.joined(separator: showExpandedText ? "\n\n" : "\n") ?? ""
     }
     
     /// Person text of given person
     func personText(of person: Person) -> String? {
-        let unpayedFineList = fineListData.list!.filter { fine in
-            fine.personId == person.id && fine.payed == .unpayed
-        }.sorted(by: \.date.date)
+        guard let unpayedFineList = fineListData.list?.filter({
+            $0.assoiatedPersonId == person.id && !$0.isPayed
+        }) else { return nil }
         guard !unpayedFineList.isEmpty else { return nil }
-        let unpayedAmountSum = unpayedFineList.reduce(.zero) { result, fine in
-            result + fine.fineReason.amount * fine.number
+        let unpayedAmountSum = unpayedFineList.reduce(into: .zero) { result, fine in
+            result += fine.completeAmount(with: reasonListData.list)
         }
-        let personText = "\(person.personName.formatted):\t \(unpayedAmountSum)"
+        let personText = "\(person.name.formatted):\t \(unpayedAmountSum.description)"
         if showExpandedText {
             return "\(personText)\n\(fineText(of: unpayedFineList))"
         }
@@ -172,7 +167,7 @@ struct FinesFormatterView: View {
     /// Fine text of given fine list
     func fineText(of fineList: [Fine]) -> String {
         fineList.map { fine in
-            "\t- \(fine.fineReason.reason),\n\t  \(fine.date.formatted):\t \(fine.fineReason.amount * fine.number)"
+            "\t- \(fine.fineReason.reason(with: reasonListData.list)),\n\t  \(fine.date.formattedLong):\t \(fine.completeAmount(with: reasonListData.list))"
         }.joined(separator: "\n")
     }
     
@@ -180,18 +175,12 @@ struct FinesFormatterView: View {
     struct ShareCopyButton: View {
         
         /// Handler by cancel button clicked
-        let shareButtonHandler: () -> ()
+        let shareButtonHandler: () -> Void
         
         /// Handler by cofirm button clicked
-        let copyButtonHandler: () -> ()
+        let copyButtonHandler: () -> Void
         
-        /// Color scheme to get appearance of this device
-        @Environment(\.colorScheme) var colorScheme
-        
-        /// Observed Object that contains all settings of the app of this device
-        @ObservedObject var settings = Settings.shared
-        
-        init(_ shareButtonHandler: @escaping () -> (), copyButtonHandler: @escaping () -> ()) {
+        init(_ shareButtonHandler: @escaping () -> Void, copyButtonHandler: @escaping () -> Void) {
             self.shareButtonHandler = shareButtonHandler
             self.copyButtonHandler = copyButtonHandler
         }
@@ -204,11 +193,11 @@ struct FinesFormatterView: View {
                     
                     // Outline
                     Outline(.left)
-                        .fillColor(settings.style.fillColor(colorScheme, defaultStyle: Color.custom.lightGreen))
+                        .fillColor(Color.custom.lightGreen)
                     
                     // Text
                     Text("Teilen")
-                        .foregroundColor(settings.style == .default ? Color.custom.gray : Color.custom.lightGreen)
+                        .foregroundColor(plain: Color.custom.lightGreen)
                         .font(.text(20))
                         .lineLimit(1)
                     
@@ -223,8 +212,7 @@ struct FinesFormatterView: View {
                     
                     // Text
                     Text("Kopieren")
-                        .foregroundColor(Color.textColor)
-                        .font(.text(20))
+                        .configurate(size: 20)
                         .lineLimit(1)
                     
                 }.frame(width: UIScreen.main.bounds.width * 0.475, height: 50)

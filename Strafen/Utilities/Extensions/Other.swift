@@ -25,6 +25,84 @@ extension ColorScheme {
     }
 }
 
+/// Extension of Text to configurate it with text color and given font size
+extension Text {
+    
+    /// Configurate it with text color and given font size
+    func configurate(size: CGFloat) -> some View {
+        foregroundColor(.textColor).font(.text(size)).multilineTextAlignment(.center)
+    }
+}
+
+// Extension of UIImage to init from optioal data
+extension UIImage {
+    
+    /// Init UIImage from optional data
+    convenience init?(data: Data?) {
+        guard let data = data else { return nil }
+        self.init(data: data)
+    }
+}
+
+extension Text {
+    init<Subject>(describing instance: Subject) {
+        self.init(String(describing: instance))
+    }
+    
+    init<Subject>(describing instance: Subject) where Subject : CustomStringConvertible {
+        self.init(String(describing: instance))
+    }
+    
+    init<Subject>(describing instance: Subject) where Subject : TextOutputStreamable {
+        self.init(String(describing: instance))
+    }
+    
+    init<Subject>(describing instance: Subject) where Subject : CustomStringConvertible, Subject : TextOutputStreamable {
+        self.init(String(describing: instance))
+    }
+}
+
+/// View modifer for plain foreground color
+struct TextForegroudColor: ViewModifier {
+    
+    /// Color for plain style
+    let color: Color?
+    
+    /// Observed Object that contains all settings of the app of this device
+    @ObservedObject private var settings = Settings.shared
+    
+    func body(content: Content) -> some View {
+        content.foregroundColor(color == nil || settings.style == .default ? .textColor : color!)
+    }
+}
+
+// Extension of View for custom foreground color
+extension View {
+    func foregroundColor(plain color: Color?) -> some View {
+        ModifiedContent(content: self, modifier: TextForegroudColor(color: color))
+    }
+}
+
+// Extension of URL to get path to club and person image files in server
+extension URL {
+    
+    /// Path to club image file in server
+    static func clubImage(with id: Club.ID) -> URL {
+        URL(string: "images")!
+            .appendingPathComponent("club")
+            .appendingPathComponent(id.uuidString.uppercased())
+    }
+    
+    /// Path to person image file in server
+    static func personImage(with id: Person.ID, clubId: Club.ID) -> URL {
+        URL(string: "images")!
+            .appendingPathComponent("person")
+            .appendingPathComponent(clubId.uuidString.uppercased())
+            .appendingPathComponent(id.uuidString.uppercased())
+    }
+}
+
+#if TARGET_MAIN_APP
 // Extension of Dictionary for encoding parameters for post method
 extension Dictionary where Key == String {
     
@@ -77,30 +155,6 @@ extension UIImage {
     }
 }
 
-// Extension of UIImage to init from optioal data
-extension UIImage {
-    
-    /// Init UIImage from optional data
-    convenience init?(data: Data?) {
-        guard let data = data else { return nil }
-        self.init(data: data)
-    }
-}
-
-// Extension of Optioanl Euro to confirm to CustomStringConvertible
-extension Optional where Wrapped == Euro {
-    
-    /// Description
-    var text: String {
-        switch self {
-        case .none:
-            return ",-€"
-        case .some(let amount):
-            return amount.description
-        }
-    }
-}
-
 // Extension of CGSize for Multiplication with CGFloat
 extension CGSize {
     
@@ -119,24 +173,6 @@ extension Path {
         let modifiedStart = startAngle - rotationAdjustment
         let modifiedEnd = endAngle - rotationAdjustment
         addArc(center: center, radius: radius, startAngle: modifiedStart, endAngle: modifiedEnd, clockwise: clockwise)
-    }
-}
-
-// Extension of Date to get formatted date
-extension Date {
-    
-    /// Formatted date struct
-    var formattedDate: FormattedDate {
-        FormattedDate(date: self)
-    }
-}
-
-// Extension of FileManager to get shared container Url
-extension FileManager {
-    
-    /// Url of shared container
-    var sharedContainerUrl: URL {
-        FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: "group.stevenkellner.Strafen.settings")!
     }
 }
 
@@ -169,8 +205,10 @@ extension UINavigationController: UIGestureRecognizerDelegate {
 
     // Override gestureRecognizerShouldBegin
     public func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
-        viewControllers.count > 1
+        UINavigationController.swipeBack && viewControllers.count > 1
     }
+    
+    static var swipeBack = true
 }
 
 // Extension of Int to confirm to Identifiable
@@ -215,22 +253,6 @@ extension PersonNameComponents {
     }
 }
 
-// Extension of URLRequest to init for url and http body
-extension URLRequest {
-    
-    /// URLRequest for url and http body
-    init(url: URL, body: Data?, boundaryId: UUID?) {
-        self.init(url: url)
-        setValue("Basic \(AppUrls.shared.loginString)", forHTTPHeaderField: "Authorization")
-        if let boundaryId = boundaryId {
-            setValue("multipart/form-data; boundary=Boundary-\(boundaryId.uuidString)", forHTTPHeaderField: "Content-Type")
-        }
-        cachePolicy = .reloadIgnoringLocalAndRemoteCacheData
-        httpMethod = "POST"
-        httpBody = body
-    }
-}
-
 // Extension of URLSession to execute a data task with task state completion
 extension URLSession {
     
@@ -247,22 +269,6 @@ extension URLSession {
     }
 }
 
-// Extension of UIImage to get http body with parameters, boundaryId and fileName
-extension UIImage {
-    
-    /// http body with parameters, boundaryId and fileName
-    func body(parameters: Parameters, boundaryId: UUID, fileName: String) -> Data {
-        var data = parameters.encodedForImage(boundaryId: boundaryId)
-        data.append("--Boundary-\(boundaryId.uuidString)\r\n".data(using: .utf8)!)
-        data.append("Content-Disposition: form-data; name=\"file\"; filename=\"\(fileName)\"\r\n".data(using: .utf8)!)
-        data.append("Content-Type: image/png\r\n\r\n".data(using: .utf8)!)
-        data.append(pngData()!)
-        data.append("\r\n".data(using: .utf8)!)
-        data.append("--Boundary-\(boundaryId.uuidString)--\r\n".data(using: .utf8)!)
-        return data
-    }
-}
-
 // Extension of Dictionary to encode it for image
 extension Dictionary where Key == String {
     
@@ -275,3 +281,251 @@ extension Dictionary where Key == String {
         }
     }
 }
+
+/// Protocol for an alert type
+protocol AlertTypeProtocol: Identifiable {
+    
+    /// Alert of all alert types
+    var alert: Alert { get }
+    
+}
+
+// Extension of View to get an alert with AlertTypeProtocol
+extension View {
+    
+    /// Get an alert with AlertTypeProtocol
+    func alert<AlertType>(item: Binding<AlertType?>) -> some View where AlertType: AlertTypeProtocol {
+        alert(item: item) { $0.alert }
+    }
+}
+
+// Extension of Bool to confirm to Identifiable
+extension Bool: Identifiable {
+    public var id: Bool { self }
+}
+
+/// View modifier to set screen size
+struct ScreenSizeModifier: ViewModifier {
+    
+    /// Deadline
+    let deadline: Double
+    
+    /// Screen size
+    @State var screenSize: CGSize?
+    
+    func body(content: Content) -> some View {
+        GeometryReader { geometry in
+            content.screenSize($screenSize, geometry: geometry, after: deadline)
+        }
+    }
+}
+
+// Extension of View to set screen size
+extension View {
+    
+    /// Sets screen size
+    func screenSize(_ screenSize: Binding<CGSize?>, geometry: GeometryProxy, after deadline: Double = 0) -> some View {
+        frame(size: screenSize.wrappedValue ?? geometry.size).onAppear {
+            DispatchQueue.main.asyncAfter(deadline: .now() + deadline) {
+                screenSize.wrappedValue = geometry.size
+            }
+        }
+    }
+    
+    /// Sets screen size
+    var setScreenSize: some View {
+        ModifiedContent(content: self, modifier: ScreenSizeModifier(deadline: 0))
+    }
+    
+    /// Sets screen size
+    func setScreenSize(after deadline: Double) -> some View {
+        ModifiedContent(content: self, modifier: ScreenSizeModifier(deadline: deadline))
+    }
+}
+
+/// Extension of Locale to get available language codes for english translation
+extension Locale {
+
+    /// Used to decode fetched data
+    struct Dict: Decodable {
+        struct Language: Decodable {
+            let name: String
+            let nativeName: String
+            let dir: String
+            let code: String
+        }
+        
+        struct Translations: Decodable {
+            let name: String
+            let nativeName: String
+            let dir: String
+            let translations: [Language]
+        }
+        
+        let dictionary: Dictionary<String, Translations>
+    }
+
+    /// Gets available languages
+    static private func getAvailableTranslateLanguages(completion completionHandler: @escaping ([Dict.Language]?) -> Void) {
+        let url = URL(string: "https://dev.microsofttranslator.com/languages?api-version=3.0&scope=dictionary")!
+        URLSession.shared.dataTask(with: url) { data, _, _ in
+            guard let data = data else { return completionHandler(nil) }
+            let decoder = JSONDecoder()
+            let languages = try? decoder.decode(Dict.self, from: data).dictionary["en"]?.translations
+            completionHandler(languages)
+        }.resume()
+    }
+    
+    /// Gets available language codes
+    static func availableTranslateLanguageCodes(completion completionHandler: @escaping ([String]?) -> Void) {
+        getAvailableTranslateLanguages { languages in
+            let languageCodes = languages?.map { language in
+                language.code
+            }.filter { languageCode in
+                Locale.current.localizedString(forLanguageCode: languageCode) != nil
+            }
+            completionHandler(languageCodes)
+        }
+    }
+}
+
+// Extension of Locale for available region codes
+extension Locale {
+    
+    /// All available region codes with valid currency Symbol
+    static var availableRegionCodes: [String] {
+        availableIdentifiers.compactMap { identifier in
+            guard let regionCode = Locale(identifier: identifier).regionCode else { return nil }
+            let locale = Locale(identifier: Locale.identifier(fromComponents: ["kCFLocaleCountryCodeKey": regionCode]))
+            guard locale.currencyCode != nil else { return nil }
+            return regionCode
+        }.unique.sorted { identifier in
+            Locale.regionName(of: identifier)
+        }
+    }
+}
+
+// Extension of Locale to get region name
+extension Locale {
+    
+    /// Region name
+    static func regionName(of regionCode: String) -> String {
+        let regionName = Locale.current.localizedString(forRegionCode: regionCode)
+        return regionName ?? regionCode
+    }
+}
+
+// Extension of View to toggle a boolean value on tap gesture
+extension View {
+    
+    /// Toggle a boolean value on tap gesture
+    func toggleOnTapGesture(_ binding: Binding<Bool>, animation: Animation? = nil) -> some View {
+        onTapGesture {
+            if let animation = animation {
+                withAnimation(animation) {
+                    binding.wrappedValue.toggle()
+                }
+            } else {
+                binding.wrappedValue.toggle()
+            }
+        }
+    }
+    
+    /// Set value on tap gesture
+    func setOnTapGesture<T>(_ binding: Binding<T>, to value: T, animation: Animation? = nil) -> some View {
+        onTapGesture {
+            if let animation = animation {
+                withAnimation(animation) {
+                    binding.wrappedValue = value
+                }
+            } else {
+                binding.wrappedValue = value
+            }
+        }
+    }
+}
+
+// Extension of View to hide navigation bar title
+extension View {
+    
+    /// Hide navigation bar title
+    func hideNavigationBarTitle() -> some View {
+        navigationBarTitle("Title").navigationBarHidden(true)
+    }
+}
+
+// Extension of CGSize to init with same edge length
+extension CGSize: _VectorMath {
+    
+    /// CGSize with same edge length
+    static func square(_ edgeLength: CGFloat) -> CGSize {
+        CGSize(width: edgeLength, height: edgeLength)
+    }
+}
+
+// Extension of Date to get formatted strings
+extension Date {
+    
+    /// Formatted with long style
+    var formattedLong: String {
+        let formatter = DateFormatter()
+        formatter.locale = Locale.current
+        formatter.dateStyle = .long
+        return formatter.string(from: self)
+    }
+}
+
+/// Modifier to set dismiss handler
+struct SetDismissHandlerModifier: ViewModifier {
+    
+    ///Dismiss handler
+    @Binding var dismissHandler: DismissHandler
+    
+    /// Presentation mode
+    @Environment(\.presentationMode) var presentationMode
+    
+    func body(content: Content) -> some View {
+        content
+            .onAppear {
+                dismissHandler = {
+                    presentationMode.wrappedValue.dismiss()
+                }
+            }
+    }
+}
+
+extension View {
+    
+    /// Set dismiss handler
+    func setDismissHandler(_ dismissHandler: Binding<DismissHandler>) -> some View {
+        ModifiedContent(content: self, modifier: SetDismissHandlerModifier(dismissHandler: dismissHandler))
+    }
+    
+    /// ignore all safe areas and set max frame to infinity
+    var maxFrame: some View {
+        edgesIgnoringSafeArea(.all).frame(maxWidth: .infinity, maxHeight: .infinity)
+    }
+}
+
+/// Precedencegroup for |!| - operator
+precedencegroup LogicalDisjunctionBothPrecedence {
+    higherThan: LogicalDisjunctionPrecedence
+    associativity: left
+    assignment: false
+}
+
+/// Works like || - operator (logical disjunction), but evalutates also the right side if left side is already true
+infix operator |!|: LogicalDisjunctionBothPrecedence
+
+// Extension of Bool to get |!| - operator
+extension Bool {
+    
+    /// Works like || - operator (logical disjunction), but evalutates also the right side if left side is already true
+    static func |!|(lhs: Bool, rhs: Bool) -> Bool {
+        var isTrue = false
+        isTrue = lhs || isTrue
+        isTrue = rhs || isTrue
+        return isTrue
+    }
+}
+#endif

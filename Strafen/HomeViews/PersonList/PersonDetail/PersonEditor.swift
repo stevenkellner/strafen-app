@@ -6,30 +6,127 @@
 //
 
 import SwiftUI
+import FirebaseFunctions
 
 /// View to edit person
 struct PersonEditor: View {
     
-    /// Alert type
-    enum AlertType: Int, Identifiable {
+    /// Properties of inputed person
+    struct PersonInputProperties {
         
-        /// For already sign in
-        case alreadySignIn
+        /// Input first Name
+        var firstName = ""
         
-        /// For delete
-        case delete
+        /// Input last Name
+        var lastName = ""
         
-        /// For confirm
-        case confirm
+        /// Image of the person
+        var image: UIImage?
         
-        /// For input error
-        case inputError
+        /// Idicates if selected image is new
+        var isNewImage = false
         
-        /// Id
-        var id: Int {
-            rawValue
+        /// Progess of image upload
+        var imageUploadProgess: Double?
+        
+        /// Type of first name textfield error
+        var firstNameErrorMessages: ErrorMessages? = nil
+        
+        /// Type of last name textfield error
+        var lastNameErrorMessages: ErrorMessages? = nil
+        
+        /// Type of function call error
+        var functionCallErrorMessages: ErrorMessages? = nil
+        
+        /// State of data task connection
+        var connectionStateDelete: ConnectionState = .passed
+        
+        /// State of data task connection
+        var connectionStateConfirm: ConnectionState = .passed
+        
+        /// Sets properties with person
+        mutating func setProperties(with person: Person) {
+            firstName = person.name.firstName
+            lastName = person.name.lastName
+        }
+        
+        /// Checks if an error occurs while first name input
+        @discardableResult mutating func evaluteFirstNameError() -> Bool {
+            if firstName.isEmpty {
+                firstNameErrorMessages = .emptyField
+            } else {
+                firstNameErrorMessages = nil
+                return false
+            }
+            return true
+        }
+        
+        /// Checks if an error occurs while last name input
+        @discardableResult mutating func evaluteLastNameError() -> Bool {
+            if lastName.isEmpty {
+                lastNameErrorMessages = .emptyField
+            } else {
+                lastNameErrorMessages = nil
+                return false
+            }
+            return true
+        }
+        
+        /// Reset all error messages
+        mutating func resetErrorMessages() {
+            firstNameErrorMessages = nil
+            lastNameErrorMessages = nil
+            functionCallErrorMessages = nil
+        }
+        
+        /// Checks if an error occurs
+        mutating func errorOccurred() -> Bool {
+            evaluteFirstNameError() |!| evaluteLastNameError()
         }
     }
+    
+    /// Alert type
+    enum AlertType: AlertTypeProtocol {
+        
+        /// Alert when delete button is pressed
+        case deleteButton(action: () -> Void)
+        
+        
+        /// Alert when confirm button is pressed
+        case confirmButton(action: () -> Void)
+        
+        /// Id for Identifiable
+        var id: Int {
+            switch self {
+            case .deleteButton(action: _):
+                return 0
+            case .confirmButton(action: _):
+                return 1
+            }
+        }
+        
+        /// Alert of all alert types
+        var alert: Alert {
+            switch self {
+            case .deleteButton(action: let action):
+                return Alert(title: Text("Person Löschen"),
+                             message: Text("Möchtest du diese Person wirklich löschen?"),
+                             primaryButton: .cancel(Text("Abbrechen")),
+                             secondaryButton: .destructive(Text("Löschen"), action: action))
+            case .confirmButton(action: let action):
+                return Alert(title: Text("Person Ändern"),
+                             message: Text("Möchtest du diese Person wirklich ändern?"),
+                             primaryButton: .destructive(Text("Abbrechen")),
+                             secondaryButton: .default(Text("Bestätigen"), action: action))
+            }
+        }
+    }
+    
+    /// Person to edit
+    let person: Person
+    
+    /// Completion handler
+    let completionHandler: (UIImage?) -> Void
     
     /// Presentation mode
     @Environment(\.presentationMode) var presentationMode
@@ -37,270 +134,249 @@ struct PersonEditor: View {
     /// Color scheme to get appearance of this device
     @Environment(\.colorScheme) var colorScheme
     
-    /// Observed Object that contains all settings of the app of this device
-    @ObservedObject var settings = Settings.shared
-    
-    /// Image of the person
-    @State var image: UIImage?
-    
-    /// Edited person
-    let person: Person
-    
-    /// Completion handler
-    let completionHandler: (UIImage?) -> ()
-    
-    init(person: Person, _ completionHandler: @escaping (UIImage?) -> ()) {
-        self.person = person
-        self.completionHandler = completionHandler
-    }
-    
-    /// Input first Name
-    @State var firstName: String = ""
-    
-    /// Input last Name
-    @State var lastName: String = ""
-    
     /// Fine List Data
     @ObservedObject var fineListData = ListData.fine
     
-    /// Cliub List Data
-    @ObservedObject var clubListData = ListData.club
+    /// Properties of inputed person
+    @State var personInputProperties = PersonInputProperties()
     
-    /// True if empty String in first name field
-    @State var isFirstNameError = false
-    
-    /// True if empty String in last name field
-    @State var isLastNameError = false
-    
-    /// True if keybord of firstName field is shown
-    @State var isFirstNameKeyboardShown = false
-    
-    /// True if keybord of lastName field is shown
-    @State var isLastNameKeyboardShown = false
-    
-    /// Type of alert
-    @State var alertType: AlertType?
-    
-    /// State of data task connection
-    @State var connectionStateDelete: ConnectionState = .passed
-    
-    /// Indicates if no connection alert is shown
-    @State var noConnectionAlertDelete = false
-    
-    /// State of data task connection
-    @State var connectionStateUpdate: ConnectionState = .passed
-    
-    /// Indicates if no connection alert is shown
-    @State var noConnectionAlertUpdate = false
-    
-    /// Screen size
-    @State var screenSize: CGSize?
+    /// Alert type
+    @State var alertType: AlertType? = nil
     
     var body: some View {
-        GeometryReader { geometry in
+        ZStack {
+            
+            // Background color
+            colorScheme.backgroundColor
+            
             VStack(spacing: 0) {
                 
                 // Bar to wipe sheet down
                 SheetBar()
                 
-                // Title
+                // Header
                 Header("Person Ändern")
-                    .alert(isPresented: $noConnectionAlertUpdate) {
-                        Alert(title: Text("Kein Internet"), message: Text("Für diese Aktion benötigst du eine Internetverbindung."), primaryButton: .destructive(Text("Abbrechen")), secondaryButton: .default(Text("Erneut versuchen"), action: handlePersonUpdate))
-                    }
                 
                 // Image and Name
-                VStack(spacing: 0) {
-                    Spacer()
+                VStack(spacing: 20) {
                     
                     // Image
-                    ImageSelector(image: $image)
-                        .frame(width: 120, height: 120)
-                    
-                    Spacer()
-                    
-                    // First Name
-                    VStack(spacing: 0) {
+                    VStack(spacing: 5) {
                         
-                        // Title
-                        HStack(spacing: 0) {
-                            Text("Name:")
-                                .foregroundColor(.textColor)
-                                .font(.text(20))
-                                .padding(.leading, 10)
-                            Spacer()
-                        }
+                        ImageSelector(image: $personInputProperties.image, uploadProgress: $personInputProperties.imageUploadProgess) {
+                            personInputProperties.isNewImage = true
+                        }.frame(width: 120, height: 120)
+                            .padding(.bottom, 20)
                         
-                        // Text Field
-                        CustomTextField("Vorname", text: $firstName, keyboardOnScreen: $isFirstNameKeyboardShown) {
-                            isFirstNameError = firstName == ""
-                        }.frame(width: 345, height: 50)
-                            .padding(.top, 5)
-                        
-                        // Error Text
-                        if isFirstNameError {
-                            Text("Dieses Feld darf nicht leer sein!")
-                                .foregroundColor(Color.custom.red)
-                                .font(.text(20))
-                                .lineLimit(1)
-                                .padding(.horizontal, 15)
-                                .padding(.top, 5)
-                        }
-                    }
-                    
-                    // Last Name
-                    VStack(spacing: 0) {
-                        
-                        // Text Field
-                        CustomTextField("Nachname", text: $lastName, keyboardOnScreen: $isLastNameKeyboardShown) {
-                            isLastNameError = lastName == ""
-                        }.frame(width: 345, height: 50)
-                            .padding(.top, 5)
-                        
-                        // Error Text
-                        if isLastNameError {
-                            Text("Dieses Feld darf nicht leer sein!")
-                                .foregroundColor(Color.custom.red)
-                                .font(.text(20))
-                                .lineLimit(1)
-                                .padding(.horizontal, 15)
-                                .padding(.top, 5)
-                        }
-                        
-                    }.padding(.top, 10)
-                    
-                    Spacer()
-                    
-                }.offset(y: isFirstNameKeyboardShown ? -50 : isLastNameKeyboardShown ? -125 : 0)
-                    .clipped()
-                    .padding(.top, 10)
-                    .alert(isPresented: $noConnectionAlertDelete) {
-                        Alert(title: Text("Kein Internet"), message: Text("Für diese Aktion benötigst du eine Internetverbindung."), primaryButton: .destructive(Text("Abbrechen")), secondaryButton: .default(Text("Erneut versuchen"), action: handlePersonDelete))
-                    }
-                
-                DeleteConfirmButton(connectionStateDelete: $connectionStateDelete, connectionStateConfirm: $connectionStateUpdate) {
-                    if clubListData.list!.first(where: { $0.id == Settings.shared.person!.clubId })!.allPersons.contains(where: { $0.id == person.id }) {
-                        alertType = .alreadySignIn
-                    } else {
-                        alertType = .delete
-                    }
-                } confirmButtonHandler: {
-                    connectionStateUpdate = .loading
-                    ImageFetcher.shared.fetch(of: person.id) { oldImage in
-                        connectionStateUpdate = .passed
-                        if person.firstName == firstName && person.lastName == lastName && oldImage?.pngData() == image?.scaledTo(PersonImageChange.maxImageResolution).pngData() {
-                            presentationMode.wrappedValue.dismiss()
-                        } else {
-                            isFirstNameError = firstName == ""
-                            isLastNameError = lastName == ""
-                            if isFirstNameError || isLastNameError {
-                                alertType = .inputError
-                            } else {
-                                alertType = .confirm
+                        // Progress bar
+                        if let imageUploadProgess = personInputProperties.imageUploadProgess {
+                            VStack(spacing: 5) {
+                                Text("Bild hochladen")
+                                    .configurate(size: 15)
+                                    .padding(.horizontal, 20)
+                                    .lineLimit(1)
+                                ProgressView(value: imageUploadProgess)
+                                    .progressViewStyle(LinearProgressViewStyle())
+                                    .frame(width: UIScreen.main.bounds.width * 0.95)
                             }
                         }
+                        
                     }
-                }.padding(.bottom, 50)
-                    .alert(item: $alertType) { alertType in
-                        switch alertType {
-                        case .alreadySignIn:
-                            return Alert(title: Text("Nicht löschbar"), message: Text("Diese Person kann nicht gelöschet werden, da sie bereits registriert ist."), dismissButton: .default(Text("Verstanden")))
-                        case .delete:
-                            return Alert(title: Text("Person Löschen"), message: Text("Möchtest du diese Person wirklich löschen?"), primaryButton: .cancel(Text("Abbrechen")), secondaryButton: .destructive(Text("Löschen"), action: handlePersonDelete))
-                        case .confirm:
-                            return Alert(title: Text("Person Ändern"), message: Text("Möchtest du diese Person wirklich ändern?"), primaryButton: .destructive(Text("Abbrechen")), secondaryButton: .default(Text("Bestätigen"), action: handlePersonUpdate))
-                        case .inputError:
-                            return Alert(title: Text("Eingabefehler"), message: Text("Es gab ein Fehler in der Eingabe des Namens."), dismissButton: .default(Text("Verstanden")))
+                    
+                    // Name
+                    TitledContent("Name") {
+                        
+                        // First name
+                        CustomTextField()
+                            .title("Vorname")
+                            .textBinding($personInputProperties.firstName)
+                            .errorMessages($personInputProperties.firstNameErrorMessages)
+                            .textFieldSize(width: UIScreen.main.bounds.width * 0.95, height: 50)
+                            .onCompletion { personInputProperties.evaluteFirstNameError() }
+                        
+                        // Last name
+                        CustomTextField()
+                            .title("Nachname")
+                            .textBinding($personInputProperties.lastName)
+                            .errorMessages($personInputProperties.lastNameErrorMessages)
+                            .textFieldSize(width: UIScreen.main.bounds.width * 0.95, height: 50)
+                            .onCompletion { personInputProperties.evaluteLastNameError() }
+                        
+                    }
+                    
+                    Spacer()
+                }.keyboardAdaptiveOffset
+                    .padding(.top, 10)
+                    .clipped()
+                    .padding(.top, 10)
+                
+                VStack(spacing: 5) {
+                    
+                    // Delete and confirm button
+                    DeleteConfirmButton()
+                        .deleteConnectionState($personInputProperties.connectionStateDelete)
+                        .confirmConnectionState($personInputProperties.connectionStateConfirm)
+                        .onDeletePress($alertType, value: .deleteButton(action: handlePersonDelete))
+                        .onConfirmPress($alertType, value: .confirmButton(action: handlePersonUpdate)) {
+                            !personInputProperties.errorOccurred()
                         }
-                    }
-            }.frame(size: screenSize ?? geometry.size)
-                .onAppear {
-                    screenSize = geometry.size
-                }
+                        .alert(item: $alertType)
+                    
+                    // Error messages
+                    ErrorMessageView(errorMessages: $personInputProperties.functionCallErrorMessages)
+                    
+                }.padding(.bottom, personInputProperties.functionCallErrorMessages == nil ? 50 : 25)
+                
+            }
             
-        }.background(colorScheme.backgroundColor)
+        }.edgesIgnoringSafeArea(.all)
+            .animation(.default)
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .setScreenSize
             .onAppear {
-                firstName = person.firstName
-                lastName = person.lastName
-                ImageData.shared.fetch(of: person.id) { image in
-                    self.image = image
-                }
+                personInputProperties.setProperties(with: person)
+//                ImageData.shared.fetch(of: person.id) { image in TODO
+//                    self.image = image
+//                }
             }
     }
     
     /// Handles person delete
     func handlePersonDelete() {
-        connectionStateDelete = .loading
-        let dispatchGroup = DispatchGroup()
-        dispatchGroup.enter()
-        dispatchGroup.enter()
-        let changeItem = ServerListChange(changeType: .delete, item: person)
-        Changer.shared.change(changeItem) {
-            dispatchGroup.leave()
-        } failedHandler: {
-            connectionStateDelete = .failed
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                noConnectionAlertDelete = true
-            }
-        }
-        let changeItemImage = PersonImageChange(changeType: .delete, image: nil, personId: person.id)
-        Changer.shared.change(changeItemImage) {
-            dispatchGroup.leave()
-        } failedHandler: {
-            connectionStateDelete = .failed
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                noConnectionAlertDelete = true
-            }
-        }
-        fineListData.list!.filter({ $0.personId == person.id }).forEach { fine in
+        guard personInputProperties.connectionStateDelete != .loading,
+              personInputProperties.connectionStateConfirm != .loading,
+              let clubId = Settings.shared.person?.clubProperties.id else { return }
+        personInputProperties.connectionStateDelete = .loading
+        personInputProperties.resetErrorMessages()
+        
+        // Delete person
+        deletePerson(clubId: clubId) {
+            
+            let dispatchGroup = DispatchGroup()
+            
+            // Delete person image
             dispatchGroup.enter()
-            let changeItem = ServerListChange(changeType: .delete, item: fine)
-            Changer.shared.change(changeItem) {
+            deleteImage(clubId: clubId) {
                 dispatchGroup.leave()
-            } failedHandler: {
-                connectionStateDelete = .failed
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                    noConnectionAlertDelete = true
-                }
+            }
+            
+            // Delete fines of person
+            dispatchGroup.enter()
+            deleteFines(clubId: clubId) {
+                dispatchGroup.leave()
+            }
+            
+            dispatchGroup.notify(queue: .main) {
+                personInputProperties.connectionStateDelete = .passed
+                presentationMode.wrappedValue.dismiss()
+            }
+            
+        }
+    }
+    
+    /// Delete person, execute completion handler only at success
+    func deletePerson(clubId: Club.ID, completionHandler: @escaping () -> Void) {
+        let callItem = ChangeListCall(clubId: clubId, changeType: .delete, changeItem: person)
+        FunctionCaller.shared.call(callItem) { _ in
+            completionHandler()
+        } failedHandler: { error in
+            personInputProperties.connectionStateDelete = .failed
+            guard let error = error as NSError?, error.domain == FunctionsErrorDomain else {
+                return personInputProperties.functionCallErrorMessages = .internalErrorDelete
+            }
+            let errorCode = FunctionsErrorCode(rawValue: error.code)
+            switch errorCode {
+            case .unavailable:
+                personInputProperties.functionCallErrorMessages = .personUndeletable
+            default:
+                personInputProperties.functionCallErrorMessages = .internalErrorDelete
             }
         }
-        dispatchGroup.notify(queue: .main) {
-            connectionStateDelete = .passed
-            presentationMode.wrappedValue.dismiss()
+
+    }
+    
+    /// Delete person image, execute completion handler at success and failure
+    func deleteImage(clubId: Club.ID, completionHandler: @escaping () -> Void) {
+        ImageStorage.shared.delete(at: .personImage(with: person.id, clubId: clubId)) { _ in
+            completionHandler()
+        }
+    }
+    
+    /// Delete fines of person, execute completion handler at success and failure
+    func deleteFines(clubId: Club.ID, completionHandler: @escaping () -> Void) {
+        fineListData.list?.filter { fine in
+            fine.assoiatedPersonId == person.id
+        }.forEach { fine in
+            let callItem = ChangeListCall(clubId: clubId, changeType: .delete, changeItem: fine)
+            FunctionCaller.shared.call(callItem) { _ in
+                completionHandler()
+            }
         }
     }
     
     /// Handles person update
     func handlePersonUpdate() {
-        connectionStateUpdate = .loading
+        guard personInputProperties.connectionStateDelete != .loading,
+              personInputProperties.connectionStateConfirm != .loading,
+              !personInputProperties.errorOccurred(),
+              let clubId = Settings.shared.person?.clubProperties.id else { return }
+        personInputProperties.connectionStateConfirm = .loading
+        
         let dispatchGroup = DispatchGroup()
+        
+        // Update person in database
         dispatchGroup.enter()
-        let editedPerson = Person(firstName: firstName, lastName: lastName, id: person.id)
-        let changeItem = ServerListChange(changeType: .update, item: editedPerson)
-        Changer.shared.change(changeItem) {
+        updatePerson(clubId: clubId) {
             dispatchGroup.leave()
-        } failedHandler: {
-            connectionStateUpdate = .failed
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                noConnectionAlertUpdate = true
-            }
         }
-        if let image = image {
+        
+        // Set person image
+        if personInputProperties.isNewImage, let image = personInputProperties.image {
             dispatchGroup.enter()
-            let changeItem = PersonImageChange(changeType: .update, image: image, personId: person.id)
-            Changer.shared.change(changeItem) {
+            setPersonImage(image: image, clubId: clubId) {
                 dispatchGroup.leave()
-            } failedHandler: {
-                connectionStateUpdate = .failed
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                    noConnectionAlertUpdate = true
-                }
             }
         }
+        
         dispatchGroup.notify(queue: .main) {
-            connectionStateUpdate = .passed
-            completionHandler(image)
+            personInputProperties.connectionStateConfirm = .passed
+            completionHandler(personInputProperties.image)
             presentationMode.wrappedValue.dismiss()
+        }
+    }
+    
+    /// Update person in database
+    func updatePerson(clubId: Club.ID, completionHandler: @escaping () -> Void) {
+        let personName = PersonName(firstName: personInputProperties.firstName, lastName: personInputProperties.lastName)
+        let updatedPerson = Person(id: person.id, name: personName, signInData: person.signInData)
+        let callItem = ChangeListCall(clubId: clubId, changeType: .update, changeItem: updatedPerson)
+        FunctionCaller.shared.call(callItem) { _ in
+            completionHandler()
+        } failedHandler: { _ in
+            personInputProperties.connectionStateConfirm = .failed
+            personInputProperties.functionCallErrorMessages = .internalErrorSave
+        }
+
+    }
+    
+    /// Set person image in database
+    func setPersonImage(image: UIImage, clubId: Club.ID, completionHandler: @escaping () -> Void) {
+        personInputProperties.imageUploadProgess = .zero
+        ImageStorage.shared.store(at: .personImage(with: person.id, clubId: clubId), image: image) { _ in
+            
+            // Success
+            completionHandler()
+            personInputProperties.imageUploadProgess = nil
+            
+        } failedHandler: { _ in
+            
+            // Error
+            personInputProperties.functionCallErrorMessages = .internalErrorSave
+            personInputProperties.connectionStateConfirm = .failed
+            personInputProperties.imageUploadProgess = nil
+            
+        } progressChangeHandler: { progress in
+            personInputProperties.imageUploadProgess = progress
         }
     }
 }

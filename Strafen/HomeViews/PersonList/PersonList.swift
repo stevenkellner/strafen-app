@@ -11,7 +11,7 @@ import SwiftUI
 struct PersonList: View {
     
     ///Dismiss handler
-    @Binding var dismissHandler: (() -> ())?
+    @Binding var dismissHandler: DismissHandler
     
     /// Color scheme to get appearance of this device
     @Environment(\.colorScheme) var colorScheme
@@ -25,186 +25,207 @@ struct PersonList: View {
     /// Text searched in search bar
     @State var searchText = ""
     
-    /// Screen size
-    @State var screenSize: CGSize?
-    
     var body: some View {
-        GeometryReader { geometry in
-            NavigationView {
-                ZStack {
+        NavigationView {
+            ZStack {
+                
+                // Background color
+                colorScheme.backgroundColor
+                
+                // Header and list
+                VStack(spacing: 0) {
                     
-                    // Background color
-                    colorScheme.backgroundColor
+                    // Header
+                    Header("Alle Personen")
+                        .padding(.top, 50)
                     
-                    // Header and list
-                    VStack(spacing: 0) {
-                        
-                        // Header
-                        Header("Alle Personen")
-                            .padding(.top, 50)
+                    
+                    if let personList = personListData.list {
                         
                         // Empty List Text
-                        if personListData.list!.isEmpty {
-                            if settings.person!.isCashier {
-                                Text("Du hast noch keine Person erstellt.")
-                                    .font(.text(25))
-                                    .foregroundColor(.textColor)
-                                    .padding(.horizontal, 15)
-                                    .multilineTextAlignment(.center)
-                                    .padding(.top, 50)
-                                Text("Füge eine Neue mit der Taste unten rechts hinzu.")
-                                    .font(.text(25))
-                                    .foregroundColor(.textColor)
-                                    .padding(.horizontal, 15)
-                                    .multilineTextAlignment(.center)
-                                    .padding(.top, 20)
-                            } else {
-                                Text("Es sind keine Personen registriert.")
-                                    .font(.text(25))
-                                    .foregroundColor(.textColor)
-                                    .padding(.horizontal, 15)
-                                    .multilineTextAlignment(.center)
-                                    .padding(.top, 50)
-                            }
+                        if personList.isEmpty {
+                            VStack(spacing: 20) {
+                                if settings.person?.isCashier ?? false {
+                                    Text("Du hast noch keine Person erstellt.")
+                                        .configurate(size: 25).lineLimit(2)
+                                    Text("Füge eine Neue mit der Taste unten rechts hinzu.")
+                                        .configurate(size: 25).lineLimit(2)
+                                } else {
+                                    Text("Es sind keine Personen registriert.")
+                                        .configurate(size: 25).lineLimit(2)
+                                }
+                            }.padding(.horizontal, 15)
+                                .padding(.top, 50)
                         }
                         
-                        // Search Bar and Person List
+                        // Search Bar and list
                         ScrollView {
-                            
-                            // Search Bar
-                            if !personListData.list!.isEmpty {
-                                SearchBar(searchText: $searchText)
-                                    .frame(width: UIScreen.main.bounds.width * 0.95 + 15)
+                            VStack(spacing: 0) {
+                                    
+                                // Search Bar
+                                if !personList.isEmpty {
+                                    SearchBar(searchText: $searchText)
+                                        .frame(width: UIScreen.main.bounds.width * 0.95 + 15)
+                                }
+                                
+                                LazyVStack(spacing: 15) {
+                                    ForEach(personList.sortedForList(with: searchText, settings: settings)) { person in
+                                        PersonListRow(person: person, searchText: $searchText, dismissHandler: $dismissHandler)
+                                    }
+                                }.padding(.bottom, 10)
+                                
                             }
-                            
-                            // Person List
-                            LazyVStack(spacing: 15) {
-                                ForEach(personListData.list!.filter(for: searchText, at: \.personName.formatted).sorted(for: settings.person!)) { person in
-                                    PersonListRow(person: person, dismissHandler: $dismissHandler)
-                                }.animation(.none)
-                            }.padding(.bottom, 20)
-                                .padding(.top, 5)
-                                .animation(.default)
-
                         }.padding(.top, 10)
                         
-                        Spacer()
+                    } else {
+                        Text("No available view")
                     }
                     
-                    // Add New Person Button
-                    AddNewListItemButton(list: $personListData.list) {
-                        PersonAddNew()
-                    }
-                    
-                }.edgesIgnoringSafeArea(.all)
-                    .navigationTitle("Title")
-                    .navigationBarHidden(true)
-                
-            }.frame(size: screenSize ?? geometry.size)
-                .onAppear {
-                    screenSize = geometry.size
+                    Spacer(minLength: 0)
                 }
+                
+                // Add New Person Button
+                AddNewListItemButton(list: $personListData.list) {
+                    PersonAddNew()
+                }
+                
+            }.edgesIgnoringSafeArea(.all)
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .hideNavigationBarTitle()
+        }.setScreenSize
+    }
+    
+    /// A Row of person list with details of one person.
+    struct PersonListRow: View {
+        
+        /// Contains details of the person
+        let person: Person
+        
+        /// Text searched in search bar
+        @Binding var searchText: String
+        
+        ///Dismiss handler
+        @Binding var dismissHandler: DismissHandler
+        
+        /// Fine List Data
+        @ObservedObject var fineListData = ListData.fine
+        
+        /// Reason List Data
+        @ObservedObject var reasonListData = ListData.reason
+        
+        /// Indicates if navigation link is active
+        @State var isLinkActive = false
+        
+        /// Person image
+        @State var image: UIImage?
+        
+        var body: some View {
+            ZStack {
+                
+                // Navigation link to person detail
+                EmptyNavigationLink(isActive: $isLinkActive) {
+                    PersonDetail(person: person, dismissHandler: $dismissHandler)
+                }
+                
+                GeometryReader { geometry in
+                    HStack(spacing: 0) {
+                        
+                        // Left of the divider
+                        ZStack {
+                            
+                            // Outline
+                            Outline(.left)
+                            
+                            // Inside
+                            HStack(spacing: 0) {
+                                
+                                // Image
+                                PersonRowImage(image: $image)
+                                
+                                // Name
+                                Text(person.name.formatted)
+                                    .configurate(size: 20)
+                                    .padding(.leading, 10)
+                                    .lineLimit(1)
+                                
+                                Spacer()
+                            }
+                            
+                        }.frame(width: geometry.size.width * 0.7)
+                        
+                        // Right of the divider
+                        ZStack {
+                            
+                            // Outline
+                            Outline(.right)
+                                .fillColor(color)
+                            
+                            // Inside
+                            Text(describing: amountText)
+                                .foregroundColor(plain: color)
+                                .font(.text(20))
+                                .lineLimit(1)
+                            
+                        }.frame(width: geometry.size.width * 0.3)
+                        
+                    }
+                }.frame(width: UIScreen.main.bounds.width * 0.95, height: 50)
+                    .onTapGesture {
+                        UIApplication.shared.dismissKeyboard()
+                        searchText = ""
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                            isLinkActive = true
+                        }
+                    }
+                
+//            }.onAppear { TODO
+//                ImageData.shared.fetch(of: person.id) { image in
+//                    self.image = image
+//                }
+            }
+        }
+        
+        /// Amount sum of thsi person
+        var amountSum: Array<Fine>.AmountSum? {
+            fineListData.list?.amountSum(of: person.id, with: reasonListData.list)
+        }
+        
+        /// Color of the section right of the divider
+        var color: Color {
+            guard let unpayedSum = amountSum?.unpayed else { return Color.custom.lightGreen }
+            return unpayedSum == .zero ? Color.custom.lightGreen : Color.custom.red
+        }
+        
+        /// Text of the displayed amount
+        var amountText: Amount {
+            if let unpayedSum = amountSum?.unpayed, unpayedSum != .zero {
+                return unpayedSum
+            } else if let payedSum = amountSum?.payed {
+                return payedSum
+            }
+            return .zero
         }
     }
 }
 
-/// A Row of person list with details of one person.
-struct PersonListRow: View {
+// Extension of Array to filter and sort it for person list
+extension Array where Element == Person {
     
-    /// Contains details of the person
-    let person: Person
-    
-    ///Dismiss handler
-    @Binding var dismissHandler: (() -> ())?
-    
-    /// Color scheme to get appearance of this device
-    @Environment(\.colorScheme) var colorScheme
-    
-    /// Observed Object that contains all settings of the app of this device
-    @ObservedObject var settings = Settings.shared
-    
-    /// Person image
-    @State var image: UIImage?
-    
-    /// Fine List Data
-    @ObservedObject var fineListData = ListData.fine
-    
-    /// Indicates if navigation link is active
-    @State var isLinkActive = false
-    
-    var body: some View {
-        ZStack {
-            
-            NavigationLink(destination: PersonDetail(person: person, dismissHandler: $dismissHandler), isActive: $isLinkActive) {
-                EmptyView()
-            }.buttonStyle(PlainButtonStyle())
-                .frame(size: .zero)
-            
-            HStack(spacing: 0) {
-                
-                // Left of the divider
-                ZStack {
-                    
-                    // Outline
-                    Outline(.left)
-                    
-                    // Inside
-                    HStack(spacing: 0) {
-                        
-                        // Image
-                        PersonRowImage(image: $image)
-                        
-                        // Name
-                        Text(person.personName.formatted)
-                            .foregroundColor(.textColor)
-                            .font(.text(20))
-                            .lineLimit(1)
-                            .padding(.trailing, 15)
-                        
-                        Spacer()
-                    }
-                    
-                }.frame(width: UIScreen.main.bounds.width * 0.675)
-                
-                // Right of the divider
-                ZStack {
-                    
-                    // Outline
-                    Outline(.right)
-                        .fillColor(settings.style.fillColor(colorScheme, defaultStyle: color))
-                    
-                    // Inside
-                    Text(amountText)
-                        .foregroundColor(settings.style == .default ? .textColor : color)
-                        .font(.text(20))
-                        .lineLimit(1)
-                    
-                }.frame(width: UIScreen.main.bounds.width * 0.275)
-                
-            }
-                .onTapGesture {
-                    UIApplication.shared.dismissKeyboard()
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                        isLinkActive = true
-                    }
-                }
-            
-        }.frame(width: UIScreen.main.bounds.width * 0.95, height: 50)
-            .padding(.horizontal, 1)
-            .onAppear {
-                ImageData.shared.fetch(of: person.id) { image in
-                    self.image = image
-                }
-            }
+    /// Filtered and sorted for person list
+    fileprivate func sortedForList(with searchText: String, settings: Settings) -> [Element] {
+        filter(for: searchText, at: \.name.formatted).sorted(for: settings.person)
     }
     
-    /// Color of the section right of the divider
-    var color: Color {
-        fineListData.list!.unpayedAmountSum(of: person.id) != .zero ? Color.custom.red : Color.custom.lightGreen
-    }
-    
-    /// Text of the displayed amount
-    var amountText: String {
-        fineListData.list!.unpayedAmountSum(of: person.id) != .zero ? fineListData.list!.unpayedAmountSum(of: person.id).description : fineListData.list!.payedAmountSum(of: person.id).description
+    /// Sort Array so that the logged in person is at start
+    fileprivate func sorted(for loggedInPerson: Settings.Person?) -> [Element] {
+        guard let loggedInPerson = loggedInPerson else { return self }
+        return sorted { firstPerson, secondPerson in
+            if firstPerson.id == loggedInPerson.id {
+                return true
+            } else if secondPerson.id == loggedInPerson.id {
+                return false
+            }
+            return firstPerson.name.formatted < secondPerson.name.formatted
+        }
     }
 }

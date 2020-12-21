@@ -16,7 +16,7 @@ import SwiftUI
 ///     - Line Width: 1
 ///     - Fill Color: .clear
 ///     - Stroke Color: Color.custom.gray
-
+///
 struct RoundedCorners: View {
     
     /// Contains all corner radius.
