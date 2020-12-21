@@ -44,24 +44,21 @@ struct HomeTabsView: View {
                     ProgressView("Laden")
                 }
             } else if listData.connectionState == .failed {
-                /*ZStack { TODO
+                ZStack {
                     colorScheme.backgroundColor
                     VStack(spacing: 30) {
                         Spacer()
                         Text("Keine Internetverbindung")
-                            .font(.text(25))
-                            .foregroundColor(.textColor)
+                            .configurate(size: 25)
+                            .lineLimit(2)
                             .padding(.horizontal, 15)
-                            .multilineTextAlignment(.center)
                         Text("Erneut versuchen")
-                            .font(.text(25))
-                            .foregroundColor(Color.custom.red)
+                            .configurate(size: 25)
+                            .lineLimit(2)
                             .padding(.horizontal, 15)
-                            .multilineTextAlignment(.center)
-                            .onTapGesture(perform: ListData.shared.fetchLists)
                         Spacer()
                     }
-                }*/
+                }
             } else {
                 Text("No available view")
             }
