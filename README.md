@@ -1,6 +1,4 @@
-<img src="Assets/TitleImages/ProfileDetail.png" width="33%"/>
-<img src="Assets/TitleImages/PersonList.png" width="33%"/>
-<img src="Assets/TitleImages/ReasonList.png" width="33%"/>
+<img src="Assets/TitleImage.png" width="100%">
 
 # Strafen App
 This repo is used to create an app for iOS 14+ which can be used to display the penalty catalog and all given fines of a football team, etc.
@@ -46,7 +44,7 @@ This repo is used to create an app for iOS 14+ which can be used to display the 
 - For development:
   + Clone this repository
 
-<img src="Assets/Usage/TestFlight.png" width="33%"/>
+<img src="Assets/TestFlight.png" width="33%"/>
   
 ## First Steps
 1. <b style="color: #DA4736;">See images below.</b> The first time you use the app, you will need to sign up with either your email or Apple. To do this, click on `Registrieren` <b style="color: #DA4736;">1.</b> and then on the desired option. 
@@ -65,13 +63,7 @@ This repo is used to create an app for iOS 14+ which can be used to display the 
 
    If you are the cashier you will need to choose a team name and possibly a team picture <b style="color: #DA4736;">3.B2</b>. You can create your team's identifier to share with your teammates. The club identifier will later also be visible in the settings section. Add a region to get the correct currency. After that click `Erstellen` button <b style="color: #DA4736;">3.B3</b>.
 
-<img src="Assets/Usage/LoginView.png" width="33%"/>
-<img src="Assets/Usage/SignInView.png" width="33%"/>
-<img src="Assets/Usage/SignInEmailView.png" width="33%"/>
-
-<img src="Assets/Usage/SignInClubSelection.png" width="33%"/>
-<img src="Assets/Usage/SignInPersonSelection.png" width="33%"/>
-<img src="Assets/Usage/SignInClubInput.png" width="33%"/>
+<img src="Assets/Usage.png" width="100%"/>
 
 ## Bug Report and Feature Request
 - To report a bug of the app, you can use the Feedback option in TestFlight or create a new issue under [Github Issues](https://github.com/stevenkellner/strafen/issues).
@@ -82,14 +74,12 @@ This repo is used to create an app for iOS 14+ which can be used to display the 
 ### Widgets
 - This app also supports the new iOS 14 widgets for lock screen and home screen in all three different sizes (small / medium / large). These widgets are used to show the total of your paid and unpaid fines. The medium and large widgets also show details about any your fines.
 
-<img src="Assets/Widgets/Widgets.png" width="100%"/>
+<img src="Assets/Widgets.png" width="100%"/>
 
 ### Style and Appereance
 - The app also supports a dark mode and a differnt style.
   
-<img src="Assets/StyleAppereance/Dark-Plain.png" width="33%"/>
-<img src="Assets/StyleAppereance/Light-Default.png" width="33%"/>
-<img src="Assets/StyleAppereance/Dark-Default.png" width="33%"/>
+<img src="Assets/StyleAppereance.png" width="100%"/>
 
 <br/>
 
@@ -120,7 +110,7 @@ Diese Repo wird genutzt um eine App für iOS 14+ zu bauen, welche den Strafenkat
 - Für die Entwicklung:
   + Clone das Repository
   
-<img src="Assets/Usage/TestFlight.png" width="33%"/>
+<img src="Assets/TestFlight.png" width="33%"/>
 
 ## Erste Schritte
 1. <b style="color: #DA4736;">Siehe Bilder unten.</b> Wenn du die App das erste Mal benutzt, musst du dich entweder mit deiner E-Mail oder mit Apple registrieren. Um dies zu tuen, klicke auf `Registieren` <b style="color: #DA4736;">1.</b> und dann auf die gewünschte Option.
@@ -139,13 +129,7 @@ Diese Repo wird genutzt um eine App für iOS 14+ zu bauen, welche den Strafenkat
 
    Wenn du der Kassier bist, musst du jetzt nur noch einen Vereinsnamen auswählen <b style="color: #DA4736;">3.B2</b>, du kannst auch ein Bild wählen. Du kannst die Vereinskennung erstellen, um ihn mit deinen Teamkollegen teilen. Die Kennung wird auch später im Einstellungen-Bereich der App angezeigt. Gib eine Region an, um die richtige Währung einzustellen. Dannach drücke den `Erstellen` Knopf <b style="color: #DA4736;">3.B3</b>.
    
-<img src="Assets/Usage/LoginView.png" width="33%"/>
-<img src="Assets/Usage/SignInView.png" width="33%"/>
-<img src="Assets/Usage/SignInEmailView.png" width="33%"/>
-
-<img src="Assets/Usage/SignInClubSelection.png" width="33%"/>
-<img src="Assets/Usage/SignInPersonSelection.png" width="33%"/>
-<img src="Assets/Usage/SignInClubInput.png" width="33%"/>
+<img src="Assets/Usage.png" width="100%"/>
 
 ## Fehlerbericht und Featureanfrage
 - Um einen Fehler der App zu melden, kannst du die Feedback Option in TestFlight benutzen oder erstelle einen neuen Issue in [Github Issues](https://github.com/stevenkellner/strafen/issues).
@@ -156,11 +140,9 @@ Diese Repo wird genutzt um eine App für iOS 14+ zu bauen, welche den Strafenkat
 ### Widgets
 - Die App unterstützt ebenfalls die neuen iOS 14 Widgets für den Start- und Sperrbildschirm in allen drei verschiedenen Größen (klein / mittel / groß). Diese Widgets zeigen deine gesamten gezahlten und ausstehenden Strafen. Die mittleren und großen Widgets zeigen sogar Details zu all deinen Strafen.
 
-<img src="Assets/Widgets/Widgets.png" width="100%"/>
+<img src="Assets/Widgets.png" width="100%"/>
 
 ### Design and Aussehen
 - Die App unterstützt außerdem Dunkelmodus und ein anderes Design.
   
-<img src="Assets/StyleAppereance/Dark-Plain.png" width="33%"/>
-<img src="Assets/StyleAppereance/Light-Default.png" width="33%"/>
-<img src="Assets/StyleAppereance/Dark-Default.png" width="33%"/>
+<img src="Assets/StyleAppereance.png" width="100%"/>
