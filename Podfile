@@ -11,6 +11,9 @@ target 'Strafen' do
   pod 'Firebase/Functions'
   pod 'Firebase/Storage'
   pod 'CodableFirebase'
+
+  # AdMob
+  pod 'Google-Mobile-Ads-SDK'
   
   target 'StrafenWidgetExtension' do
     inherit! :search_paths

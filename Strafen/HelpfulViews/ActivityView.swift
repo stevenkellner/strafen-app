@@ -21,9 +21,7 @@ struct ActivityView: UIViewControllerRepresentable {
     let activityViewController = ActivityViewController()
     
     /// make view
-    func makeUIViewController(context: Context) -> ActivityViewController {
-        activityViewController
-    }
+    func makeUIViewController(context: Context) -> ActivityViewController { activityViewController }
     
     /// update view
     func updateUIViewController(_ uiViewController: ActivityViewController, context: Context) {}

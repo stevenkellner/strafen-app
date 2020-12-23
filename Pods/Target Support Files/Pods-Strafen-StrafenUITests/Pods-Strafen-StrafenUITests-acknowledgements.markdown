@@ -1674,6 +1674,14 @@ SOFTWARE.
    limitations under the License.
 
 
+## Google-Mobile-Ads-SDK
+
+Copyright 2020 Google
+
+## GoogleAppMeasurement
+
+Copyright 2020 Google
+
 ## GoogleDataTransport
 
 
@@ -1879,6 +1887,10 @@ SOFTWARE.
    See the License for the specific language governing permissions and
    limitations under the License.
 
+
+## GoogleUserMessagingPlatform
+
+Copyright 2020 Google
 
 ## GoogleUtilities
 
