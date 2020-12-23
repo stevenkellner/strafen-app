@@ -55,26 +55,6 @@ struct ContentView: View {
         }
     }
     
-    /// View to force sign out a signed in person
-    struct ContentForceSignedOutView: View {
-        
-        /// Color scheme to get appearance of this device
-        @Environment(\.colorScheme) var colorScheme
-        
-        var body: some View {
-            ZStack {
-                
-                // Backgroud color
-                colorScheme.backgroundColor
-                
-                // Force Signed Out View
-                ForceSignedOutView()
-                
-            }.edgesIgnoringSafeArea(.all)
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-        }
-    }
-    
     /// Home Tab Views and Tab Bar
     struct ContentHomeView: View {
         

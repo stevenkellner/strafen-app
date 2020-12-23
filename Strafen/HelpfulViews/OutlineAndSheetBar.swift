@@ -13,6 +13,9 @@ struct Outline: View {
     /// Set of rounded corners
     let cornerSet: RoundedCorners.CornerSet
     
+    /// Cornder radius
+    private var cornerRadius: CGFloat? = nil
+    
     /// Fill Color of the Outline
     private var fillColor: FillColor? = nil
     
@@ -34,7 +37,7 @@ struct Outline: View {
     
     var body: some View {
         RoundedCorners(cornerSet)
-            .radius(settings.style.radius)
+            .radius(cornerRadius ?? settings.style.radius)
             .lineWidth(lineWidth ?? settings.style.lineWidth)
             .fillColor(fillColor?.color(settings) ?? settings.style.fillColor(colorScheme))
             .strokeColor(strokeColor ?? settings.style.strokeColor(colorScheme))
@@ -82,6 +85,13 @@ struct Outline: View {
     func lineWidth(_ lineWidth: CGFloat?) -> Outline {
         var outline = self
         outline.lineWidth = lineWidth
+        return outline
+    }
+    
+    /// Set corner radius
+    func radius(_ radius: CGFloat?) -> Outline {
+        var outline = self
+        outline.cornerRadius = radius
         return outline
     }
     

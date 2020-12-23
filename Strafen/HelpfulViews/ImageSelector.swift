@@ -126,7 +126,7 @@ struct ImagePicker: UIViewControllerRepresentable {
         self.completionHandler = completionHandler
     }
     
-    /// Image Oicker Coordinator
+    /// Image Picker Coordinator
     class Coordinator: NSObject, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
         
         /// Image picker

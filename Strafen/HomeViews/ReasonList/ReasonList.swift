@@ -65,6 +65,10 @@ struct ReasonList: View {
                                 }
                                 
                                 LazyVStack(spacing: 15) {
+                                    
+                                    /// Native Ad
+                                    NativeAdView()
+                                    
                                     ForEach(reasonList.sortedForList(with: searchText)) { reason in
                                         ReasonListRow(reason: reason)
                                     }
