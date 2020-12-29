@@ -17,8 +17,6 @@ struct ContentView: View {
     /// List data that contains all datas of the different lists
     @ObservedObject var listData = ListData.shared
     
-    @State var amount = Amount(10, subUnit: 50)
-    
     var body: some View {
         ZStack {
             

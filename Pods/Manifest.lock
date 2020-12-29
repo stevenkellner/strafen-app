@@ -74,6 +74,7 @@ PODS:
   - nanopb/decode (2.30906.0)
   - nanopb/encode (2.30906.0)
   - PromisesObjC (1.2.11)
+  - SupportDocs (1.1.0)
 
 DEPENDENCIES:
   - CodableFirebase
@@ -82,6 +83,7 @@ DEPENDENCIES:
   - Firebase/Functions
   - Firebase/Storage
   - Google-Mobile-Ads-SDK
+  - SupportDocs
 
 SPEC REPOS:
   trunk:
@@ -102,6 +104,7 @@ SPEC REPOS:
     - leveldb-library
     - nanopb
     - PromisesObjC
+    - SupportDocs
 
 SPEC CHECKSUMS:
   CodableFirebase: 0bf201991eeec35eb9fcd987d271ea463cf34a80
@@ -121,7 +124,8 @@ SPEC CHECKSUMS:
   leveldb-library: 55d93ee664b4007aac644a782d11da33fba316f7
   nanopb: 1bf24dd71191072e120b83dd02d08f3da0d65e53
   PromisesObjC: 8c196f5a328c2cba3e74624585467a557dcb482f
+  SupportDocs: 8123646bc65daa23d9d5efda5f836563187c194a
 
-PODFILE CHECKSUM: 490bc288d0f65876b9a3bb21746b0a7d609b137f
+PODFILE CHECKSUM: 5619ef0352f4477bcb3c9e757d989949304727d3
 
-COCOAPODS: 1.9.1
+COCOAPODS: 1.10.0

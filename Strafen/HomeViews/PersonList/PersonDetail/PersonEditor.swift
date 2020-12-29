@@ -47,7 +47,7 @@ struct PersonEditor: View {
         /// Sets properties with person
         mutating func setProperties(with person: Person) {
             firstName = person.name.firstName
-            lastName = person.name.lastName
+            lastName = person.name.lastName // TODO set image
         }
         
         /// Checks if an error occurs while first name input

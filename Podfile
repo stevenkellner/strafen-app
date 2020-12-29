@@ -14,6 +14,9 @@ target 'Strafen' do
 
   # AdMob
   pod 'Google-Mobile-Ads-SDK'
+
+  # Support Docs
+  pod 'SupportDocs'
   
   target 'StrafenWidgetExtension' do
     inherit! :search_paths

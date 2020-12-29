@@ -229,7 +229,6 @@ struct SettingsForceSignOut: View {
                 }
         }
     }
-
 }
 
 // Extension of Array to filter and sort it for person list

@@ -8,6 +8,7 @@
 import SwiftUI
 import FirebaseAuth
 import WidgetKit
+import SupportDocs
 
 /// Setting View
 struct SettingsView: View {
@@ -41,6 +42,9 @@ struct SettingsView: View {
                             // Club id
                             ClubId()
                             
+                            // Support docs
+                            SupportDocs()
+                            
                             if settings.person?.isCashier ?? false {
                                 LatePaymentInterestChanger(dismissHandler: $dismissHandler)
                             }
@@ -66,7 +70,7 @@ struct SettingsView: View {
                             
                         }.padding(.vertical, 20)
                         
-                        Spacer()
+                        Spacer(minLength: 0)
                     }.padding(.vertical, 10)
                 }
             }.edgesIgnoringSafeArea(.all)
@@ -125,6 +129,34 @@ struct SettingsView: View {
                     }
                 }.frame(width: UIScreen.main.bounds.width * 0.95, height: 50)
                 
+            }
+        }
+    }
+    
+    /// Support docs
+    struct SupportDocs: View {
+        
+        /// Indicates wheater support docs sheet is presented
+        @State var isSheetPresented = false
+        
+        var body: some View {
+            VStack {
+                Title("Support Center")
+                ZStack {
+                    
+                    // Outline
+                    Outline()
+                    
+                    // Text
+                    Text("Support Center")
+                        .configurate(size: 20)
+                        .padding(.horizontal, 15)
+                    
+                }.frame(width: UIScreen.main.bounds.width * 0.95, height: 50)
+                    .toggleOnTapGesture($isSheetPresented)
+                    .sheet(isPresented: $isSheetPresented) {
+                        SupportDocsView(dataSourceURL: .dataSource, options: .custom, isPresented: $isSheetPresented)
+                    }
             }
         }
     }
@@ -460,5 +492,57 @@ struct SettingsView: View {
                 Spacer()
             }.padding(.bottom, 5)
         }
+    }
+}
+
+// Extension of URL to get a url to support docs data source
+extension URL {
+    
+    /// Url to support docs data source
+    static fileprivate let dataSource = URL(string: "https://raw.githubusercontent.com/stevenkellner/StrafenSupport/DataSource/_data/supportdocs_datasource.json")!
+}
+
+// Extension of SupportOptions to get custom options for support docs
+extension SupportOptions {
+    
+    /// Custom Options for support docs
+    static fileprivate var custom: SupportOptions {
+        var options = SupportOptions()
+        options.categories = .all
+        options.navigationBar.title = "Support Center"
+        options.navigationBar.dismissButtonView = AnyView(Text("Fertig"))
+        options.navigationBar.buttonTintColor = .label
+        options.navigationBar.backgroundColor = .tertiarySystemBackground
+        options.searchBar?.placeholder = "Suchen"
+        options.searchBar?.tintColor = .systemBlue
+        options.other.error404 = URL(string: "https://stevenkellner.github.io/StrafenSupport/404")!
+        return options
+    }
+}
+
+extension Array where Element == SupportOptions.Category {
+    static var all: [Element] {
+        [.general, .logIn_SignIn, .settings, .person, .fine, .reason]
+    }
+}
+
+extension SupportOptions.Category {
+    static var settings: Self {
+        .init(tags: ["settings", "settings1", "settings2", "settings3"], displayName: "Einstellungen")
+    }
+    static var general: Self {
+        .init(tag: "general", displayName: "Allgemeines")
+    }
+    static var logIn_SignIn: Self {
+        .init(tag: "logIn-signIn", displayName: "Anmelden / Registrieren")
+    }
+    static var reason: Self {
+        .init(tags: ["reason1", "reason2", "reason3"], displayName: "Vorlagen Änderungen")
+    }
+    static var person: Self {
+        .init(tags: ["person1", "person2", "person3"], displayName: "Personen Änderungen")
+    }
+    static var fine: Self {
+        .init(tags: ["fine1", "fine2", "fine3"], displayName: "Strafen Änderungen")
     }
 }

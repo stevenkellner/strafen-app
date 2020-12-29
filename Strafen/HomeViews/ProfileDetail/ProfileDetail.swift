@@ -106,6 +106,8 @@ struct ProfileDetail: View {
                 
             }.edgesIgnoringSafeArea(.all)
                 .hideNavigationBarTitle()
+                .onAppear {
+                }
             //        }.onAppear {
             //            ImageData.shared.fetch(of: settings.person!.id) { image in TODO
             //                self.image = image
