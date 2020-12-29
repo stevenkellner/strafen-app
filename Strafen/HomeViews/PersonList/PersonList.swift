@@ -181,7 +181,8 @@ struct PersonList: View {
                             isLinkActive = true
                         }
                     }
-                
+                    .onAppear {
+                    }
 //            }.onAppear { TODO
 //                ImageData.shared.fetch(of: person.id) { image in
 //                    self.image = image
