@@ -1249,6 +1249,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = DFF1361C17C6B735143EB7E0 /* Pods-StrafenWidgetExtension.debug.xcconfig */;
 			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = NO;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
 				CODE_SIGN_ENTITLEMENTS = StrafenWidget/Controller/StrafenWidgetExtension.entitlements;
@@ -1273,6 +1274,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = A4EE6A2E94660E69A2CF1D04 /* Pods-StrafenWidgetExtension.release.xcconfig */;
 			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = NO;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
 				CODE_SIGN_ENTITLEMENTS = StrafenWidget/Controller/StrafenWidgetExtension.entitlements;
