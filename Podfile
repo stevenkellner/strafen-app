@@ -10,6 +10,7 @@ target 'Strafen' do
   pod 'Firebase/Database'
   pod 'Firebase/Functions'
   pod 'Firebase/Storage'
+  pod 'Firebase/Messaging'
   pod 'CodableFirebase'
 
   # AdMob
