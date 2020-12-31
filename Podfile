@@ -23,6 +23,10 @@ target 'Strafen' do
     inherit! :search_paths
   end
 
+  target 'StrafenNotificationService' do
+    inherit! :search_paths
+  end
+
   target 'StrafenTests' do
     inherit! :search_paths
     # Pods for testing

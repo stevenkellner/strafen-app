@@ -41,7 +41,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Register for push notifications
         registerForPushNotifications()
         
-        // Set uo push messages
+        // Set up push messages
         Messaging.messaging().delegate = self
         Messaging.messaging().subscribe(toTopic: "daily-notification")
         if let person = Settings.shared.person {

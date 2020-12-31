@@ -19,10 +19,15 @@
 			<key>orderHint</key>
 			<integer>7</integer>
 		</dict>
+		<key>StrafenNotificationService.xcscheme_^#shared#^_</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>30</integer>
+		</dict>
 		<key>StrafenTests.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>20</integer>
+			<integer>3</integer>
 		</dict>
 		<key>StrafenWidgetExtension.xcscheme_^#shared#^_</key>
 		<dict>

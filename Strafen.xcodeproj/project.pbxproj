@@ -9,11 +9,14 @@
 /* Begin PBXBuildFile section */
 		67CDD1AB6A3BBA7C38C64532 /* Pods_Strafen.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28520CB35F7960A3527C91CA /* Pods_Strafen.framework */; };
 		919508DBCD84D1DA492F057B /* Pods_StrafenWidgetExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A28588CC33D58046FD7FA2DC /* Pods_StrafenWidgetExtension.framework */; };
+		9413A870E8516F321AD86FF2 /* Pods_StrafenNotificationService.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9E87852BD7724A3B4C0FA7CF /* Pods_StrafenNotificationService.framework */; };
 		A6F6A1A6B349D262998E8993 /* Pods_Strafen_StrafenUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 023B8104CAAD7D690BBF2A74 /* Pods_Strafen_StrafenUITests.framework */; };
 		B006920624C615D500AE2EF0 /* HomeTabs.swift in Sources */ = {isa = PBXBuildFile; fileRef = B006920524C615D500AE2EF0 /* HomeTabs.swift */; };
 		B00C6EF5258D46700015637D /* MediumWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = B04B71ED24CEDA9C0038B02F /* MediumWidget.swift */; };
 		B00C6F15258E0F5C0015637D /* HelpfulViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00C6F14258E0F5C0015637D /* HelpfulViews.swift */; };
 		B00C6F1E258E265B0015637D /* LargeWidgetSuccess.swift in Sources */ = {isa = PBXBuildFile; fileRef = B04B71F424CF36AE0038B02F /* LargeWidgetSuccess.swift */; };
+		B01D2B35259E19C700956BA9 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B01D2B34259E19C700956BA9 /* NotificationService.swift */; };
+		B01D2B39259E19C700956BA9 /* StrafenNotificationService.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = B01D2B32259E19C700956BA9 /* StrafenNotificationService.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		B02019D424FE779000C660B9 /* SettingsFinesFormatterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B02019D324FE779000C660B9 /* SettingsFinesFormatterView.swift */; };
 		B020C7C024AF7CC6008940FE /* Person.swift in Sources */ = {isa = PBXBuildFile; fileRef = B020C7BF24AF7CC6008940FE /* Person.swift */; };
 		B020C7C224B0B9D0008940FE /* PersonRowImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B020C7C124B0B9D0008940FE /* PersonRowImage.swift */; };
@@ -150,6 +153,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		B01D2B37259E19C700956BA9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B0E0F81B24A63E5800C82828 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = B01D2B31259E19C700956BA9;
+			remoteInfo = StrafenNotificationService;
+		};
 		B077B57E24CAC655003844CE /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = B0E0F81B24A63E5800C82828 /* Project object */;
@@ -187,6 +197,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
+				B01D2B39259E19C700956BA9 /* StrafenNotificationService.appex in Embed App Extensions */,
 				B077B58024CAC655003844CE /* StrafenWidgetExtension.appex in Embed App Extensions */,
 			);
 			name = "Embed App Extensions";
@@ -201,11 +212,15 @@
 		4FB38E3F4411C19BC6E1867D /* Pods-Strafen-StrafenUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Strafen-StrafenUITests.release.xcconfig"; path = "Target Support Files/Pods-Strafen-StrafenUITests/Pods-Strafen-StrafenUITests.release.xcconfig"; sourceTree = "<group>"; };
 		78EB9FE447514E62AB69E4B9 /* Pods-StrafenTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StrafenTests.release.xcconfig"; path = "Target Support Files/Pods-StrafenTests/Pods-StrafenTests.release.xcconfig"; sourceTree = "<group>"; };
 		88841E0B0F47B91B56AC1E05 /* Pods-Strafen.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Strafen.debug.xcconfig"; path = "Target Support Files/Pods-Strafen/Pods-Strafen.debug.xcconfig"; sourceTree = "<group>"; };
+		9E87852BD7724A3B4C0FA7CF /* Pods_StrafenNotificationService.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_StrafenNotificationService.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9F648314F45F12CD67B093FF /* Pods-StrafenTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StrafenTests.debug.xcconfig"; path = "Target Support Files/Pods-StrafenTests/Pods-StrafenTests.debug.xcconfig"; sourceTree = "<group>"; };
 		A28588CC33D58046FD7FA2DC /* Pods_StrafenWidgetExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_StrafenWidgetExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A4EE6A2E94660E69A2CF1D04 /* Pods-StrafenWidgetExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StrafenWidgetExtension.release.xcconfig"; path = "Target Support Files/Pods-StrafenWidgetExtension/Pods-StrafenWidgetExtension.release.xcconfig"; sourceTree = "<group>"; };
 		B006920524C615D500AE2EF0 /* HomeTabs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTabs.swift; sourceTree = "<group>"; };
 		B00C6F14258E0F5C0015637D /* HelpfulViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpfulViews.swift; sourceTree = "<group>"; };
+		B01D2B32259E19C700956BA9 /* StrafenNotificationService.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = StrafenNotificationService.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		B01D2B34259E19C700956BA9 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
+		B01D2B36259E19C700956BA9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B02019D324FE779000C660B9 /* SettingsFinesFormatterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsFinesFormatterView.swift; sourceTree = "<group>"; };
 		B020C7BF24AF7CC6008940FE /* Person.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Person.swift; sourceTree = "<group>"; };
 		B020C7C124B0B9D0008940FE /* PersonRowImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonRowImage.swift; sourceTree = "<group>"; };
@@ -326,11 +341,21 @@
 		B0F881A925065B92008304A8 /* ForceSignedOutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForceSignedOutView.swift; sourceTree = "<group>"; };
 		B0F881AB2506874C008304A8 /* SettingsForceSignOut.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsForceSignOut.swift; sourceTree = "<group>"; };
 		C48AEE77D98866AC072A2AD1 /* Pods-Strafen-StrafenUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Strafen-StrafenUITests.debug.xcconfig"; path = "Target Support Files/Pods-Strafen-StrafenUITests/Pods-Strafen-StrafenUITests.debug.xcconfig"; sourceTree = "<group>"; };
+		DED10387FE1F5C79C64A0C8D /* Pods-StrafenNotificationService.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StrafenNotificationService.debug.xcconfig"; path = "Target Support Files/Pods-StrafenNotificationService/Pods-StrafenNotificationService.debug.xcconfig"; sourceTree = "<group>"; };
 		DFF1361C17C6B735143EB7E0 /* Pods-StrafenWidgetExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StrafenWidgetExtension.debug.xcconfig"; path = "Target Support Files/Pods-StrafenWidgetExtension/Pods-StrafenWidgetExtension.debug.xcconfig"; sourceTree = "<group>"; };
 		E4A36A38D3FB33CF3F264FBB /* Pods-Strafen.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Strafen.release.xcconfig"; path = "Target Support Files/Pods-Strafen/Pods-Strafen.release.xcconfig"; sourceTree = "<group>"; };
+		FEC81F15DE79CC7467DE30FD /* Pods-StrafenNotificationService.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StrafenNotificationService.release.xcconfig"; path = "Target Support Files/Pods-StrafenNotificationService/Pods-StrafenNotificationService.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		B01D2B2F259E19C700956BA9 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9413A870E8516F321AD86FF2 /* Pods_StrafenNotificationService.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		B077B56D24CAC652003844CE /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -379,6 +404,8 @@
 				78EB9FE447514E62AB69E4B9 /* Pods-StrafenTests.release.xcconfig */,
 				DFF1361C17C6B735143EB7E0 /* Pods-StrafenWidgetExtension.debug.xcconfig */,
 				A4EE6A2E94660E69A2CF1D04 /* Pods-StrafenWidgetExtension.release.xcconfig */,
+				DED10387FE1F5C79C64A0C8D /* Pods-StrafenNotificationService.debug.xcconfig */,
+				FEC81F15DE79CC7467DE30FD /* Pods-StrafenNotificationService.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -393,8 +420,18 @@
 				B077B57124CAC652003844CE /* WidgetKit.framework */,
 				B077B57324CAC652003844CE /* SwiftUI.framework */,
 				A28588CC33D58046FD7FA2DC /* Pods_StrafenWidgetExtension.framework */,
+				9E87852BD7724A3B4C0FA7CF /* Pods_StrafenNotificationService.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		B01D2B33259E19C700956BA9 /* StrafenNotificationService */ = {
+			isa = PBXGroup;
+			children = (
+				B01D2B34259E19C700956BA9 /* NotificationService.swift */,
+				B01D2B36259E19C700956BA9 /* Info.plist */,
+			);
+			path = StrafenNotificationService;
 			sourceTree = "<group>";
 		};
 		B020C7D124BA2111008940FE /* ListTypes */ = {
@@ -692,6 +729,7 @@
 				B0E0F83724A63E5A00C82828 /* StrafenTests */,
 				B0E0F84224A63E5A00C82828 /* StrafenUITests */,
 				B077B57524CAC652003844CE /* StrafenWidget */,
+				B01D2B33259E19C700956BA9 /* StrafenNotificationService */,
 				B0E0F82424A63E5800C82828 /* Products */,
 				2894790FDA740B7584F98E3A /* Pods */,
 				34A98CC1D11C4E2F86F36E33 /* Frameworks */,
@@ -705,6 +743,7 @@
 				B0E0F83424A63E5A00C82828 /* StrafenTests.xctest */,
 				B0E0F83F24A63E5A00C82828 /* StrafenUITests.xctest */,
 				B077B57024CAC652003844CE /* StrafenWidgetExtension.appex */,
+				B01D2B32259E19C700956BA9 /* StrafenNotificationService.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -766,6 +805,24 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		B01D2B31259E19C700956BA9 /* StrafenNotificationService */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B01D2B3C259E19C700956BA9 /* Build configuration list for PBXNativeTarget "StrafenNotificationService" */;
+			buildPhases = (
+				C42AD8278445B713DED1807E /* [CP] Check Pods Manifest.lock */,
+				B01D2B2E259E19C700956BA9 /* Sources */,
+				B01D2B2F259E19C700956BA9 /* Frameworks */,
+				B01D2B30259E19C700956BA9 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = StrafenNotificationService;
+			productName = StrafenNotificationService;
+			productReference = B01D2B32259E19C700956BA9 /* StrafenNotificationService.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 		B077B56F24CAC652003844CE /* StrafenWidgetExtension */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = B077B58124CAC655003844CE /* Build configuration list for PBXNativeTarget "StrafenWidgetExtension" */;
@@ -799,6 +856,7 @@
 			);
 			dependencies = (
 				B077B57F24CAC655003844CE /* PBXTargetDependency */,
+				B01D2B38259E19C700956BA9 /* PBXTargetDependency */,
 			);
 			name = Strafen;
 			productName = Strafen;
@@ -850,9 +908,12 @@
 		B0E0F81B24A63E5800C82828 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 1220;
+				LastSwiftUpdateCheck = 1230;
 				LastUpgradeCheck = 1200;
 				TargetAttributes = {
+					B01D2B31259E19C700956BA9 = {
+						CreatedOnToolsVersion = 12.3;
+					};
 					B077B56F24CAC652003844CE = {
 						CreatedOnToolsVersion = 12.0;
 					};
@@ -892,6 +953,7 @@
 				B0E0F83324A63E5A00C82828 /* StrafenTests */,
 				B0E0F83E24A63E5A00C82828 /* StrafenUITests */,
 				B077B56F24CAC652003844CE /* StrafenWidgetExtension */,
+				B01D2B31259E19C700956BA9 /* StrafenNotificationService */,
 			);
 		};
 /* End PBXProject section */
@@ -907,6 +969,13 @@
 /* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
+		B01D2B30259E19C700956BA9 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		B077B56E24CAC652003844CE /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1044,6 +1113,28 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Strafen/Pods-Strafen-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		C42AD8278445B713DED1807E /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-StrafenNotificationService-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
 		FB3513EF6DBB481B4A47A8A8 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -1069,6 +1160,14 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		B01D2B2E259E19C700956BA9 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B01D2B35259E19C700956BA9 /* NotificationService.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		B077B56C24CAC652003844CE /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1227,6 +1326,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		B01D2B38259E19C700956BA9 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = B01D2B31259E19C700956BA9 /* StrafenNotificationService */;
+			targetProxy = B01D2B37259E19C700956BA9 /* PBXContainerItemProxy */;
+		};
 		B077B57F24CAC655003844CE /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = B077B56F24CAC652003844CE /* StrafenWidgetExtension */;
@@ -1245,6 +1349,48 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		B01D2B3A259E19C700956BA9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = DED10387FE1F5C79C64A0C8D /* Pods-StrafenNotificationService.debug.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = K7NTJ83ZF8;
+				INFOPLIST_FILE = StrafenNotificationService/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.3;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = stevenkellner.Strafen.StrafenNotificationService;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		B01D2B3B259E19C700956BA9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = FEC81F15DE79CC7467DE30FD /* Pods-StrafenNotificationService.release.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = K7NTJ83ZF8;
+				INFOPLIST_FILE = StrafenNotificationService/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.3;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = stevenkellner.Strafen.StrafenNotificationService;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 		B077B58224CAC655003844CE /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = DFF1361C17C6B735143EB7E0 /* Pods-StrafenWidgetExtension.debug.xcconfig */;
@@ -1564,6 +1710,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		B01D2B3C259E19C700956BA9 /* Build configuration list for PBXNativeTarget "StrafenNotificationService" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B01D2B3A259E19C700956BA9 /* Debug */,
+				B01D2B3B259E19C700956BA9 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		B077B58124CAC655003844CE /* Build configuration list for PBXNativeTarget "StrafenWidgetExtension" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
