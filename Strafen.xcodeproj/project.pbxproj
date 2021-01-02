@@ -23,8 +23,6 @@
 		B02B891524BDFDA9004562B9 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B02B891424BDFDA9004562B9 /* SettingsView.swift */; };
 		B02F986F258CF70800B04C48 /* OutlineAndSheetBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E6E86E24CDD38500D467AC /* OutlineAndSheetBar.swift */; };
 		B02F9874258CF71200B04C48 /* RoundedCorners.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0C1C52424A8BC14007B584B /* RoundedCorners.swift */; };
-		B02F988A258CFAD600B04C48 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B02F9889258CFAD600B04C48 /* GoogleService-Info.plist */; };
-		B02F989C258CFCC200B04C48 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B02F9889258CFAD600B04C48 /* GoogleService-Info.plist */; };
 		B0327C54258BAB4C00DEE05C /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0C1C51A24A78CC2007B584B /* Settings.swift */; };
 		B0327C59258BABB800DEE05C /* Settings+LatePaymentInterest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0B81DC82502525500249447 /* Settings+LatePaymentInterest.swift */; };
 		B0327C5A258BABB800DEE05C /* Settings+Person.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0B81DC62502524000249447 /* Settings+Person.swift */; };
@@ -45,7 +43,33 @@
 		B0327CAF258BB43700DEE05C /* ListTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = B042D42D24BA21540029F2D5 /* ListTypes.swift */; };
 		B0327CB4258BB46A00DEE05C /* Fetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0D75C84255716FB00555B03 /* Fetcher.swift */; };
 		B037BCEA25419CB4002B81E5 /* SignInEmailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B037BCE925419CB4002B81E5 /* SignInEmailView.swift */; };
+		B03B195D259F861B00D44394 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B03B195C259F861B00D44394 /* GoogleService-Info.plist */; };
+		B03B195E259F861B00D44394 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B03B195C259F861B00D44394 /* GoogleService-Info.plist */; };
+		B03B195F259F861B00D44394 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B03B195C259F861B00D44394 /* GoogleService-Info.plist */; };
 		B03D1DC325934AD200EB8648 /* UnifiedNativeAdView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B03D1DC225934AD200EB8648 /* UnifiedNativeAdView.xib */; };
+		B03EA728259F75F7002EFD4A /* DailyNotificationContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = B03EA727259F75F7002EFD4A /* DailyNotificationContent.swift */; };
+		B03EA72E259F778D002EFD4A /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0C1C51A24A78CC2007B584B /* Settings.swift */; };
+		B03EA734259F7794002EFD4A /* Settings+Person.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0B81DC62502524000249447 /* Settings+Person.swift */; };
+		B03EA73A259F7796002EFD4A /* Settings+LatePaymentInterest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0B81DC82502525500249447 /* Settings+LatePaymentInterest.swift */; };
+		B03EA740259F779D002EFD4A /* Settings+Style.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0B81DC22502522600249447 /* Settings+Style.swift */; };
+		B03EA746259F77B8002EFD4A /* PersonName.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0C1C52124A7A021007B584B /* PersonName.swift */; };
+		B03EA74C259F77BB002EFD4A /* Payed.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0D75C592557157400555B03 /* Payed.swift */; };
+		B03EA74D259F77BD002EFD4A /* Importance.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0D75C5F2557159900555B03 /* Importance.swift */; };
+		B03EA74E259F77BF002EFD4A /* FineReason.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0D75C65255715C900555B03 /* FineReason.swift */; };
+		B03EA754259F77C1002EFD4A /* Amount.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0D75CDD2558208500555B03 /* Amount.swift */; };
+		B03EA75A259F77C5002EFD4A /* ListTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = B042D42D24BA21540029F2D5 /* ListTypes.swift */; };
+		B03EA75B259F77C7002EFD4A /* Person.swift in Sources */ = {isa = PBXBuildFile; fileRef = B020C7BF24AF7CC6008940FE /* Person.swift */; };
+		B03EA75C259F77CA002EFD4A /* Fine.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E2C19024CC661F009E3666 /* Fine.swift */; };
+		B03EA762259F77CC002EFD4A /* ReasonTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0D75C4F2557149500555B03 /* ReasonTemplate.swift */; };
+		B03EA768259F77E7002EFD4A /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = B07AC46C258BB7C900908A82 /* Logger.swift */; };
+		B03EA76E259F77EC002EFD4A /* PropertyWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0327C96258BB36A00DEE05C /* PropertyWrapper.swift */; };
+		B03EA774259F77F1002EFD4A /* Tagged.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0CB61A4257D72C8003F29BE /* Tagged.swift */; };
+		B03EA77A259F7803002EFD4A /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0C1C51824A78C90007B584B /* Color.swift */; };
+		B03EA780259F7805002EFD4A /* Array.swift in Sources */ = {isa = PBXBuildFile; fileRef = B042D43C24BB2BBD0029F2D5 /* Array.swift */; };
+		B03EA781259F780A002EFD4A /* Other.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0C1C52624A8BEE6007B584B /* Other.swift */; };
+		B03EA787259F781B002EFD4A /* DataTypeList.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0D75C7A255716CD00555B03 /* DataTypeList.swift */; };
+		B03EA78D259F781E002EFD4A /* Fetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0D75C84255716FB00555B03 /* Fetcher.swift */; };
+		B03EA78E259F7820002EFD4A /* ListData.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0D75C702557169000555B03 /* ListData.swift */; };
 		B042C5E8256FA02000DD74B8 /* FineDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = B042C5E7256FA01F00DD74B8 /* FineDetail.swift */; };
 		B042D42E24BA21540029F2D5 /* ListTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = B042D42D24BA21540029F2D5 /* ListTypes.swift */; };
 		B042D43024BA42EB0029F2D5 /* TabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B042D42F24BA42EB0029F2D5 /* TabBar.swift */; };
@@ -93,6 +117,7 @@
 		B07DDDEF256FF8CF0003F139 /* FineEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = B07DDDEE256FF8CF0003F139 /* FineEditor.swift */; };
 		B087CF33258AA484005E819D /* LatePaymentInterestCall.swift in Sources */ = {isa = PBXBuildFile; fileRef = B087CF32258AA484005E819D /* LatePaymentInterestCall.swift */; };
 		B087CF3D258B86C2005E819D /* ForceSignOutCall.swift in Sources */ = {isa = PBXBuildFile; fileRef = B087CF3C258B86C2005E819D /* ForceSignOutCall.swift */; };
+		B09CC1E0259F4BF70079B86B /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B09CC1DF259F4BF70079B86B /* NotificationService.swift */; };
 		B0B117CC24FA962C006A22F2 /* SignInWithApple.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0B117CB24FA962C006A22F2 /* SignInWithApple.swift */; };
 		B0B214DA258E39E7008F0BE9 /* EmailNotVerificatedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0B214D9258E39E7008F0BE9 /* EmailNotVerificatedView.swift */; };
 		B0B39A82256D8B06002E2CB9 /* FineListRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0B39A81256D8B06002E2CB9 /* FineListRow.swift */; };
@@ -133,6 +158,7 @@
 		B0D75CD82558202000555B03 /* ChangeListCall.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0D75CD72558202000555B03 /* ChangeListCall.swift */; };
 		B0D75CDE2558208500555B03 /* Amount.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0D75CDD2558208500555B03 /* Amount.swift */; };
 		B0D75CF0255820FC00555B03 /* ImageStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0D75CEF255820FC00555B03 /* ImageStorage.swift */; };
+		B0DEAAC325A099B1009C6BD9 /* StrafenNotificationService.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = B09CC1DD259F4BF70079B86B /* StrafenNotificationService.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		B0E0F82724A63E5800C82828 /* StrafenApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E0F82624A63E5800C82828 /* StrafenApp.swift */; };
 		B0E0F82924A63E5800C82828 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E0F82824A63E5800C82828 /* ContentView.swift */; };
 		B0E0F82B24A63E5A00C82828 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B0E0F82A24A63E5A00C82828 /* Assets.xcassets */; };
@@ -146,6 +172,7 @@
 		B0F4331D2502CA7500B0AAA7 /* HomeViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0F4331C2502CA7500B0AAA7 /* HomeViews.swift */; };
 		B0F881AA25065B92008304A8 /* ForceSignedOutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0F881A925065B92008304A8 /* ForceSignedOutView.swift */; };
 		B0F881AC2506874C008304A8 /* SettingsForceSignOut.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0F881AB2506874C008304A8 /* SettingsForceSignOut.swift */; };
+		B6586776C29D9648DBEF8187 /* Pods_StrafenNotificationService.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2ABCDC15E00DE2581D8EB7D1 /* Pods_StrafenNotificationService.framework */; };
 		EF23B482BE1B8F69206DAA9F /* Pods_StrafenTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 085A35B45E057FA1E93DE8FF /* Pods_StrafenTests.framework */; };
 /* End PBXBuildFile section */
 
@@ -163,6 +190,13 @@
 			proxyType = 2;
 			remoteGlobalIDString = B09951992544724D00833EA4;
 			remoteInfo = AlertsAndPickers;
+		};
+		B0DEAAC425A099B1009C6BD9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B0E0F81B24A63E5800C82828 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = B09CC1DC259F4BF70079B86B;
+			remoteInfo = StrafenNotificationService;
 		};
 		B0E0F83524A63E5A00C82828 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -187,6 +221,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
+				B0DEAAC325A099B1009C6BD9 /* StrafenNotificationService.appex in Embed App Extensions */,
 				B077B58024CAC655003844CE /* StrafenWidgetExtension.appex in Embed App Extensions */,
 			);
 			name = "Embed App Extensions";
@@ -198,6 +233,7 @@
 		023B8104CAAD7D690BBF2A74 /* Pods_Strafen_StrafenUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Strafen_StrafenUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		085A35B45E057FA1E93DE8FF /* Pods_StrafenTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_StrafenTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		28520CB35F7960A3527C91CA /* Pods_Strafen.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Strafen.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		2ABCDC15E00DE2581D8EB7D1 /* Pods_StrafenNotificationService.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_StrafenNotificationService.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4FB38E3F4411C19BC6E1867D /* Pods-Strafen-StrafenUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Strafen-StrafenUITests.release.xcconfig"; path = "Target Support Files/Pods-Strafen-StrafenUITests/Pods-Strafen-StrafenUITests.release.xcconfig"; sourceTree = "<group>"; };
 		78EB9FE447514E62AB69E4B9 /* Pods-StrafenTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StrafenTests.release.xcconfig"; path = "Target Support Files/Pods-StrafenTests/Pods-StrafenTests.release.xcconfig"; sourceTree = "<group>"; };
 		88841E0B0F47B91B56AC1E05 /* Pods-Strafen.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Strafen.debug.xcconfig"; path = "Target Support Files/Pods-Strafen/Pods-Strafen.debug.xcconfig"; sourceTree = "<group>"; };
@@ -213,10 +249,11 @@
 		B026766C24BDD346005E79C1 /* AmountDisplay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmountDisplay.swift; sourceTree = "<group>"; };
 		B0280AB324FFB9D30049202D /* LatePaymentInterestChangerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LatePaymentInterestChangerView.swift; sourceTree = "<group>"; };
 		B02B891424BDFDA9004562B9 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
-		B02F9889258CFAD600B04C48 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		B0327C96258BB36A00DEE05C /* PropertyWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PropertyWrapper.swift; sourceTree = "<group>"; };
 		B037BCE925419CB4002B81E5 /* SignInEmailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInEmailView.swift; sourceTree = "<group>"; };
+		B03B195C259F861B00D44394 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		B03D1DC225934AD200EB8648 /* UnifiedNativeAdView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UnifiedNativeAdView.xib; sourceTree = "<group>"; };
+		B03EA727259F75F7002EFD4A /* DailyNotificationContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyNotificationContent.swift; sourceTree = "<group>"; };
 		B042C5E7256FA01F00DD74B8 /* FineDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FineDetail.swift; sourceTree = "<group>"; };
 		B042D42D24BA21540029F2D5 /* ListTypes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListTypes.swift; sourceTree = "<group>"; };
 		B042D42F24BA42EB0029F2D5 /* TabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBar.swift; sourceTree = "<group>"; };
@@ -265,6 +302,9 @@
 		B087CF32258AA484005E819D /* LatePaymentInterestCall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LatePaymentInterestCall.swift; sourceTree = "<group>"; };
 		B087CF3C258B86C2005E819D /* ForceSignOutCall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForceSignOutCall.swift; sourceTree = "<group>"; };
 		B099522C254472C700833EA4 /* AlertsAndPickers.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = AlertsAndPickers.xcodeproj; path = ../../../../Desktop/AlertsAndPickers/AlertsAndPickers.xcodeproj; sourceTree = "<group>"; };
+		B09CC1DD259F4BF70079B86B /* StrafenNotificationService.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = StrafenNotificationService.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		B09CC1DF259F4BF70079B86B /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
+		B09CC1E1259F4BF70079B86B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B0B117CB24FA962C006A22F2 /* SignInWithApple.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInWithApple.swift; sourceTree = "<group>"; };
 		B0B214D9258E39E7008F0BE9 /* EmailNotVerificatedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailNotVerificatedView.swift; sourceTree = "<group>"; };
 		B0B39A81256D8B06002E2CB9 /* FineListRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FineListRow.swift; sourceTree = "<group>"; };
@@ -305,6 +345,7 @@
 		B0D75CD72558202000555B03 /* ChangeListCall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeListCall.swift; sourceTree = "<group>"; };
 		B0D75CDD2558208500555B03 /* Amount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Amount.swift; sourceTree = "<group>"; };
 		B0D75CEF255820FC00555B03 /* ImageStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageStorage.swift; sourceTree = "<group>"; };
+		B0D946BD259F6FCD000BD3F3 /* StrafenNotificationService.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = StrafenNotificationService.entitlements; sourceTree = "<group>"; };
 		B0E0F82324A63E5800C82828 /* Strafen.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Strafen.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B0E0F82624A63E5800C82828 /* StrafenApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StrafenApp.swift; sourceTree = "<group>"; };
 		B0E0F82824A63E5800C82828 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -325,6 +366,8 @@
 		B0F4331C2502CA7500B0AAA7 /* HomeViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViews.swift; sourceTree = "<group>"; };
 		B0F881A925065B92008304A8 /* ForceSignedOutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForceSignedOutView.swift; sourceTree = "<group>"; };
 		B0F881AB2506874C008304A8 /* SettingsForceSignOut.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsForceSignOut.swift; sourceTree = "<group>"; };
+		B6DEE7790E09F9517795ABD8 /* Pods-StrafenNotificationService.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StrafenNotificationService.release.xcconfig"; path = "Target Support Files/Pods-StrafenNotificationService/Pods-StrafenNotificationService.release.xcconfig"; sourceTree = "<group>"; };
+		B99112ABC31485A84931F2B5 /* Pods-StrafenNotificationService.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StrafenNotificationService.debug.xcconfig"; path = "Target Support Files/Pods-StrafenNotificationService/Pods-StrafenNotificationService.debug.xcconfig"; sourceTree = "<group>"; };
 		C48AEE77D98866AC072A2AD1 /* Pods-Strafen-StrafenUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Strafen-StrafenUITests.debug.xcconfig"; path = "Target Support Files/Pods-Strafen-StrafenUITests/Pods-Strafen-StrafenUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		DFF1361C17C6B735143EB7E0 /* Pods-StrafenWidgetExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StrafenWidgetExtension.debug.xcconfig"; path = "Target Support Files/Pods-StrafenWidgetExtension/Pods-StrafenWidgetExtension.debug.xcconfig"; sourceTree = "<group>"; };
 		E4A36A38D3FB33CF3F264FBB /* Pods-Strafen.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Strafen.release.xcconfig"; path = "Target Support Files/Pods-Strafen/Pods-Strafen.release.xcconfig"; sourceTree = "<group>"; };
@@ -338,6 +381,14 @@
 				B077B57424CAC652003844CE /* SwiftUI.framework in Frameworks */,
 				B077B57224CAC652003844CE /* WidgetKit.framework in Frameworks */,
 				919508DBCD84D1DA492F057B /* Pods_StrafenWidgetExtension.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B09CC1DA259F4BF70079B86B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B6586776C29D9648DBEF8187 /* Pods_StrafenNotificationService.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -379,6 +430,8 @@
 				78EB9FE447514E62AB69E4B9 /* Pods-StrafenTests.release.xcconfig */,
 				DFF1361C17C6B735143EB7E0 /* Pods-StrafenWidgetExtension.debug.xcconfig */,
 				A4EE6A2E94660E69A2CF1D04 /* Pods-StrafenWidgetExtension.release.xcconfig */,
+				B99112ABC31485A84931F2B5 /* Pods-StrafenNotificationService.debug.xcconfig */,
+				B6DEE7790E09F9517795ABD8 /* Pods-StrafenNotificationService.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -393,6 +446,7 @@
 				B077B57124CAC652003844CE /* WidgetKit.framework */,
 				B077B57324CAC652003844CE /* SwiftUI.framework */,
 				A28588CC33D58046FD7FA2DC /* Pods_StrafenWidgetExtension.framework */,
+				2ABCDC15E00DE2581D8EB7D1 /* Pods_StrafenNotificationService.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -520,6 +574,17 @@
 				B0995231254472C700833EA4 /* AlertsAndPickers.framework */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		B09CC1DE259F4BF70079B86B /* StrafenNotificationService */ = {
+			isa = PBXGroup;
+			children = (
+				B0D946BD259F6FCD000BD3F3 /* StrafenNotificationService.entitlements */,
+				B09CC1E1259F4BF70079B86B /* Info.plist */,
+				B09CC1DF259F4BF70079B86B /* NotificationService.swift */,
+				B03EA727259F75F7002EFD4A /* DailyNotificationContent.swift */,
+			);
+			path = StrafenNotificationService;
 			sourceTree = "<group>";
 		};
 		B0B799D424AE6F990027727E /* AppTypes */ = {
@@ -692,6 +757,7 @@
 				B0E0F83724A63E5A00C82828 /* StrafenTests */,
 				B0E0F84224A63E5A00C82828 /* StrafenUITests */,
 				B077B57524CAC652003844CE /* StrafenWidget */,
+				B09CC1DE259F4BF70079B86B /* StrafenNotificationService */,
 				B0E0F82424A63E5800C82828 /* Products */,
 				2894790FDA740B7584F98E3A /* Pods */,
 				34A98CC1D11C4E2F86F36E33 /* Frameworks */,
@@ -705,6 +771,7 @@
 				B0E0F83424A63E5A00C82828 /* StrafenTests.xctest */,
 				B0E0F83F24A63E5A00C82828 /* StrafenUITests.xctest */,
 				B077B57024CAC652003844CE /* StrafenWidgetExtension.appex */,
+				B09CC1DD259F4BF70079B86B /* StrafenNotificationService.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -757,7 +824,7 @@
 				B0E0F82A24A63E5A00C82828 /* Assets.xcassets */,
 				B0E0F82F24A63E5A00C82828 /* Info.plist */,
 				B077B58824CAC9E9003844CE /* Strafen.entitlements */,
-				B02F9889258CFAD600B04C48 /* GoogleService-Info.plist */,
+				B03B195C259F861B00D44394 /* GoogleService-Info.plist */,
 				B0E0F82C24A63E5A00C82828 /* Preview Content */,
 			);
 			path = Controller;
@@ -784,6 +851,24 @@
 			productReference = B077B57024CAC652003844CE /* StrafenWidgetExtension.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
+		B09CC1DC259F4BF70079B86B /* StrafenNotificationService */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B09CC1E7259F4BF70079B86B /* Build configuration list for PBXNativeTarget "StrafenNotificationService" */;
+			buildPhases = (
+				566C54E2D97DEF183F0E7719 /* [CP] Check Pods Manifest.lock */,
+				B09CC1D9259F4BF70079B86B /* Sources */,
+				B09CC1DA259F4BF70079B86B /* Frameworks */,
+				B09CC1DB259F4BF70079B86B /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = StrafenNotificationService;
+			productName = StrafenNotificationService;
+			productReference = B09CC1DD259F4BF70079B86B /* StrafenNotificationService.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 		B0E0F82224A63E5800C82828 /* Strafen */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = B0E0F84824A63E5A00C82828 /* Build configuration list for PBXNativeTarget "Strafen" */;
@@ -799,6 +884,7 @@
 			);
 			dependencies = (
 				B077B57F24CAC655003844CE /* PBXTargetDependency */,
+				B0DEAAC525A099B1009C6BD9 /* PBXTargetDependency */,
 			);
 			name = Strafen;
 			productName = Strafen;
@@ -850,11 +936,14 @@
 		B0E0F81B24A63E5800C82828 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 1220;
+				LastSwiftUpdateCheck = 1230;
 				LastUpgradeCheck = 1200;
 				TargetAttributes = {
 					B077B56F24CAC652003844CE = {
 						CreatedOnToolsVersion = 12.0;
+					};
+					B09CC1DC259F4BF70079B86B = {
+						CreatedOnToolsVersion = 12.3;
 					};
 					B0E0F82224A63E5800C82828 = {
 						CreatedOnToolsVersion = 12.0;
@@ -892,6 +981,7 @@
 				B0E0F83324A63E5A00C82828 /* StrafenTests */,
 				B0E0F83E24A63E5A00C82828 /* StrafenUITests */,
 				B077B56F24CAC652003844CE /* StrafenWidgetExtension */,
+				B09CC1DC259F4BF70079B86B /* StrafenNotificationService */,
 			);
 		};
 /* End PBXProject section */
@@ -912,7 +1002,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				B077B57A24CAC655003844CE /* Assets.xcassets in Resources */,
-				B02F989C258CFCC200B04C48 /* GoogleService-Info.plist in Resources */,
+				B03B195E259F861B00D44394 /* GoogleService-Info.plist in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B09CC1DB259F4BF70079B86B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B03B195F259F861B00D44394 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -921,8 +1019,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				B0E0F82E24A63E5A00C82828 /* Preview Assets.xcassets in Resources */,
+				B03B195D259F861B00D44394 /* GoogleService-Info.plist in Resources */,
 				B0E0F82B24A63E5A00C82828 /* Assets.xcassets in Resources */,
-				B02F988A258CFAD600B04C48 /* GoogleService-Info.plist in Resources */,
 				B03D1DC325934AD200EB8648 /* UnifiedNativeAdView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -960,6 +1058,28 @@
 			);
 			outputPaths = (
 				"$(DERIVED_FILE_DIR)/Pods-Strafen-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		566C54E2D97DEF183F0E7719 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-StrafenNotificationService-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -1109,6 +1229,37 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		B09CC1D9259F4BF70079B86B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B03EA74D259F77BD002EFD4A /* Importance.swift in Sources */,
+				B03EA780259F7805002EFD4A /* Array.swift in Sources */,
+				B03EA72E259F778D002EFD4A /* Settings.swift in Sources */,
+				B03EA78D259F781E002EFD4A /* Fetcher.swift in Sources */,
+				B03EA74C259F77BB002EFD4A /* Payed.swift in Sources */,
+				B03EA762259F77CC002EFD4A /* ReasonTemplate.swift in Sources */,
+				B03EA73A259F7796002EFD4A /* Settings+LatePaymentInterest.swift in Sources */,
+				B03EA774259F77F1002EFD4A /* Tagged.swift in Sources */,
+				B03EA740259F779D002EFD4A /* Settings+Style.swift in Sources */,
+				B03EA74E259F77BF002EFD4A /* FineReason.swift in Sources */,
+				B03EA768259F77E7002EFD4A /* Logger.swift in Sources */,
+				B03EA754259F77C1002EFD4A /* Amount.swift in Sources */,
+				B03EA75C259F77CA002EFD4A /* Fine.swift in Sources */,
+				B03EA781259F780A002EFD4A /* Other.swift in Sources */,
+				B03EA77A259F7803002EFD4A /* Color.swift in Sources */,
+				B03EA75A259F77C5002EFD4A /* ListTypes.swift in Sources */,
+				B03EA728259F75F7002EFD4A /* DailyNotificationContent.swift in Sources */,
+				B03EA746259F77B8002EFD4A /* PersonName.swift in Sources */,
+				B03EA75B259F77C7002EFD4A /* Person.swift in Sources */,
+				B09CC1E0259F4BF70079B86B /* NotificationService.swift in Sources */,
+				B03EA734259F7794002EFD4A /* Settings+Person.swift in Sources */,
+				B03EA76E259F77EC002EFD4A /* PropertyWrapper.swift in Sources */,
+				B03EA787259F781B002EFD4A /* DataTypeList.swift in Sources */,
+				B03EA78E259F7820002EFD4A /* ListData.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		B0E0F81F24A63E5800C82828 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1232,6 +1383,11 @@
 			target = B077B56F24CAC652003844CE /* StrafenWidgetExtension */;
 			targetProxy = B077B57E24CAC655003844CE /* PBXContainerItemProxy */;
 		};
+		B0DEAAC525A099B1009C6BD9 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = B09CC1DC259F4BF70079B86B /* StrafenNotificationService */;
+			targetProxy = B0DEAAC425A099B1009C6BD9 /* PBXContainerItemProxy */;
+		};
 		B0E0F83624A63E5A00C82828 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = B0E0F82224A63E5800C82828 /* Strafen */;
@@ -1288,6 +1444,54 @@
 					"@executable_path/../../Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = stevenkellner.Strafen.StrafenWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+		B09CC1E5259F4BF70079B86B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = B99112ABC31485A84931F2B5 /* Pods-StrafenNotificationService.debug.xcconfig */;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = NO;
+				CODE_SIGN_ENTITLEMENTS = StrafenNotificationService/StrafenNotificationService.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 7;
+				DEVELOPMENT_TEAM = K7NTJ83ZF8;
+				INFOPLIST_FILE = StrafenNotificationService/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = stevenkellner.Strafen.StrafenNotificationService;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		B09CC1E6259F4BF70079B86B /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = B6DEE7790E09F9517795ABD8 /* Pods-StrafenNotificationService.release.xcconfig */;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = NO;
+				CODE_SIGN_ENTITLEMENTS = StrafenNotificationService/StrafenNotificationService.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 7;
+				DEVELOPMENT_TEAM = K7NTJ83ZF8;
+				INFOPLIST_FILE = StrafenNotificationService/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = stevenkellner.Strafen.StrafenNotificationService;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 5.0;
@@ -1569,6 +1773,15 @@
 			buildConfigurations = (
 				B077B58224CAC655003844CE /* Debug */,
 				B077B58324CAC655003844CE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B09CC1E7259F4BF70079B86B /* Build configuration list for PBXNativeTarget "StrafenNotificationService" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B09CC1E5259F4BF70079B86B /* Debug */,
+				B09CC1E6259F4BF70079B86B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

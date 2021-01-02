@@ -8,6 +8,7 @@
 import SwiftUI
 import Firebase
 import GoogleMobileAds
+import FirebaseMessaging
 
 /// App Delegate
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -40,8 +41,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Register for push notifications
         registerForPushNotifications()
         
-        // Schedule notification
-        scheduleNotification()
+        // Set up push messages
+        Messaging.messaging().delegate = self
+        Messaging.messaging().subscribe(toTopic: "daily-notification")
+        if let person = Settings.shared.person {
+            Messaging.messaging().subscribe(toTopic: "clubId-\(person.clubProperties.id)")
+            Messaging.messaging().subscribe(toTopic: "personId-\(person.clubProperties.id)-\(person.id)")
+        }
     }
     
     /// Applies shortcut
@@ -63,34 +69,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     /// Register for push notification
     private func registerForPushNotifications() {
         let center = UNUserNotificationCenter.current()
-        center.requestAuthorization(options: [.alert, .sound, .badge]) { granted, error in
-            guard granted else { return }
-            center.getNotificationSettings { settings in
-                guard settings.authorizationStatus == .authorized else { return }
-                DispatchQueue.main.async {
-                    UIApplication.shared.registerForRemoteNotifications()
-                }
-            }
+        center.requestAuthorization(options: [.alert, .sound, .badge]) { _, _ in }
+        center.getNotificationSettings { settings in
+            guard settings.authorizationStatus == .authorized else { return }
+            DispatchQueue.main.async(execute: UIApplication.shared.registerForRemoteNotifications)
         }
     }
-    
-    /// Schedule notification
-    private func scheduleNotification() {
-        let center = UNUserNotificationCenter.current()
-        center.removeAllPendingNotificationRequests()
-        
-        let content = UNMutableNotificationContent()
-        content.title = "Bezahl deine Strafen!"
-        content.subtitle = "Du könntest noch offene Strafen haben."
-        content.body = "Öffne die App um nachzusehen, wieviel du noch zahlen musst und zahl es bis zum nächsten Training."
-        content.categoryIdentifier = "daily-notification"
-        content.sound = .default
-        content.badge = 1
+}
 
-        var dateComponents = DateComponents()
-        dateComponents.hour = 18
-        let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
-        let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
-        center.add(request)
+extension AppDelegate: MessagingDelegate {
+    func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String?) {
+        let dataDict: [String: String] = ["token": fcmToken ?? ""]
+        NotificationCenter.default.post(name: Notification.Name("FCMToken"), object: nil, userInfo: dataDict)
     }
 }

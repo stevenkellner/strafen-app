@@ -19,10 +19,22 @@
 			<key>orderHint</key>
 			<integer>7</integer>
 		</dict>
+		<key>StrafenNotificationService 1.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+			<key>orderHint</key>
+			<integer>30</integer>
+		</dict>
+		<key>StrafenNotificationService.xcscheme_^#shared#^_</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>30</integer>
+		</dict>
 		<key>StrafenTests.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>20</integer>
+			<integer>3</integer>
 		</dict>
 		<key>StrafenWidgetExtension.xcscheme_^#shared#^_</key>
 		<dict>
@@ -40,6 +52,11 @@
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
 		<key>B077B56F24CAC652003844CE</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>B09CC1DC259F4BF70079B86B</key>
 		<dict>
 			<key>primary</key>
 			<true/>
