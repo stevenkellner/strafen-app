@@ -7,6 +7,7 @@ target 'Strafen' do
   # Add the pods for any other Firebase products you want to use in your app
   # For example, to use Firebase Authentication and Cloud Firestore
   pod 'Firebase/Auth'
+  pod 'Firebase/Analytics'
   pod 'Firebase/Database'
   pod 'Firebase/Functions'
   pod 'Firebase/Storage'

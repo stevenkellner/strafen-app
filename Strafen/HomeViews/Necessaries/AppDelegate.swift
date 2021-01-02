@@ -69,14 +69,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     /// Register for push notification
     private func registerForPushNotifications() {
         let center = UNUserNotificationCenter.current()
-        center.requestAuthorization(options: [.alert, .sound, .badge]) { granted, error in
-            guard granted else { return }
-            center.getNotificationSettings { settings in
-                guard settings.authorizationStatus == .authorized else { return }
-                DispatchQueue.main.async {
-                    UIApplication.shared.registerForRemoteNotifications()
-                }
-            }
+        center.requestAuthorization(options: [.alert, .sound, .badge]) { _, _ in }
+        center.getNotificationSettings { settings in
+            guard settings.authorizationStatus == .authorized else { return }
+            DispatchQueue.main.async(execute: UIApplication.shared.registerForRemoteNotifications)
         }
     }
 }

@@ -232,6 +232,10 @@ SOFTWARE.
    limitations under the License.
 
 
+## FirebaseAnalytics
+
+Copyright 2020 Google
+
 ## FirebaseAuth
 
 
