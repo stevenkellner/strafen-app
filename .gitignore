@@ -65,3 +65,8 @@ node_modules/
 # dotenv environment variables file
 .env
 
+/Strafen/Controller/GoogleService-Info.plist
+/Strafen/Controller/Strafen.entitlements
+/Strafen/Controller/Info.plist
+/Pods/
+/build/
