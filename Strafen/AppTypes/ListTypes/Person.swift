@@ -97,7 +97,7 @@ extension Person {
         let first: String
         
         /// Last name
-        let last: String
+        let last: String?
         
         /// Convertes to person name
         var personName: PersonName {

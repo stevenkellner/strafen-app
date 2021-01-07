@@ -7,9 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		177D046107D314481E3351BB /* Pods_StrafenUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 21FB69BB8D67A95C3447BAEF /* Pods_StrafenUITests.framework */; };
 		67CDD1AB6A3BBA7C38C64532 /* Pods_Strafen.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28520CB35F7960A3527C91CA /* Pods_Strafen.framework */; };
 		919508DBCD84D1DA492F057B /* Pods_StrafenWidgetExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A28588CC33D58046FD7FA2DC /* Pods_StrafenWidgetExtension.framework */; };
-		A6F6A1A6B349D262998E8993 /* Pods_Strafen_StrafenUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 023B8104CAAD7D690BBF2A74 /* Pods_Strafen_StrafenUITests.framework */; };
 		B006920624C615D500AE2EF0 /* HomeTabs.swift in Sources */ = {isa = PBXBuildFile; fileRef = B006920524C615D500AE2EF0 /* HomeTabs.swift */; };
 		B00C6EF5258D46700015637D /* MediumWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = B04B71ED24CEDA9C0038B02F /* MediumWidget.swift */; };
 		B00C6F15258E0F5C0015637D /* HelpfulViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00C6F14258E0F5C0015637D /* HelpfulViews.swift */; };
@@ -97,6 +97,7 @@
 		B0619C1424C21958008969A1 /* AddNewFine.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0619C1324C21958008969A1 /* AddNewFine.swift */; };
 		B0619C1624C236C2008969A1 /* AddNewFinePerson.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0619C1524C236C2008969A1 /* AddNewFinePerson.swift */; };
 		B0619C1824C23911008969A1 /* AddNewFineReason.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0619C1724C23910008969A1 /* AddNewFineReason.swift */; };
+		B0709EDF25A4B55E003D542F /* CallerTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0709EDE25A4B55E003D542F /* CallerTest.swift */; };
 		B075A86F258BBE7C00D74175 /* PlaceholderContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = B04B71EA24CE18560038B02F /* PlaceholderContent.swift */; };
 		B075A874258BEC5100D74175 /* WidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B077B59624CB0801003844CE /* WidgetView.swift */; };
 		B075A87A258BF02300D74175 /* NoPersonLoggedIn.swift in Sources */ = {isa = PBXBuildFile; fileRef = B075A879258BF02300D74175 /* NoPersonLoggedIn.swift */; };
@@ -163,8 +164,8 @@
 		B0E0F82924A63E5800C82828 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E0F82824A63E5800C82828 /* ContentView.swift */; };
 		B0E0F82B24A63E5A00C82828 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B0E0F82A24A63E5A00C82828 /* Assets.xcassets */; };
 		B0E0F82E24A63E5A00C82828 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B0E0F82D24A63E5A00C82828 /* Preview Assets.xcassets */; };
-		B0E0F83924A63E5A00C82828 /* StrafenTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E0F83824A63E5A00C82828 /* StrafenTests.swift */; };
 		B0E0F84424A63E5A00C82828 /* StrafenUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E0F84324A63E5A00C82828 /* StrafenUITests.swift */; };
+		B0E1812725A4D9E90054A35E /* DeleteClubCall.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E1812625A4D9E90054A35E /* DeleteClubCall.swift */; };
 		B0E2C19424CC6620009E3666 /* Fine.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E2C19024CC661F009E3666 /* Fine.swift */; };
 		B0E50C9F253DCC44008C7E84 /* SignInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E50C9E253DCC44008C7E84 /* SignInView.swift */; };
 		B0E50D1325418D37008C7E84 /* KeyboardAdaptive.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E50D1225418D37008C7E84 /* KeyboardAdaptive.swift */; };
@@ -230,11 +231,13 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		023B8104CAAD7D690BBF2A74 /* Pods_Strafen_StrafenUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Strafen_StrafenUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		085A35B45E057FA1E93DE8FF /* Pods_StrafenTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_StrafenTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		1E8D3969A673B9646CBE81DA /* Pods-StrafenUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StrafenUITests.debug.xcconfig"; path = "Target Support Files/Pods-StrafenUITests/Pods-StrafenUITests.debug.xcconfig"; sourceTree = "<group>"; };
+		21FB69BB8D67A95C3447BAEF /* Pods_StrafenUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_StrafenUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		28520CB35F7960A3527C91CA /* Pods_Strafen.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Strafen.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2ABCDC15E00DE2581D8EB7D1 /* Pods_StrafenNotificationService.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_StrafenNotificationService.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4FB38E3F4411C19BC6E1867D /* Pods-Strafen-StrafenUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Strafen-StrafenUITests.release.xcconfig"; path = "Target Support Files/Pods-Strafen-StrafenUITests/Pods-Strafen-StrafenUITests.release.xcconfig"; sourceTree = "<group>"; };
+		664245EF5918DBDFC1C4D345 /* Pods-StrafenUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StrafenUITests.release.xcconfig"; path = "Target Support Files/Pods-StrafenUITests/Pods-StrafenUITests.release.xcconfig"; sourceTree = "<group>"; };
 		78EB9FE447514E62AB69E4B9 /* Pods-StrafenTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StrafenTests.release.xcconfig"; path = "Target Support Files/Pods-StrafenTests/Pods-StrafenTests.release.xcconfig"; sourceTree = "<group>"; };
 		88841E0B0F47B91B56AC1E05 /* Pods-Strafen.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Strafen.debug.xcconfig"; path = "Target Support Files/Pods-Strafen/Pods-Strafen.debug.xcconfig"; sourceTree = "<group>"; };
 		9F648314F45F12CD67B093FF /* Pods-StrafenTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StrafenTests.debug.xcconfig"; path = "Target Support Files/Pods-StrafenTests/Pods-StrafenTests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -284,6 +287,7 @@
 		B0619C1324C21958008969A1 /* AddNewFine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewFine.swift; sourceTree = "<group>"; };
 		B0619C1524C236C2008969A1 /* AddNewFinePerson.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewFinePerson.swift; sourceTree = "<group>"; };
 		B0619C1724C23910008969A1 /* AddNewFineReason.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewFineReason.swift; sourceTree = "<group>"; };
+		B0709EDE25A4B55E003D542F /* CallerTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallerTest.swift; sourceTree = "<group>"; };
 		B075A879258BF02300D74175 /* NoPersonLoggedIn.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoPersonLoggedIn.swift; sourceTree = "<group>"; };
 		B077B57024CAC652003844CE /* StrafenWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = StrafenWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		B077B57124CAC652003844CE /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
@@ -353,11 +357,11 @@
 		B0E0F82D24A63E5A00C82828 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		B0E0F82F24A63E5A00C82828 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B0E0F83424A63E5A00C82828 /* StrafenTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = StrafenTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		B0E0F83824A63E5A00C82828 /* StrafenTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StrafenTests.swift; sourceTree = "<group>"; };
 		B0E0F83A24A63E5A00C82828 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B0E0F83F24A63E5A00C82828 /* StrafenUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = StrafenUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B0E0F84324A63E5A00C82828 /* StrafenUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StrafenUITests.swift; sourceTree = "<group>"; };
 		B0E0F84524A63E5A00C82828 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B0E1812625A4D9E90054A35E /* DeleteClubCall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteClubCall.swift; sourceTree = "<group>"; };
 		B0E2C19024CC661F009E3666 /* Fine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Fine.swift; sourceTree = "<group>"; };
 		B0E2C1AE24CDB646009E3666 /* SmallWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmallWidget.swift; sourceTree = "<group>"; };
 		B0E50C9E253DCC44008C7E84 /* SignInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInView.swift; sourceTree = "<group>"; };
@@ -412,7 +416,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A6F6A1A6B349D262998E8993 /* Pods_Strafen_StrafenUITests.framework in Frameworks */,
+				177D046107D314481E3351BB /* Pods_StrafenUITests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -432,6 +436,8 @@
 				A4EE6A2E94660E69A2CF1D04 /* Pods-StrafenWidgetExtension.release.xcconfig */,
 				B99112ABC31485A84931F2B5 /* Pods-StrafenNotificationService.debug.xcconfig */,
 				B6DEE7790E09F9517795ABD8 /* Pods-StrafenNotificationService.release.xcconfig */,
+				1E8D3969A673B9646CBE81DA /* Pods-StrafenUITests.debug.xcconfig */,
+				664245EF5918DBDFC1C4D345 /* Pods-StrafenUITests.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -440,13 +446,13 @@
 			isa = PBXGroup;
 			children = (
 				28520CB35F7960A3527C91CA /* Pods_Strafen.framework */,
-				023B8104CAAD7D690BBF2A74 /* Pods_Strafen_StrafenUITests.framework */,
 				B099522C254472C700833EA4 /* AlertsAndPickers.xcodeproj */,
 				085A35B45E057FA1E93DE8FF /* Pods_StrafenTests.framework */,
 				B077B57124CAC652003844CE /* WidgetKit.framework */,
 				B077B57324CAC652003844CE /* SwiftUI.framework */,
 				A28588CC33D58046FD7FA2DC /* Pods_StrafenWidgetExtension.framework */,
 				2ABCDC15E00DE2581D8EB7D1 /* Pods_StrafenNotificationService.framework */,
+				21FB69BB8D67A95C3447BAEF /* Pods_StrafenUITests.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -739,6 +745,7 @@
 				B07DDDCE256FB9E20003F139 /* ChangeFinePayedCall.swift */,
 				B0D75CD72558202000555B03 /* ChangeListCall.swift */,
 				B0D75CCB2558200900555B03 /* ClubIdentifierAlreadyExistsCall.swift */,
+				B0E1812625A4D9E90054A35E /* DeleteClubCall.swift */,
 				B087CF3C258B86C2005E819D /* ForceSignOutCall.swift */,
 				B0D75CBF25581FF400555B03 /* GetClubIdCall.swift */,
 				B0D75CC525581FFE00555B03 /* GetPersonPropertiesCall.swift */,
@@ -802,7 +809,7 @@
 		B0E0F83724A63E5A00C82828 /* StrafenTests */ = {
 			isa = PBXGroup;
 			children = (
-				B0E0F83824A63E5A00C82828 /* StrafenTests.swift */,
+				B0709EDE25A4B55E003D542F /* CallerTest.swift */,
 				B0E0F83A24A63E5A00C82828 /* Info.plist */,
 			);
 			path = StrafenTests;
@@ -918,7 +925,6 @@
 				B0E0F83B24A63E5A00C82828 /* Sources */,
 				B0E0F83C24A63E5A00C82828 /* Frameworks */,
 				B0E0F83D24A63E5A00C82828 /* Resources */,
-				83786DDA2E3FF3D8A3434A8C /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -1108,23 +1114,6 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		83786DDA2E3FF3D8A3434A8C /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Strafen-StrafenUITests/Pods-Strafen-StrafenUITests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Strafen-StrafenUITests/Pods-Strafen-StrafenUITests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Strafen-StrafenUITests/Pods-Strafen-StrafenUITests-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		A5AFC35650EA87D085E6D2E9 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -1179,7 +1168,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-Strafen-StrafenUITests-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-StrafenUITests-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -1301,6 +1290,7 @@
 				B0E0F82724A63E5800C82828 /* StrafenApp.swift in Sources */,
 				B0E6E86F24CDD38500D467AC /* OutlineAndSheetBar.swift in Sources */,
 				B087CF3D258B86C2005E819D /* ForceSignOutCall.swift in Sources */,
+				B0E1812725A4D9E90054A35E /* DeleteClubCall.swift in Sources */,
 				B0B39A82256D8B06002E2CB9 /* FineListRow.swift in Sources */,
 				B042D42E24BA21540029F2D5 /* ListTypes.swift in Sources */,
 				B0D75CD82558202000555B03 /* ChangeListCall.swift in Sources */,
@@ -1363,7 +1353,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B0E0F83924A63E5A00C82828 /* StrafenTests.swift in Sources */,
+				B0709EDF25A4B55E003D542F /* CallerTest.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1725,7 +1715,7 @@
 		};
 		B0E0F84F24A63E5A00C82828 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = C48AEE77D98866AC072A2AD1 /* Pods-Strafen-StrafenUITests.debug.xcconfig */;
+			baseConfigurationReference = 1E8D3969A673B9646CBE81DA /* Pods-StrafenUITests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				CODE_SIGN_STYLE = Automatic;
@@ -1746,7 +1736,7 @@
 		};
 		B0E0F85024A63E5A00C82828 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 4FB38E3F4411C19BC6E1867D /* Pods-Strafen-StrafenUITests.release.xcconfig */;
+			baseConfigurationReference = 664245EF5918DBDFC1C4D345 /* Pods-StrafenUITests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				CODE_SIGN_STYLE = Automatic;

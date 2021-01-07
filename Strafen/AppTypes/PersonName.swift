@@ -14,7 +14,18 @@ struct PersonName: Codable {
     let firstName: String
     
     /// Last name of a person
-    let lastName: String
+    let lastName: String?
+    
+    init?(firstName: String?, lastName: String?) {
+        guard let firstName = firstName else { return nil }
+        self.firstName = firstName
+        self.lastName = lastName?.isEmpty ?? true ? nil : lastName
+    }
+    
+    init(firstName: String, lastName: String?) {
+        self.firstName = firstName
+        self.lastName = lastName?.isEmpty ?? true ? nil : lastName
+    }
     
     /// Unknown person name
     static let unknown = PersonName(firstName: "Unknown", lastName: "Person")

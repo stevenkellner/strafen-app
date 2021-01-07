@@ -246,10 +246,7 @@ extension PersonNameComponents {
     ///
     /// Is nil, if PersonNameComponents has no given or family name
     var personName: PersonName? {
-        guard let givenName = givenName, let familyName = familyName else {
-            return nil
-        }
-        return PersonName(firstName: givenName, lastName: familyName)
+        PersonName(firstName: givenName, lastName: familyName)
     }
 }
 

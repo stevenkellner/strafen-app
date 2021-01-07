@@ -23,7 +23,7 @@ exports.newClub = functions.region('europe-west1').https.onCall(async (data, con
       }
 
     // Check if all arguments are set
-    let requiredArguements = ['clubId', 'clubName', 'personId', 'personFirstName', 'personLastName', 'clubIdentifier', 'userId', 'signInDate', 'regionCode'];
+    let requiredArguements = ['clubId', 'clubName', 'personId', 'personFirstName', 'clubIdentifier', 'userId', 'signInDate', 'regionCode'];
     checkAllArguments(requiredArguements, data);
 
     // Add club to allClubs
@@ -145,7 +145,7 @@ exports.registerPerson = functions.region('europe-west1').https.onCall(async (da
       }
       
     // Check if all arguments are set
-    let requiredArguements = ['clubId', 'id', 'firstName', 'lastName', 'userId', 'signInDate'];
+    let requiredArguements = ['clubId', 'id', 'firstName', 'userId', 'signInDate'];
     checkAllArguments(requiredArguements, data);
 
     // Get person reference
@@ -253,7 +253,7 @@ exports.changeList = functions.region('europe-west1').https.onCall(async (data, 
     let item = null;
     if (data.changeType != 'delete') {
         if (data.listType == 'person') {
-            let otherArguments = ['firstName', 'lastName'];
+            let otherArguments = ['firstName'];
             checkAllArguments(otherArguments, data);
             item = {
                 name: {
@@ -545,6 +545,24 @@ exports.existsPersonWithUserId = functions.region('europe-west1').https.onCall(a
         });
     });
     return personExists;
+});
+
+// Delete a person
+exports.deleteClub = functions.region("europe-west1").https.onCall(async (data, context) => {
+    if (!context.auth) {
+        throw new functions.https.HttpsError(
+            'failed-precondition', 
+            'The function must be called while authenticated.'
+        );
+    }
+
+    // Check if all arguments are set
+    checkAllArguments(['clubId'], data);
+
+    let clubsRef = admin.database().ref('clubs/' + data.clubId.toString().toUpperCase());
+    if (await existsData(clubsRef)) {
+        await clubsRef.remove();
+    }
 });
 
 // Check if data exists at path

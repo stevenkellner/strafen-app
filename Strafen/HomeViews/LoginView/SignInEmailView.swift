@@ -33,9 +33,6 @@ struct SignInEMailView: View {
         /// Type of first name textfield error
         var firstNameErrorMessages: ErrorMessages? = nil
         
-        /// Type of last name textfield error
-        var lastNameErrorMessages: ErrorMessages? = nil
-        
         /// Type of  email textfield error
         var emailErrorMessages: ErrorMessages? = nil
         
@@ -52,18 +49,6 @@ struct SignInEMailView: View {
                 firstNameErrorMessages = .emptyField
             } else {
                 firstNameErrorMessages = nil
-                return false
-            }
-            return true
-        }
-        
-        /// Check if last name is empty
-        @discardableResult mutating func evaluteLastNameError() -> Bool {
-            if lastName.isEmpty {
-                Logging.shared.log(with: .debug, "Last name textfield is empty.")
-                lastNameErrorMessages = .emptyField
-            } else {
-                lastNameErrorMessages = nil
                 return false
             }
             return true
@@ -149,13 +134,10 @@ struct SignInEMailView: View {
         
         /// Check if any errors occurs
         mutating func checkErrors() -> Bool {
-            var isError = false
-            isError = evaluteFirstNameError() || isError
-            isError = evaluteLastNameError() || isError
-            isError = evaluteEmailError() || isError
-            isError = evalutePasswordError() || isError
-            isError = evaluteRepeatPasswordError() || isError
-            return isError
+            evaluteFirstNameError() |!|
+                evaluteEmailError() |!|
+                evalutePasswordError() |!|
+                evaluteRepeatPasswordError()
         }
         
         /// Checks if an error occured while signing in
@@ -323,13 +305,9 @@ struct SignInEMailView: View {
                         
                         // Last name input
                         CustomTextField()
-                            .title("Nachname")
+                            .title("Nachname (optional)")
                             .textBinding($emailCredentials.lastName)
-                            .errorMessages($emailCredentials.lastNameErrorMessages)
                             .textFieldSize(width: UIScreen.main.bounds.width * 0.95, height: 50)
-                            .onCompletion {
-                                emailCredentials.evaluteLastNameError()
-                            }
                         
                     }
                     
