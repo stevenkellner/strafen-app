@@ -169,7 +169,7 @@ struct NativeAdViewWrapper: UIViewControllerRepresentable {
 class NativeAdViewController: UIViewController {
     
     /// The ad unit ID.
-    static private let adUnitID = "ca-app-pub-1851656718484421/2246929789"
+    static private let adUnitID = "ca-app-pub-1851656718484421/3545856551"
     
     /// Connection state
     @Binding var connectionState: ConnectionState

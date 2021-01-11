@@ -66,14 +66,7 @@ struct Fetcher {
     /// Decodes fetched data from database to list
     private func decodeFetchedList<Type>(from data: Any) -> [Type]? where Type: ListType {
         let decoder = FirebaseDecoder()
-        // let dictionary = try? decoder.decode(Dictionary<String, Type.CodableSelf>.self, from: data)
-        let dictionary: Dictionary<String, Type.CodableSelf>?
-        do {
-            dictionary = try decoder.decode([String : Type.CodableSelf].self, from: data)
-        } catch {
-            print(error)
-            dictionary = nil
-        }
+        let dictionary = try? decoder.decode(Dictionary<String, Type.CodableSelf>.self, from: data)
         let list = dictionary.map { dictionary in
             dictionary.map { idString, item -> Type in
                 let id = Type.ID(rawValue: UUID(uuidString: idString)!)

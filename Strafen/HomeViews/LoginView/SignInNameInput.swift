@@ -22,9 +22,6 @@ struct SignInNameInput: View {
         /// Type of first name textfield error
         var firstNameErrorMessages: ErrorMessages? = nil
         
-        /// Type of last name textfield error
-        var lastNameErrorMessages: ErrorMessages? = nil
-        
         /// Set name from cached properties
         mutating func setFromCache() {
             let cacheProperty = SignInCache.shared.cachedStatus?.property as! SignInCache.PropertyUserId
@@ -47,24 +44,9 @@ struct SignInNameInput: View {
             return true
         }
         
-        /// Check if last name is empty
-        @discardableResult mutating func evaluteLastNameError() -> Bool {
-            if lastName.isEmpty {
-                Logging.shared.log(with: .debug, "Last name textfield is empty.")
-                lastNameErrorMessages = .emptyField
-            } else {
-                lastNameErrorMessages = nil
-                return false
-            }
-            return true
-        }
-        
         /// Check if any errors occurs
         mutating func checkErrors() -> Bool {
-            var isError = false
-            isError = evaluteFirstNameError() || isError
-            isError = evaluteLastNameError() || isError
-            return isError
+            evaluteFirstNameError()
         }
     }
     
@@ -162,13 +144,9 @@ struct SignInNameInput: View {
                         
                         // Last name input
                         CustomTextField()
-                            .title("Nachname")
+                            .title("Nachname (optional)")
                             .textBinding($nameCredentials.lastName)
-                            .errorMessages($nameCredentials.lastNameErrorMessages)
                             .textFieldSize(width: UIScreen.main.bounds.width * 0.95, height: 50)
-                            .onCompletion {
-                                nameCredentials.evaluteLastNameError()
-                            }
                         
                     }
                 }

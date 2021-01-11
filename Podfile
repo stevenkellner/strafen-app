@@ -34,6 +34,7 @@ target 'Strafen' do
   end
 
   target 'StrafenUITests' do
+    inherit! :search_paths
     # Pods for testing
   end
 

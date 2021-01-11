@@ -28,9 +28,6 @@ struct PersonAddNew: View {
         /// Type of first name textfield error
         var firstNameErrorMessages: ErrorMessages? = nil
         
-        /// Type of last name textfield error
-        var lastNameErrorMessages: ErrorMessages? = nil
-        
         /// Type of function call error
         var functionCallErrorMessages: ErrorMessages? = nil
         
@@ -48,20 +45,9 @@ struct PersonAddNew: View {
             return true
         }
         
-        /// Checks if an error occurs while last name input
-        @discardableResult mutating func evaluteLastNameError() -> Bool {
-            if lastName.isEmpty {
-                lastNameErrorMessages = .emptyField
-            } else {
-                lastNameErrorMessages = nil
-                return false
-            }
-            return true
-        }
-        
         /// Checks if an error occurs
         mutating func errorOccurred() -> Bool {
-            evaluteFirstNameError() |!| evaluteLastNameError()
+            evaluteFirstNameError()
         }
     }
     
@@ -155,11 +141,9 @@ struct PersonAddNew: View {
                         
                         // Last name
                         CustomTextField()
-                            .title("Nachname")
+                            .title("Nachname (optional)")
                             .textBinding($personInputProperties.lastName)
-                            .errorMessages($personInputProperties.lastNameErrorMessages)
                             .textFieldSize(width: UIScreen.main.bounds.width * 0.95, height: 50)
-                            .onCompletion { personInputProperties.evaluteLastNameError() }
                         
                     }
                     
