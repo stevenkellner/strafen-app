@@ -22,7 +22,7 @@ struct PersonName: Codable {
         self.lastName = lastName?.isEmpty ?? true ? nil : lastName
     }
     
-    init(firstName: String, lastName: String?) {
+    init(firstName: String, lastName: String? = nil) {
         self.firstName = firstName
         self.lastName = lastName?.isEmpty ?? true ? nil : lastName
     }
