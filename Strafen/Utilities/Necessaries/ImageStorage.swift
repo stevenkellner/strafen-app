@@ -135,6 +135,14 @@ class ImageStorage {
             originalImages[key] = image
         }
         
+        /// Append image to all caches smaller or equal size than given image size
+        mutating func appentToAllSmaller(than imageSize: ImageSize, _ image: UIImage, with key: UUID) {
+            if imageSize >= .original { originalImages[key] = image }
+            if imageSize >= .thumbBig { bigImages[key] = image }
+            if imageSize >= .thumbStandard { standardImages[key] = image }
+            if imageSize >= .thumbsSmall { smallImages[key] = image }
+        }
+        
         /// Delete from all
         mutating func deleteFromAll(with key: UUID) {
             smallImages[key] = nil
@@ -230,7 +238,6 @@ class ImageStorage {
                 progressChangeHandler(progress)
             }
         }
-        
     }
     
     /// Fetch image from server
@@ -244,9 +251,9 @@ class ImageStorage {
             if let image = image {
                 switch imageType {
                 case .clubImage(clubId: let key):
-                    self?.clubImageCache.appendToAll(image, with: key.rawValue)
+                    self?.clubImageCache.appentToAllSmaller(than: imageSize, image, with: key.rawValue)
                 case .personImage(clubId: _, personId: let key):
-                    self?.personImageCache.appendToAll(image, with: key.rawValue)
+                    self?.personImageCache.appentToAllSmaller(than: imageSize, image, with: key.rawValue)
                 }
             }
             completionHandler(image)

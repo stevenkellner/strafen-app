@@ -48,5 +48,10 @@ extension Settings {
         
         /// Indicates whether the signed-in person is the club's cashier
         var isCashier: Bool
+        
+        /// Person properties without userId
+        var personProperties: _Person {
+            .init(id: id, name: name, signInData: .init(isCashier: isCashier, userId: "", signInDate: signInDate))
+        }
     }
 }

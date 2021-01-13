@@ -131,9 +131,10 @@ struct ProfileDetail: View {
             HStack(spacing: 0) {
                 
                 // Image
-                PersonDetail.PersonImage(image: $image, personName: settings.person?.name ?? .unknown)
-                    .padding(.leading, image == nil ? 25 : 0)
-                
+                if let person = settings.person?.personProperties {
+                    PersonDetail.PersonImage(image: $image, person: person)
+                        .padding(.leading, image == nil ? 25 : 0)
+                }
                 Spacer()
                 
                 // Edit button

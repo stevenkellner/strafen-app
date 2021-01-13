@@ -51,7 +51,7 @@ struct PersonDetail: View {
             VStack(spacing: 0) {
                 
                 // Image
-                PersonImage(image: $image, personName: person.name)
+                PersonImage(image: $image, person: person)
                     .padding(.top, 60)
                     .padding(.vertical, image == nil ? 20 : 10)
                 
@@ -133,8 +133,8 @@ struct PersonDetail: View {
         /// Image of the person
         @Binding var image: UIImage?
         
-        /// Person name
-        let personName: PersonName
+        /// Person
+        let person: Person
 
         /// Color scheme to get appearance of this device
         @Environment(\.colorScheme) var colorScheme
@@ -159,7 +159,7 @@ struct PersonDetail: View {
                         .toggleOnTapGesture($showImageDetail)
                         .overlay(Circle().stroke(settings.style.strokeColor(colorScheme), lineWidth: settings.style.lineWidth).frame(size: imageSize))
                         .sheet(isPresented: $showImageDetail) {
-                            ImageDetail(image: image, personName: personName)
+                            ImageDetail(image: image, person: person)
                         }
                 } else {
                     Image(systemName: "person")
@@ -175,14 +175,14 @@ struct PersonDetail: View {
         }
     }
     
-    /// Detail of the Image  // TODO improve image detail
+    /// Detail of the Image
     struct ImageDetail: View {
         
         /// Image
-        let image: UIImage
+        @State var image: UIImage
         
-        /// Person name
-        let personName: PersonName
+        /// Person
+        let person: Person
 
         /// Color scheme to get appearance of this device
         @Environment(\.colorScheme) var colorScheme
@@ -192,6 +192,12 @@ struct PersonDetail: View {
 
         /// Presentation mode
         @Environment(\.presentationMode) var presentationMode
+        
+        /// Image download progress
+        @State var downloadProgress: Double? = nil
+        
+        /// Indicates if an error occured
+        @State var errorOccured = false
         
         var body: some View {
             ZStack {
@@ -214,7 +220,7 @@ struct PersonDetail: View {
                             Button(action: {
                                 presentationMode.wrappedValue.dismiss()
                                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                                    ActivityView.shared.shareImage(image, title: personName.formatted)
+                                    ActivityView.shared.shareImage(image, title: person.name.formatted)
                                 }
                             }) {
                                 Text("Bild speichern")
@@ -227,8 +233,42 @@ struct PersonDetail: View {
                         }
                     
                     Spacer()
+                    
+                    // Download progress
+                    if let downloadProgress = downloadProgress {
+                        VStack(spacing: 5) {
+                            Text("Original Bild laden")
+                                .configurate(size: 15)
+                                .padding(.horizontal, 20)
+                                .lineLimit(1)
+                            ProgressView(value: downloadProgress)
+                                .progressViewStyle(LinearProgressViewStyle())
+                                .frame(width: UIScreen.main.bounds.width * 0.95)
+                        }
+                    } else if errorOccured {
+                        Text("Fehlen beim Laden")
+                            .configurate(size: 15)
+                            .padding(.horizontal, 20)
+                            .lineLimit(1)
+                    }
+                    
+                    Spacer()
                 }
             }.background(colorScheme.backgroundColor)
+                .onAppear {
+                    errorOccured = false
+                    guard let clubId = Settings.shared.person?.clubProperties.id else { return }
+                    ImageStorage.shared.getImage(.personImage(clubId: clubId, personId: person.id), size: .original) { image in
+                        downloadProgress = nil
+                        if let image = image {
+                            self.image = image
+                        } else {
+                            errorOccured = true
+                        }
+                    } progressChangeHandler: { progress in
+                        downloadProgress = progress
+                    }
+                }
         }
     }
 }
