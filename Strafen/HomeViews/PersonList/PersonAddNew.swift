@@ -201,7 +201,7 @@ struct PersonAddNew: View {
         if let image = personInputProperties.image {
             personInputProperties.imageUploadProgess = .zero
             dispatchGroup.enter()
-            ImageStorage.shared.store(at: .personImage(with: personId, clubId: clubId), image: image) { _ in
+            ImageStorage.shared.store(image, of: .personImage(clubId: clubId, personId: personId)) { _ in
                 
                 // Success
                 dispatchGroup.leave()

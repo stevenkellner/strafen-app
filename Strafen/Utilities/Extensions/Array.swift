@@ -164,6 +164,21 @@ extension Array where Element == String {
         filter(for: searchText, at: keyPath).sorted(by: keyPath)
     }
 }
+
+extension Array {
+    func map(_ transform: (inout Element) throws -> Void) rethrows -> [Element] {
+        try map { element -> Element in
+            var element = element
+            try transform(&element)
+            return element
+        }
+    }
+    
+    mutating func mapped(_ transform: (inout Element) throws -> Void) rethrows {
+        self = try map(transform)
+    }
+}
+
 #endif
 
 // Extension of Array to get a new array with unique elemets

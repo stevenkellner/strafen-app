@@ -464,6 +464,7 @@ struct SettingsView: View {
                                   message: Text("Möchtest du wirklich abgemldet werden?"),
                                   primaryButton: .default(Text("Abbrechen")),
                                   secondaryButton: .destructive(Text("Abmelden"), action: {
+                                    ImageStorage.shared.clear()
                                     try? Auth.auth().signOut()
                                     settings.person = nil
                                     WidgetCenter.shared.reloadTimelines(ofKind: "StrafenWidget")

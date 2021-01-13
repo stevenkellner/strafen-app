@@ -227,7 +227,10 @@ struct SignInPersonSelection: View {
         
         /// Fetch person image
         func fetchPersonImage() {
-            // TODO
+            let clubId = (SignInCache.shared.cachedStatus?.property as! SignInCache.PropertyUserIdNameClubId).clubId
+            ImageStorage.shared.getImage(.personImage(clubId: clubId, personId: person.id), size: .thumbsSmall) { image in
+                self.image = image
+            }
         }
         
         /// Handle tap

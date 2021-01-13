@@ -107,11 +107,11 @@ struct ProfileDetail: View {
             }.edgesIgnoringSafeArea(.all)
                 .hideNavigationBarTitle()
                 .onAppear {
+                    guard let person = settings.person else { return }
+                    ImageStorage.shared.getImage(.personImage(clubId: person.clubProperties.id, personId: person.id), size: .thumbBig) { image in
+                        self.image = image
+                    }
                 }
-            //        }.onAppear {
-            //            ImageData.shared.fetch(of: settings.person!.id) { image in TODO
-            //                self.image = image
-            //            }
         }
     }
     
@@ -131,9 +131,10 @@ struct ProfileDetail: View {
             HStack(spacing: 0) {
                 
                 // Image
-                PersonDetail.PersonImage(image: $image, personName: settings.person?.name ?? .unknown)
-                    .padding(.leading, image == nil ? 25 : 0)
-                
+                if let person = settings.person?.personProperties {
+                    PersonDetail.PersonImage(image: $image, person: person)
+                        .padding(.leading, image == nil ? 25 : 0)
+                }
                 Spacer()
                 
                 // Edit button
@@ -151,8 +152,8 @@ struct ProfileDetail: View {
                     .toggleOnTapGesture($showImagePicker)
                     .sheet(isPresented: self.$showImagePicker) {
                         ImagePicker($image) { image, isFirstImage in
-//                            let changeItem = PersonImageChange(changeType: isFirstImage ? .add : .update, image: image, personId: settings.person!.id)
-//                            Changer.shared.change(changeItem) {} failedHandler: {} TODO
+                            guard let person = settings.person else { return }
+                            ImageStorage.shared.store(image, of: .personImage(clubId: person.clubProperties.id, personId: person.id)) { _ in }
                         }
                     }
                 

@@ -223,9 +223,10 @@ struct SettingsForceSignOut: View {
                     personIds.toggle(person.id)
                 }
                 .onAppear {
-//                    ImageData.shared.fetch(of: person.id) { image in TODO
-//                        self.image = image
-//                    }
+                    guard let clubId = Settings.shared.person?.clubProperties.id else { return }
+                    ImageStorage.shared.getImage(.personImage(clubId: clubId, personId: person.id), size: .thumbsSmall) { image in
+                        self.image = image
+                    }
                 }
         }
     }

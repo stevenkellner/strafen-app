@@ -146,9 +146,10 @@ struct AddNewFinePerson: View {
                 
             }.frame(width: UIScreen.main.bounds.width * 0.95, height: 50)
                 .onAppear {
-//                    ImageData.shared.fetch(of: person.id) { image in TODO
-//                        self.image = image
-//                    }
+                    guard let clubId = Settings.shared.person?.clubProperties.id else { return }
+                    ImageStorage.shared.getImage(.personImage(clubId: clubId, personId: person.id), size: .thumbBig) { image in
+                        self.image = image
+                    }
                 }
         }
     }
