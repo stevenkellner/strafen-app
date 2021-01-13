@@ -120,9 +120,10 @@ struct PersonDetail: View {
             .setDismissHandler($dismissHandler)
             .setScreenSize
             .onAppear {
-//                ImageData.shared.fetch(of: person.id) { image in TODO
-//                    self.image = image
-//                }
+                guard let clubId = settings.person?.clubProperties.id else { return }
+                ImageStorage.shared.getImage(.personImage(clubId: clubId, personId: person.id), size: .thumbBig) { image in
+                    self.image = image
+                }
             }
     }
     

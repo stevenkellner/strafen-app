@@ -178,7 +178,7 @@ struct SignInClubInput: View {
             imageUploadProgess = .zero
             dispatchGroup.enter()
             Logging.shared.log(with: .info, "Started to upload image.")
-            ImageStorage.shared.store(at: .clubImage(with: clubId), image: image) { _ in
+            ImageStorage.shared.store(image, of: .clubImage(clubId: clubId)) { _ in
                 
                 // Success
                 Logging.shared.log(with: .info, "Successfully uploaded image.")

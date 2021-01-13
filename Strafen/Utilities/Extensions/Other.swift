@@ -87,18 +87,18 @@ extension View {
 extension URL {
     
     /// Path to club image file in server
-    static func clubImage(with id: Club.ID) -> URL {
+    static func clubImage(with imageName: String) -> URL {
         URL(string: "images")!
             .appendingPathComponent("club")
-            .appendingPathComponent(id.uuidString.uppercased())
+            .appendingPathComponent(imageName)
     }
     
     /// Path to person image file in server
-    static func personImage(with id: Person.ID, clubId: Club.ID) -> URL {
+    static func personImage(with imageName: String, clubId: Club.ID) -> URL {
         URL(string: "images")!
             .appendingPathComponent("person")
             .appendingPathComponent(clubId.uuidString.uppercased())
-            .appendingPathComponent(id.uuidString.uppercased())
+            .appendingPathComponent(imageName)
     }
 }
 

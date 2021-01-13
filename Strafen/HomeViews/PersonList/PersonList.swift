@@ -182,11 +182,11 @@ struct PersonList: View {
                         }
                     }
                     .onAppear {
+                        guard let clubId = Settings.shared.person?.clubProperties.id else { return }
+                        ImageStorage.shared.getImage(.personImage(clubId: clubId, personId: person.id), size: .thumbsSmall) { image in
+                            self.image = image
+                        }
                     }
-//            }.onAppear { TODO
-//                ImageData.shared.fetch(of: person.id) { image in
-//                    self.image = image
-//                }
             }
         }
         

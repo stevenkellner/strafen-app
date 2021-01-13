@@ -30,8 +30,7 @@ struct StrafenApp: App {
         case .inactive:
             break
         case .background:
-            break
-            // TODO clear image cache
+            ImageStorage.shared.clear()
         @unknown default:
             break
         }

@@ -44,7 +44,7 @@ struct PersonEditor: View {
         /// Sets properties with person
         mutating func setProperties(with person: Person) {
             firstName = person.name.firstName
-            lastName = person.name.lastName ?? "" // TODO set image
+            lastName = person.name.lastName ?? ""
         }
         
         /// Checks if an error occurs while first name input
@@ -218,9 +218,12 @@ struct PersonEditor: View {
             .setScreenSize
             .onAppear {
                 personInputProperties.setProperties(with: person)
-//                ImageData.shared.fetch(of: person.id) { image in TODO
-//                    self.image = image
-//                }
+                guard let clubId = Settings.shared.person?.clubProperties.id else { return }
+                ImageStorage.shared.getImage(.personImage(clubId: clubId, personId: person.id), size: .thumbBig) { image in
+                    if !personInputProperties.isNewImage {
+                        self.personInputProperties.image = image
+                    }
+                }
             }
     }
     
@@ -275,12 +278,11 @@ struct PersonEditor: View {
                 personInputProperties.functionCallErrorMessages = .internalErrorDelete
             }
         }
-
     }
     
     /// Delete person image, execute completion handler at success and failure
     func deleteImage(clubId: Club.ID, completionHandler: @escaping () -> Void) {
-        ImageStorage.shared.delete(at: .personImage(with: person.id, clubId: clubId)) { _ in
+        ImageStorage.shared.delete(.personImage(clubId: clubId, personId: person.id)) { _ in
             completionHandler()
         }
     }
@@ -345,7 +347,7 @@ struct PersonEditor: View {
     /// Set person image in database
     func setPersonImage(image: UIImage, clubId: Club.ID, completionHandler: @escaping () -> Void) {
         personInputProperties.imageUploadProgess = .zero
-        ImageStorage.shared.store(at: .personImage(with: person.id, clubId: clubId), image: image) { _ in
+        ImageStorage.shared.store(image, of: .personImage(clubId: clubId, personId: person.id)) { _ in
             
             // Success
             completionHandler()
