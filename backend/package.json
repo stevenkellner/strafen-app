@@ -1,0 +1,23 @@
+{
+  "name": "nodejs-docs-samples",
+  "description": "Node.js samples found on https://cloud.google.com",
+  "license": "Apache-2.0",
+  "author": "Google Inc.",
+  "engines": {
+    "node": ">=10"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/GoogleCloudPlatform/nodejs-docs-samples.git"
+  },
+  "private": true,
+  "scripts": {
+    "lint": "gts check",
+    "fix": "gts fix",
+    "test": "echo 'Please run tests in each sample directory.' && exit 1"
+  },
+  "devDependencies": {
+    "gts": "^3.0.0",
+    "typescript": "^4.0.5"
+  }
+}
