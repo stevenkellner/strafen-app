@@ -17,9 +17,19 @@ struct FunctionCaller {
     /// Private init for singleton
     private init() {}
     
+    /// Call errors
+    enum CallErrors: Error {
+        
+        /// Could find private key for function call
+        case noPrivateKey
+    }
+    
     /// Change given item on server and local
     func call<CallType>(_ item: CallType, passedHandler: @escaping (HTTPSCallableResult) -> Void, failedHandler: @escaping (Error) -> Void) where CallType: FunctionCallable {
-        Functions.functions(region: "europe-west1").httpsCallable(item.functionName).call(item.parameters.parameterableObject) { result, error in
+        guard let privateKey = Bundle.keysPropertyList.privateFunctionCallerKey as? String else { return failedHandler(CallErrors.noPrivateKey) }
+        var parameters = item.parameters
+        parameters.add(privateKey, for: "privateKey")
+        Functions.functions(region: "europe-west1").httpsCallable(item.functionName).call(parameters.parameterableObject) { result, error in
             if let result = result {
                 item.successHandler()
                 passedHandler(result)

@@ -11,6 +11,7 @@ import FirebaseFunctions
 /// View to input all club properties
 struct SignInClubInput: View {
     
+    // MARK: Club Credentials
     /// Club credentials
     struct ClubCredentials {
         
@@ -23,6 +24,9 @@ struct SignInClubInput: View {
         /// Region code
         var regionCode: String?
         
+        /// Is in app payment active
+        var inAppPaymentActive: Bool = true
+        
         /// Club image
         var image: UIImage? = nil
         
@@ -34,6 +38,9 @@ struct SignInClubInput: View {
         
         /// Type of region code error
         var regionCodeErrorMessages: ErrorMessages? = nil
+        
+        /// Type of activate in app payment error
+        var activateInAppPaymentErrorMessage: ErrorMessages? = nil
         
         /// Check if club name is empty
         @discardableResult mutating func evaluteClubNameError() -> Bool {
@@ -60,7 +67,7 @@ struct SignInClubInput: View {
         }
         
         /// Check if an error in region code occurs
-        mutating func evalutateRegionCodeError() -> Bool {
+        @discardableResult mutating func evalutateRegionCodeError() -> Bool {
             if regionCode == nil {
                 Logging.shared.log(with: .debug, "Region code textfield is empty.")
                 regionCodeErrorMessages = .noRegionGiven
@@ -71,15 +78,31 @@ struct SignInClubInput: View {
             return true
         }
         
+        /// Check if an error in activate in app payment occurs
+        @discardableResult mutating func evalutateActivateInAppPaymantError() -> Bool {
+            if inAppPaymentActive, let regionCode = regionCode {
+                let languageCodeKey = Locale.current.languageCode ?? "de"
+                let identifier = Locale.identifier(fromComponents: [
+                    "kCFLocaleCountryCodeKey": regionCode,
+                    "kCFLocaleLanguageCodeKey": languageCodeKey
+                ])
+                let locale = Locale(identifier: identifier)
+                if locale.currencyCode != "EUR" {
+                    activateInAppPaymentErrorMessage = .notEuro
+                    return true
+                }
+            }
+            activateInAppPaymentErrorMessage = nil
+            return false
+        }
+        
         /// Check if any errors occurs
         mutating func checkErrors() -> Bool {
-            var isError = false
-            isError = evaluteClubNameError() || isError
-            isError = evaluateClubIdentifierError() || isError
-            isError = evalutateRegionCodeError() || isError
-            return isError
+            evaluteClubNameError() |!| evaluateClubIdentifierError() |!| evalutateRegionCodeError() |!| evalutateActivateInAppPaymantError()
         }
     }
+    
+    // MARK: properties
     
     /// Club credentials
     @State var clubCredentials = ClubCredentials()
@@ -93,6 +116,7 @@ struct SignInClubInput: View {
     /// Screen size of this view
     @State var screenSize: CGSize?
     
+    // MARK: body
     var body: some View {
         GeometryReader { geometry in
             ZStack {
@@ -216,7 +240,7 @@ struct SignInClubInput: View {
             connectionState = .passed
             imageUploadProgess = nil
             SignInCache.shared.setState(to: nil)
-            let clubProperties = Settings.Person.ClubProperties(id: clubId, name: clubCredentials.clubName, identifier: clubCredentials.clubIdentifier, regionCode: clubCredentials.regionCode!)
+            let clubProperties = Settings.Person.ClubProperties(id: clubId, name: clubCredentials.clubName, identifier: clubCredentials.clubIdentifier, regionCode: clubCredentials.regionCode!, inAppPaymentActive: clubCredentials.inAppPaymentActive)
             Settings.shared.person = .init(clubProperties: clubProperties, id: personId, name: cachedProperty.name, signInDate: Date(), isCashier: true)
             
         } failedHandler: { error in
@@ -247,6 +271,7 @@ struct SignInClubInput: View {
         imageUploadProgess = nil
     }
     
+    // MARK: Club Properties Input
     /// Club properties input
     struct ClubPropertiesInput: View {
         
@@ -279,16 +304,10 @@ struct SignInClubInput: View {
                                     .frame(width: UIScreen.main.bounds.width * 0.95)
                             }
                         }
-                        
                     }
                     
                     // Club name
-                    VStack(spacing: 5) {
-                        
-                        // Title
-                        Title("Vereinsname")
-                        
-                        // Text Field
+                    TitledContent("Vereinsname") {
                         CustomTextField()
                             .title("Vereinsname")
                             .textBinding($clubCredentials.clubName)
@@ -297,38 +316,38 @@ struct SignInClubInput: View {
                             .onCompletion {
                                 clubCredentials.evaluteClubNameError()
                             }
-                        
                     }
                     
                     // Region code
-                    VStack(spacing: 5) {
-                        
-                        // Title
-                        Title("Region")
-                        
-                        // Region input
+                    TitledContent("Region", errorMessages: $clubCredentials.regionCodeErrorMessages) {
                         RegionInput(clubCredentials: $clubCredentials)
+                    }
+                    
+                    // Aktivate in app payment
+                    VStack(spacing: 5) {
+                        TitledContent("In App Payment", errorMessages: $clubCredentials.activateInAppPaymentErrorMessage) {
+                            BooleanChanger(boolToChange: $clubCredentials.inAppPaymentActive)
+                                .frame(width: UIScreen.main.bounds.width * 0.7, height: 25)
+                        }
                         
-                        // Error message
-                        ErrorMessageView(errorMessages: $clubCredentials.regionCodeErrorMessages)
-                        
+                        Text("Wenn aktiv, können deine Mitspieler die Strafen in der App zahlen und du sie dann auszahlen lassen.")
+                            .configurate(size: 20)
+                            .padding(.horizontal, 20)
+                            .lineLimit(3)
                     }
                     
                     // Club identifier
                     VStack(spacing: 5) {
-                        
-                        // Title
-                        Title("Vereinskennung")
-                        
-                        // Text Field
-                        CustomTextField()
-                            .title("Vereinskennung")
-                            .textBinding($clubCredentials.clubIdentifier)
-                            .errorMessages($clubCredentials.clubIdentifierErrorMessages)
-                            .textFieldSize(width: UIScreen.main.bounds.width * 0.95, height: 50)
-                            .onCompletion {
-                                clubCredentials.evaluateClubIdentifierError()
-                            }
+                        TitledContent("Vereinskennung") {
+                            CustomTextField()
+                                .title("Vereinskennung")
+                                .textBinding($clubCredentials.clubIdentifier)
+                                .errorMessages($clubCredentials.clubIdentifierErrorMessages)
+                                .textFieldSize(width: UIScreen.main.bounds.width * 0.95, height: 50)
+                                .onCompletion {
+                                    clubCredentials.evaluateClubIdentifierError()
+                                }
+                        }
                         
                         // Text
                         Text("Benutze die eindeutige Kennung um andere Spieler hinzuzufügen.")
@@ -344,6 +363,7 @@ struct SignInClubInput: View {
         }
     }
     
+    // MARK: Region Input
     /// Region input
     struct RegionInput: View {
         

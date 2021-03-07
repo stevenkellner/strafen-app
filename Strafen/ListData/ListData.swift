@@ -176,6 +176,19 @@ class ListData: ObservableObject {
             dispatchGroup.leave()
         }
         
+        // Get in app payment active
+        dispatchGroup.enter()
+        Database.database().reference(withPath: basePath + "/inAppPaymentActive").observeSingleEvent(of: .value) { snapshot in
+            guard snapshot.exists(), let data = snapshot.value else {
+                Settings.shared.person?.clubProperties.isInAppPaymentActive = false
+                return dispatchGroup.leave()
+            }
+            let decoder = FirebaseDecoder()
+            let inAppPaymentActive = try? decoder.decode(Bool.self, from: data)
+            Settings.shared.person?.clubProperties.isInAppPaymentActive = inAppPaymentActive ?? false
+            dispatchGroup.leave()
+        }
+        
         // Get region code
         dispatchGroup.enter()
         Database.database().reference(withPath: basePath + "/regionCode").observeSingleEvent(of: .value) { [weak self] snapshot in

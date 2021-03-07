@@ -132,13 +132,14 @@
 		B0B81DC72502524000249447 /* Settings+Person.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0B81DC62502524000249447 /* Settings+Person.swift */; };
 		B0B81DC92502525500249447 /* Settings+LatePaymentInterest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0B81DC82502525500249447 /* Settings+LatePaymentInterest.swift */; };
 		B0B84C822544818C000B94BA /* SignInPersonSelection.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0B84C812544818C000B94BA /* SignInPersonSelection.swift */; };
+		B0B9D5D125F4E13900EED682 /* Keys-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B0B9D5D025F4E13900EED682 /* Keys-Info.plist */; };
+		B0BB9E1F25F2AA8F0030DCE1 /* Payment.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0BB9E1E25F2AA8F0030DCE1 /* Payment.swift */; };
 		B0C1C51524A78BD7007B584B /* LoginEntryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0C1C51424A78BD7007B584B /* LoginEntryView.swift */; };
 		B0C1C51924A78C90007B584B /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0C1C51824A78C90007B584B /* Color.swift */; };
 		B0C1C51B24A78CC2007B584B /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0C1C51A24A78CC2007B584B /* Settings.swift */; };
 		B0C1C52224A7A021007B584B /* PersonName.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0C1C52124A7A021007B584B /* PersonName.swift */; };
 		B0C1C52524A8BC14007B584B /* RoundedCorners.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0C1C52424A8BC14007B584B /* RoundedCorners.swift */; };
 		B0C1C52724A8BEE6007B584B /* Other.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0C1C52624A8BEE6007B584B /* Other.swift */; };
-		B0C246AD2593A6580078EFA4 /* NativeAdView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0C246AC2593A6580078EFA4 /* NativeAdView.swift */; };
 		B0C554052505646400BA3E26 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0C554042505646400BA3E26 /* AppDelegate.swift */; };
 		B0CB61A5257D72C8003F29BE /* Tagged.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0CB61A4257D72C8003F29BE /* Tagged.swift */; };
 		B0D75C502557149500555B03 /* ReasonTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0D75C4F2557149500555B03 /* ReasonTemplate.swift */; };
@@ -323,6 +324,8 @@
 		B0B81DC62502524000249447 /* Settings+Person.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Settings+Person.swift"; sourceTree = "<group>"; };
 		B0B81DC82502525500249447 /* Settings+LatePaymentInterest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Settings+LatePaymentInterest.swift"; sourceTree = "<group>"; };
 		B0B84C812544818C000B94BA /* SignInPersonSelection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInPersonSelection.swift; sourceTree = "<group>"; };
+		B0B9D5D025F4E13900EED682 /* Keys-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Keys-Info.plist"; sourceTree = "<group>"; };
+		B0BB9E1E25F2AA8F0030DCE1 /* Payment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Payment.swift; sourceTree = "<group>"; };
 		B0C1C51424A78BD7007B584B /* LoginEntryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginEntryView.swift; sourceTree = "<group>"; };
 		B0C1C51824A78C90007B584B /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
 		B0C1C51A24A78CC2007B584B /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
@@ -637,6 +640,7 @@
 				B0D75CEF255820FC00555B03 /* ImageStorage.swift */,
 				B07AC46C258BB7C900908A82 /* Logger.swift */,
 				B05C32E625388637004E9923 /* NecessaryObjects.swift */,
+				B0BB9E1E25F2AA8F0030DCE1 /* Payment.swift */,
 				B0327C96258BB36A00DEE05C /* PropertyWrapper.swift */,
 				B05C3316253B6AEE004E9923 /* SignInCache.swift */,
 				B0B117CB24FA962C006A22F2 /* SignInWithApple.swift */,
@@ -835,6 +839,7 @@
 				B0E0F82F24A63E5A00C82828 /* Info.plist */,
 				B077B58824CAC9E9003844CE /* Strafen.entitlements */,
 				B03B195C259F861B00D44394 /* GoogleService-Info.plist */,
+				B0B9D5D025F4E13900EED682 /* Keys-Info.plist */,
 				B0E0F82C24A63E5A00C82828 /* Preview Content */,
 			);
 			path = Controller;
@@ -1027,6 +1032,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B0B9D5D125F4E13900EED682 /* Keys-Info.plist in Resources */,
 				B0E0F82E24A63E5A00C82828 /* Preview Assets.xcassets in Resources */,
 				B03B195D259F861B00D44394 /* GoogleService-Info.plist in Resources */,
 				B0E0F82B24A63E5A00C82828 /* Assets.xcassets in Resources */,
@@ -1276,7 +1282,6 @@
 				B02B891524BDFDA9004562B9 /* SettingsView.swift in Sources */,
 				B0619BFB24C0B62B008969A1 /* PersonEditor.swift in Sources */,
 				B0E50D1325418D37008C7E84 /* KeyboardAdaptive.swift in Sources */,
-				B0C246AD2593A6580078EFA4 /* NativeAdView.swift in Sources */,
 				B0B4822424A8D69E00CB7A1A /* Buttons.swift in Sources */,
 				B0C1C52224A7A021007B584B /* PersonName.swift in Sources */,
 				B0C554052505646400BA3E26 /* AppDelegate.swift in Sources */,
@@ -1320,6 +1325,7 @@
 				B0B117CC24FA962C006A22F2 /* SignInWithApple.swift in Sources */,
 				B0619C0824C1CAB9008969A1 /* CustomDatePicker.swift in Sources */,
 				B006920624C615D500AE2EF0 /* HomeTabs.swift in Sources */,
+				B0BB9E1F25F2AA8F0030DCE1 /* Payment.swift in Sources */,
 				B0619C0F24C20EAA008969A1 /* ReasonAddNew.swift in Sources */,
 				B0B4822224A8D61300CB7A1A /* CustomTextField.swift in Sources */,
 				B020C7C024AF7CC6008940FE /* Person.swift in Sources */,
@@ -1399,7 +1405,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = DFF1361C17C6B735143EB7E0 /* Pods-StrafenWidgetExtension.debug.xcconfig */;
 			buildSettings = {
-				APPLICATION_EXTENSION_API_ONLY = NO;
+				APPLICATION_EXTENSION_API_ONLY = YES;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
 				CODE_SIGN_ENTITLEMENTS = StrafenWidget/Controller/StrafenWidgetExtension.entitlements;
@@ -1424,7 +1430,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = A4EE6A2E94660E69A2CF1D04 /* Pods-StrafenWidgetExtension.release.xcconfig */;
 			buildSettings = {
-				APPLICATION_EXTENSION_API_ONLY = NO;
+				APPLICATION_EXTENSION_API_ONLY = YES;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
 				CODE_SIGN_ENTITLEMENTS = StrafenWidget/Controller/StrafenWidgetExtension.entitlements;
@@ -1449,7 +1455,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = B99112ABC31485A84931F2B5 /* Pods-StrafenNotificationService.debug.xcconfig */;
 			buildSettings = {
-				APPLICATION_EXTENSION_API_ONLY = NO;
+				APPLICATION_EXTENSION_API_ONLY = YES;
 				CODE_SIGN_ENTITLEMENTS = StrafenNotificationService/StrafenNotificationService.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 7;
@@ -1473,7 +1479,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = B6DEE7790E09F9517795ABD8 /* Pods-StrafenNotificationService.release.xcconfig */;
 			buildSettings = {
-				APPLICATION_EXTENSION_API_ONLY = NO;
+				APPLICATION_EXTENSION_API_ONLY = YES;
 				CODE_SIGN_ENTITLEMENTS = StrafenNotificationService/StrafenNotificationService.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 7;
@@ -1636,9 +1642,11 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 2;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D COCOAPODS -DTARGET_MAIN_APP";
 				PRODUCT_BUNDLE_IDENTIFIER = stevenkellner.Strafen;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -1663,6 +1671,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 2;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D COCOAPODS -DTARGET_MAIN_APP";
 				PRODUCT_BUNDLE_IDENTIFIER = stevenkellner.Strafen;
 				PRODUCT_NAME = "$(TARGET_NAME)";

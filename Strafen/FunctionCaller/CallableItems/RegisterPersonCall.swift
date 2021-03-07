@@ -21,6 +21,9 @@ struct RegisterPersonCall: FunctionCallable, FunctionCallResult {
         
         /// Region code
         let regionCode: String
+        
+        /// Is in app payment active
+        let inAppPaymentActive: Bool
     }
     
     /// Cached user id, name and club id

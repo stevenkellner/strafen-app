@@ -525,4 +525,28 @@ extension Bool {
         return isTrue
     }
 }
+
+@dynamicMemberLookup struct PropertyListContent {
+    private let content: [String: AnyObject]?
+    
+    init(path: String) {
+        var format =  PropertyListSerialization.PropertyListFormat.xml
+        let data = FileManager.default.contents(atPath: path)!
+        content = try? PropertyListSerialization.propertyList(from: data, options: .mutableContainersAndLeaves, format: &format) as? [String: AnyObject]
+    }
+    
+    @inlinable subscript(dynamicMember key: String) -> AnyObject? {
+        content?[key]
+    }
+    
+    @inlinable subscript(_ key: String) -> AnyObject? {
+        content?[key]
+    }
+}
+
+extension Bundle {
+    static var keysPropertyList: PropertyListContent {
+        PropertyListContent(path: Bundle.main.path(forResource: "Keys-Info", ofType: "plist")!)
+    }
+}
 #endif

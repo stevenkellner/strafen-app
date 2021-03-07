@@ -21,6 +21,14 @@ extension Settings {
             /// Type of Id
             typealias ID = Tagged<(ClubProperties, id: Void), UUID>
             
+            init(id: ID, name: String, identifier: String, regionCode: String, inAppPaymentActive: Bool?) {
+                self.id = id
+                self.name = name
+                self.identifier = identifier
+                self.regionCode = regionCode
+                self.inAppPaymentActive = inAppPaymentActive
+            }
+            
             /// Id of the club
             let id: ID
             
@@ -32,6 +40,14 @@ extension Settings {
             
             /// Region code
             var regionCode: String
+            
+            /// Is in app payment active
+            private var inAppPaymentActive: Bool?
+            
+            var isInAppPaymentActive: Bool {
+                get { inAppPaymentActive ?? false }
+                set { inAppPaymentActive = newValue }
+            }
         }
         
         /// Club properties

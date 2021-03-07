@@ -1,5 +1,6 @@
 import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
+import {privateKey} from "./privateKeys";
 
 admin.initializeApp();
 
@@ -9,7 +10,7 @@ export const newClub = functions.region("europe-west1").https
       // Check prerequirements
       const requiredArguements = ["clubId", "clubName", "personId",
         "personFirstName", "clubIdentifier", "userId", "signInDate",
-        "regionCode"];
+        "regionCode", "inAppPaymentActive"];
       checkPrerequirements(requiredArguements, data, context);
 
       // Check if identifier already exists
@@ -59,6 +60,7 @@ export const newClub = functions.region("europe-west1").https
         identifier: data.clubIdentifier,
         name: data.clubName,
         regionCode: data.regionCode,
+        inAppPaymentActive: data.inAppPaymentActive,
         persons: personList,
       };
 
@@ -198,6 +200,7 @@ export const registerPerson = functions.region("europe-west1").https
       let clubIdentifier: string | null = null;
       let clubName: string | null = null;
       let regionCode: string | null = null;
+      let inAppPaymentActive: boolean = false;
       await clubRef.child("identifier").once("value", (snapshot) => {
         clubIdentifier = snapshot.val();
       });
@@ -207,6 +210,9 @@ export const registerPerson = functions.region("europe-west1").https
       await clubRef.child("regionCode").once("value", (snapshot) => {
         regionCode = snapshot.val();
       });
+      await clubRef.child("inAppPaymentActive").once("value", (snapshot) => {
+        inAppPaymentActive = snapshot.val();
+      });
       if (clubIdentifier == null || clubName == null || regionCode == null) {
         return;
       }
@@ -214,6 +220,7 @@ export const registerPerson = functions.region("europe-west1").https
         clubIdentifier: clubIdentifier,
         clubName: clubName,
         regionCode: regionCode,
+        inAppPaymentActive: inAppPaymentActive,
       };
     });
 
@@ -541,6 +548,14 @@ function checkPrerequirements(args: string[], data: any,
     throw new functions.https.HttpsError(
         "failed-precondition",
         "The function must be called while authenticated."
+    );
+  }
+
+  // Check if key is valid
+  if (data.privateKey != privateKey) {
+    throw new functions.https.HttpsError(
+        "permission-denied",
+        "Private key is invalid."
     );
   }
 

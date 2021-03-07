@@ -76,11 +76,14 @@ struct TitledContent<Content>: View where Content: View {
     /// Content
     private let content: Content
     
+    private let errorMessages: Binding<ErrorMessages?>?
+    
     /// Frame of content
     private var contentFrame: (width: CGFloat?, height: CGFloat?) = (width: nil, height: nil)
     
-    init(_ title: String, @ViewBuilder content: () -> Content) {
+    init(_ title: String, errorMessages: Binding<ErrorMessages?>? = nil, @ViewBuilder content: () -> Content) {
         self.title = title
+        self.errorMessages = errorMessages
         self.content = content()
     }
     
@@ -92,6 +95,11 @@ struct TitledContent<Content>: View where Content: View {
             
             // Content
             content.frame(width: contentFrame.width, height: contentFrame.height)
+            
+            // Error message
+            if let errorMessages = errorMessages {
+                ErrorMessageView(errorMessages: errorMessages)
+            }
             
         }
     }
@@ -248,6 +256,9 @@ enum ErrorMessages {
     /// Late payment interest period is zero
     case periodIsZero
     
+    /// In app payment currency isn't euro
+    case notEuro
+    
     /// Message of the error
     var message: String {
         switch self {
@@ -307,6 +318,8 @@ enum ErrorMessages {
             return "Zinssatz darf nicht null sein!"
         case .periodIsZero:
             return "Zeitraum darf nicht null sein!"
+        case .notEuro:
+            return "Funktioniert nur in Ländern mit Euro"
         }
     }
 }

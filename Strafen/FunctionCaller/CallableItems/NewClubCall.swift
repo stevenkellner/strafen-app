@@ -37,6 +37,7 @@ struct NewClubCall: FunctionCallable {
             parameters["clubIdentifier"] = clubCredentials.clubIdentifier
             parameters["userId"] = cachedProperties.userId
             parameters["signInDate"] = Date()
+            parameters["inAppPaymentActive"] = clubCredentials.inAppPaymentActive
         }
     }
 }

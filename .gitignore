@@ -67,6 +67,7 @@ node_modules/
 
 /Strafen/Controller/GoogleService-Info.plist
 /Strafen/Controller/Strafen.entitlements
+/Strafen/Controller/Keys-Info.plist
 /Strafen/Controller/Info.plist
 /Pods/
 /build/

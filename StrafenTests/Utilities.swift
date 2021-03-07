@@ -41,7 +41,7 @@ struct TestProperty {
         
         /// Club
         var club: Club {
-            .init(id: id, name: name, identifier: identifier, regionCode: regionCode)
+            .init(id: id, name: name, identifier: identifier, regionCode: regionCode, inAppPaymentActive: true)
         }
     }
     
@@ -246,7 +246,7 @@ extension XCTestCase {
     }
     
     /// Wait for synchronous tasks
-    func await<ReturnValue>(timeout: TimeInterval = 60, _ handler: (@escaping (ReturnValue) -> Void) throws -> Void) throws -> ReturnValue {
+    func awaitValue<ReturnValue>(timeout: TimeInterval = 60, _ handler: (@escaping (ReturnValue) -> Void) throws -> Void) throws -> ReturnValue {
         let expectation = self.expectation(description: "expecation")
         var result: ReturnValue?
         try handler { value in
@@ -261,12 +261,12 @@ extension XCTestCase {
     }
     
     func awaitResult<ReturnValue>(timeout: TimeInterval = 60, _ handler: (@escaping (Result<ReturnValue, Error>) -> Void) throws -> Void) throws -> ReturnValue {
-        let result: Result<ReturnValue, Error> = try await(timeout: timeout, handler)
+        let result: Result<ReturnValue, Error> = try awaitValue(timeout: timeout, handler)
         return try result.get()
     }
     
     func awaitExistsNoData(timeout: TimeInterval = 60, _ handler: (@escaping (Any?) -> Void) throws -> Void) throws {
-        let result: Any? = try await(timeout: timeout, handler)
+        let result: Any? = try awaitValue(timeout: timeout, handler)
         XCTAssertNil(result)
     }
 }
@@ -288,15 +288,17 @@ extension Club: FetchedItemType, Equatable {
         let name: String
         let identifier: String
         var regionCode: String
+        var inAppPaymentActive: Bool?
     }
     init(with id: ID, codableSelf: CodableSelf) {
-        self = .init(id: id, name: codableSelf.name, identifier: codableSelf.identifier, regionCode: codableSelf.regionCode)
+        self = .init(id: id, name: codableSelf.name, identifier: codableSelf.identifier, regionCode: codableSelf.regionCode, inAppPaymentActive: codableSelf.inAppPaymentActive)
     }
     public static func ==(lhs: Self, rhs: Self) -> Bool {
         lhs.id == rhs.id &&
             lhs.name == rhs.name &&
             lhs.identifier == rhs.identifier &&
-            lhs.regionCode == rhs.regionCode
+            lhs.regionCode == rhs.regionCode &&
+            lhs.isInAppPaymentActive == rhs.isInAppPaymentActive
     }
 }
 
