@@ -7,11 +7,14 @@
 
 import SwiftUI
 import Braintree
-import BraintreeDropIn
 
 
 /// Used to pay with Braintree
 class Payment {
+    
+    struct ReturnResult<Result>: Decodable where Result: Decodable {
+        let result: Result
+    }
     
     var dataCollector: BTDataCollector? = nil
     
@@ -19,69 +22,85 @@ class Payment {
     static let shared = Payment()
     
     /// Private init for singleton
-    private init() {
+    private init() {}
+    
+    func setup(){
         fetchClientToken { [weak self] token in
             guard let token = token, let apiClient = BTAPIClient(authorization: token) else { return }
             self?.dataCollector = BTDataCollector(apiClient: apiClient)
         }
     }
     
-    /// Fetches client token for payment
-    func fetchClientToken(handler completionHandler: @escaping (String?) -> Void) {
-        let url = URL(string: "https://strafen-app.ew.r.appspot.com/client_token")!
+    func callServer<Result>(name: String, parameters: [String: String]? = nil, handler completionHandler: @escaping (Result?) -> Void) where Result: Decodable {
+        guard let privateKey = Bundle.keysPropertyList.privatePaymentKey as? String else { return completionHandler(nil) }
+        let url = URL(string: "https://strafen-app.ew.r.appspot.com/" + name)!
         var request = URLRequest(url: url)
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         request.setValue("text/plain", forHTTPHeaderField: "Accept")
+        request.httpMethod = "POST"
+        var parameters = parameters ?? [:]
+        parameters["privateKey"] = privateKey
+        request.httpBody = try! JSONEncoder().encode(parameters)
         URLSession.shared.dataTask(with: request) { data, _, error in
-            guard let data = data, let token = String(data: data, encoding: .utf8), error == nil else { return completionHandler(nil) }
-            completionHandler(token)
+            let decoder = JSONDecoder()
+            guard error == nil,
+                  let data = data,
+                  let result = try? decoder.decode(ReturnResult<Result>.self, from: data).result else { return completionHandler(nil) }
+            completionHandler(result)
         }.resume()
     }
     
-    func checkout(nonce: String) {
-        dataCollector?.collectCardFraudData { deviceData in
-            let url = URL(string: "https://strafen-app.ew.r.appspot.com/checkout")!
-            var request = URLRequest(url: url)
-            request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-            request.httpMethod = "POST"
-            request.httpBody = try! JSONEncoder().encode([
+    /// Fetches client token for payment
+    @inlinable func fetchClientToken(handler completionHandler: @escaping (String?) -> Void) {
+        callServer(name: "client_token", handler: completionHandler)
+    }
+    
+    func checkout(nonce: String, amount: Amount, fineIds: [Fine.ID], handler completionHandler: @escaping (CheckoutResult?) -> Void) {
+        dataCollector?.collectDeviceData { deviceData in
+            let parameters = [
                 "paymentMethodNonce": nonce,
-                "amount": "10.00",
-                "deviceData": deviceData
-            ])
-            URLSession.shared.dataTask(with: request) { data, response, error in
-                let text = String(data: data, encoding: .utf8)
-                print(text)
-                print(data)
-                print(response)
-                print(error)
-            }.resume()
+                "amount": amount.forPayment,
+                "deviceData": deviceData,
+                "clubId": "das_ist_ein_test",
+                "fineIds": "[" + fineIds.map { "\"" + $0.uuidString + "\"" }.joined(separator: ", ") + "]"
+            ]
+            self.callServer(name: "checkout", parameters: parameters, handler: completionHandler)
         }
     }
     
     var readyForPayment: Bool {
         dataCollector != nil
     }
-}
-
-/// Braintree Drop in view controller
-struct BraintreeDropIn: UIViewControllerRepresentable {
     
-    /// Controller
-    let controller: BTDropInController
-    
-    init?(clientToken: String, handler resultHandler: @escaping (BTDropInResult?) -> Void) {
-        let request = BTDropInRequest()
-        let controller = BTDropInController(authorization: clientToken, request: request) { _, result, error in
-            guard let result = result, !result.isCancelled, error == nil else { return resultHandler(nil) }
-            resultHandler(result)
+    struct CheckoutResult: Decodable {
+        struct Transaction: Decodable {
+//            struct CreditCard: Decodable {
+//                let bin: String
+//                let last4: String
+//                let cardType: String
+//                let maskedNumber: String
+//            }
+            struct CustomFields: Decodable {
+                enum CodingKeys: String, CodingKey {
+                    case clubId
+                    case _fineIds = "fineIds"
+                }
+                let clubId: String
+                private let _fineIds: String
+                var fineIds: [Fine.ID] {
+                    try! JSONDecoder().decode([Fine.ID].self, from: _fineIds.data(using: .utf8)!)
+                }
+            }
+            let id: String
+//            let status: String
+//            let currencyIsoCode: String
+//            let amount: String
+            let customFields: CustomFields
+//            let cvvResponseCode: String
+//            let creditCard: CreditCard
+//            let paymentInstrumentType: String
         }
-        guard let controller = controller else { return nil }
-        self.controller = controller
+        let transaction: Transaction
+        let success: Bool
     }
-    
-    /// make view
-    func makeUIViewController(context: Context) -> BTDropInController { controller }
-    
-    /// update view
-    func updateUIViewController(_ uiViewController: BTDropInController, context: Context) {}
 }

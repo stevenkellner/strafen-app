@@ -317,6 +317,31 @@ struct ScreenSizeModifier: ViewModifier {
     }
 }
 
+import HalfModal
+struct HalfModalModifier<SheetContent>: ViewModifier where SheetContent: View {
+    
+    @Binding var isPresented: Bool
+    
+    let header: String
+    
+    let sheetContent: SheetContent
+    
+    init(isPresented: Binding<Bool>, header: String, @ViewBuilder content: () -> SheetContent) {
+        self._isPresented = isPresented
+        self.header = header
+        self.sheetContent = content()
+    }
+    
+    func body(content: Content) -> some View {
+        ZStack {
+            content
+            if isPresented {
+                HalfModalView(content: AnyView(sheetContent), header: AnyView(Text(header).configurate(size: 20)), isPresented: $isPresented)
+            }
+        }
+    }
+}
+
 // Extension of View to set screen size
 extension View {
     
@@ -337,6 +362,10 @@ extension View {
     /// Sets screen size
     func setScreenSize(after deadline: Double) -> some View {
         ModifiedContent(content: self, modifier: ScreenSizeModifier(deadline: deadline))
+    }
+    
+    func halfModal<Content>(isPresented: Binding<Bool>, header: String, @ViewBuilder content: () -> Content) -> some View where Content: View {
+        ModifiedContent(content: self, modifier: HalfModalModifier(isPresented: isPresented, header: header, content: content))
     }
 }
 
@@ -546,7 +575,7 @@ extension Bool {
 
 extension Bundle {
     static var keysPropertyList: PropertyListContent {
-        PropertyListContent(path: Bundle.main.path(forResource: "Keys-Info", ofType: "plist")!)
+        PropertyListContent(path: Bundle.main.path(forResource: "KeysInfo", ofType: "plist")!)
     }
 }
 #endif

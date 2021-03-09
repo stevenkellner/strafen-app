@@ -71,7 +71,7 @@ struct Title: View {
 struct TitledContent<Content>: View where Content: View {
     
     /// Title
-    private let title: String
+    private let title: String?
     
     /// Content
     private let content: Content
@@ -81,7 +81,7 @@ struct TitledContent<Content>: View where Content: View {
     /// Frame of content
     private var contentFrame: (width: CGFloat?, height: CGFloat?) = (width: nil, height: nil)
     
-    init(_ title: String, errorMessages: Binding<ErrorMessages?>? = nil, @ViewBuilder content: () -> Content) {
+    init(_ title: String?, errorMessages: Binding<ErrorMessages?>? = nil, @ViewBuilder content: () -> Content) {
         self.title = title
         self.errorMessages = errorMessages
         self.content = content()
@@ -91,7 +91,9 @@ struct TitledContent<Content>: View where Content: View {
         VStack(spacing: 5) {
             
             // Title
-            Title(title)
+            if let title = title {
+                Title(title)
+            }
             
             // Content
             content.frame(width: contentFrame.width, height: contentFrame.height)
@@ -259,6 +261,24 @@ enum ErrorMessages {
     /// In app payment currency isn't euro
     case notEuro
     
+    /// No fines are selected
+    case noFinesSelected
+    
+    /// Internal error
+    case internalError
+    
+    /// Credit card is invalid
+    case invalidCreditCardNumber
+    
+    /// No valid date format
+    case invalidDateFormat
+    
+    /// Date is in past
+    case dateInPast
+    
+    /// CVV is invalid
+    case invalidCvv
+    
     /// Message of the error
     var message: String {
         switch self {
@@ -319,7 +339,19 @@ enum ErrorMessages {
         case .periodIsZero:
             return "Zeitraum darf nicht null sein!"
         case .notEuro:
-            return "Funktioniert nur in Ländern mit Euro"
+            return "Funktioniert nur in Ländern mit Euro!"
+        case .noFinesSelected:
+            return "Keine Strafen ausgewählt!"
+        case .internalError:
+            return "Es gab ein Problem!"
+        case .invalidCreditCardNumber:
+            return "Kartennummer is ungültig!"
+        case .invalidDateFormat:
+            return "Format vom Datum ist ungültig!"
+        case .dateInPast:
+            return "Datum muss in der Zukunft liegen!"
+        case .invalidCvv:
+            return "CVV ist ungültig!"
         }
     }
 }

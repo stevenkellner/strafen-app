@@ -278,7 +278,6 @@ struct FineEditor: View {
             fineInputProperties.connectionStateUpdate = .failed
             fineInputProperties.functionCallErrorMessages = .internalErrorSave
         }
-
     }
     
     /// Amount input

@@ -16,44 +16,60 @@
 
 const express = require('express');
 const braintree = require('braintree');
+const keys = require('./privateKeys');
 
 const app = express();
 app.use(express.json());
 
 const gateway = new braintree.BraintreeGateway({
     environment: braintree.Environment.Sandbox,
-    merchantId: "p8tggkyhz5tyv9dc",
-    publicKey: "yrzxm59rkyh3s3fp",
-    privateKey: "80f697cf35b8febd663a8f6c25d75231"
+    merchantId: keys.merchantId,
+    publicKey: keys.publicKey,
+    privateKey: keys.privateKey
 });
 
-app.get("/client_token", (req, res) => {
+app.post("/client_token", (req, res) => {
+    if (req.body.privateKey != keys.privatePaymentKey) { 
+        res.send("{'error': 'Private key is invalid'}");
+        return;
+    }
     gateway.clientToken.generate({}, (error, response) => {
         if (error) {
-            res.statusCode(400).send(error);
+            res.send(`{"error": "${error}"}`);
             return;
         }
-        res.send(response.clientToken);
+        res.send(`{"result": "${response.clientToken}"}`);
     });
 });
 
 app.post("/checkout", (req, res) => {
+    if (req.body.privateKey != keys.privatePaymentKey) { 
+        res.send("{'error': 'Private key is invalid'}");
+        return;
+    }
     const nonceFromClient = req.body.paymentMethodNonce;
     const amount = req.body.amount;
     const deviceData = req.body.deviceData;
+    const clubId = req.body.clubId;
+    const fineIds = req.body.fineIds;
+    let customFields = {
+        club_id: clubId,
+        fine_ids: fineIds
+    };
     gateway.transaction.sale({
         amount: amount,
         paymentMethodNonce: nonceFromClient,
         deviceData: deviceData,
         options: {
             submitForSettlement: true
-        }
+        },
+        customFields: customFields
     }, (error, result) => {
         if (error) {
-            res.statusCode(400).send(error);
+            res.send(`{"error": "${error}"}`);
             return;
         }
-        res.send(result);
+        res.send(`{"result": ${JSON.stringify(result)}}`);
     });
 });
 

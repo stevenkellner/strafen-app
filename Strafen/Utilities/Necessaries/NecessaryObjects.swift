@@ -231,6 +231,21 @@ enum ConnectionState {
     
     /// All loaded
     case passed
+    
+    /// Set state to loading and returns true if state wasn't already loading
+    mutating func start() -> Bool {
+        guard self != .loading else { return false }
+        self = .loading
+        return true
+    }
+    
+    mutating func failed() {
+        self = .failed
+    }
+    
+    mutating func passed() {
+        self = .passed
+    }
 }
 
 /// Type of the change

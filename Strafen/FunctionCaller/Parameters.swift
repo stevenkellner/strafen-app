@@ -52,9 +52,7 @@ protocol ParameterableObject {
 extension ParameterableObject where Self: _ParameterableObject {
     
     /// Object call with Firebase function as Parameter
-    var parameterableObject: _ParameterableObject {
-        self
-    }
+    var parameterableObject: _ParameterableObject { self }
 }
 
 // Extension for valid _ParameterableObjects

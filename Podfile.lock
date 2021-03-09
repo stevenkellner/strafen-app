@@ -1,37 +1,18 @@
 PODS:
-  - Braintree/Card (4.37.0):
+  - Braintree (5.0.1):
+    - Braintree/Card (= 5.0.1)
+    - Braintree/Core (= 5.0.1)
+    - Braintree/PayPal (= 5.0.1)
+  - Braintree/Card (5.0.1):
     - Braintree/Core
-  - Braintree/Core (4.37.0)
-  - Braintree/DataCollector (4.37.0):
+  - Braintree/Core (5.0.1)
+  - Braintree/DataCollector (5.0.1):
     - Braintree/Core
-  - Braintree/PaymentFlow (4.37.0):
-    - Braintree/Card
-    - Braintree/Core
-    - Braintree/PayPalOneTouch
-  - Braintree/PayPal (4.37.0):
-    - Braintree/Core
-    - Braintree/PayPalOneTouch
-  - Braintree/PayPalDataCollector (4.37.0):
-    - Braintree/Core
-    - Braintree/PayPalUtils
-  - Braintree/PayPalOneTouch (4.37.0):
+  - Braintree/PayPal (5.0.1):
     - Braintree/Core
     - Braintree/PayPalDataCollector
-    - Braintree/PayPalUtils
-  - Braintree/PayPalUtils (4.37.0)
-  - Braintree/UnionPay (4.37.0):
-    - Braintree/Card
+  - Braintree/PayPalDataCollector (5.0.1):
     - Braintree/Core
-  - BraintreeDropIn (8.1.3):
-    - BraintreeDropIn/DropIn (= 8.1.3)
-  - BraintreeDropIn/DropIn (8.1.3):
-    - Braintree/Card (~> 4.32)
-    - Braintree/Core (~> 4.32)
-    - Braintree/PaymentFlow (~> 4.32)
-    - Braintree/PayPal (~> 4.32)
-    - Braintree/UnionPay (~> 4.32)
-    - BraintreeDropIn/UIKit
-  - BraintreeDropIn/UIKit (8.1.3)
   - CodableFirebase (0.2.1)
   - Firebase/Analytics (7.7.0):
     - Firebase/Core
@@ -146,8 +127,8 @@ PODS:
   - SupportDocs (1.1.0)
 
 DEPENDENCIES:
+  - Braintree
   - Braintree/DataCollector
-  - BraintreeDropIn
   - CodableFirebase
   - Firebase/Analytics
   - Firebase/Auth
@@ -161,7 +142,6 @@ DEPENDENCIES:
 SPEC REPOS:
   trunk:
     - Braintree
-    - BraintreeDropIn
     - CodableFirebase
     - Firebase
     - FirebaseAnalytics
@@ -186,8 +166,7 @@ SPEC REPOS:
     - SupportDocs
 
 SPEC CHECKSUMS:
-  Braintree: e1f291d24a909bfbed88e86a0c3db76f26af9697
-  BraintreeDropIn: 35a2fa264d67c4efc9c6e419d9279b382dc48bd6
+  Braintree: 5dfbf76615163970ad7158cb68239b7aa76ddd22
   CodableFirebase: 0bf201991eeec35eb9fcd987d271ea463cf34a80
   Firebase: cd2ab85eec8170dc260186159f21072ecb679ad5
   FirebaseAnalytics: f3f8f75de34fe04141a69bb1c4bd7e24a80178e1
@@ -211,6 +190,6 @@ SPEC CHECKSUMS:
   PromisesObjC: 3113f7f76903778cf4a0586bd1ab89329a0b7b97
   SupportDocs: 8123646bc65daa23d9d5efda5f836563187c194a
 
-PODFILE CHECKSUM: 6323a1a410d44380763889445d3056ded0923ae0
+PODFILE CHECKSUM: 5f7d686422b7abfe71ee3d283b8aa7c0dc28ffb8
 
 COCOAPODS: 1.10.0

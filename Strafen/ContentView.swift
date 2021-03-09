@@ -39,6 +39,7 @@ struct ContentView: View {
                 ContentHomeView()
                     .onAppear {
                         ListData.shared.setup()
+                        Payment.shared.setup()
                     }
                 
             } else {

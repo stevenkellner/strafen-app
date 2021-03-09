@@ -3,13 +3,14 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 51;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
 		177D046107D314481E3351BB /* Pods_StrafenUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 21FB69BB8D67A95C3447BAEF /* Pods_StrafenUITests.framework */; };
 		67CDD1AB6A3BBA7C38C64532 /* Pods_Strafen.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28520CB35F7960A3527C91CA /* Pods_Strafen.framework */; };
 		919508DBCD84D1DA492F057B /* Pods_StrafenWidgetExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A28588CC33D58046FD7FA2DC /* Pods_StrafenWidgetExtension.framework */; };
+		B0061F8B25F677760091B17B /* CreditCardValitadion.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0061F8A25F677760091B17B /* CreditCardValitadion.swift */; };
 		B006920624C615D500AE2EF0 /* HomeTabs.swift in Sources */ = {isa = PBXBuildFile; fileRef = B006920524C615D500AE2EF0 /* HomeTabs.swift */; };
 		B00C6EF5258D46700015637D /* MediumWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = B04B71ED24CEDA9C0038B02F /* MediumWidget.swift */; };
 		B00C6F15258E0F5C0015637D /* HelpfulViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00C6F14258E0F5C0015637D /* HelpfulViews.swift */; };
@@ -132,7 +133,8 @@
 		B0B81DC72502524000249447 /* Settings+Person.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0B81DC62502524000249447 /* Settings+Person.swift */; };
 		B0B81DC92502525500249447 /* Settings+LatePaymentInterest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0B81DC82502525500249447 /* Settings+LatePaymentInterest.swift */; };
 		B0B84C822544818C000B94BA /* SignInPersonSelection.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0B84C812544818C000B94BA /* SignInPersonSelection.swift */; };
-		B0B9D5D125F4E13900EED682 /* Keys-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B0B9D5D025F4E13900EED682 /* Keys-Info.plist */; };
+		B0B9D5D325F526F100EED682 /* KeysInfo.plist in Resources */ = {isa = PBXBuildFile; fileRef = B0B9D5D225F526F100EED682 /* KeysInfo.plist */; };
+		B0B9D5D525F53F3D00EED682 /* PaymentFineSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0B9D5D425F53F3D00EED682 /* PaymentFineSelector.swift */; };
 		B0BB9E1F25F2AA8F0030DCE1 /* Payment.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0BB9E1E25F2AA8F0030DCE1 /* Payment.swift */; };
 		B0C1C51524A78BD7007B584B /* LoginEntryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0C1C51424A78BD7007B584B /* LoginEntryView.swift */; };
 		B0C1C51924A78C90007B584B /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0C1C51824A78C90007B584B /* Color.swift */; };
@@ -162,6 +164,8 @@
 		B0D75CDE2558208500555B03 /* Amount.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0D75CDD2558208500555B03 /* Amount.swift */; };
 		B0D75CF0255820FC00555B03 /* ImageStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0D75CEF255820FC00555B03 /* ImageStorage.swift */; };
 		B0DEAAC325A099B1009C6BD9 /* StrafenNotificationService.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = B09CC1DD259F4BF70079B86B /* StrafenNotificationService.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		B0DEDDA025F68BE9009C5415 /* HalfModal in Frameworks */ = {isa = PBXBuildFile; productRef = B0DEDD9F25F68BE9009C5415 /* HalfModal */; };
+		B0DEDDA225F692F9009C5415 /* PaymentCreditCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0DEDDA125F692F9009C5415 /* PaymentCreditCard.swift */; };
 		B0E0F82724A63E5800C82828 /* StrafenApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E0F82624A63E5800C82828 /* StrafenApp.swift */; };
 		B0E0F82924A63E5800C82828 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E0F82824A63E5800C82828 /* ContentView.swift */; };
 		B0E0F82B24A63E5A00C82828 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B0E0F82A24A63E5A00C82828 /* Assets.xcassets */; };
@@ -245,6 +249,7 @@
 		9F648314F45F12CD67B093FF /* Pods-StrafenTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StrafenTests.debug.xcconfig"; path = "Target Support Files/Pods-StrafenTests/Pods-StrafenTests.debug.xcconfig"; sourceTree = "<group>"; };
 		A28588CC33D58046FD7FA2DC /* Pods_StrafenWidgetExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_StrafenWidgetExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A4EE6A2E94660E69A2CF1D04 /* Pods-StrafenWidgetExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StrafenWidgetExtension.release.xcconfig"; path = "Target Support Files/Pods-StrafenWidgetExtension/Pods-StrafenWidgetExtension.release.xcconfig"; sourceTree = "<group>"; };
+		B0061F8A25F677760091B17B /* CreditCardValitadion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreditCardValitadion.swift; sourceTree = "<group>"; };
 		B006920524C615D500AE2EF0 /* HomeTabs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTabs.swift; sourceTree = "<group>"; };
 		B00C6F14258E0F5C0015637D /* HelpfulViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpfulViews.swift; sourceTree = "<group>"; };
 		B02019D324FE779000C660B9 /* SettingsFinesFormatterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsFinesFormatterView.swift; sourceTree = "<group>"; };
@@ -324,7 +329,8 @@
 		B0B81DC62502524000249447 /* Settings+Person.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Settings+Person.swift"; sourceTree = "<group>"; };
 		B0B81DC82502525500249447 /* Settings+LatePaymentInterest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Settings+LatePaymentInterest.swift"; sourceTree = "<group>"; };
 		B0B84C812544818C000B94BA /* SignInPersonSelection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInPersonSelection.swift; sourceTree = "<group>"; };
-		B0B9D5D025F4E13900EED682 /* Keys-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Keys-Info.plist"; sourceTree = "<group>"; };
+		B0B9D5D225F526F100EED682 /* KeysInfo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = KeysInfo.plist; sourceTree = "<group>"; };
+		B0B9D5D425F53F3D00EED682 /* PaymentFineSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentFineSelector.swift; sourceTree = "<group>"; };
 		B0BB9E1E25F2AA8F0030DCE1 /* Payment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Payment.swift; sourceTree = "<group>"; };
 		B0C1C51424A78BD7007B584B /* LoginEntryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginEntryView.swift; sourceTree = "<group>"; };
 		B0C1C51824A78C90007B584B /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
@@ -355,6 +361,7 @@
 		B0D75CDD2558208500555B03 /* Amount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Amount.swift; sourceTree = "<group>"; };
 		B0D75CEF255820FC00555B03 /* ImageStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageStorage.swift; sourceTree = "<group>"; };
 		B0D946BD259F6FCD000BD3F3 /* StrafenNotificationService.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = StrafenNotificationService.entitlements; sourceTree = "<group>"; };
+		B0DEDDA125F692F9009C5415 /* PaymentCreditCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentCreditCard.swift; sourceTree = "<group>"; };
 		B0E0F82324A63E5800C82828 /* Strafen.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Strafen.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B0E0F82624A63E5800C82828 /* StrafenApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StrafenApp.swift; sourceTree = "<group>"; };
 		B0E0F82824A63E5800C82828 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -406,6 +413,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				67CDD1AB6A3BBA7C38C64532 /* Pods_Strafen.framework in Frameworks */,
+				B0DEDDA025F68BE9009C5415 /* HalfModal in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -493,6 +501,8 @@
 				B07DDDEE256FF8CF0003F139 /* FineEditor.swift */,
 				B04750A925703382002C8B99 /* FineEditorAdvanced.swift */,
 				B04750AF2570370D002C8B99 /* FineEditorTemplate.swift */,
+				B0B9D5D425F53F3D00EED682 /* PaymentFineSelector.swift */,
+				B0DEDDA125F692F9009C5415 /* PaymentCreditCard.swift */,
 			);
 			path = ProfileDetail;
 			sourceTree = "<group>";
@@ -636,6 +646,7 @@
 		B0C1C51724A78C69007B584B /* Necessaries */ = {
 			isa = PBXGroup;
 			children = (
+				B0061F8A25F677760091B17B /* CreditCardValitadion.swift */,
 				B006920524C615D500AE2EF0 /* HomeTabs.swift */,
 				B0D75CEF255820FC00555B03 /* ImageStorage.swift */,
 				B07AC46C258BB7C900908A82 /* Logger.swift */,
@@ -839,7 +850,7 @@
 				B0E0F82F24A63E5A00C82828 /* Info.plist */,
 				B077B58824CAC9E9003844CE /* Strafen.entitlements */,
 				B03B195C259F861B00D44394 /* GoogleService-Info.plist */,
-				B0B9D5D025F4E13900EED682 /* Keys-Info.plist */,
+				B0B9D5D225F526F100EED682 /* KeysInfo.plist */,
 				B0E0F82C24A63E5A00C82828 /* Preview Content */,
 			);
 			path = Controller;
@@ -902,6 +913,9 @@
 				B0DEAAC525A099B1009C6BD9 /* PBXTargetDependency */,
 			);
 			name = Strafen;
+			packageProductDependencies = (
+				B0DEDD9F25F68BE9009C5415 /* HalfModal */,
+			);
 			productName = Strafen;
 			productReference = B0E0F82324A63E5800C82828 /* Strafen.app */;
 			productType = "com.apple.product-type.application";
@@ -981,6 +995,9 @@
 				Base,
 			);
 			mainGroup = B0E0F81A24A63E5800C82828;
+			packageReferences = (
+				B0DEDD9E25F68BE9009C5415 /* XCRemoteSwiftPackageReference "HalfModal" */,
+			);
 			productRefGroup = B0E0F82424A63E5800C82828 /* Products */;
 			projectDirPath = "";
 			projectReferences = (
@@ -1032,10 +1049,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B0B9D5D125F4E13900EED682 /* Keys-Info.plist in Resources */,
 				B0E0F82E24A63E5A00C82828 /* Preview Assets.xcassets in Resources */,
 				B03B195D259F861B00D44394 /* GoogleService-Info.plist in Resources */,
 				B0E0F82B24A63E5A00C82828 /* Assets.xcassets in Resources */,
+				B0B9D5D325F526F100EED682 /* KeysInfo.plist in Resources */,
 				B03D1DC325934AD200EB8648 /* UnifiedNativeAdView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1287,6 +1304,7 @@
 				B0C554052505646400BA3E26 /* AppDelegate.swift in Sources */,
 				B0D75CC625581FFE00555B03 /* GetPersonPropertiesCall.swift in Sources */,
 				B020C7C224B0B9D0008940FE /* PersonRowImage.swift in Sources */,
+				B0061F8B25F677760091B17B /* CreditCardValitadion.swift in Sources */,
 				B0280AB424FFB9D30049202D /* LatePaymentInterestChangerView.swift in Sources */,
 				B042D43D24BB2BBD0029F2D5 /* Array.swift in Sources */,
 				B0E2C19424CC6620009E3666 /* Fine.swift in Sources */,
@@ -1330,6 +1348,7 @@
 				B0B4822224A8D61300CB7A1A /* CustomTextField.swift in Sources */,
 				B020C7C024AF7CC6008940FE /* Person.swift in Sources */,
 				B0619C0D24C20C4B008969A1 /* ReasonList.swift in Sources */,
+				B0DEDDA225F692F9009C5415 /* PaymentCreditCard.swift in Sources */,
 				B04D4AA82546E89E00658924 /* SignInClubInput.swift in Sources */,
 				B0B81DC52502523100249447 /* Settings+Appereance.swift in Sources */,
 				B0D75C66255715C900555B03 /* FineReason.swift in Sources */,
@@ -1343,6 +1362,7 @@
 				B0619C1124C21463008969A1 /* ReasonEditor.swift in Sources */,
 				B042D44224BB61810029F2D5 /* SearchBar.swift in Sources */,
 				B0D75CCC2558200900555B03 /* ClubIdentifierAlreadyExistsCall.swift in Sources */,
+				B0B9D5D525F53F3D00EED682 /* PaymentFineSelector.swift in Sources */,
 				B042C5E8256FA02000DD74B8 /* FineDetail.swift in Sources */,
 				B05C3330253C3597004E9923 /* LoginView.swift in Sources */,
 				B0D75CB425581FDC00555B03 /* RegisterPersonCall.swift in Sources */,
@@ -1826,6 +1846,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		B0DEDD9E25F68BE9009C5415 /* XCRemoteSwiftPackageReference "HalfModal" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ViktorMaric/HalfModal.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		B0DEDD9F25F68BE9009C5415 /* HalfModal */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B0DEDD9E25F68BE9009C5415 /* XCRemoteSwiftPackageReference "HalfModal" */;
+			productName = HalfModal;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = B0E0F81B24A63E5800C82828 /* Project object */;
 }

@@ -7,7 +7,6 @@
 
 import SwiftUI
 import Firebase
-import GoogleMobileAds
 import FirebaseMessaging
 
 /// App Delegate
@@ -36,7 +35,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         try? Auth.auth().useUserAccessGroup("K7NTJ83ZF8.stevenkellner.Strafen.firebaseAuth")
         
         // Initialize the Google Mobile Ads SDK.
-        GADMobileAds.sharedInstance().start(completionHandler: nil)
+        // GADMobileAds.sharedInstance().start(completionHandler: nil)
         
         // Register for push notifications
         registerForPushNotifications()

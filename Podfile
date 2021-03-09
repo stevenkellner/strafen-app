@@ -18,7 +18,7 @@ target 'Strafen' do
   pod 'Google-Mobile-Ads-SDK'
 
   # Braintree
-  pod 'BraintreeDropIn'
+  pod 'Braintree'
   pod 'Braintree/DataCollector'
 
   # Support Docs
