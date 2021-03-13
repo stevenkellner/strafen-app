@@ -13,6 +13,9 @@ enum Payed {
     /// Payed
     case payed(date: Date)
     
+    /// Settled
+    case settled
+    
     /// Unpayed
     case unpayed
 }
@@ -37,6 +40,8 @@ extension Payed: Decodable, Equatable {
         switch rawPayed.state {
         case "unpayed":
             self = .unpayed
+        case "settled":
+            self = .settled
         case "payed":
             guard let date = rawPayed.payDate else {
                 throw DecodingError.dataCorruptedError(in: container, debugDescription: "Date for payed not found.")
@@ -57,6 +62,8 @@ extension Payed: ParameterableObject {
         switch self {
         case .unpayed:
             return "unpayed"
+        case .settled:
+            return "settled"
         case .payed(date: _):
             return "payed"
         }
@@ -66,6 +73,8 @@ extension Payed: ParameterableObject {
     var payDate: Date? {
         switch self {
         case .unpayed:
+            return nil
+        case .settled:
             return nil
         case .payed(date: let date):
             return date

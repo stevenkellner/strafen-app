@@ -42,7 +42,7 @@ struct Fine {
     
     /// Indicates if fine is payed
     var isPayed: Bool {
-        payed != .unpayed
+        payed != .unpayed && payed != .settled
     }
     
     /// Complete amount of this fine

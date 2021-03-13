@@ -533,6 +533,17 @@ export const existsPersonWithUserId = functions.region("europe-west1").https
       return personExists;
     });
 
+// Create a new transaction
+export const newTransaction = functions.region("europe-west1").https
+    .onCall(async (data, context) => {
+      // Check prerequirements
+      const requiredArguements = ["clubId", "personId", "transactionId",
+        "payedFinesIds"];
+      checkPrerequirements(requiredArguements, data, context);
+
+      console.log(data);
+    });
+
 /** Check if user is authorized to call a function and all arguments
  *  are hand over to this function
  *

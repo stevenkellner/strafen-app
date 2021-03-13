@@ -8,7 +8,7 @@ firebase-debug.log*
 firebase-debug.*.log*
 
 # Firebase cache
-.firebase/
+/firebase/.firebase/
 
 # Firebase config
 
@@ -73,3 +73,4 @@ node_modules/
 /build/
 /Strafen.xcworkspace
 /utils
+.vscode/

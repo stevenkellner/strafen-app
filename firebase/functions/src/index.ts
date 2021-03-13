@@ -1,5 +1,6 @@
 import * as cf from "./callableFunctions";
 import * as ri from "./resizeImage";
+import * as gtc from "./generateTestClub";
 
 export const newClub = cf.newClub;
 export const deleteClub = cf.deleteClub;
@@ -12,5 +13,8 @@ export const getPersonProperties = cf.getPersonProperties;
 export const getClubId = cf.getClubId;
 export const existsClubWithIdentifier = cf.existsClubWithIdentifier;
 export const existsPersonWithUserId = cf.existsPersonWithUserId;
+export const newTransaction = cf.newTransaction;
 
 export const generateThumbs = ri.generateThumbs;
+
+export const generateTestClub = gtc.generateTestClub;

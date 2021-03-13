@@ -213,7 +213,9 @@ struct PaymentCreditCard: View {
                 guard let tokenizedCard = tokenizedCard,
                       error == nil,
                       let amount = amount,
-                      Payment.shared.readyForPayment else {
+                      Payment.shared.readyForPayment,
+                      let clubId = Settings.shared.person?.clubProperties.id,
+                      let personId = Settings.shared.person?.id else {
                     cardProperties.paymentErrorMessages = .internalError
                     return cardProperties.connectionState.failed()
                 }
@@ -222,6 +224,17 @@ struct PaymentCreditCard: View {
                         cardProperties.paymentErrorMessages = .internalError
                         return cardProperties.connectionState.failed()
                     }
+                    
+                    
+                    let callItem = NewTransactionCall(clubId: clubId, personId: personId, transactionId: result.transaction.id, payedFinesIds: fineIds)
+                    FunctionCaller.shared.call(callItem) { callResult in
+                        print("CallResult", callResult)
+                    } failedHandler: { error in
+                        print("Error", error)
+                    }
+
+                    
+                    
                     cardProperties.connectionState.passed()
                     hideSheet()
                 }

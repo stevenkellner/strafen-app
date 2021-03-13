@@ -98,6 +98,7 @@
 		B0619C1424C21958008969A1 /* AddNewFine.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0619C1324C21958008969A1 /* AddNewFine.swift */; };
 		B0619C1624C236C2008969A1 /* AddNewFinePerson.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0619C1524C236C2008969A1 /* AddNewFinePerson.swift */; };
 		B0619C1824C23911008969A1 /* AddNewFineReason.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0619C1724C23910008969A1 /* AddNewFineReason.swift */; };
+		B0662A9125FA5BCA0002ED63 /* NewTransactionCall.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0662A9025FA5BCA0002ED63 /* NewTransactionCall.swift */; };
 		B0709EDF25A4B55E003D542F /* CallerTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0709EDE25A4B55E003D542F /* CallerTest.swift */; };
 		B075A86F258BBE7C00D74175 /* PlaceholderContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = B04B71EA24CE18560038B02F /* PlaceholderContent.swift */; };
 		B075A874258BEC5100D74175 /* WidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B077B59624CB0801003844CE /* WidgetView.swift */; };
@@ -294,6 +295,7 @@
 		B0619C1324C21958008969A1 /* AddNewFine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewFine.swift; sourceTree = "<group>"; };
 		B0619C1524C236C2008969A1 /* AddNewFinePerson.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewFinePerson.swift; sourceTree = "<group>"; };
 		B0619C1724C23910008969A1 /* AddNewFineReason.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewFineReason.swift; sourceTree = "<group>"; };
+		B0662A9025FA5BCA0002ED63 /* NewTransactionCall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewTransactionCall.swift; sourceTree = "<group>"; };
 		B0709EDE25A4B55E003D542F /* CallerTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallerTest.swift; sourceTree = "<group>"; };
 		B075A879258BF02300D74175 /* NoPersonLoggedIn.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoPersonLoggedIn.swift; sourceTree = "<group>"; };
 		B077B57024CAC652003844CE /* StrafenWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = StrafenWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -768,6 +770,7 @@
 				B0D75CC525581FFE00555B03 /* GetPersonPropertiesCall.swift */,
 				B087CF32258AA484005E819D /* LatePaymentInterestCall.swift */,
 				B0D75CB925581FE900555B03 /* NewClubCall.swift */,
+				B0662A9025FA5BCA0002ED63 /* NewTransactionCall.swift */,
 				B0D75CB325581FDC00555B03 /* RegisterPersonCall.swift */,
 				B0D75CD12558201400555B03 /* UserIdAlreadyExistsCall.swift */,
 			);
@@ -1307,6 +1310,7 @@
 				B0061F8B25F677760091B17B /* CreditCardValitadion.swift in Sources */,
 				B0280AB424FFB9D30049202D /* LatePaymentInterestChangerView.swift in Sources */,
 				B042D43D24BB2BBD0029F2D5 /* Array.swift in Sources */,
+				B0662A9125FA5BCA0002ED63 /* NewTransactionCall.swift in Sources */,
 				B0E2C19424CC6620009E3666 /* Fine.swift in Sources */,
 				B042D44024BB5B420029F2D5 /* PersonList.swift in Sources */,
 				B0619C1824C23911008969A1 /* AddNewFineReason.swift in Sources */,

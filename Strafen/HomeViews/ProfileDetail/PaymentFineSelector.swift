@@ -23,7 +23,7 @@ struct PaymentButton: View {
     @ObservedObject var reasonListData = ListData.reason
     
     /// Indicates whether fine selector sheet is shown
-    @State var showFineSelectorSheet = true // TODO
+    @State var showFineSelectorSheet = false
     
     var body: some View {
         if let person = settings.person, person.clubProperties.isInAppPaymentActive, let fineList = fineListData.list, fineList.hasUnpayedFines(personId, with: reasonListData.list) {
@@ -64,7 +64,7 @@ struct PaymentFineSelector: View {
     /// Error messages
     @State var errorMessages: ErrorMessages? = nil
     
-    @State var showPaymentMethodSheet = true // TODO
+    @State var showPaymentMethodSheet = false
     
     @State var showCreditCardSheet = false
     
@@ -233,7 +233,7 @@ struct PaymentFineSelector: View {
 
 extension Array where Element == Fine {
     fileprivate func unpayedFines(_ personId: Person.ID) -> [Element] {
-        filter { $0.assoiatedPersonId == personId && !$0.isPayed }
+        filter { $0.assoiatedPersonId == personId && $0.payed == .unpayed }
     }
     
     fileprivate func sortedForList(of personId: Person.ID, with reasonList: [ReasonTemplate]?) -> [Element] {
@@ -243,6 +243,8 @@ extension Array where Element == Fine {
     }
     
     fileprivate func hasUnpayedFines(_ personId: Person.ID, with reasonList: [ReasonTemplate]?) -> Bool {
-        !amountSum(of: personId, with: reasonList).unpayed.isZero
+        !unpayedFines(personId).reduce(into: .zero) { result, fine in
+            result += fine.completeAmount(with: reasonList)
+        }.isZero
     }
 }
