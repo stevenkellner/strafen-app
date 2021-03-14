@@ -12,17 +12,19 @@ export const newClub = functions.region("europe-west1").https
         "personFirstName", "clubIdentifier", "userId", "signInDate",
         "regionCode", "inAppPaymentActive"];
       checkPrerequirements(requiredArguements, data, context);
+      const clubsPathComponent = data["debug"] ? "debugClubs" : "clubs";
 
       // Check if identifier already exists
       let clubExists = false;
-      await admin.database().ref("clubs").once("value", (snapshot) => {
-        snapshot.forEach((club) => {
-          const identifier = club.child("identifier").val();
-          if (identifier == data.clubIdentifier) {
-            clubExists = true;
-          }
-        });
-      });
+      await admin.database().ref(clubsPathComponent)
+          .once("value", (snapshot) => {
+            snapshot.forEach((club) => {
+              const identifier = club.child("identifier").val();
+              if (identifier == data.clubIdentifier) {
+                clubExists = true;
+              }
+            });
+          });
       if (clubExists) {
         throw new functions.https.HttpsError(
             "already-exists",
@@ -31,7 +33,8 @@ export const newClub = functions.region("europe-west1").https
       }
 
       // Reference to new club
-      const clubPath = "clubs/" + data.clubId.toString().toUpperCase();
+      const clubPath = clubsPathComponent + "/" +
+        data.clubId.toString().toUpperCase();
       const clubRef = admin.database().ref(clubPath);
 
       // Check if club already exists with given id
@@ -88,9 +91,11 @@ export const deleteClub = functions.region("europe-west1").https
       // Check prerequirements
       const requiredArguements = ["clubId"];
       checkPrerequirements(requiredArguements, data, context);
+      const clubsPathComponent = data["debug"] ? "debugClubs" : "clubs";
 
       // Reference to new club
-      const clubPath = "clubs/" + data.clubId.toString().toUpperCase();
+      const clubPath = clubsPathComponent + "/" +
+        data.clubId.toString().toUpperCase();
       const clubRef = admin.database().ref(clubPath);
 
       // Delete club
@@ -105,10 +110,11 @@ export const changeLatePaymentInterest = functions.region("europe-west1").https
       // Check prerequirements
       const requiredArguements = ["clubId"];
       checkPrerequirements(requiredArguements, data, context);
+      const clubsPathComponent = data["debug"] ? "debugClubs" : "clubs";
 
       // Late payment interest reference
-      const path = "clubs/" + data.clubId.toString().toUpperCase() +
-        "/latePaymentInterest";
+      const path = clubsPathComponent + "/" +
+        data.clubId.toString().toUpperCase() + "/latePaymentInterest";
       const interestRef = admin.database().ref(path);
 
       try {
@@ -153,9 +159,11 @@ export const registerPerson = functions.region("europe-west1").https
       const requiredArguements = ["clubId", "id", "firstName", "userId",
         "signInDate"];
       checkPrerequirements(requiredArguements, data, context);
+      const clubsPathComponent = data["debug"] ? "debugClubs" : "clubs";
 
       // Club and person reference
-      const clubPath = "clubs/" + data.clubId.toString().toUpperCase();
+      const clubPath = clubsPathComponent + "/" +
+        data.clubId.toString().toUpperCase();
       const personPath = clubPath + "/persons/" + data.id.toString()
           .toUpperCase();
       const clubRef = admin.database().ref(clubPath);
@@ -230,10 +238,12 @@ export const forceSignOut = functions.region("europe-west1").https
       // Check prerequirements
       const requiredArguements = ["clubId", "personId"];
       checkPrerequirements(requiredArguements, data, context);
+      const clubsPathComponent = data["debug"] ? "debugClubs" : "clubs";
 
       // Sign in data reference
-      const path = "clubs/" + data.clubId.toString().toUpperCase() +
-        "/persons/" + data.personId.toString().toUpperCase() + "/signInData";
+      const path = clubsPathComponent + "/" +
+        data.clubId.toString().toUpperCase() + "/persons/" +
+        data.personId.toString().toUpperCase() + "/signInData";
       const signInDataRef = admin.database().ref(path);
 
       // Force sign out
@@ -258,12 +268,13 @@ export const changeList = functions.region("europe-west1").https
       const requiredArguements = ["clubId", "changeType", "listType",
         "itemId"];
       checkPrerequirements(requiredArguements, data, context);
+      const clubsPathComponent = data["debug"] ? "debugClubs" : "clubs";
 
       // Get item reference
       let path = null;
       if (data.listType == "person" || data.listType == "fine" ||
         data.listType == "reason") {
-        path = "clubs/" + data.clubId.toString().toUpperCase() +
+        path = clubsPathComponent + "/" + data.clubId.toString().toUpperCase()+
             "/" + data.listType + "s/" + data.itemId.toString().toUpperCase();
       } else {
         throw new functions.https.HttpsError(
@@ -381,9 +392,11 @@ export const changeFinePayed = functions.region("europe-west1").https
       // Check prerequirements
       const requiredArguements = ["clubId", "fineId", "payed"];
       checkPrerequirements(requiredArguements, data, context);
+      const clubsPathComponent = data["debug"] ? "debugClubs" : "clubs";
 
       // Reference to payed
-      const path = "clubs/" + data.clubId.toString().toUpperCase() + "/fines/" +
+      const path = clubsPathComponent + "/" +
+        data.clubId.toString().toUpperCase() + "/fines/" +
         data.fineId.toString().toUpperCase() + "/payed";
       const payedRef = admin.database().ref(path);
 
@@ -404,9 +417,10 @@ export const getPersonProperties = functions.region("europe-west1").https
       // Check prerequirements
       const requiredArguements = ["userId"];
       checkPrerequirements(requiredArguements, data, context);
+      const clubsPathComponent = data["debug"] ? "debugClubs" : "clubs";
 
       // Ref to clubs
-      const clubsRef = admin.database().ref("clubs");
+      const clubsRef = admin.database().ref(clubsPathComponent);
 
       let personProperties = null;
       await clubsRef.once("value", (clubsSnapshot) => {
@@ -460,9 +474,10 @@ export const getClubId = functions.region("europe-west1").https
       // Check prerequirements
       const requiredArguements = ["identifier"];
       checkPrerequirements(requiredArguements, data, context);
+      const clubsPathComponent = data["debug"] ? "debugClubs" : "clubs";
 
       // Ref to club
-      const clubsRef = admin.database().ref("clubs");
+      const clubsRef = admin.database().ref(clubsPathComponent);
 
       // Get club id
       let clubId = null;
@@ -492,9 +507,10 @@ export const existsClubWithIdentifier = functions.region("europe-west1").https
       // Check prerequirements
       const requiredArguements = ["identifier"];
       checkPrerequirements(requiredArguements, data, context);
+      const clubsPathComponent = data["debug"] ? "debugClubs" : "clubs";
 
       // Ref to clubs
-      const clubsRef = admin.database().ref("clubs");
+      const clubsRef = admin.database().ref(clubsPathComponent);
 
       // Check if exists
       let clubExists = false;
@@ -515,9 +531,10 @@ export const existsPersonWithUserId = functions.region("europe-west1").https
       // Check prerequirements
       const requiredArguements = ["userId"];
       checkPrerequirements(requiredArguements, data, context);
+      const clubsPathComponent = data["debug"] ? "debugClubs" : "clubs";
 
       // Ref to clubs
-      const clubsRef = admin.database().ref("clubs");
+      const clubsRef = admin.database().ref(clubsPathComponent);
 
       // Check if exists
       let personExists = false; await clubsRef.once("value", (snapshot) => {
@@ -540,6 +557,7 @@ export const newTransaction = functions.region("europe-west1").https
       const requiredArguements = ["clubId", "personId", "transactionId",
         "payedFinesIds"];
       checkPrerequirements(requiredArguements, data, context);
+      // const clubsPathComponent = data["debug"] ? "debugClubs" : "clubs";
 
       console.log(data);
     });

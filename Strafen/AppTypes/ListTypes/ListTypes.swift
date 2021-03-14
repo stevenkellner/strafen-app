@@ -43,7 +43,7 @@ protocol ListType: Identifiable where ID: ListTypeId {
 // Extension of URL to get path to list of person / reason / fine
 extension URL {
     private static func baseList(with id: Club.ID) -> URL {
-        URL(string: "clubs")!.appendingPathComponent(id.uuidString.uppercased())
+        URL(string: Bundle.main.firebaseDebugEnabled ? "debugClubs" : "clubs")!.appendingPathComponent(id.uuidString.uppercased())
     }
     
     /// Path to person list of club with given id

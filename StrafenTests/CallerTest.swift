@@ -50,7 +50,7 @@ class CallerTest: XCTestCase {
     private func _setUpCheckClubPropertries() throws {
         let clubId = TestProperty.shared.testClub.id
         let clubProperties: Club = try awaitResult { handler in
-            let url = URL(string: "clubs/\(clubId)")!
+            let url = URL(string: "\(Bundle.main.firebaseClubsComponent)/\(clubId)")!
             Fetcher.shared.fetchItem(from: url, handler: handler)
         }
         XCTAssertEqual(clubProperties, TestProperty.shared.testClub.club)
@@ -60,7 +60,7 @@ class CallerTest: XCTestCase {
     private func _setUpCheckPersonList() throws {
         let clubId = TestProperty.shared.testClub.id
         let personList: [Person] = try awaitResult { handler in
-            let url = URL(string: "clubs/\(clubId)/persons")!
+            let url = URL(string: "\(Bundle.main.firebaseClubsComponent)/\(clubId)/persons")!
             Fetcher.shared.fetchList(from: url, handler: handler)
         }
         XCTAssertEqual(personList.count, 1)
@@ -74,7 +74,7 @@ class CallerTest: XCTestCase {
     private func _setUpCheckReasonList() throws {
         let clubId = TestProperty.shared.testClub.id
         try awaitExistsNoData { handler in
-            let url = URL(string: "clubs/\(clubId)/reasons")!
+            let url = URL(string: "\(Bundle.main.firebaseClubsComponent)/\(clubId)/reasons")!
             Fetcher.shared.existsNoData(at: url, handler: handler)
         }
     }
@@ -83,7 +83,7 @@ class CallerTest: XCTestCase {
     private func _setUpCheckFineList() throws {
         let clubId = TestProperty.shared.testClub.id
         try awaitExistsNoData { handler in
-            let url = URL(string: "clubs/\(clubId)/fines")!
+            let url = URL(string: "\(Bundle.main.firebaseClubsComponent)/\(clubId)/fines")!
             Fetcher.shared.existsNoData(at: url, handler: handler)
         }
     }
@@ -117,7 +117,7 @@ class CallerTest: XCTestCase {
     private func _tearDownCheckClub() throws {
         let clubId = TestProperty.shared.testClub.id
         try awaitExistsNoData { handler in
-            let url = URL(string: "clubs/\(clubId)")!
+            let url = URL(string: "\(Bundle.main.firebaseClubsComponent)/\(clubId)")!
             Fetcher.shared.existsNoData(at: url, handler: handler)
         }
     }
@@ -166,21 +166,21 @@ extension CallerTest {
         
         // Check identifier
         let identifier: String = try awaitResult { handler in
-            let url = URL(string: "clubs/\(clubId)/identifier")!
+            let url = URL(string: "\(Bundle.main.firebaseClubsComponent)/\(clubId)/identifier")!
             Fetcher.shared.fetchPrmitiveItem(from: url, handler: handler)
         }
         XCTAssertEqual(identifier, TestProperty.shared.testClub.identifier)
         
         // Check name
         let name: String = try awaitResult { handler in
-            let url = URL(string: "clubs/\(clubId)/name")!
+            let url = URL(string: "\(Bundle.main.firebaseClubsComponent)/\(clubId)/name")!
             Fetcher.shared.fetchPrmitiveItem(from: url, handler: handler)
         }
         XCTAssertEqual(name, TestProperty.shared.testClub.name)
         
         // Check region code
         let regionCode: String = try awaitResult { handler in
-            let url = URL(string: "clubs/\(clubId)/regionCode")!
+            let url = URL(string: "\(Bundle.main.firebaseClubsComponent)/\(clubId)/regionCode")!
             Fetcher.shared.fetchPrmitiveItem(from: url, handler: handler)
         }
         XCTAssertEqual(regionCode, TestProperty.shared.testClub.regionCode)
@@ -226,7 +226,7 @@ extension CallerTest {
         }
         XCTAssertNil(error)
         let identifierAfterSameId: String = try awaitResult { handler in
-            let url = URL(string: "clubs/\(clubId)/identifier")!
+            let url = URL(string: "\(Bundle.main.firebaseClubsComponent)/\(clubId)/identifier")!
             Fetcher.shared.fetchPrmitiveItem(from: url, handler: handler)
         }
         XCTAssertEqual(identifierAfterSameId, TestProperty.shared.testClub.identifier)
@@ -241,7 +241,7 @@ extension CallerTest {
         }
         XCTAssertNil(error)
         try awaitExistsNoData { handler in
-            let url = URL(string: "clubs/\(clubId)")!
+            let url = URL(string: "\(Bundle.main.firebaseClubsComponent)/\(clubId)")!
             Fetcher.shared.existsNoData(at: url, handler: handler)
         }
     }
@@ -264,7 +264,7 @@ extension CallerTest {
         
         // Check person
         let personList: [Person] = try awaitResult { handler in
-            let url = URL(string: "clubs/\(clubId)/persons")!
+            let url = URL(string: "\(Bundle.main.firebaseClubsComponent)/\(clubId)/persons")!
             Fetcher.shared.fetchList(from: url, handler: handler)
         }
         XCTAssertEqual(personList.count, 1)
@@ -312,7 +312,7 @@ extension CallerTest {
         
         // Check late payment interest
         let fetchedLatePaymentInterest: Settings.LatePaymentInterest = try awaitResult { handler in
-            let url = URL(string: "clubs/\(clubId)/latePaymentInterest")!
+            let url = URL(string: "\(Bundle.main.firebaseClubsComponent)/\(clubId)/latePaymentInterest")!
             Fetcher.shared.fetchPrmitiveItem(from: url, handler: handler)
         }
         XCTAssertEqual(fetchedLatePaymentInterest, latePaymentInterest)
@@ -339,7 +339,7 @@ extension CallerTest {
         
         // Check late payment interest
         try awaitExistsNoData { handler in
-            let url = URL(string: "clubs/\(clubId)/latePaymentInterest")!
+            let url = URL(string: "\(Bundle.main.firebaseClubsComponent)/\(clubId)/latePaymentInterest")!
             Fetcher.shared.existsNoData(at: url, handler: handler)
         }
     }
@@ -384,7 +384,7 @@ extension CallerTest {
         
         // Check person properties
         let person: Person = try awaitResult { handler in
-            let url = URL(string: "clubs/\(clubId)/persons/\(personId)")!
+            let url = URL(string: "\(Bundle.main.firebaseClubsComponent)/\(clubId)/persons/\(personId)")!
             Fetcher.shared.fetchItem(from: url, handler: handler)
         }
         XCTAssertEqual(person.name, personName)
@@ -413,7 +413,7 @@ extension CallerTest {
         
         // Check sign in data
         try awaitExistsNoData { handler in
-            let url = URL(string: "clubs/\(clubId)/persons/\(personId)/signInData")!
+            let url = URL(string: "\(Bundle.main.firebaseClubsComponent)/\(clubId)/persons/\(personId)/signInData")!
             Fetcher.shared.existsNoData(at: url, handler: handler)
         }
     }
@@ -467,7 +467,7 @@ extension CallerTest {
         
         // Check person
         let fetchedPerson: Person = try awaitResult { handler in
-            let url = URL(string: "clubs/\(clubId)/persons/\(person.id)")!
+            let url = URL(string: "\(Bundle.main.firebaseClubsComponent)/\(clubId)/persons/\(person.id)")!
             Fetcher.shared.fetchItem(from: url, handler: handler)
         }
         XCTAssertEqual(fetchedPerson.id, person.id)
@@ -493,7 +493,7 @@ extension CallerTest {
         
         // Check person
         let fetchedPerson: Person = try awaitResult { handler in
-            let url = URL(string: "clubs/\(clubId)/persons/\(person.id)")!
+            let url = URL(string: "\(Bundle.main.firebaseClubsComponent)/\(clubId)/persons/\(person.id)")!
             Fetcher.shared.fetchItem(from: url, handler: handler)
         }
         XCTAssertEqual(fetchedPerson.id, person.id)
@@ -519,7 +519,7 @@ extension CallerTest {
         
         // Check person
         let fetchedPerson: Person = try awaitResult { handler in
-            let url = URL(string: "clubs/\(clubId)/persons/\(person.id)")!
+            let url = URL(string: "\(Bundle.main.firebaseClubsComponent)/\(clubId)/persons/\(person.id)")!
             Fetcher.shared.fetchItem(from: url, handler: handler)
         }
         XCTAssertEqual(fetchedPerson.id, person.id)
@@ -543,7 +543,7 @@ extension CallerTest {
         
         // Check person
         try awaitExistsNoData { handler in
-            let url = URL(string: "clubs/\(clubId)/persons/\(person.id)")!
+            let url = URL(string: "\(Bundle.main.firebaseClubsComponent)/\(clubId)/persons/\(person.id)")!
             Fetcher.shared.existsNoData(at: url, handler: handler)
         }
     }
@@ -566,7 +566,7 @@ extension CallerTest {
         
         // Check person
         let fetchedPerson: Person = try awaitResult { handler in
-            let url = URL(string: "clubs/\(clubId)/persons/\(person.id)")!
+            let url = URL(string: "\(Bundle.main.firebaseClubsComponent)/\(clubId)/persons/\(person.id)")!
             Fetcher.shared.fetchItem(from: url, handler: handler)
         }
         XCTAssertEqual(fetchedPerson.id, person.id)
@@ -591,7 +591,7 @@ extension CallerTest {
         
         // Check person
         let fetchedPerson: Person = try awaitResult { handler in
-            let url = URL(string: "clubs/\(clubId)/persons/\(person.id)")!
+            let url = URL(string: "\(Bundle.main.firebaseClubsComponent)/\(clubId)/persons/\(person.id)")!
             Fetcher.shared.fetchItem(from: url, handler: handler)
         }
         XCTAssertEqual(fetchedPerson.id, person.id)
@@ -642,7 +642,7 @@ extension CallerTest {
         
         // Check reason
         let fetchedReason: ReasonTemplate = try awaitResult { handler in
-            let url = URL(string: "clubs/\(clubId)/reasons/\(reason.id)")!
+            let url = URL(string: "\(Bundle.main.firebaseClubsComponent)/\(clubId)/reasons/\(reason.id)")!
             Fetcher.shared.fetchItem(from: url, handler: handler)
         }
         XCTAssertEqual(fetchedReason, reason)
@@ -664,7 +664,7 @@ extension CallerTest {
 
         // Check reason
         let fetchedReason: ReasonTemplate = try awaitResult { handler in
-            let url = URL(string: "clubs/\(clubId)/reasons/\(reason.id)")!
+            let url = URL(string: "\(Bundle.main.firebaseClubsComponent)/\(clubId)/reasons/\(reason.id)")!
             Fetcher.shared.fetchItem(from: url, handler: handler)
         }
         XCTAssertEqual(fetchedReason, TestProperty.shared.testReason.reasonTemplate)
@@ -686,7 +686,7 @@ extension CallerTest {
 
         // Check reason
         let fetchedReason: ReasonTemplate = try awaitResult { handler in
-            let url = URL(string: "clubs/\(clubId)/reasons/\(reason.id)")!
+            let url = URL(string: "\(Bundle.main.firebaseClubsComponent)/\(clubId)/reasons/\(reason.id)")!
             Fetcher.shared.fetchItem(from: url, handler: handler)
         }
         XCTAssertEqual(fetchedReason, reason)
@@ -708,7 +708,7 @@ extension CallerTest {
 
         // Check reason
         try awaitExistsNoData { handler in
-            let url = URL(string: "clubs/\(clubId)/reasons/\(reason.id)")!
+            let url = URL(string: "\(Bundle.main.firebaseClubsComponent)/\(clubId)/reasons/\(reason.id)")!
             Fetcher.shared.existsNoData(at: url, handler: handler)
         }
     }
@@ -759,7 +759,7 @@ extension CallerTest {
         
         // Check fine
         let fetchedFine: Fine = try awaitResult { handler in
-            let url = URL(string: "clubs/\(clubId)/fines/\(fine.id)")!
+            let url = URL(string: "\(Bundle.main.firebaseClubsComponent)/\(clubId)/fines/\(fine.id)")!
             Fetcher.shared.fetchItem(from: url, handler: handler)
         }
         XCTAssertEqual(fetchedFine, fine)
@@ -781,7 +781,7 @@ extension CallerTest {
 
         // Check fine
         let fetchedFine: Fine = try awaitResult { handler in
-            let url = URL(string: "clubs/\(clubId)/fines/\(fine.id)")!
+            let url = URL(string: "\(Bundle.main.firebaseClubsComponent)/\(clubId)/fines/\(fine.id)")!
             Fetcher.shared.fetchItem(from: url, handler: handler)
         }
         XCTAssertEqual(fetchedFine, TestProperty.shared.testFine.withReasonTemplate)
@@ -803,7 +803,7 @@ extension CallerTest {
 
         // Check fine
         let fetchedFine: Fine = try awaitResult { handler in
-            let url = URL(string: "clubs/\(clubId)/fines/\(fine.id)")!
+            let url = URL(string: "\(Bundle.main.firebaseClubsComponent)/\(clubId)/fines/\(fine.id)")!
             Fetcher.shared.fetchItem(from: url, handler: handler)
         }
         XCTAssertEqual(fetchedFine, fine)
@@ -825,7 +825,7 @@ extension CallerTest {
 
         // Check fine
         try awaitExistsNoData { handler in
-            let url = URL(string: "clubs/\(clubId)/fines/\(fine.id)")!
+            let url = URL(string: "\(Bundle.main.firebaseClubsComponent)/\(clubId)/fines/\(fine.id)")!
             Fetcher.shared.existsNoData(at: url, handler: handler)
         }
     }
@@ -846,7 +846,7 @@ extension CallerTest {
 
         // Check fine
         let fetchedFine: Fine = try awaitResult { handler in
-            let url = URL(string: "clubs/\(clubId)/fines/\(fine.id)")!
+            let url = URL(string: "\(Bundle.main.firebaseClubsComponent)/\(clubId)/fines/\(fine.id)")!
             Fetcher.shared.fetchItem(from: url, handler: handler)
         }
         XCTAssertEqual(fetchedFine, fine)
@@ -912,7 +912,7 @@ extension CallerTest {
         
         // Check payed
         let fetchedPayed: Payed = try awaitResult { handler in
-            let url = URL(string: "clubs/\(clubId)/fines/\(fineId)/payed")!
+            let url = URL(string: "\(Bundle.main.firebaseClubsComponent)/\(clubId)/fines/\(fineId)/payed")!
             Fetcher.shared.fetchPrmitiveItem(from: url, handler: handler)
         }
         XCTAssertEqual(payed, fetchedPayed)
@@ -935,7 +935,7 @@ extension CallerTest {
         
         // Check payed
         let fetchedPayed: Payed = try awaitResult { handler in
-            let url = URL(string: "clubs/\(clubId)/fines/\(fineId)/payed")!
+            let url = URL(string: "\(Bundle.main.firebaseClubsComponent)/\(clubId)/fines/\(fineId)/payed")!
             Fetcher.shared.fetchPrmitiveItem(from: url, handler: handler)
         }
         XCTAssertEqual(payed, fetchedPayed)

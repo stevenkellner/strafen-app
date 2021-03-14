@@ -102,6 +102,16 @@ extension URL {
     }
 }
 
+extension Bundle {
+    var firebaseDebugEnabled: Bool {
+        CommandLine.arguments.contains("-firebaseDebug")
+    }
+    
+    var firebaseClubsComponent: String {
+        firebaseDebugEnabled ? "debugClubs" : "clubs"
+    }
+}
+
 #if TARGET_MAIN_APP
 // Extension of Dictionary for encoding parameters for post method
 extension Dictionary where Key == String {

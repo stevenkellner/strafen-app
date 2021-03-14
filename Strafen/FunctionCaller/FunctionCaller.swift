@@ -29,6 +29,9 @@ struct FunctionCaller {
         guard let privateKey = Bundle.keysPropertyList.privateFunctionCallerKey as? String else { return failedHandler(CallErrors.noPrivateKey) }
         var parameters = item.parameters
         parameters.add(privateKey, for: "privateKey")
+        if Bundle.main.firebaseDebugEnabled {
+            parameters.add(true, for: "debug")
+        }
         Functions.functions(region: "europe-west1").httpsCallable(item.functionName).call(parameters.parameterableObject) { result, error in
             if let result = result {
                 item.successHandler()

@@ -98,7 +98,7 @@ struct ProfileDetail: View {
                         }.padding(.top, 10)
                         
                         // Payment button
-                        PaymentButton(personId: personId)
+                        // PaymentButton(personId: personId)
                         
                     } else {
                         Text("No available view")

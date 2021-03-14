@@ -1,6 +1,6 @@
 import * as cf from "./callableFunctions";
 import * as ri from "./resizeImage";
-import * as gtc from "./generateTestClub";
+// import * as gtc from "./generateTestClub";
 
 export const newClub = cf.newClub;
 export const deleteClub = cf.deleteClub;
@@ -17,4 +17,4 @@ export const newTransaction = cf.newTransaction;
 
 export const generateThumbs = ri.generateThumbs;
 
-export const generateTestClub = gtc.generateTestClub;
+// export const generateTestClub = gtc.generateTestClub;
