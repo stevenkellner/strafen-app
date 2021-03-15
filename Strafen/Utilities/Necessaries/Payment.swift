@@ -68,6 +68,12 @@ class Payment {
         }
     }
     
+    func checkTransactions() {
+        guard let clubId = Settings.shared.person?.clubProperties.id else { return }
+        let callItem = CheckTransactionsCall(clubId: clubId)
+        FunctionCaller.shared.call(callItem) { _ in }
+    }
+    
     var readyForPayment: Bool {
         dataCollector != nil
     }

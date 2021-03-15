@@ -14,6 +14,7 @@ export const getClubId = cf.getClubId;
 export const existsClubWithIdentifier = cf.existsClubWithIdentifier;
 export const existsPersonWithUserId = cf.existsPersonWithUserId;
 export const newTransaction = cf.newTransaction;
+export const checkTransactions = cf.checkTransactions;
 
 export const generateThumbs = ri.generateThumbs;
 

@@ -32,6 +32,7 @@ struct NewTransactionCall: FunctionCallable {
             parameters["personId"] = personId
             parameters["transactionId"] = transactionId
             parameters["payedFinesIds"] = payedFinesIds as [ParameterableObject]
+            parameters["payDate"] = Date()
         }
     }
 }

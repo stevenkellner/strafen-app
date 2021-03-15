@@ -73,6 +73,21 @@ app.post("/checkout", (req, res) => {
     });
 });
 
+app.post("/check_transaction", (req, res) => {
+    if (req.body.privateKey != keys.privatePaymentKey) { 
+        res.send("{'error': 'Private key is invalid'}");
+        return;
+    }
+    const transactionId = req.body.transactionId;
+    gateway.transaction.find(transactionId, (error, transaction) => {
+        if (error) {
+            res.send(`{"error": "${error}"}`);
+            return;
+        }
+        res.send(`{"result": "${transaction.status}"}`);
+    });
+});
+
 // Start the server
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {

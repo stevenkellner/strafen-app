@@ -37,6 +37,15 @@ struct PaymentCreditCard: View {
         /// Error messages for payment
         var paymentErrorMessages: ErrorMessages? = nil
         
+        /// Indicated if card number keyboard is on screen
+        var isCardNumberKeyboardOnScreen = false
+        
+        /// Indicated if expiration date keyboard is on screen
+        var isExpirationDateKeyboardOnScreen = false
+        
+        /// Indicated if cvv keyboard is on screen
+        var isCvvKeyboardOnScreen = false
+        
         /// Connection state
         var connectionState: ConnectionState = .passed
         
@@ -139,6 +148,7 @@ struct PaymentCreditCard: View {
                         .title("Karten Nummer")
                         .textFieldSize(width: UIScreen.main.bounds.width * 0.95, height: 50)
                         .errorMessages($cardProperties.cardNumberErrorMessages)
+                        .keyboardOnScreen($cardProperties.isCardNumberKeyboardOnScreen)
                         .textBinding($cardProperties.cardNumber)
                         .keyboardType(.decimalPad)
                         .onCompletion { cardProperties.evaluateCardNumberError() }
@@ -157,28 +167,54 @@ struct PaymentCreditCard: View {
                 }.frame(width: UIScreen.main.bounds.width * 0.95 - 5, height: 35)
                 
                 // Expiration date
-                TitledContent("Ablaufdatum") {
-                    CustomTextField()
-                        .title("MM / YY")
-                        .textFieldSize(width: UIScreen.main.bounds.width * 0.475, height: 50)
-                        .errorMessages($cardProperties.expirationDateErrorMessages)
-                        .textBinding($cardProperties.expirationDate)
-                        .keyboardType(.decimalPad)
-                        .onCompletion { cardProperties.evaluateExpirationDateError() }
+                TitledContent("Ablaufdatum", errorMessages: $cardProperties.expirationDateErrorMessages) {
+                    HStack(spacing: 15) {
+                        CustomTextField()
+                            .title("MM / YY")
+                            .textFieldSize(width: UIScreen.main.bounds.width * 0.475, height: 50)
+                            .errorMessages($cardProperties.expirationDateErrorMessages)
+                            .showErrorMessage(false)
+                            .keyboardOnScreen($cardProperties.isExpirationDateKeyboardOnScreen)
+                            .textBinding($cardProperties.expirationDate)
+                            .keyboardType(.decimalPad)
+                            .onCompletion { cardProperties.evaluateExpirationDateError() }
+                        
+                        // Done button
+                        if cardProperties.isExpirationDateKeyboardOnScreen || cardProperties.isCardNumberKeyboardOnScreen {
+                            Text("Fertig")
+                                .foregroundColor(Color.custom.darkGreen)
+                                .font(.text(25))
+                                .lineLimit(1)
+                                .onTapGesture { UIApplication.shared.dismissKeyboard() }
+                        }
+                    }.animation(.default)
                 }
                 
                 // CVV
-                TitledContent("CVV") {
-                    CustomTextField()
-                        .title("CVV")
-                        .textFieldSize(width: UIScreen.main.bounds.width * 0.475, height: 50)
-                        .errorMessages($cardProperties.cvvErrorMessages)
-                        .textBinding($cardProperties.cvv)
-                        .keyboardType(.decimalPad)
-                        .onCompletion { cardProperties.evaluateCvvError() }
+                TitledContent("CVV", errorMessages: $cardProperties.cvvErrorMessages) {
+                    HStack(spacing: 15) {
+                        CustomTextField()
+                            .title("CVV")
+                            .textFieldSize(width: UIScreen.main.bounds.width * 0.475, height: 50)
+                            .errorMessages($cardProperties.cvvErrorMessages)
+                            .showErrorMessage(false)
+                            .keyboardOnScreen($cardProperties.isCvvKeyboardOnScreen)
+                            .textBinding($cardProperties.cvv)
+                            .keyboardType(.decimalPad)
+                            .onCompletion { cardProperties.evaluateCvvError() }
+                        
+                        // Done button
+                        if cardProperties.isCvvKeyboardOnScreen {
+                            Text("Fertig")
+                                .foregroundColor(Color.custom.darkGreen)
+                                .font(.text(25))
+                                .lineLimit(1)
+                                .onTapGesture { UIApplication.shared.dismissKeyboard() }
+                        }
+                    }.animation(.default)
                 }
                 
-            }.padding(.top, 10)
+            }.padding(.top, 10).keyboardAdaptiveOffset.clipped()
             
             Spacer()
             
@@ -224,19 +260,11 @@ struct PaymentCreditCard: View {
                         cardProperties.paymentErrorMessages = .internalError
                         return cardProperties.connectionState.failed()
                     }
-                    
-                    
                     let callItem = NewTransactionCall(clubId: clubId, personId: personId, transactionId: result.transaction.id, payedFinesIds: fineIds)
-                    FunctionCaller.shared.call(callItem) { callResult in
-                        print("CallResult", callResult)
-                    } failedHandler: { error in
-                        print("Error", error)
+                    FunctionCaller.shared.call(callItem) { _ in
+                        cardProperties.connectionState.passed()
+                        hideSheet()
                     }
-
-                    
-                    
-                    cardProperties.connectionState.passed()
-                    hideSheet()
                 }
             }
         }

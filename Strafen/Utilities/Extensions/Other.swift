@@ -327,6 +327,7 @@ struct ScreenSizeModifier: ViewModifier {
     }
 }
 
+#if canImport(HalfModal)
 import HalfModal
 struct HalfModalModifier<SheetContent>: ViewModifier where SheetContent: View {
     
@@ -351,6 +352,12 @@ struct HalfModalModifier<SheetContent>: ViewModifier where SheetContent: View {
         }
     }
 }
+extension View {
+    func halfModal<Content>(isPresented: Binding<Bool>, header: String, @ViewBuilder content: () -> Content) -> some View where Content: View {
+        ModifiedContent(content: self, modifier: HalfModalModifier(isPresented: isPresented, header: header, content: content))
+    }
+}
+#endif
 
 // Extension of View to set screen size
 extension View {
@@ -372,10 +379,6 @@ extension View {
     /// Sets screen size
     func setScreenSize(after deadline: Double) -> some View {
         ModifiedContent(content: self, modifier: ScreenSizeModifier(deadline: deadline))
-    }
-    
-    func halfModal<Content>(isPresented: Binding<Bool>, header: String, @ViewBuilder content: () -> Content) -> some View where Content: View {
-        ModifiedContent(content: self, modifier: HalfModalModifier(isPresented: isPresented, header: header, content: content))
     }
 }
 

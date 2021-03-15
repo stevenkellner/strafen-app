@@ -1,6 +1,7 @@
 import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
-import {privateKey} from "./privateKeys";
+import {privateKey, privatePaymentKey} from "./privateKeys";
+import * as axios from "axios";
 
 admin.initializeApp();
 
@@ -555,11 +556,84 @@ export const newTransaction = functions.region("europe-west1").https
     .onCall(async (data, context) => {
       // Check prerequirements
       const requiredArguements = ["clubId", "personId", "transactionId",
-        "payedFinesIds"];
+        "payedFinesIds", "payDate"];
       checkPrerequirements(requiredArguements, data, context);
-      // const clubsPathComponent = data["debug"] ? "debugClubs" : "clubs";
+      const clubsPathComponent = data["debug"] ? "debugClubs" : "clubs";
 
-      console.log(data);
+      const transactionPath = clubsPathComponent + "/" +
+            data.clubId.toString().toUpperCase() +
+            "/transactions/" + data.transactionId.toString().toUpperCase();
+      const transactionRef = admin.database().ref(transactionPath);
+
+      let isError = false;
+      await transactionRef.set({
+        personId: data.personId,
+        fineIds: data.payedFinesIds,
+        approved: false,
+        payDate: data.payDate,
+      }, (error) => {
+        isError = isError || error != null;
+      });
+      data.payedFinesIds.forEach((fineId: any) => {
+        const finePayedPath = clubsPathComponent + "/" +
+            data.clubId.toString().toUpperCase() +
+            "/fines/" + fineId.toString().toUpperCase() + "/payed";
+        const finePayedRef = admin.database().ref(finePayedPath);
+        finePayedRef.update({
+          state: "settled",
+        }, (error) => {
+          isError = isError || error != null;
+        });
+      });
+      if (isError) {
+        throw new functions.https.HttpsError(
+            "internal",
+            "Couldn't add transaction"
+        );
+      }
+    });
+
+// Check all transactions
+export const checkTransactions = functions.region("europe-west1").https
+    .onCall(async (data, context) => {
+      // Check prerequirements
+      checkPrerequirements(["clubId"], data, context);
+
+      const clubsPathComponent = data["debug"] ? "debugClubs" : "clubs";
+      const transactionsPath = clubsPathComponent + "/" +
+        data.clubId.toString().toUpperCase() + "/transactions";
+      const transactionsRef = admin.database().ref(transactionsPath);
+
+      await transactionsRef.once("value", (transactions) => {
+        transactions.forEach((transaction) => {
+          const isApproved = transaction.child("approved").val();
+          if (!isApproved) {
+            axios.default.post("https://strafen-app.ew.r.appspot.com/check_transaction", {
+              privateKey: privatePaymentKey,
+              transactionId: transaction.key,
+            }).then((response) => {
+              if (response.data.result == "settled") {
+                transaction.child("fineIds").val()
+                    .forEach(async (fineId: any) => {
+                      const finePayedPath = clubsPathComponent + "/" +
+                    data.clubId.toString().toUpperCase() +
+                    "/fines/" + fineId.toString().toUpperCase() + "/payed";
+                      const finePayedRef = admin.database().ref(finePayedPath);
+                      finePayedRef.update({
+                        state: "payed",
+                        payDate: transaction.child("payDate").val(),
+                        inApp: true,
+                      });
+                      const approvedRef = admin.database()
+                          .ref(transactionsPath + "/" +
+                        transaction.key + "/approved");
+                      await approvedRef.set(true);
+                    });
+              }
+            });
+          }
+        });
+      });
     });
 
 /** Check if user is authorized to call a function and all arguments

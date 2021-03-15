@@ -45,6 +45,10 @@ struct Fine {
         payed != .unpayed && payed != .settled
     }
     
+    var isSettled: Bool {
+        payed == .settled
+    }
+    
     /// Complete amount of this fine
     func completeAmount(with reasonList: [ReasonTemplate]?) -> Amount {
         fineReason.amount(with: reasonList) * number + (latePaymentInterestAmount(with: reasonList) ?? .zero)
@@ -139,7 +143,7 @@ extension Fine {
         
         // Get end date
         var endDate = Date()
-        if case .payed(date: let paymentDate) = payed {
+        if case .payed(date: let paymentDate, inApp: _) = payed {
             endDate = paymentDate
         }
         

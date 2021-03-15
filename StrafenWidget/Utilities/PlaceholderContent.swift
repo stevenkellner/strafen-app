@@ -70,6 +70,6 @@ extension Date {
 
 extension Payed {
     static func random(after payDate: Date) -> Payed {
-        Bool.random() ? .unpayed : .payed(date: .random(since: payDate))
+        Bool.random() ? .unpayed : .payed(date: .random(since: payDate), inApp: false)
     }
 }
