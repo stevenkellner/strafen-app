@@ -8,6 +8,7 @@
 import SwiftUI
 import Firebase
 import FirebaseMessaging
+import Braintree
 
 /// App Delegate
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -19,6 +20,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         setUpApplication()
         applyShortcut(of: options)
         return .default(session: connectingSceneSession)
+    }
+    
+    func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
+        if url.scheme?.localizedCaseInsensitiveCompare("stevenkellner.Strafen.payments") == .orderedSame {
+            BTAppContextSwitcher.handleOpenURL(url)
+        }
+        return false
     }
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
@@ -36,6 +44,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         // Initialize the Google Mobile Ads SDK.
         // GADMobileAds.sharedInstance().start(completionHandler: nil)
+        
+        // Set up return Url for payment
+        BTAppContextSwitcher.setReturnURLScheme("stevenkellner.Strafen.payments")
         
         // Register for push notifications
         registerForPushNotifications()

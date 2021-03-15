@@ -238,7 +238,8 @@ struct PaymentCreditCard: View {
         guard cardProperties.connectionState.start() else { return }
         cardProperties.resetErrorMessages()
         Payment.shared.fetchClientToken { token in
-            guard let token = token,
+            guard Payment.shared.readyForPayment,
+                  let token = token,
                   let braintreeClient = BTAPIClient(authorization: token) else {
                 cardProperties.paymentErrorMessages = .internalError
                 return cardProperties.connectionState.failed()
@@ -249,7 +250,6 @@ struct PaymentCreditCard: View {
                 guard let tokenizedCard = tokenizedCard,
                       error == nil,
                       let amount = amount,
-                      Payment.shared.readyForPayment,
                       let clubId = Settings.shared.person?.clubProperties.id,
                       let personId = Settings.shared.person?.id else {
                     cardProperties.paymentErrorMessages = .internalError

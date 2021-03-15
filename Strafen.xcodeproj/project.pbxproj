@@ -23,6 +23,7 @@
 		B0280AB424FFB9D30049202D /* LatePaymentInterestChangerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0280AB324FFB9D30049202D /* LatePaymentInterestChangerView.swift */; };
 		B02B891524BDFDA9004562B9 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B02B891424BDFDA9004562B9 /* SettingsView.swift */; };
 		B02F5CC925FF9A5C00A99678 /* CheckTransactionsCall.swift in Sources */ = {isa = PBXBuildFile; fileRef = B02F5CC825FF9A5C00A99678 /* CheckTransactionsCall.swift */; };
+		B02F5CCD25FFCD1A00A99678 /* PaymentPayPalButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B02F5CCC25FFCD1A00A99678 /* PaymentPayPalButton.swift */; };
 		B02F986F258CF70800B04C48 /* OutlineAndSheetBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E6E86E24CDD38500D467AC /* OutlineAndSheetBar.swift */; };
 		B02F9874258CF71200B04C48 /* RoundedCorners.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0C1C52424A8BC14007B584B /* RoundedCorners.swift */; };
 		B0327C54258BAB4C00DEE05C /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0C1C51A24A78CC2007B584B /* Settings.swift */; };
@@ -262,6 +263,7 @@
 		B0280AB324FFB9D30049202D /* LatePaymentInterestChangerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LatePaymentInterestChangerView.swift; sourceTree = "<group>"; };
 		B02B891424BDFDA9004562B9 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		B02F5CC825FF9A5C00A99678 /* CheckTransactionsCall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckTransactionsCall.swift; sourceTree = "<group>"; };
+		B02F5CCC25FFCD1A00A99678 /* PaymentPayPalButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentPayPalButton.swift; sourceTree = "<group>"; };
 		B0327C96258BB36A00DEE05C /* PropertyWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PropertyWrapper.swift; sourceTree = "<group>"; };
 		B037BCE925419CB4002B81E5 /* SignInEmailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInEmailView.swift; sourceTree = "<group>"; };
 		B03B195C259F861B00D44394 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -507,6 +509,7 @@
 				B04750AF2570370D002C8B99 /* FineEditorTemplate.swift */,
 				B0B9D5D425F53F3D00EED682 /* PaymentFineSelector.swift */,
 				B0DEDDA125F692F9009C5415 /* PaymentCreditCard.swift */,
+				B02F5CCC25FFCD1A00A99678 /* PaymentPayPalButton.swift */,
 			);
 			path = ProfileDetail;
 			sourceTree = "<group>";
@@ -1354,6 +1357,7 @@
 				B0619C0824C1CAB9008969A1 /* CustomDatePicker.swift in Sources */,
 				B006920624C615D500AE2EF0 /* HomeTabs.swift in Sources */,
 				B0BB9E1F25F2AA8F0030DCE1 /* Payment.swift in Sources */,
+				B02F5CCD25FFCD1A00A99678 /* PaymentPayPalButton.swift in Sources */,
 				B0619C0F24C20EAA008969A1 /* ReasonAddNew.swift in Sources */,
 				B0B4822224A8D61300CB7A1A /* CustomTextField.swift in Sources */,
 				B020C7C024AF7CC6008940FE /* Person.swift in Sources */,

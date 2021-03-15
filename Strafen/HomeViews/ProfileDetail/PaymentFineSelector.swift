@@ -142,6 +142,9 @@ struct PaymentFineSelector: View {
                                 presentationMode.wrappedValue.dismiss()
                             }
                         }
+                    PaymentPayPalButton(fineIds: selectedFineIds) {
+                        presentationMode.wrappedValue.dismiss()
+                    }
                 }
             }
     }
