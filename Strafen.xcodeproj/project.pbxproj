@@ -88,6 +88,7 @@
 		B04750B02570370D002C8B99 /* FineEditorTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B04750AF2570370D002C8B99 /* FineEditorTemplate.swift */; };
 		B04D4AA22546AFB900658924 /* SignInNameInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = B04D4AA12546AFB900658924 /* SignInNameInput.swift */; };
 		B04D4AA82546E89E00658924 /* SignInClubInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = B04D4AA72546E89E00658924 /* SignInClubInput.swift */; };
+		B051CBF826010471007B8119 /* SaveCreditCardCall.swift in Sources */ = {isa = PBXBuildFile; fileRef = B051CBF726010471007B8119 /* SaveCreditCardCall.swift */; };
 		B05C32E725388637004E9923 /* NecessaryObjects.swift in Sources */ = {isa = PBXBuildFile; fileRef = B05C32E625388637004E9923 /* NecessaryObjects.swift */; };
 		B05C3317253B6AEE004E9923 /* SignInCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = B05C3316253B6AEE004E9923 /* SignInCache.swift */; };
 		B05C331D253B6B0F004E9923 /* SignInCacheView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B05C331C253B6B0F004E9923 /* SignInCacheView.swift */; };
@@ -286,6 +287,7 @@
 		B04B71F424CF36AE0038B02F /* LargeWidgetSuccess.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LargeWidgetSuccess.swift; sourceTree = "<group>"; };
 		B04D4AA12546AFB900658924 /* SignInNameInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInNameInput.swift; sourceTree = "<group>"; };
 		B04D4AA72546E89E00658924 /* SignInClubInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInClubInput.swift; sourceTree = "<group>"; };
+		B051CBF726010471007B8119 /* SaveCreditCardCall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveCreditCardCall.swift; sourceTree = "<group>"; };
 		B05C32E625388637004E9923 /* NecessaryObjects.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NecessaryObjects.swift; sourceTree = "<group>"; };
 		B05C3316253B6AEE004E9923 /* SignInCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInCache.swift; sourceTree = "<group>"; };
 		B05C331C253B6B0F004E9923 /* SignInCacheView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInCacheView.swift; sourceTree = "<group>"; };
@@ -781,6 +783,7 @@
 				B0D75CB925581FE900555B03 /* NewClubCall.swift */,
 				B0662A9025FA5BCA0002ED63 /* NewTransactionCall.swift */,
 				B0D75CB325581FDC00555B03 /* RegisterPersonCall.swift */,
+				B051CBF726010471007B8119 /* SaveCreditCardCall.swift */,
 				B0D75CD12558201400555B03 /* UserIdAlreadyExistsCall.swift */,
 			);
 			path = CallableItems;
@@ -1380,6 +1383,7 @@
 				B0D75CCC2558200900555B03 /* ClubIdentifierAlreadyExistsCall.swift in Sources */,
 				B042C5E8256FA02000DD74B8 /* FineDetail.swift in Sources */,
 				B05C3330253C3597004E9923 /* LoginView.swift in Sources */,
+				B051CBF826010471007B8119 /* SaveCreditCardCall.swift in Sources */,
 				B0D75CB425581FDC00555B03 /* RegisterPersonCall.swift in Sources */,
 				B07DDDCF256FB9E20003F139 /* ChangeFinePayedCall.swift in Sources */,
 				B0D75CBA25581FE900555B03 /* NewClubCall.swift in Sources */,

@@ -24,6 +24,9 @@ target 'Strafen' do
 
   # Support Docs
   pod 'SupportDocs'
+
+  # CryptoSwift
+  pod 'CryptoSwift', '~> 1.3.8'
   
   target 'StrafenWidgetExtension' do
     inherit! :search_paths

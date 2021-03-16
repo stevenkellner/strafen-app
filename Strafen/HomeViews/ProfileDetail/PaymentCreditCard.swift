@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Braintree
+import FirebaseDatabase
 
 struct PaymentCreditCard: View {
     
@@ -146,6 +147,19 @@ struct PaymentCreditCard: View {
             card.cvv = cvv
             return card
         }
+        
+        var creditCardInformation: CreditCardInformation {
+            CreditCardInformation(firstName: firstName, lastName: lastName, cardNumber: cardNumber, expirationDate: expirationDate, cvv: cvv)
+        }
+        
+        mutating func setFromInformation(_ information: CreditCardInformation) {
+            resetErrorMessages()
+            if let firstName = information.firstName { self.firstName = firstName }
+            if let lastName = information.lastName { self.firstName = lastName }
+            cardNumber = information.cardNumber
+            expirationDate = information.expirationDate
+            cvv = information.cvv
+        }
     }
     
     /// Ids of fines to pay
@@ -155,6 +169,9 @@ struct PaymentCreditCard: View {
     
     /// Card Properties
     @State var cardProperties = CardProperties()
+    
+    /// Last credit card information
+    @State var lastCreditCard: CreditCardInformation? = nil
     
     /// Fine List Data
     @ObservedObject var fineListData = ListData.fine
@@ -178,6 +195,29 @@ struct PaymentCreditCard: View {
             
             ScrollView {
                 VStack(spacing: 5) {
+                    
+                    // Last credit card
+                    if let lastCreditCard = lastCreditCard {
+                        TitledContent("Letzte Karte benutzen") {
+                            ZStack {
+                                Outline()
+                                VStack(spacing: 0) {
+                                    HStack(spacing: 0) {
+                                        Text(lastCreditCard.maskedCardNumber).configurate(size: lastCreditCard.formattedName == nil ? 25 : 17.5).lineLimit(1)
+                                        Spacer()
+                                        Text(lastCreditCard.expirationDate).configurate(size: lastCreditCard.formattedName == nil ? 25 : 17.5).lineLimit(1)
+                                    }.padding(.horizontal, 15)
+                                    if let name = lastCreditCard.formattedName {
+                                        HStack(spacing: 0) {
+                                            Text(name).configurate(size: 17.5).lineLimit(1)
+                                            Spacer()
+                                        }.padding(.horizontal, 15)
+                                    }
+                                }
+                            }.frame(width: UIScreen.main.bounds.width * 0.95, height: 50)
+                        }.titleColor(Color.custom.orange).padding(.bottom, 10)
+                            .onTapGesture { cardProperties.setFromInformation(lastCreditCard) }
+                    }
                     
                     // Name
                     TitledContent("Name") {
@@ -302,6 +342,7 @@ struct PaymentCreditCard: View {
             .onAppear {
                 cardProperties.firstName = Settings.shared.person?.name.firstName ?? ""
                 cardProperties.lastName = Settings.shared.person?.name.lastName ?? ""
+                fetchCardInformation()
             }
     }
     
@@ -341,8 +382,28 @@ struct PaymentCreditCard: View {
                         cardProperties.connectionState.passed()
                         hideSheet()
                     }
+                    guard let information = cardProperties.creditCardInformation.encrypted?.isoLatin1String else { return }
+                    let callItemSave = SaveCreditCardCall(clubId: clubId, personId: personId, information: information)
+                    FunctionCaller.shared.call(callItemSave) { _ in }
                 }
             }
+        }
+    }
+    
+    func fetchCardInformation() {
+        guard let personId = Settings.shared.person?.id,
+              let clubId = Settings.shared.person?.clubProperties.id else { return }
+        let url = URL(string: Bundle.main.firebaseClubsComponent)!
+            .appendingPathComponent(clubId.uuidString)
+            .appendingPathComponent("persons")
+            .appendingPathComponent(personId.uuidString)
+            .appendingPathComponent("creditCard")
+        Database.database().reference(withPath: url.path).observeSingleEvent(of: .value) { snapshot in
+            guard snapshot.exists(),
+                  let encryptedData = snapshot.value as? String,
+                  let encryptedByteList = encryptedData.isoLatin1ByteList else { return }
+            let information = CreditCardInformation(encrypted: encryptedByteList)
+            lastCreditCard = information
         }
     }
     

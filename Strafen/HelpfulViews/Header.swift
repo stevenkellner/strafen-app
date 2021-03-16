@@ -53,6 +53,8 @@ struct Title: View {
     /// Title
     private let title: String
     
+    private var color: Color? = nil
+    
     public init(_ title: String) {
         self.title = title
     }
@@ -60,10 +62,18 @@ struct Title: View {
     public var body: some View {
         HStack(spacing: 0) {
             Text("\(title):")
-                .configurate(size: 20)
+                .font(.text(20))
+                .foregroundColor(color ?? .textColor)
+                .lineLimit(1)
                 .padding(.leading, 10)
             Spacer()
         }
+    }
+    
+    func color(_ color: Color?) -> Title {
+        var title = self
+        title.color = color
+        return title
     }
 }
 
@@ -81,6 +91,8 @@ struct TitledContent<Content>: View where Content: View {
     /// Frame of content
     private var contentFrame: (width: CGFloat?, height: CGFloat?) = (width: nil, height: nil)
     
+    private var titleColor: Color? = nil
+    
     init(_ title: String?, errorMessages: Binding<ErrorMessages?>? = nil, @ViewBuilder content: () -> Content) {
         self.title = title
         self.errorMessages = errorMessages
@@ -92,7 +104,7 @@ struct TitledContent<Content>: View where Content: View {
             
             // Title
             if let title = title {
-                Title(title)
+                Title(title).color(titleColor)
             }
             
             // Content
@@ -117,6 +129,12 @@ struct TitledContent<Content>: View where Content: View {
     func contentFrame(width: CGFloat? = nil, height: CGFloat? = nil) -> TitledContent {
         var content = self
         content.contentFrame = (width: width, height: height)
+        return content
+    }
+    
+    func titleColor(_ color: Color) -> TitledContent {
+        var content = self
+        content.titleColor = color
         return content
     }
 }

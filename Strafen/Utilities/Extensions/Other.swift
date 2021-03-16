@@ -591,4 +591,32 @@ extension Bundle {
         PropertyListContent(path: Bundle.main.path(forResource: "KeysInfo", ofType: "plist")!)
     }
 }
+
+import CryptoSwift
+extension Array where Element == UInt8 {
+    var encrypted: Array<UInt8>? {
+        guard let cryptionKey = Bundle.keysPropertyList.cryptionKey as? String,
+              let cryptionIV = Bundle.keysPropertyList.cryptionIV as? String else { return nil }
+        let aes = try? AES(key: cryptionKey, iv: cryptionIV)
+        return try? aes?.encrypt(self)
+    }
+    
+    var decrypted: Array<UInt8>? {
+        guard let cryptionKey = Bundle.keysPropertyList.cryptionKey as? String,
+              let cryptionIV = Bundle.keysPropertyList.cryptionIV as? String else { return nil }
+        let aes = try? AES(key: cryptionKey, iv: cryptionIV)
+        return try? aes?.decrypt(self)
+    }
+    
+    var isoLatin1String: String? {
+        String(bytes: self, encoding: .isoLatin1)
+    }
+}
+
+extension String {
+    var isoLatin1ByteList: Array<UInt8>? {
+        guard let data = data(using: .isoLatin1) else { return nil }
+        return [UInt8](data)
+    }
+}
 #endif

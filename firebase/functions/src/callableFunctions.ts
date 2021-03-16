@@ -652,6 +652,19 @@ export const checkTransactions = functions.region("europe-west1").https
       });
     });
 
+export const saveCreditCard = functions.region("europe-west1").https
+    .onCall(async (data, context) => {
+      checkPrerequirements(["clubId", "personId", "information"],
+          data, context);
+      const clubsPathComponent = data["debug"] ? "debugClubs" : "clubs";
+      const path = clubsPathComponent + "/" +
+          data.clubId.toString().toUpperCase() + "/persons/" +
+        data.personId.toString().toUpperCase() + "/creditCard";
+      const ref = admin.database().ref(path);
+      await ref.set(data.information);
+    });
+
+
 /** Check if user is authorized to call a function and all arguments
  *  are hand over to this function
  *
