@@ -3,6 +3,8 @@ PODS:
     - Braintree/Card (= 5.0.1)
     - Braintree/Core (= 5.0.1)
     - Braintree/PayPal (= 5.0.1)
+  - Braintree/ApplePay (5.0.1):
+    - Braintree/Core
   - Braintree/Card (5.0.1):
     - Braintree/Core
   - Braintree/Core (5.0.1)
@@ -128,6 +130,7 @@ PODS:
 
 DEPENDENCIES:
   - Braintree
+  - Braintree/ApplePay
   - Braintree/DataCollector
   - CodableFirebase
   - Firebase/Analytics
@@ -190,6 +193,6 @@ SPEC CHECKSUMS:
   PromisesObjC: 3113f7f76903778cf4a0586bd1ab89329a0b7b97
   SupportDocs: 8123646bc65daa23d9d5efda5f836563187c194a
 
-PODFILE CHECKSUM: 5f7d686422b7abfe71ee3d283b8aa7c0dc28ffb8
+PODFILE CHECKSUM: ce4171bb43bfadb028bb67cc35fe4b8f34215c51
 
 COCOAPODS: 1.10.0

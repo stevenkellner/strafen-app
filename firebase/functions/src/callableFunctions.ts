@@ -566,11 +566,23 @@ export const newTransaction = functions.region("europe-west1").https
       const transactionRef = admin.database().ref(transactionPath);
 
       let isError = false;
+      let firstName = null;
+      let lastName = null;
+      if (data.firstName != null) {
+        firstName = data.firstName;
+      }
+      if (data.lastName != null) {
+        lastName = data.lastName;
+      }
       await transactionRef.set({
         personId: data.personId,
         fineIds: data.payedFinesIds,
         approved: false,
         payDate: data.payDate,
+        name: {
+          first: firstName,
+          last: lastName,
+        },
       }, (error) => {
         isError = isError || error != null;
       });
@@ -611,6 +623,7 @@ export const checkTransactions = functions.region("europe-west1").https
             axios.default.post("https://strafen-app.ew.r.appspot.com/check_transaction", {
               privateKey: privatePaymentKey,
               transactionId: transaction.key,
+              debug: data["debug"] ? "debug" : null,
             }).then((response) => {
               if (response.data.result == "settled") {
                 transaction.child("fineIds").val()
@@ -619,11 +632,14 @@ export const checkTransactions = functions.region("europe-west1").https
                     data.clubId.toString().toUpperCase() +
                     "/fines/" + fineId.toString().toUpperCase() + "/payed";
                       const finePayedRef = admin.database().ref(finePayedPath);
-                      finePayedRef.update({
-                        state: "payed",
-                        payDate: transaction.child("payDate").val(),
-                        inApp: true,
-                      });
+
+                      if (await existsData(finePayedRef)) {
+                        finePayedRef.update({
+                          state: "payed",
+                          payDate: transaction.child("payDate").val(),
+                          inApp: true,
+                        });
+                      }
                       const approvedRef = admin.database()
                           .ref(transactionsPath + "/" +
                         transaction.key + "/approved");

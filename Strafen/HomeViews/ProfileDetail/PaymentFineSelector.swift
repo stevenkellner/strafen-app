@@ -135,6 +135,7 @@ struct PaymentFineSelector: View {
                             Image(systemName: "creditcard").font(.system(size: 25, weight: .thin)).foregroundColor(.textColor)
                         }
                     }.frame(width: UIScreen.main.bounds.width * 0.95, height: 50)
+                        .padding(.top, 10)
                         .toggleOnTapGesture($showCreditCardSheet)
                         .sheet(isPresented: $showCreditCardSheet) {
                             PaymentCreditCard(fineIds: selectedFineIds) {
@@ -143,6 +144,9 @@ struct PaymentFineSelector: View {
                             }
                         }
                     PaymentPayPalButton(fineIds: selectedFineIds) {
+                        presentationMode.wrappedValue.dismiss()
+                    }
+                    PaymentApplePayButton(fineIds: selectedFineIds) {
                         presentationMode.wrappedValue.dismiss()
                     }
                 }

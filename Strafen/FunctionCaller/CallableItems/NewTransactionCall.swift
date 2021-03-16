@@ -22,6 +22,12 @@ struct NewTransactionCall: FunctionCallable {
     /// Payed fine ids
     let payedFinesIds: [Fine.ID]
     
+    /// First name
+    let firstName: String?
+    
+    /// Last name
+    let lastName: String?
+    
     /// Function name
     let functionName: String = "newTransaction"
     
@@ -33,6 +39,8 @@ struct NewTransactionCall: FunctionCallable {
             parameters["transactionId"] = transactionId
             parameters["payedFinesIds"] = payedFinesIds as [ParameterableObject]
             parameters["payDate"] = Date()
+            parameters["firstName"] = firstName
+            parameters["lastName"] = lastName
         }
     }
 }

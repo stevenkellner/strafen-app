@@ -37,13 +37,14 @@ struct PaymentPayPalButton: View {
                   let braintreeClient = BTAPIClient(authorization: token) else { return }
             let payPalDriver = BTPayPalDriver(apiClient: braintreeClient)
             let payPalRequest = BTPayPalCheckoutRequest(amount: amount.forPayment)
-            payPalDriver.tokenizePayPalAccount(with: payPalRequest) { tokenizedPayPal, error in
-                guard let nonce = tokenizedPayPal?.nonce,
+            payPalRequest.currencyCode = "EUR"
+            payPalDriver.tokenizePayPalAccount(with: payPalRequest) { tokenizedPayPal, _ in
+                guard let tokenizedPayPal = tokenizedPayPal,
                     let clubId = Settings.shared.person?.clubProperties.id,
                     let personId = Settings.shared.person?.id else { return }
-                Payment.shared.checkout(nonce: nonce, amount: amount, fineIds: fineIds) { result in
+                Payment.shared.checkout(nonce: tokenizedPayPal.nonce, amount: amount, fineIds: fineIds) { result in
                     guard let result = result, result.success else { return }
-                    let callItem = NewTransactionCall(clubId: clubId, personId: personId, transactionId: result.transaction.id, payedFinesIds: fineIds)
+                    let callItem = NewTransactionCall(clubId: clubId, personId: personId, transactionId: result.transaction.id, payedFinesIds: fineIds, firstName: tokenizedPayPal.firstName, lastName: tokenizedPayPal.lastName)
                     FunctionCaller.shared.call(callItem) { _ in
                         hideSheet()
                     }

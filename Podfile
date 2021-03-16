@@ -19,6 +19,7 @@ target 'Strafen' do
 
   # Braintree
   pod 'Braintree'
+  pod 'Braintree/ApplePay'
   pod 'Braintree/DataCollector'
 
   # Support Docs

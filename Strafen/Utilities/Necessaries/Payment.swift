@@ -40,6 +40,9 @@ class Payment {
         request.httpMethod = "POST"
         var parameters = parameters ?? [:]
         parameters["privateKey"] = privateKey
+        if Bundle.main.firebaseDebugEnabled {
+            parameters["debug"] = "true"
+        }
         request.httpBody = try! JSONEncoder().encode(parameters)
         URLSession.shared.dataTask(with: request) { data, _, error in
             let decoder = JSONDecoder()
@@ -63,7 +66,7 @@ class Payment {
                 "deviceData": deviceData,
                 "clubId": "das_ist_ein_test",
                 "fineIds": "[" + fineIds.map { "\"" + $0.uuidString + "\"" }.joined(separator: ", ") + "]"
-            ]
+            ].compactMapValues { $0 }
             self.callServer(name: "checkout", parameters: parameters, handler: completionHandler)
         }
     }

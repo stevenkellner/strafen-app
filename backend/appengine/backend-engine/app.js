@@ -21,8 +21,15 @@ const keys = require('./privateKeys');
 const app = express();
 app.use(express.json());
 
-const gateway = new braintree.BraintreeGateway({
+const sandboxGateway = new braintree.BraintreeGateway({
     environment: braintree.Environment.Sandbox,
+    merchantId: keys.sandboxMerchantId,
+    publicKey: keys.sandboxPublicKey,
+    privateKey: keys.sandboxPrivateKey
+});
+
+const prodGateway = new braintree.BraintreeGateway({
+    environment: braintree.Environment.Production,
     merchantId: keys.merchantId,
     publicKey: keys.publicKey,
     privateKey: keys.privateKey
@@ -33,6 +40,7 @@ app.post("/client_token", (req, res) => {
         res.send("{'error': 'Private key is invalid'}");
         return;
     }
+    const gateway = req.body.debug == "true" ? sandboxGateway : prodGateway;
     gateway.clientToken.generate({}, (error, response) => {
         if (error) {
             res.send(`{"error": "${error}"}`);
@@ -56,6 +64,7 @@ app.post("/checkout", (req, res) => {
         club_id: clubId,
         fine_ids: fineIds
     };
+    const gateway = req.body.debug == "true" ? sandboxGateway : prodGateway;
     gateway.transaction.sale({
         amount: amount,
         paymentMethodNonce: nonceFromClient,
@@ -79,6 +88,7 @@ app.post("/check_transaction", (req, res) => {
         return;
     }
     const transactionId = req.body.transactionId;
+    const gateway = req.body.debug == "true" ? sandboxGateway : prodGateway;
     gateway.transaction.find(transactionId, (error, transaction) => {
         if (error) {
             res.send(`{"error": "${error}"}`);
