@@ -264,6 +264,9 @@ enum ErrorMessages {
     /// No reason given
     case noReasonGiven
     
+    /// No reason selected
+    case noReasonSelected
+    
     /// Future date
     case futureDate
     
@@ -348,6 +351,8 @@ enum ErrorMessages {
             return "Keine Person ausgewählt!"
         case .noReasonGiven:
             return "Keine Strafe angegeben!"
+        case .noReasonSelected:
+            return "Keine Strafe ausgewählt!"
         case .futureDate:
             return "Datum darf nicht in der Zukunft liegen!"
         case .invalidNumberRange:

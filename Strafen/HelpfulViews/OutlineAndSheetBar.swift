@@ -51,7 +51,7 @@ struct Outline: View {
     }
     
     /// Set fill color
-    func fillColor(default color: Color) -> Outline {
+    func fillColor(default color: Color?) -> Outline {
         var outline = self
         if var fillColor = outline.fillColor as? FillColor2 {
             fillColor.defaultColor = color
@@ -63,7 +63,7 @@ struct Outline: View {
     }
     
     /// Set fill color
-    func fillColor(plain color: Color) -> Outline {
+    func fillColor(plain color: Color?) -> Outline {
         var outline = self
         if var fillColor = outline.fillColor as? FillColor2 {
             fillColor.plainColor = color

@@ -104,7 +104,12 @@ extension URL {
 
 extension Bundle {
     var firebaseDebugEnabled: Bool {
-        CommandLine.arguments.contains("-firebaseDebug")
+        // CommandLine.arguments.contains("-firebaseDebug")
+        #if DEBUG
+        true
+        #else
+        false
+        #endif
     }
     
     var firebaseClubsComponent: String {
