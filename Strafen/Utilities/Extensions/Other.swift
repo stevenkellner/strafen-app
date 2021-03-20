@@ -23,6 +23,16 @@ extension ColorScheme {
     var backgroundColor: Color {
         self == .dark ? Color.custom.darkGray : .white
     }
+    
+    func backgroundColorSecondary(_ settings: Settings) -> Color {
+        if settings.style == .plain {
+            if self == .light {
+                return Color.plain.lightLightGray
+            }
+            return Color.plain.darkDarkGray
+        }
+        return backgroundColor
+    }
 }
 
 /// Extension of Text to configurate it with text color and given font size
@@ -332,8 +342,6 @@ struct ScreenSizeModifier: ViewModifier {
     }
 }
 
-#if canImport(HalfModal)
-import HalfModal
 struct HalfModalModifier<SheetContent>: ViewModifier where SheetContent: View {
     
     @Binding var isPresented: Bool
@@ -362,7 +370,6 @@ extension View {
         ModifiedContent(content: self, modifier: HalfModalModifier(isPresented: isPresented, header: header, content: content))
     }
 }
-#endif
 
 // Extension of View to set screen size
 extension View {
@@ -622,6 +629,12 @@ extension String {
     var isoLatin1ByteList: Array<UInt8>? {
         guard let data = data(using: .isoLatin1) else { return nil }
         return [UInt8](data)
+    }
+}
+
+extension Bundle {
+    var versionString: String {
+        ((object(forInfoDictionaryKey: "SHARED_CURRENT_PROJECT_VERSION") as? String) ?? "?.?") + "." + ((object(forInfoDictionaryKey: "SHARED_MARKETING_VERSION") as? String) ?? "?")
     }
 }
 #endif

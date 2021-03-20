@@ -19,10 +19,6 @@ struct ContentView: View {
     
     var body: some View {
         ZStack {
-            
-            // Activity View
-            ActivityView.shared
-            
             if listData.forceSignedOut {
                 
                 // Force Sign Out View
@@ -49,6 +45,9 @@ struct ContentView: View {
                     .edgesIgnoringSafeArea(.all)
                 
             }
+            
+            OverlayViews()
+            
         }.onAppear {
             Settings.shared.applySettings()
         }

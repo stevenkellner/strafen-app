@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 52;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -94,6 +94,12 @@
 		B05C331D253B6B0F004E9923 /* SignInCacheView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B05C331C253B6B0F004E9923 /* SignInCacheView.swift */; };
 		B05C3330253C3597004E9923 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B05C332F253C3597004E9923 /* LoginView.swift */; };
 		B05F66A72606341A00597372 /* AddNewFineCustomReason.swift in Sources */ = {isa = PBXBuildFile; fileRef = B05F66A62606341A00597372 /* AddNewFineCustomReason.swift */; };
+		B05F66AD26063EE500597372 /* HalfModalButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B05F66A926063EE400597372 /* HalfModalButtonView.swift */; };
+		B05F66AE26063EE500597372 /* HalfModalBlurView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B05F66AA26063EE400597372 /* HalfModalBlurView.swift */; };
+		B05F66AF26063EE500597372 /* HalfModalContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = B05F66AB26063EE500597372 /* HalfModalContent.swift */; };
+		B05F66B026063EE500597372 /* HalfModalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B05F66AC26063EE500597372 /* HalfModalView.swift */; };
+		B05F66B2260649C700597372 /* OverlayViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = B05F66B1260649C700597372 /* OverlayViews.swift */; };
+		B05F66B42606531800597372 /* WrongVersionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B05F66B32606531800597372 /* WrongVersionView.swift */; };
 		B0619BFB24C0B62B008969A1 /* PersonEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0619BFA24C0B62B008969A1 /* PersonEditor.swift */; };
 		B0619C0024C0BD16008969A1 /* ImportanceChanger.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0619BFF24C0BD16008969A1 /* ImportanceChanger.swift */; };
 		B0619C0224C0C1E2008969A1 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0619C0124C0C1E2008969A1 /* String.swift */; };
@@ -178,7 +184,6 @@
 		B0E0F84424A63E5A00C82828 /* StrafenUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E0F84324A63E5A00C82828 /* StrafenUITests.swift */; };
 		B0E1812725A4D9E90054A35E /* DeleteClubCall.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E1812625A4D9E90054A35E /* DeleteClubCall.swift */; };
 		B0E2C19424CC6620009E3666 /* Fine.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E2C19024CC661F009E3666 /* Fine.swift */; };
-		B0E410CE2600E719001EEF7B /* HalfModal in Frameworks */ = {isa = PBXBuildFile; productRef = B0E410CD2600E719001EEF7B /* HalfModal */; };
 		B0E50C9F253DCC44008C7E84 /* SignInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E50C9E253DCC44008C7E84 /* SignInView.swift */; };
 		B0E50D1325418D37008C7E84 /* KeyboardAdaptive.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E50D1225418D37008C7E84 /* KeyboardAdaptive.swift */; };
 		B0E6E86F24CDD38500D467AC /* OutlineAndSheetBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E6E86E24CDD38500D467AC /* OutlineAndSheetBar.swift */; };
@@ -294,6 +299,12 @@
 		B05C331C253B6B0F004E9923 /* SignInCacheView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInCacheView.swift; sourceTree = "<group>"; };
 		B05C332F253C3597004E9923 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		B05F66A62606341A00597372 /* AddNewFineCustomReason.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewFineCustomReason.swift; sourceTree = "<group>"; };
+		B05F66A926063EE400597372 /* HalfModalButtonView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HalfModalButtonView.swift; sourceTree = "<group>"; };
+		B05F66AA26063EE400597372 /* HalfModalBlurView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HalfModalBlurView.swift; sourceTree = "<group>"; };
+		B05F66AB26063EE500597372 /* HalfModalContent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HalfModalContent.swift; sourceTree = "<group>"; };
+		B05F66AC26063EE500597372 /* HalfModalView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HalfModalView.swift; sourceTree = "<group>"; };
+		B05F66B1260649C700597372 /* OverlayViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverlayViews.swift; sourceTree = "<group>"; };
+		B05F66B32606531800597372 /* WrongVersionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WrongVersionView.swift; sourceTree = "<group>"; };
 		B0619BFA24C0B62B008969A1 /* PersonEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonEditor.swift; sourceTree = "<group>"; };
 		B0619BFF24C0BD16008969A1 /* ImportanceChanger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportanceChanger.swift; sourceTree = "<group>"; };
 		B0619C0124C0C1E2008969A1 /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
@@ -425,7 +436,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				67CDD1AB6A3BBA7C38C64532 /* Pods_Strafen.framework in Frameworks */,
-				B0E410CE2600E719001EEF7B /* HalfModal in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -538,6 +548,17 @@
 				B0619BFA24C0B62B008969A1 /* PersonEditor.swift */,
 			);
 			path = PersonDetail;
+			sourceTree = "<group>";
+		};
+		B05F66A826063E8600597372 /* HalfModal */ = {
+			isa = PBXGroup;
+			children = (
+				B05F66AA26063EE400597372 /* HalfModalBlurView.swift */,
+				B05F66AB26063EE500597372 /* HalfModalContent.swift */,
+				B05F66AC26063EE500597372 /* HalfModalView.swift */,
+				B05F66A926063EE400597372 /* HalfModalButtonView.swift */,
+			);
+			path = HalfModal;
 			sourceTree = "<group>";
 		};
 		B061752C24CB46FF00382D9C /* WidgetViews */ = {
@@ -661,6 +682,7 @@
 		B0C1C51724A78C69007B584B /* Necessaries */ = {
 			isa = PBXGroup;
 			children = (
+				B05F66A826063E8600597372 /* HalfModal */,
 				B0061F8A25F677760091B17B /* CreditCardValitadion.swift */,
 				B006920524C615D500AE2EF0 /* HomeTabs.swift */,
 				B0D75CEF255820FC00555B03 /* ImageStorage.swift */,
@@ -701,10 +723,12 @@
 				B0619BFF24C0BD16008969A1 /* ImportanceChanger.swift */,
 				B0C246AC2593A6580078EFA4 /* NativeAdView.swift */,
 				B0E6E86E24CDD38500D467AC /* OutlineAndSheetBar.swift */,
+				B05F66B1260649C700597372 /* OverlayViews.swift */,
 				B020C7C124B0B9D0008940FE /* PersonRowImage.swift */,
 				B0C1C52424A8BC14007B584B /* RoundedCorners.swift */,
 				B042D44124BB61810029F2D5 /* SearchBar.swift */,
 				B042D42F24BA42EB0029F2D5 /* TabBar.swift */,
+				B05F66B32606531800597372 /* WrongVersionView.swift */,
 			);
 			path = HelpfulViews;
 			sourceTree = "<group>";
@@ -932,7 +956,6 @@
 			);
 			name = Strafen;
 			packageProductDependencies = (
-				B0E410CD2600E719001EEF7B /* HalfModal */,
 			);
 			productName = Strafen;
 			productReference = B0E0F82324A63E5800C82828 /* Strafen.app */;
@@ -1014,7 +1037,6 @@
 			);
 			mainGroup = B0E0F81A24A63E5800C82828;
 			packageReferences = (
-				B0E410CC2600E719001EEF7B /* XCRemoteSwiftPackageReference "HalfModal" */,
 			);
 			productRefGroup = B0E0F82424A63E5800C82828 /* Products */;
 			projectDirPath = "";
@@ -1306,10 +1328,13 @@
 				B0C1C51524A78BD7007B584B /* LoginEntryView.swift in Sources */,
 				B0C1C51924A78C90007B584B /* Color.swift in Sources */,
 				B0D75C5A2557157400555B03 /* Payed.swift in Sources */,
+				B05F66AE26063EE500597372 /* HalfModalBlurView.swift in Sources */,
 				B0F881AC2506874C008304A8 /* SettingsForceSignOut.swift in Sources */,
+				B05F66B42606531800597372 /* WrongVersionView.swift in Sources */,
 				B0619C0224C0C1E2008969A1 /* String.swift in Sources */,
 				B07938D824BF037900F86E86 /* PersonAddNew.swift in Sources */,
 				B0E0F82924A63E5800C82828 /* ContentView.swift in Sources */,
+				B05F66B2260649C700597372 /* OverlayViews.swift in Sources */,
 				B07DDDEF256FF8CF0003F139 /* FineEditor.swift in Sources */,
 				B0619C0024C0BD16008969A1 /* ImportanceChanger.swift in Sources */,
 				B0231D762542FF550030BADE /* SignInClubSelection.swift in Sources */,
@@ -1343,6 +1368,7 @@
 				B0D75CD82558202000555B03 /* ChangeListCall.swift in Sources */,
 				B0B81DC92502525500249447 /* Settings+LatePaymentInterest.swift in Sources */,
 				B0619C1424C21958008969A1 /* AddNewFine.swift in Sources */,
+				B05F66B026063EE500597372 /* HalfModalView.swift in Sources */,
 				B0D75CD22558201400555B03 /* UserIdAlreadyExistsCall.swift in Sources */,
 				B0B4822024A8D46B00CB7A1A /* Header.swift in Sources */,
 				B042D44724BDAB280029F2D5 /* ActivityView.swift in Sources */,
@@ -1364,6 +1390,7 @@
 				B0F4331D2502CA7500B0AAA7 /* HomeViews.swift in Sources */,
 				B0B214DA258E39E7008F0BE9 /* EmailNotVerificatedView.swift in Sources */,
 				B0B117CC24FA962C006A22F2 /* SignInWithApple.swift in Sources */,
+				B05F66AF26063EE500597372 /* HalfModalContent.swift in Sources */,
 				B0619C0824C1CAB9008969A1 /* CustomDatePicker.swift in Sources */,
 				B006920624C615D500AE2EF0 /* HomeTabs.swift in Sources */,
 				B0BB9E1F25F2AA8F0030DCE1 /* Payment.swift in Sources */,
@@ -1389,6 +1416,7 @@
 				B05C3330253C3597004E9923 /* LoginView.swift in Sources */,
 				B051CBF826010471007B8119 /* SaveCreditCardCall.swift in Sources */,
 				B0D75CB425581FDC00555B03 /* RegisterPersonCall.swift in Sources */,
+				B05F66AD26063EE500597372 /* HalfModalButtonView.swift in Sources */,
 				B07DDDCF256FB9E20003F139 /* ChangeFinePayedCall.swift in Sources */,
 				B0D75CBA25581FE900555B03 /* NewClubCall.swift in Sources */,
 				B0D75CDE2558208500555B03 /* Amount.swift in Sources */,
@@ -1880,25 +1908,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCRemoteSwiftPackageReference section */
-		B0E410CC2600E719001EEF7B /* XCRemoteSwiftPackageReference "HalfModal" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/ViktorMaric/HalfModal.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.0.0;
-			};
-		};
-/* End XCRemoteSwiftPackageReference section */
-
-/* Begin XCSwiftPackageProductDependency section */
-		B0E410CD2600E719001EEF7B /* HalfModal */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = B0E410CC2600E719001EEF7B /* XCRemoteSwiftPackageReference "HalfModal" */;
-			productName = HalfModal;
-		};
-/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = B0E0F81B24A63E5800C82828 /* Project object */;
 }
