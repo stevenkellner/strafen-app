@@ -19,7 +19,13 @@ struct WrongVersionView: View {
         ZStack {
             RoundedCorners().fillColor(colorScheme.backgroundColorSecondary(settings))
             VStack(spacing: 5) {
-                Text("")
+                Spacer()
+                LottieAnimation(name: "errorLadder", size: OptionalSize(height: UIScreen.main.bounds.height * 0.35)).frame(height: UIScreen.main.bounds.height * 0.35)
+                Spacer()
+                Text("Alte Version").foregroundColor(Color.custom.red).configurate(size: 30).lineLimit(1).padding(.horizontal, 25)
+                Text("Es ist ein Update verfügbar.").configurate(size: 25).lineLimit(2).padding(.horizontal, 25).padding(.top, 15)
+                Text("Installiere die neueste Version, um fortzufahren.").configurate(size: 25).lineLimit(3).padding(.horizontal, 25).padding(.top, 10)
+                Spacer()
             }
         }.frame(size: UIScreen.main.bounds.size * 0.85)
     }

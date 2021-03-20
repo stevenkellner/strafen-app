@@ -27,6 +27,9 @@ target 'Strafen' do
 
   # CryptoSwift
   pod 'CryptoSwift', '~> 1.3.8'
+
+  # Lottie
+  pod 'lottie-ios'
   
   target 'StrafenWidgetExtension' do
     inherit! :search_paths

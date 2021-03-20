@@ -64,7 +64,7 @@ class ListData: ObservableObject {
         #if TARGET_MAIN_APP
         Database.database().reference(withPath: "version").observeSingleEvent(of: .value) { snapshot in
             guard snapshot.exists(), let data = snapshot.value else { return successHandler() }
-            guard data as? String == Bundle.main.versionString, false else { return OverlayViewsControl.shared.setState(.wrongVersionView) }
+            guard data as? String == Bundle.main.versionString else { return OverlayViewsControl.shared.setState(.wrongVersionView) }
             successHandler()
         }
         #else

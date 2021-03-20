@@ -122,6 +122,8 @@
 		B077B57724CAC652003844CE /* StrafenWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = B077B57624CAC652003844CE /* StrafenWidget.swift */; };
 		B077B57A24CAC655003844CE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B077B57924CAC655003844CE /* Assets.xcassets */; };
 		B077B58024CAC655003844CE /* StrafenWidgetExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = B077B57024CAC652003844CE /* StrafenWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		B0790D4C260662B400FEFC24 /* errorLadder.json in Resources */ = {isa = PBXBuildFile; fileRef = B0790D4B260662B400FEFC24 /* errorLadder.json */; };
+		B0790D4E260665E000FEFC24 /* LottieAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0790D4D260665E000FEFC24 /* LottieAnimation.swift */; };
 		B07938D824BF037900F86E86 /* PersonAddNew.swift in Sources */ = {isa = PBXBuildFile; fileRef = B07938D724BF037900F86E86 /* PersonAddNew.swift */; };
 		B07A51ED25A9B32F00489C4C /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = B07A51EC25A9B32F00489C4C /* Utilities.swift */; };
 		B07AC459258BB56A00908A82 /* Array.swift in Sources */ = {isa = PBXBuildFile; fileRef = B042D43C24BB2BBD0029F2D5 /* Array.swift */; };
@@ -327,6 +329,8 @@
 		B077B58824CAC9E9003844CE /* Strafen.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Strafen.entitlements; sourceTree = "<group>"; };
 		B077B58924CACA78003844CE /* StrafenWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = StrafenWidgetExtension.entitlements; sourceTree = "<group>"; };
 		B077B59624CB0801003844CE /* WidgetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetView.swift; sourceTree = "<group>"; };
+		B0790D4B260662B400FEFC24 /* errorLadder.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = errorLadder.json; sourceTree = "<group>"; };
+		B0790D4D260665E000FEFC24 /* LottieAnimation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LottieAnimation.swift; sourceTree = "<group>"; };
 		B07938D724BF037900F86E86 /* PersonAddNew.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonAddNew.swift; sourceTree = "<group>"; };
 		B07A51EC25A9B32F00489C4C /* Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
 		B07AC46C258BB7C900908A82 /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
@@ -625,6 +629,14 @@
 			path = Controller;
 			sourceTree = "<group>";
 		};
+		B0790D4A2606629C00FEFC24 /* Assets */ = {
+			isa = PBXGroup;
+			children = (
+				B0790D4B260662B400FEFC24 /* errorLadder.json */,
+			);
+			path = Assets;
+			sourceTree = "<group>";
+		};
 		B099522D254472C700833EA4 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -721,6 +733,7 @@
 				B0F881A925065B92008304A8 /* ForceSignedOutView.swift */,
 				B0B799CB24ACA1990027727E /* ImageSelector.swift */,
 				B0619BFF24C0BD16008969A1 /* ImportanceChanger.swift */,
+				B0790D4D260665E000FEFC24 /* LottieAnimation.swift */,
 				B0C246AC2593A6580078EFA4 /* NativeAdView.swift */,
 				B0E6E86E24CDD38500D467AC /* OutlineAndSheetBar.swift */,
 				B05F66B1260649C700597372 /* OverlayViews.swift */,
@@ -853,6 +866,7 @@
 				B0D75C9325581CB200555B03 /* FunctionCaller */,
 				B0B799D424AE6F990027727E /* AppTypes */,
 				B0C1C51624A78C56007B584B /* Utilities */,
+				B0790D4A2606629C00FEFC24 /* Assets */,
 			);
 			path = Strafen;
 			sourceTree = "<group>";
@@ -1091,6 +1105,7 @@
 			files = (
 				B0E0F82E24A63E5A00C82828 /* Preview Assets.xcassets in Resources */,
 				B03B195D259F861B00D44394 /* GoogleService-Info.plist in Resources */,
+				B0790D4C260662B400FEFC24 /* errorLadder.json in Resources */,
 				B0E0F82B24A63E5A00C82828 /* Assets.xcassets in Resources */,
 				B0B9D5D325F526F100EED682 /* KeysInfo.plist in Resources */,
 				B03D1DC325934AD200EB8648 /* UnifiedNativeAdView.xib in Resources */,
@@ -1406,6 +1421,7 @@
 				B05C331D253B6B0F004E9923 /* SignInCacheView.swift in Sources */,
 				B0C1C52724A8BEE6007B584B /* Other.swift in Sources */,
 				B0B81DC32502522600249447 /* Settings+Style.swift in Sources */,
+				B0790D4E260665E000FEFC24 /* LottieAnimation.swift in Sources */,
 				B0619C1624C236C2008969A1 /* AddNewFinePerson.swift in Sources */,
 				B0D75C85255716FB00555B03 /* Fetcher.swift in Sources */,
 				B0B84C822544818C000B94BA /* SignInPersonSelection.swift in Sources */,
