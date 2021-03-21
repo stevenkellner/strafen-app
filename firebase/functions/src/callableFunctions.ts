@@ -60,12 +60,15 @@ export const newClub = functions.region("europe-west1").https
           signInDate: data.signInDate,
         },
       };
+      const personUserIds: any[] = [];
+      personUserIds[data.userId] = data.personId.toString().toUpperCase();
       const clubProperties = {
         identifier: data.clubIdentifier,
         name: data.clubName,
         regionCode: data.regionCode,
         inAppPaymentActive: data.inAppPaymentActive,
         persons: personList,
+        personUserIds: personUserIds,
       };
 
       // Set club properties
@@ -187,6 +190,11 @@ export const registerPerson = functions.region("europe-west1").https
         },
       };
 
+      const personUserIdPath = clubsPathComponent + "/" +
+        data.clubId.toString().toUpperCase() + "/personUserIds/" +
+        data.userId;
+      const personUserIdRef = admin.database().ref(personUserIdPath);
+
       // Register Person
       let isError = false;
       if (!await existsData(personRef)) {
@@ -198,6 +206,10 @@ export const registerPerson = functions.region("europe-west1").https
           isError = error != null;
         });
       }
+      await personUserIdRef.set(data.id.toString().toUpperCase(),
+          (error) => {
+            isError = error != null;
+          });
       if (isError) {
         throw new functions.https.HttpsError(
             "internal",
@@ -247,12 +259,22 @@ export const forceSignOut = functions.region("europe-west1").https
         data.personId.toString().toUpperCase() + "/signInData";
       const signInDataRef = admin.database().ref(path);
 
+      const personUserIdPath = clubsPathComponent + "/" +
+        data.clubId.toString().toUpperCase() + "/personUserIds/" +
+        data.userId;
+      const personUserIdRef = admin.database().ref(personUserIdPath);
+
       // Force sign out
       if (await existsData(signInDataRef)) {
         let isError = false;
         await signInDataRef.remove((error) => {
           isError = error != null;
         });
+        if (await existsData(personUserIdRef)) {
+          await personUserIdRef.remove((error) => {
+            isError = error != null;
+          });
+        }
         if (isError) {
           throw new functions.https.HttpsError(
               "internal",

@@ -8,6 +8,7 @@
 import XCTest
 import FirebaseDatabase
 import CodableFirebase
+import FirebaseAuth
 @testable import Strafen
 
 /// Properties for all test data
@@ -52,7 +53,7 @@ struct TestProperty {
         let id = Person.ID(rawValue: UUID(uuidString: "5bf1ffda-4f69-11eb-ae93-0242ac130002")!)
         
         /// User id of the first test person
-        let userId = "First Person User Id"
+        let userId = Auth.auth().currentUser!.uid
         
         /// Name of the first test person
         let name = PersonName(firstName: "First Person First Name", lastName: "First Person Last Name")
@@ -70,7 +71,7 @@ struct TestProperty {
         let id = Person.ID(rawValue: UUID(uuidString: "3530d06e-8c79-4375-ae4c-3b9d1fdd6e28")!)
         
         /// User id of the first test person
-        let userId = "Second Person User Id"
+        let userId = Auth.auth().currentUser!.uid
         
         /// Name of the first test person
         let name = PersonName(firstName: "Second Person First Name")
@@ -88,7 +89,7 @@ struct TestProperty {
         let id = Person.ID(rawValue: UUID(uuidString: "96a9c7c4-5f7b-4ea8-aac5-8ec7f0403960")!)
         
         /// User id of the first test person
-        let userId = "Third Person User Id"
+        let userId = "Third_Person_User_Id"
         
         /// Name of the first test person
         let name = PersonName(firstName: "Third Person First Name", lastName: "Third Person Last Name")
@@ -159,12 +160,12 @@ struct TestProperty {
         
         /// Fine with reason custom
         var withReasonCustom: Fine {
-            .init(id: id, assoiatedPersonId: assoiatedPersonId, date: date, payed: .payed(date: Date(timeIntervalSinceReferenceDate: 234689)), number: 10, fineReason: reasonCustom)
+            .init(id: id, assoiatedPersonId: assoiatedPersonId, date: date, payed: .payed(date: Date(timeIntervalSinceReferenceDate: 234689), inApp: false), number: 10, fineReason: reasonCustom)
         }
         
         /// Fine with reason custom
         func withReasonCustom(_ payedTimeInterval: TimeInterval) -> Fine {
-            .init(id: id, assoiatedPersonId: assoiatedPersonId, date: date, payed: .payed(date: Date(timeIntervalSinceReferenceDate: payedTimeInterval)), number: 10, fineReason: reasonCustom)
+            .init(id: id, assoiatedPersonId: assoiatedPersonId, date: date, payed: .payed(date: Date(timeIntervalSinceReferenceDate: payedTimeInterval), inApp: false), number: 10, fineReason: reasonCustom)
         }
     }
     
@@ -346,9 +347,19 @@ extension Fetcher {
     }
     
     func existsNoData(at url: URL, handler completionHandler: @escaping (Any?) -> Void) {
+        var state: ConnectionState = .loading
         Database.database().reference(withPath: url.path).observeSingleEvent(of: .value) { snapshot in
-            guard snapshot.exists() else { return completionHandler(nil) }
-            completionHandler(snapshot.value)
+            if state == .loading {
+                state = .passed
+                guard snapshot.exists() else { return completionHandler(nil) }
+                completionHandler(snapshot.value)
+            }
+        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+            if state == .loading {
+                state = .failed
+                completionHandler(nil)
+            }
         }
     }
     

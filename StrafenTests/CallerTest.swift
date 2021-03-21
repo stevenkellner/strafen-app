@@ -8,6 +8,7 @@
 import XCTest
 import FirebaseStorage
 import FirebaseFunctions
+import FirebaseAuth
 @testable import Strafen
 
 /// Test all functions of FunctionCaller
@@ -184,6 +185,13 @@ extension CallerTest {
             Fetcher.shared.fetchPrmitiveItem(from: url, handler: handler)
         }
         XCTAssertEqual(regionCode, TestProperty.shared.testClub.regionCode)
+        
+        // Check person user ids
+        let personId: String = try awaitResult { handler in
+            let url = URL(string: "\(Bundle.main.firebaseClubsComponent)/\(clubId)/personUserIds/\(TestProperty.shared.testPersonFirst.userId)")!
+            Fetcher.shared.fetchPrmitiveItem(from: url, handler: handler)
+        }
+        XCTAssertEqual(personId, TestProperty.shared.testPersonFirst.id.uuidString)
     }
     
     /// Create new club with already existing identifier
@@ -390,6 +398,13 @@ extension CallerTest {
         XCTAssertEqual(person.name, personName)
         XCTAssertEqual(person.signInData?.isCashier, false)
         XCTAssertEqual(person.signInData?.userId, userId)
+        
+        // Check person user ids
+        let personIdOfUserId: String = try awaitResult { handler in
+            let url = URL(string: "\(Bundle.main.firebaseClubsComponent)/\(clubId)/personUserIds/\(TestProperty.shared.testPersonSecond.userId)")!
+            Fetcher.shared.fetchPrmitiveItem(from: url, handler: handler)
+        }
+        XCTAssertEqual(personIdOfUserId, TestProperty.shared.testPersonSecond.id.uuidString)
     }
 }
 
@@ -901,7 +916,7 @@ extension CallerTest {
         // Call item
         let clubId = TestProperty.shared.testClub.id
         let fineId = TestProperty.shared.testFine.withReasonTemplate.id
-        let payed: Payed = .payed(date: Date(timeIntervalSinceReferenceDate: payedTimeInterval))
+        let payed: Payed = .payed(date: Date(timeIntervalSinceReferenceDate: payedTimeInterval), inApp: false)
         let callItem = ChangeFinePayedCall(clubId: clubId, fineId: fineId, payed: payed)
         
         // Call function
