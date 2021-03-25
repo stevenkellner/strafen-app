@@ -12,7 +12,7 @@ export const newClub = functions.region("europe-west1").https
       const requiredArguements = ["clubId", "clubName", "personId",
         "personFirstName", "clubIdentifier", "userId", "signInDate",
         "regionCode", "inAppPaymentActive"];
-      checkPrerequirements(requiredArguements, data, context);
+      await checkPrerequirements(requiredArguements, data, context, false);
       const clubsPathComponent = data["debug"] ? "debugClubs" : "clubs";
 
       // Check if identifier already exists
@@ -94,7 +94,7 @@ export const deleteClub = functions.region("europe-west1").https
     .onCall(async (data, context) => {
       // Check prerequirements
       const requiredArguements = ["clubId"];
-      checkPrerequirements(requiredArguements, data, context);
+      await checkPrerequirements(requiredArguements, data, context);
       const clubsPathComponent = data["debug"] ? "debugClubs" : "clubs";
 
       // Reference to new club
@@ -113,7 +113,7 @@ export const changeLatePaymentInterest = functions.region("europe-west1").https
     .onCall(async (data, context) => {
       // Check prerequirements
       const requiredArguements = ["clubId"];
-      checkPrerequirements(requiredArguements, data, context);
+      await checkPrerequirements(requiredArguements, data, context);
       const clubsPathComponent = data["debug"] ? "debugClubs" : "clubs";
 
       // Late payment interest reference
@@ -125,7 +125,7 @@ export const changeLatePaymentInterest = functions.region("europe-west1").https
         // Check if late payment interest is set
         const requiredArguements = ["interestFreeValue", "interestFreeUnit",
           "interestRate", "interestValue", "interestUnit", "compoundInterest"];
-        checkPrerequirements(requiredArguements, data, context);
+        await checkPrerequirements(requiredArguements, data, context, false);
       } catch (error) {
         // Remove late payment interest
         if (await existsData(interestRef)) {
@@ -162,7 +162,7 @@ export const registerPerson = functions.region("europe-west1").https
       // Check prerequirements
       const requiredArguements = ["clubId", "id", "firstName", "userId",
         "signInDate"];
-      checkPrerequirements(requiredArguements, data, context);
+      await checkPrerequirements(requiredArguements, data, context);
       const clubsPathComponent = data["debug"] ? "debugClubs" : "clubs";
 
       // Club and person reference
@@ -250,7 +250,7 @@ export const forceSignOut = functions.region("europe-west1").https
     .onCall(async (data, context) => {
       // Check prerequirements
       const requiredArguements = ["clubId", "personId"];
-      checkPrerequirements(requiredArguements, data, context);
+      await checkPrerequirements(requiredArguements, data, context);
       const clubsPathComponent = data["debug"] ? "debugClubs" : "clubs";
 
       // Sign in data reference
@@ -290,7 +290,7 @@ export const changeList = functions.region("europe-west1").https
       // Check prerequirements
       const requiredArguements = ["clubId", "changeType", "listType",
         "itemId"];
-      checkPrerequirements(requiredArguements, data, context);
+      await checkPrerequirements(requiredArguements, data, context);
       const clubsPathComponent = data["debug"] ? "debugClubs" : "clubs";
 
       // Get item reference
@@ -312,7 +312,7 @@ export const changeList = functions.region("europe-west1").https
       if (data.changeType != "delete") {
         if (data.listType == "person") {
           const otherArguments = ["firstName"];
-          checkPrerequirements(otherArguments, data, context);
+          await checkPrerequirements(otherArguments, data, context, false);
           let lastName = null;
           if (data.lastName != null) {
             lastName = data.lastName;
@@ -325,7 +325,7 @@ export const changeList = functions.region("europe-west1").https
           };
         } else if (data.listType == "fine") {
           const otherArguments = ["personId", "payed", "number", "date"];
-          checkPrerequirements(otherArguments, data, context);
+          await checkPrerequirements(otherArguments, data, context, false);
           let reason = null;
           if (data.templateId != null) {
             reason = {
@@ -353,7 +353,7 @@ export const changeList = functions.region("europe-west1").https
           };
         } else if (data.listType == "reason") {
           const otherArguments = ["reason", "amount", "importance"];
-          checkPrerequirements(otherArguments, data, context);
+          await checkPrerequirements(otherArguments, data, context, false);
           item = {
             reason: data.reason,
             amount: data.amount,
@@ -414,7 +414,7 @@ export const changeFinePayed = functions.region("europe-west1").https
     .onCall(async (data, context) => {
       // Check prerequirements
       const requiredArguements = ["clubId", "fineId", "payed"];
-      checkPrerequirements(requiredArguements, data, context);
+      await checkPrerequirements(requiredArguements, data, context);
       const clubsPathComponent = data["debug"] ? "debugClubs" : "clubs";
 
       // Reference to payed
@@ -439,7 +439,7 @@ export const getPersonProperties = functions.region("europe-west1").https
     .onCall(async (data, context) => {
       // Check prerequirements
       const requiredArguements = ["userId"];
-      checkPrerequirements(requiredArguements, data, context);
+      await checkPrerequirements(requiredArguements, data, context, false);
       const clubsPathComponent = data["debug"] ? "debugClubs" : "clubs";
 
       // Ref to clubs
@@ -496,7 +496,7 @@ export const getClubId = functions.region("europe-west1").https
     .onCall(async (data, context) => {
       // Check prerequirements
       const requiredArguements = ["identifier"];
-      checkPrerequirements(requiredArguements, data, context);
+      await checkPrerequirements(requiredArguements, data, context, false);
       const clubsPathComponent = data["debug"] ? "debugClubs" : "clubs";
 
       // Ref to club
@@ -529,7 +529,7 @@ export const existsClubWithIdentifier = functions.region("europe-west1").https
     .onCall(async (data, context) => {
       // Check prerequirements
       const requiredArguements = ["identifier"];
-      checkPrerequirements(requiredArguements, data, context);
+      await checkPrerequirements(requiredArguements, data, context, false);
       const clubsPathComponent = data["debug"] ? "debugClubs" : "clubs";
 
       // Ref to clubs
@@ -553,14 +553,15 @@ export const existsPersonWithUserId = functions.region("europe-west1").https
     .onCall(async (data, context) => {
       // Check prerequirements
       const requiredArguements = ["userId"];
-      checkPrerequirements(requiredArguements, data, context);
+      await checkPrerequirements(requiredArguements, data, context, false);
       const clubsPathComponent = data["debug"] ? "debugClubs" : "clubs";
 
       // Ref to clubs
       const clubsRef = admin.database().ref(clubsPathComponent);
 
       // Check if exists
-      let personExists = false; await clubsRef.once("value", (snapshot) => {
+      let personExists = false;
+      await clubsRef.once("value", (snapshot) => {
         snapshot.forEach((club) => {
           club.child("persons").forEach((person) => {
             const userId = person.child("signInData").child("userId").val();
@@ -579,7 +580,7 @@ export const newTransaction = functions.region("europe-west1").https
       // Check prerequirements
       const requiredArguements = ["clubId", "personId", "transactionId",
         "payedFinesIds", "payDate"];
-      checkPrerequirements(requiredArguements, data, context);
+      await checkPrerequirements(requiredArguements, data, context);
       const clubsPathComponent = data["debug"] ? "debugClubs" : "clubs";
 
       const transactionPath = clubsPathComponent + "/" +
@@ -631,7 +632,7 @@ export const newTransaction = functions.region("europe-west1").https
 export const checkTransactions = functions.region("europe-west1").https
     .onCall(async (data, context) => {
       // Check prerequirements
-      checkPrerequirements(["clubId"], data, context);
+      await checkPrerequirements(["clubId"], data, context);
 
       const clubsPathComponent = data["debug"] ? "debugClubs" : "clubs";
       const transactionsPath = clubsPathComponent + "/" +
@@ -676,7 +677,7 @@ export const checkTransactions = functions.region("europe-west1").https
 
 export const saveCreditCard = functions.region("europe-west1").https
     .onCall(async (data, context) => {
-      checkPrerequirements(["clubId", "personId", "information"],
+      await checkPrerequirements(["clubId", "personId", "information"],
           data, context);
       const clubsPathComponent = data["debug"] ? "debugClubs" : "clubs";
       const path = clubsPathComponent + "/" +
@@ -686,23 +687,36 @@ export const saveCreditCard = functions.region("europe-west1").https
       await ref.set(data.information);
     });
 
-
 /** Check if user is authorized to call a function and all arguments
  *  are hand over to this function
  *
  * @param {string[]} args - Reguiered argument for thsi function
  * @param {any} data - Data provided by function
  * @param {functions.https.CallableContext} context - Context provided by
+ * @param {boolean} hasClubId -
  * function
 */
-function checkPrerequirements(args: string[], data: any,
-    context: functions.https.CallableContext) {
+async function checkPrerequirements(args: string[], data: any,
+    context: functions.https.CallableContext, hasClubId: boolean = true) {
   // Check if user is authorized to call a function
   if (context.auth == null) {
     throw new functions.https.HttpsError(
         "failed-precondition",
         "The function must be called while authenticated."
     );
+  }
+  if (hasClubId) {
+    const clubsPathComponent = data["debug"] ? "debugClubs" : "clubs";
+    const path = clubsPathComponent + "/" +
+        data.clubId.toString().toUpperCase() + "/personUserIds/" +
+        context.auth!.uid;
+    const ref = admin.database().ref(path);
+    if (!await existsData(ref)) {
+      throw new functions.https.HttpsError(
+          "failed-precondition",
+          "The function must be called while authenticated."
+      );
+    }
   }
 
   // Check if key is valid

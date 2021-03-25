@@ -40,3 +40,8 @@ struct PersonName: Codable {
         return formatter.string(from: componets)
     }
 }
+
+struct OptionalPersonName: Codable {
+    let first: String?
+    let last: String?
+}

@@ -275,6 +275,13 @@ extension PersonNameComponents {
     }
 }
 
+extension PersonNameComponents {
+    var optionalPersonName: OptionalPersonName {
+        OptionalPersonName(first: givenName, last: familyName)
+    }
+}
+
+
 // Extension of URLSession to execute a data task with task state completion
 extension URLSession {
     

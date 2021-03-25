@@ -109,7 +109,8 @@ extension PaymentApplePayViewController: PKPaymentAuthorizationViewControllerDel
                 let personId = Settings.shared.person?.id else { return completion(PKPaymentAuthorizationResult(status: .failure, errors: nil)) }
             Payment.shared.checkout(nonce: tokenizedApplePay.nonce, amount: self.amount, fineIds: self.fineIds) { result in
                 guard let result = result, result.success else { return completion(PKPaymentAuthorizationResult(status: .failure, errors: nil)) }
-                let callItem = NewTransactionCall(clubId: clubId, personId: personId, transactionId: result.transaction.id, payedFinesIds: self.fineIds, firstName: payment.billingContact?.name?.givenName, lastName: payment.billingContact?.name?.familyName)
+                let transaction = Transaction(id: result.transaction.id.rawValue, fineIds: self.fineIds, name: payment.billingContact?.name?.optionalPersonName, personId: personId)
+                let callItem = NewTransactionCall(clubId: clubId, transaction: transaction)
                 FunctionCaller.shared.call(callItem) { _ in
                     completion(PKPaymentAuthorizationResult(status: .success, errors: nil))
                     self.hideSheet()
@@ -124,13 +125,14 @@ extension PaymentApplePayViewController: PKPaymentAuthorizationViewControllerDel
                 let clubId = Settings.shared.person?.clubProperties.id,
                 let personId = Settings.shared.person?.id else { return completion(.failure) }
             Payment.shared.checkout(nonce: tokenizedApplePay.nonce, amount: self.amount, fineIds: self.fineIds) { result in
-                    guard let result = result, result.success else { return completion(.failure) }
-                    let callItem = NewTransactionCall(clubId: clubId, personId: personId, transactionId: result.transaction.id, payedFinesIds: self.fineIds, firstName: payment.billingContact?.name?.givenName, lastName: payment.billingContact?.name?.familyName)
-                    FunctionCaller.shared.call(callItem) { _ in
-                        completion(.success)
-                        self.hideSheet()
-                    }
+                guard let result = result, result.success else { return completion(.failure) }
+                let transaction = Transaction(id: result.transaction.id.rawValue, fineIds: self.fineIds, name: payment.billingContact?.name?.optionalPersonName, personId: personId)
+                let callItem = NewTransactionCall(clubId: clubId, transaction: transaction)
+                FunctionCaller.shared.call(callItem) { _ in
+                    completion(.success)
+                    self.hideSheet()
                 }
+            }
         }
     }
     

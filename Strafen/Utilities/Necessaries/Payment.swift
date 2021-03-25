@@ -60,11 +60,12 @@ class Payment {
     
     func checkout(nonce: String, amount: Amount, fineIds: [Fine.ID], handler completionHandler: @escaping (CheckoutResult?) -> Void) {
         dataCollector?.collectDeviceData { deviceData in
+            guard let clubId = Settings.shared.person?.clubProperties.id else { return completionHandler(nil) }
             let parameters = [
                 "paymentMethodNonce": nonce,
                 "amount": amount.forPayment,
                 "deviceData": deviceData,
-                "clubId": "das_ist_ein_test",
+                "clubId": clubId.uuidString,
                 "fineIds": "[" + fineIds.map { "\"" + $0.uuidString + "\"" }.joined(separator: ", ") + "]"
             ].compactMapValues { $0 }
             self.callServer(name: "checkout", parameters: parameters, handler: completionHandler)
@@ -77,39 +78,20 @@ class Payment {
         FunctionCaller.shared.call(callItem) { _ in }
     }
     
+    func getTransaction(transactionId: String, handler completionHandler: @escaping (PaymentTransaction?) -> Void) {
+        callServer(name: "get_transaction", parameters: ["transactionId": transactionId], handler: completionHandler)
+    }
+    
+    func allTransactions(clubId: Club.ID, handler completionHandler: @escaping ([PaymentTransaction]?) -> Void) {
+        callServer(name: "all_transactions", parameters: ["clubId": clubId.uuidString], handler: completionHandler)
+    }
+    
     var readyForPayment: Bool {
         dataCollector != nil
     }
     
     struct CheckoutResult: Decodable {
-        struct Transaction: Decodable {
-//            struct CreditCard: Decodable {
-//                let bin: String
-//                let last4: String
-//                let cardType: String
-//                let maskedNumber: String
-//            }
-            struct CustomFields: Decodable {
-                enum CodingKeys: String, CodingKey {
-                    case clubId
-                    case _fineIds = "fineIds"
-                }
-                let clubId: String
-                private let _fineIds: String
-                var fineIds: [Fine.ID] {
-                    try! JSONDecoder().decode([Fine.ID].self, from: _fineIds.data(using: .utf8)!)
-                }
-            }
-            let id: String
-//            let status: String
-//            let currencyIsoCode: String
-//            let amount: String
-            let customFields: CustomFields
-//            let cvvResponseCode: String
-//            let creditCard: CreditCard
-//            let paymentInstrumentType: String
-        }
-        let transaction: Transaction
+        let transaction: PaymentTransaction
         let success: Bool
     }
 }

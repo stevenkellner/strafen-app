@@ -377,7 +377,8 @@ struct PaymentCreditCard: View {
                         cardProperties.paymentErrorMessages = .internalError
                         return cardProperties.connectionState.failed()
                     }
-                    let callItem = NewTransactionCall(clubId: clubId, personId: personId, transactionId: result.transaction.id, payedFinesIds: fineIds, firstName: cardProperties.firstName, lastName: cardProperties.lastName)
+                    let transaction = Transaction(id: result.transaction.id.rawValue, fineIds: fineIds, name: OptionalPersonName(first: cardProperties.firstName, last: cardProperties.lastName), personId: personId)
+                    let callItem = NewTransactionCall(clubId: clubId, transaction: transaction)
                     FunctionCaller.shared.call(callItem) { _ in
                         cardProperties.connectionState.passed()
                         hideSheet()

@@ -47,6 +47,8 @@ struct SettingsView: View {
                             
                             if settings.person?.isCashier ?? false {
                                 LatePaymentInterestChanger(dismissHandler: $dismissHandler)
+                                
+                                PaymentPayout(dismissHandler: $dismissHandler)
                             }
                             
                             // Apearance Changer
@@ -201,6 +203,27 @@ struct SettingsView: View {
                         }
                     }.frame(width: UIScreen.main.bounds.width * 0.95, height: 50)
                 }
+            }
+        }
+    }
+    
+    /// Payment payout
+    struct PaymentPayout: View {
+        
+        ///Dismiss handler
+        @Binding var dismissHandler: DismissHandler
+        
+        var body: some View {
+            VStack(spacing: 0) {
+                Title("Auszahlung")
+                CustomNavigationLink(destination: PaymentPayoutView(dismissHandler: $dismissHandler)) {
+                    ZStack {
+                        Outline()
+                        Text("Auszahlung")
+                            .configurate(size: 20)
+                            .lineLimit(1)
+                    }
+                }.frame(width: UIScreen.main.bounds.width * 0.95, height: 50)
             }
         }
     }

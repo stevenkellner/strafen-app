@@ -44,7 +44,8 @@ struct PaymentPayPalButton: View {
                     let personId = Settings.shared.person?.id else { return }
                 Payment.shared.checkout(nonce: tokenizedPayPal.nonce, amount: amount, fineIds: fineIds) { result in
                     guard let result = result, result.success else { return }
-                    let callItem = NewTransactionCall(clubId: clubId, personId: personId, transactionId: result.transaction.id, payedFinesIds: fineIds, firstName: tokenizedPayPal.firstName, lastName: tokenizedPayPal.lastName)
+                    let transaction = Transaction(id: result.transaction.id.rawValue, fineIds: fineIds, name: OptionalPersonName(first: tokenizedPayPal.firstName, last: tokenizedPayPal.lastName), personId: personId)
+                    let callItem = NewTransactionCall(clubId: clubId, transaction: transaction)
                     FunctionCaller.shared.call(callItem) { _ in
                         hideSheet()
                     }

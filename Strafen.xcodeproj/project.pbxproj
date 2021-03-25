@@ -88,6 +88,10 @@
 		B04750B02570370D002C8B99 /* FineEditorTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B04750AF2570370D002C8B99 /* FineEditorTemplate.swift */; };
 		B04D4AA22546AFB900658924 /* SignInNameInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = B04D4AA12546AFB900658924 /* SignInNameInput.swift */; };
 		B04D4AA82546E89E00658924 /* SignInClubInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = B04D4AA72546E89E00658924 /* SignInClubInput.swift */; };
+		B04FD69D260C8B3400177AE6 /* PaymentPayoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B04FD69C260C8B3400177AE6 /* PaymentPayoutView.swift */; };
+		B04FD6A1260CE97300177AE6 /* Transaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = B04FD6A0260CE97300177AE6 /* Transaction.swift */; };
+		B04FD6A3260CE98D00177AE6 /* PaymentTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = B04FD6A2260CE98D00177AE6 /* PaymentTransaction.swift */; };
+		B04FD6A5260CED2700177AE6 /* Payout.swift in Sources */ = {isa = PBXBuildFile; fileRef = B04FD6A4260CED2700177AE6 /* Payout.swift */; };
 		B051CBF826010471007B8119 /* SaveCreditCardCall.swift in Sources */ = {isa = PBXBuildFile; fileRef = B051CBF726010471007B8119 /* SaveCreditCardCall.swift */; };
 		B05C32E725388637004E9923 /* NecessaryObjects.swift in Sources */ = {isa = PBXBuildFile; fileRef = B05C32E625388637004E9923 /* NecessaryObjects.swift */; };
 		B05C3317253B6AEE004E9923 /* SignInCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = B05C3316253B6AEE004E9923 /* SignInCache.swift */; };
@@ -295,6 +299,10 @@
 		B04B71F424CF36AE0038B02F /* LargeWidgetSuccess.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LargeWidgetSuccess.swift; sourceTree = "<group>"; };
 		B04D4AA12546AFB900658924 /* SignInNameInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInNameInput.swift; sourceTree = "<group>"; };
 		B04D4AA72546E89E00658924 /* SignInClubInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInClubInput.swift; sourceTree = "<group>"; };
+		B04FD69C260C8B3400177AE6 /* PaymentPayoutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentPayoutView.swift; sourceTree = "<group>"; };
+		B04FD6A0260CE97300177AE6 /* Transaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Transaction.swift; sourceTree = "<group>"; };
+		B04FD6A2260CE98D00177AE6 /* PaymentTransaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentTransaction.swift; sourceTree = "<group>"; };
+		B04FD6A4260CED2700177AE6 /* Payout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Payout.swift; sourceTree = "<group>"; };
 		B051CBF726010471007B8119 /* SaveCreditCardCall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveCreditCardCall.swift; sourceTree = "<group>"; };
 		B05C32E625388637004E9923 /* NecessaryObjects.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NecessaryObjects.swift; sourceTree = "<group>"; };
 		B05C3316253B6AEE004E9923 /* SignInCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInCache.swift; sourceTree = "<group>"; };
@@ -503,6 +511,8 @@
 				B020C7BF24AF7CC6008940FE /* Person.swift */,
 				B0E2C19024CC661F009E3666 /* Fine.swift */,
 				B0D75C4F2557149500555B03 /* ReasonTemplate.swift */,
+				B04FD6A0260CE97300177AE6 /* Transaction.swift */,
+				B04FD6A4260CED2700177AE6 /* Payout.swift */,
 			);
 			path = ListTypes;
 			sourceTree = "<group>";
@@ -514,6 +524,7 @@
 				B0280AB324FFB9D30049202D /* LatePaymentInterestChangerView.swift */,
 				B02019D324FE779000C660B9 /* SettingsFinesFormatterView.swift */,
 				B0F881AB2506874C008304A8 /* SettingsForceSignOut.swift */,
+				B04FD69C260C8B3400177AE6 /* PaymentPayoutView.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -664,6 +675,7 @@
 				B0D75C65255715C900555B03 /* FineReason.swift */,
 				B0D75C5F2557159900555B03 /* Importance.swift */,
 				B0D75C592557157400555B03 /* Payed.swift */,
+				B04FD6A2260CE98D00177AE6 /* PaymentTransaction.swift */,
 				B0C1C52124A7A021007B584B /* PersonName.swift */,
 			);
 			path = AppTypes;
@@ -1378,8 +1390,10 @@
 				B0E6E86F24CDD38500D467AC /* OutlineAndSheetBar.swift in Sources */,
 				B087CF3D258B86C2005E819D /* ForceSignOutCall.swift in Sources */,
 				B0E1812725A4D9E90054A35E /* DeleteClubCall.swift in Sources */,
+				B04FD6A3260CE98D00177AE6 /* PaymentTransaction.swift in Sources */,
 				B0B39A82256D8B06002E2CB9 /* FineListRow.swift in Sources */,
 				B042D42E24BA21540029F2D5 /* ListTypes.swift in Sources */,
+				B04FD6A5260CED2700177AE6 /* Payout.swift in Sources */,
 				B0D75CD82558202000555B03 /* ChangeListCall.swift in Sources */,
 				B0B81DC92502525500249447 /* Settings+LatePaymentInterest.swift in Sources */,
 				B0619C1424C21958008969A1 /* AddNewFine.swift in Sources */,
@@ -1405,6 +1419,7 @@
 				B0F4331D2502CA7500B0AAA7 /* HomeViews.swift in Sources */,
 				B0B214DA258E39E7008F0BE9 /* EmailNotVerificatedView.swift in Sources */,
 				B0B117CC24FA962C006A22F2 /* SignInWithApple.swift in Sources */,
+				B04FD69D260C8B3400177AE6 /* PaymentPayoutView.swift in Sources */,
 				B05F66AF26063EE500597372 /* HalfModalContent.swift in Sources */,
 				B0619C0824C1CAB9008969A1 /* CustomDatePicker.swift in Sources */,
 				B006920624C615D500AE2EF0 /* HomeTabs.swift in Sources */,
@@ -1431,6 +1446,7 @@
 				B042C5E8256FA02000DD74B8 /* FineDetail.swift in Sources */,
 				B05C3330253C3597004E9923 /* LoginView.swift in Sources */,
 				B051CBF826010471007B8119 /* SaveCreditCardCall.swift in Sources */,
+				B04FD6A1260CE97300177AE6 /* Transaction.swift in Sources */,
 				B0D75CB425581FDC00555B03 /* RegisterPersonCall.swift in Sources */,
 				B05F66AD26063EE500597372 /* HalfModalButtonView.swift in Sources */,
 				B07DDDCF256FB9E20003F139 /* ChangeFinePayedCall.swift in Sources */,

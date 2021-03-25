@@ -40,7 +40,7 @@ struct Fetcher {
     private init() {}
     
     /// Fetches a list of list type from database
-    func fetch<Type>(from url: URL, wait waitingTime: Double? = nil, completion completionHandler: @escaping ([Type]?) -> Void) where Type: ListType {
+    func fetch<Type>(from url: URL = Type.url, wait waitingTime: Double? = nil, completion completionHandler: @escaping ([Type]?) -> Void) where Type: ListTypeGet {
         
         /// Indicates if task should be executed
         var executeTask = true
@@ -64,12 +64,12 @@ struct Fetcher {
     }
     
     /// Decodes fetched data from database to list
-    private func decodeFetchedList<Type>(from data: Any) -> [Type]? where Type: ListType {
+    private func decodeFetchedList<Type>(from data: Any) -> [Type]? where Type: ListTypeGet {
         let decoder = FirebaseDecoder()
         let dictionary = try? decoder.decode(Dictionary<String, Type.CodableSelf>.self, from: data)
         let list = dictionary.map { dictionary in
             dictionary.map { idString, item -> Type in
-                let id = Type.ID(rawValue: UUID(uuidString: idString)!)
+                let id = Type.ID(rawId: idString)
                 return Type.init(with: id, codableSelf: item)
             }
         }
@@ -131,7 +131,7 @@ struct Fetcher {
     private func observeChildRemove<Type>(of url: URL, getList: @escaping () -> [Type]?, onChange changeHandler: @escaping ([Type]?) -> Void) where Type: ListType {
         Database.database().reference(withPath: url.path).observe(.childRemoved) { snapshot in
             var list = getList()
-            let id = Type.ID(rawValue: UUID(uuidString: snapshot.key)!)
+            let id = Type.ID(rawId: snapshot.key)
             list?.filtered { $0.id != id }
             changeHandler(list)
         }
@@ -141,7 +141,7 @@ struct Fetcher {
     private func decodeFetchedItem<Type>(from data: Any, key: String) -> Type? where Type: ListType {
         let decoder = FirebaseDecoder()
         guard let item = try? decoder.decode(Type.CodableSelf.self, from: data) else { return nil }
-        let id = Type.ID(rawValue: UUID(uuidString: key)!)
+        let id = Type.ID(rawId: key)
         return Type.init(with: id, codableSelf: item)
     }
     #endif

@@ -274,4 +274,8 @@ extension Tagged: Sequence where RawValue: Sequence {
     }
 }
 
-extension Tagged: ListTypeId where RawValue == UUID {}
+extension Tagged: ListTypeId where RawValue: ListTypeId {
+    init(rawId: String) {
+        self.rawValue = .init(rawId: rawId)
+    }
+}

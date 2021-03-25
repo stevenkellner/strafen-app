@@ -973,17 +973,13 @@ extension CallerTest {
         
         // Register person with only first name
         try _testRegisterPerson(TestProperty.shared.testPersonSecond.name)
-        
-        // Get properties of person with only first name
-        let secondPerson = TestProperty.shared.testPersonSecond
-        try _testGetPersonPropertiesPerson(secondPerson.userId, person: secondPerson.person, isCashier: false)
     }
     
     /// With not existing person
     func _testGetPersonPropertiesNotExistingPerson() throws {
         
         // Call item
-        let userId = TestProperty.shared.testPersonSecond.userId
+        let userId = TestProperty.shared.testPersonThird.userId
         let callItem = GetPersonPropertiesCall(userId: userId)
         
         // Call function

@@ -98,11 +98,47 @@ app.post("/check_transaction", (req, res) => {
     });
 });
 
-// Start the server
-const PORT = process.env.PORT || 8080;
-app.listen(PORT, () => {
-    console.log(`App listening on port ${PORT}`);
-    console.log('Press Ctrl+C to quit.');
+app.post("/get_transaction", (req, res) => {
+    if (req.body.privateKey != keys.privatePaymentKey) { 
+        res.send("{'error': 'Private key is invalid'}");
+        return;
+    }
+    const transactionId = req.body.transactionId;
+    const gateway = req.body.debug == "true" ? sandboxGateway : prodGateway;
+    gateway.transaction.find(transactionId, (error, transaction) => {
+        if (error) {
+            res.send(`{"error": "${error}"}`);
+            return;
+        }
+        res.send(`{"result": ${JSON.stringify(transaction)}}`);
+    });
 });
+
+app.post("/all_transactions", (req, res) => {
+    if (req.body.privateKey != keys.privatePaymentKey) { 
+        res.send("{'error': 'Private key is invalid'}");
+        return;
+    }
+    const clubId = req.body.clubId;
+    const gateway = req.body.debug == "true" ? sandboxGateway : prodGateway;
+    gateway.transaction.search((search) => {
+        search.customerId().isNot("");
+      }, (error, response) => {
+        if (error) {
+            res.send(`{"error": "${error}"}`);
+            return;
+        }
+        Promise.all(response.ids.map(id => {
+            return gateway.transaction.find(id);
+        })).then(transactions => {
+            res.send(`{"result": ${JSON.stringify(transactions.filter(transaction => {
+                return transaction.customFields.clubId == clubId;
+            }))}}`);
+        });
+      });
+});
+
+// Start the server
+app.listen(process.env.PORT || 8080, () => {});
 
 module.exports = app;
