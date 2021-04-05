@@ -137,6 +137,7 @@
 		B07AC492258BB88E00908A82 /* Provider.swift in Sources */ = {isa = PBXBuildFile; fileRef = B07AC491258BB88E00908A82 /* Provider.swift */; };
 		B07DDDCF256FB9E20003F139 /* ChangeFinePayedCall.swift in Sources */ = {isa = PBXBuildFile; fileRef = B07DDDCE256FB9E20003F139 /* ChangeFinePayedCall.swift */; };
 		B07DDDEF256FF8CF0003F139 /* FineEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = B07DDDEE256FF8CF0003F139 /* FineEditor.swift */; };
+		B0874504261B0AEF004717CC /* StrafenUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0874503261B0AEF004717CC /* StrafenUITests.swift */; };
 		B087CF33258AA484005E819D /* LatePaymentInterestCall.swift in Sources */ = {isa = PBXBuildFile; fileRef = B087CF32258AA484005E819D /* LatePaymentInterestCall.swift */; };
 		B087CF3D258B86C2005E819D /* ForceSignOutCall.swift in Sources */ = {isa = PBXBuildFile; fileRef = B087CF3C258B86C2005E819D /* ForceSignOutCall.swift */; };
 		B09CC1E0259F4BF70079B86B /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B09CC1DF259F4BF70079B86B /* NotificationService.swift */; };
@@ -187,7 +188,6 @@
 		B0E0F82924A63E5800C82828 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E0F82824A63E5800C82828 /* ContentView.swift */; };
 		B0E0F82B24A63E5A00C82828 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B0E0F82A24A63E5A00C82828 /* Assets.xcassets */; };
 		B0E0F82E24A63E5A00C82828 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B0E0F82D24A63E5A00C82828 /* Preview Assets.xcassets */; };
-		B0E0F84424A63E5A00C82828 /* StrafenUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E0F84324A63E5A00C82828 /* StrafenUITests.swift */; };
 		B0E1812725A4D9E90054A35E /* DeleteClubCall.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E1812625A4D9E90054A35E /* DeleteClubCall.swift */; };
 		B0E2C19424CC6620009E3666 /* Fine.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E2C19024CC661F009E3666 /* Fine.swift */; };
 		B0E50C9F253DCC44008C7E84 /* SignInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E50C9E253DCC44008C7E84 /* SignInView.swift */; };
@@ -345,6 +345,7 @@
 		B07AC491258BB88E00908A82 /* Provider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Provider.swift; sourceTree = "<group>"; };
 		B07DDDCE256FB9E20003F139 /* ChangeFinePayedCall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeFinePayedCall.swift; sourceTree = "<group>"; };
 		B07DDDEE256FF8CF0003F139 /* FineEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FineEditor.swift; sourceTree = "<group>"; };
+		B0874503261B0AEF004717CC /* StrafenUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StrafenUITests.swift; sourceTree = "<group>"; };
 		B087CF32258AA484005E819D /* LatePaymentInterestCall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LatePaymentInterestCall.swift; sourceTree = "<group>"; };
 		B087CF3C258B86C2005E819D /* ForceSignOutCall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForceSignOutCall.swift; sourceTree = "<group>"; };
 		B099522C254472C700833EA4 /* AlertsAndPickers.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = AlertsAndPickers.xcodeproj; path = ../../../../Desktop/AlertsAndPickers/AlertsAndPickers.xcodeproj; sourceTree = "<group>"; };
@@ -406,7 +407,6 @@
 		B0E0F83424A63E5A00C82828 /* StrafenTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = StrafenTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B0E0F83A24A63E5A00C82828 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B0E0F83F24A63E5A00C82828 /* StrafenUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = StrafenUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		B0E0F84324A63E5A00C82828 /* StrafenUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StrafenUITests.swift; sourceTree = "<group>"; };
 		B0E0F84524A63E5A00C82828 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B0E1812625A4D9E90054A35E /* DeleteClubCall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteClubCall.swift; sourceTree = "<group>"; };
 		B0E2C19024CC661F009E3666 /* Fine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Fine.swift; sourceTree = "<group>"; };
@@ -904,7 +904,7 @@
 		B0E0F84224A63E5A00C82828 /* StrafenUITests */ = {
 			isa = PBXGroup;
 			children = (
-				B0E0F84324A63E5A00C82828 /* StrafenUITests.swift */,
+				B0874503261B0AEF004717CC /* StrafenUITests.swift */,
 				B0E0F84524A63E5A00C82828 /* Info.plist */,
 			);
 			path = StrafenUITests;
@@ -1475,7 +1475,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B0E0F84424A63E5A00C82828 /* StrafenUITests.swift in Sources */,
+				B0874504261B0AEF004717CC /* StrafenUITests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

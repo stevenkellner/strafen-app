@@ -366,7 +366,7 @@ extension Fetcher {
     func decodeFetchedItem<Type>(from data: Any, key: String) throws -> Type where Type: FetchedItemType {
         let decoder = FirebaseDecoder()
         let item = try decoder.decode(Type.CodableSelf.self, from: data)
-        let id = Type.ID(rawValue: UUID(uuidString: key)!)
+        let id = Type.ID(rawId: key)
         return Type.init(with: id, codableSelf: item)
     }
     
@@ -374,7 +374,7 @@ extension Fetcher {
         let decoder = FirebaseDecoder()
         let dictionary = try decoder.decode(Dictionary<String, Type.CodableSelf>.self, from: data)
         let list = dictionary.map { idString, item -> Type in
-            let id = Type.ID(rawValue: UUID(uuidString: idString)!)
+            let id = Type.ID(rawId: idString)
             return Type.init(with: id, codableSelf: item)
         }
         return list

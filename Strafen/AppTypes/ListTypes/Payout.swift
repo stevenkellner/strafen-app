@@ -12,6 +12,7 @@ struct Payout {
     enum Status: String, Decodable {
         case pending
         case approved
+        case denied
     }
     
     /// Type of Id

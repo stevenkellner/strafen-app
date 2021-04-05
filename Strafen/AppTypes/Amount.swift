@@ -122,8 +122,9 @@ extension Amount: VectorArithmetic {
     /// Returns the dot-product of this vector arithmetic instance with itself.
     var magnitudeSquared: Double {
         doubleValue.magnitudeSquared
+    }
 }
-}
+
 // Extension of Amount to multiply with an Int
 extension Amount {
     static func *(amount: Amount, multiplier: Int) -> Amount {
