@@ -153,8 +153,8 @@
 		B0B81DC72502524000249447 /* Settings+Person.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0B81DC62502524000249447 /* Settings+Person.swift */; };
 		B0B81DC92502525500249447 /* Settings+LatePaymentInterest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0B81DC82502525500249447 /* Settings+LatePaymentInterest.swift */; };
 		B0B84C822544818C000B94BA /* SignInPersonSelection.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0B84C812544818C000B94BA /* SignInPersonSelection.swift */; };
-		B0B9D5D325F526F100EED682 /* KeysInfo.plist in Resources */ = {isa = PBXBuildFile; fileRef = B0B9D5D225F526F100EED682 /* KeysInfo.plist */; };
 		B0BB9E1F25F2AA8F0030DCE1 /* Payment.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0BB9E1E25F2AA8F0030DCE1 /* Payment.swift */; };
+		B0C06D24261F01440034CFD6 /* KeysInfo.plist in Resources */ = {isa = PBXBuildFile; fileRef = B0C06D23261F01440034CFD6 /* KeysInfo.plist */; };
 		B0C1C51524A78BD7007B584B /* LoginEntryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0C1C51424A78BD7007B584B /* LoginEntryView.swift */; };
 		B0C1C51924A78C90007B584B /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0C1C51824A78C90007B584B /* Color.swift */; };
 		B0C1C51B24A78CC2007B584B /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0C1C51A24A78CC2007B584B /* Settings.swift */; };
@@ -364,9 +364,9 @@
 		B0B81DC62502524000249447 /* Settings+Person.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Settings+Person.swift"; sourceTree = "<group>"; };
 		B0B81DC82502525500249447 /* Settings+LatePaymentInterest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Settings+LatePaymentInterest.swift"; sourceTree = "<group>"; };
 		B0B84C812544818C000B94BA /* SignInPersonSelection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInPersonSelection.swift; sourceTree = "<group>"; };
-		B0B9D5D225F526F100EED682 /* KeysInfo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = KeysInfo.plist; sourceTree = "<group>"; };
 		B0B9D5D425F53F3D00EED682 /* PaymentFineSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentFineSelector.swift; sourceTree = "<group>"; };
 		B0BB9E1E25F2AA8F0030DCE1 /* Payment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Payment.swift; sourceTree = "<group>"; };
+		B0C06D23261F01440034CFD6 /* KeysInfo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = KeysInfo.plist; sourceTree = "<group>"; };
 		B0C1C51424A78BD7007B584B /* LoginEntryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginEntryView.swift; sourceTree = "<group>"; };
 		B0C1C51824A78C90007B584B /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
 		B0C1C51A24A78CC2007B584B /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
@@ -918,7 +918,7 @@
 				B0E0F82F24A63E5A00C82828 /* Info.plist */,
 				B077B58824CAC9E9003844CE /* Strafen.entitlements */,
 				B03B195C259F861B00D44394 /* GoogleService-Info.plist */,
-				B0B9D5D225F526F100EED682 /* KeysInfo.plist */,
+				B0C06D23261F01440034CFD6 /* KeysInfo.plist */,
 				B0E0F82C24A63E5A00C82828 /* Preview Content */,
 			);
 			path = Controller;
@@ -1117,9 +1117,9 @@
 			files = (
 				B0E0F82E24A63E5A00C82828 /* Preview Assets.xcassets in Resources */,
 				B03B195D259F861B00D44394 /* GoogleService-Info.plist in Resources */,
+				B0C06D24261F01440034CFD6 /* KeysInfo.plist in Resources */,
 				B0790D4C260662B400FEFC24 /* errorLadder.json in Resources */,
 				B0E0F82B24A63E5A00C82828 /* Assets.xcassets in Resources */,
-				B0B9D5D325F526F100EED682 /* KeysInfo.plist in Resources */,
 				B03D1DC325934AD200EB8648 /* UnifiedNativeAdView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

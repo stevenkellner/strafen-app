@@ -25,7 +25,7 @@ struct SignInClubInput: View {
         var regionCode: String?
         
         /// Is in app payment active
-        var inAppPaymentActive: Bool = true
+        var inAppPaymentActive: Bool = false
         
         /// Club image
         var image: UIImage? = nil
@@ -324,6 +324,7 @@ struct SignInClubInput: View {
                     }
                     
                     // Aktivate in app payment
+                    #if DoesntExist // TODO
                     VStack(spacing: 5) {
                         TitledContent("In App Payment", errorMessages: $clubCredentials.activateInAppPaymentErrorMessage) {
                             BooleanChanger(boolToChange: $clubCredentials.inAppPaymentActive)
@@ -335,6 +336,7 @@ struct SignInClubInput: View {
                             .padding(.horizontal, 20)
                             .lineLimit(3)
                     }
+                    #endif
                     
                     // Club identifier
                     VStack(spacing: 5) {

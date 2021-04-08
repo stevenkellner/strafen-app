@@ -48,9 +48,11 @@ struct SettingsView: View {
                             if settings.person?.isCashier ?? false {
                                 LatePaymentInterestChanger(dismissHandler: $dismissHandler)
                                 
+                                #if DoesntExist // TODO
                                 if settings.person?.clubProperties.isInAppPaymentActive ?? false {
                                     PaymentPayout(dismissHandler: $dismissHandler)
                                 }
+                                #endif
                             }
                             
                             // Apearance Changer

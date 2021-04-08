@@ -67,9 +67,9 @@ struct PaymentPayoutView: View {
                             Text("Es ist kein Geld eingezahlt, welches ausgezahlt werden könnte.").foregroundColor(Color.custom.red).configurate(size: 25).lineLimit(3).padding(.horizontal, 15)
                         }
                     }.padding(.top, 50)
-                } else if let amount = amount {
+                } else if amount != nil {
                     VStack(spacing: 5) {
-                                                                                                                                                                                                                                        
+                        // TODO
                     }.padding(.top, 30)
                 } else {
                     ZStack {
@@ -81,7 +81,7 @@ struct PaymentPayoutView: View {
                 Spacer()
                 
                 if amount != nil {
-                    
+                    // TODO
                 }
             }
         }.edgesIgnoringSafeArea(.all)
