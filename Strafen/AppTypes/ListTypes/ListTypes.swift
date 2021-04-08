@@ -10,12 +10,12 @@ import Foundation
 /// Id List type
 protocol ListTypeId {
     
-    /// Init from uuid
-    init(rawValue: UUID)
+    /// Init from string
+    init(rawId: String)
 }
 
-/// Protocol for a list type of database
-protocol ListType: Identifiable where ID: ListTypeId {
+/// Protocol for a list type to get from the database
+protocol ListTypeGet: Identifiable where ID: ListTypeId {
     
     /// Codable list type
     associatedtype CodableSelf: Decodable
@@ -27,6 +27,10 @@ protocol ListType: Identifiable where ID: ListTypeId {
     ///
     /// - Note: Don't use this url when no person is logged in
     static var url: URL { get }
+}
+
+/// Protocol for a list type to change it on the database
+protocol ListTypeChange {
     
     #if TARGET_MAIN_APP
     /// Get list of ListData of this type
@@ -40,10 +44,13 @@ protocol ListType: Identifiable where ID: ListTypeId {
     #endif
 }
 
+/// Protocol for a list type of database
+typealias ListType = ListTypeGet & ListTypeChange
+
 // Extension of URL to get path to list of person / reason / fine
 extension URL {
     private static func baseList(with id: Club.ID) -> URL {
-        URL(string: "clubs")!.appendingPathComponent(id.uuidString.uppercased())
+        URL(string: Bundle.main.firebaseClubsComponent)!.appendingPathComponent(id.uuidString.uppercased())
     }
     
     /// Path to person list of club with given id
@@ -59,5 +66,27 @@ extension URL {
     /// Path to fine list of club with given id
     static func fineList(with id: Club.ID) -> URL {
         baseList(with: id).appendingPathComponent("fines")
+    }
+    
+    /// Path to transaction list of club with given id
+    static func transactionList(with id: Club.ID) -> URL {
+        baseList(with: id).appendingPathComponent("transactions")
+    }
+    
+    /// Path to payout list of club with given id
+    static func payoutList(with id: Club.ID) -> URL {
+        baseList(with: id).appendingPathComponent("payouts")
+    }
+}
+
+extension String: ListTypeId {
+    init(rawId: String) {
+        self = rawId
+    }
+}
+
+extension UUID: ListTypeId {
+    init(rawId: String) {
+        self = .init(uuidString: rawId)!
     }
 }

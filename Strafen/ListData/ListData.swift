@@ -47,16 +47,30 @@ class ListData: ObservableObject {
         HomeTabs.shared.active = .profileDetail
         
         // Fetch lists from database
-        fetchLists { [weak self] in
-            
-            // Check person properties
-            self?.checkPersonProperties()
-            
-            // Observe lists on database
-            self?.observeLists()
+        checkVersion { [weak self] in
+            self?.fetchLists {
+                
+                // Check person properties
+                self?.checkPersonProperties()
+                
+                // Observe lists on database
+                self?.observeLists()
+            }
         }
     }
     #endif
+    
+    func checkVersion(onSuccess successHandler: @escaping () -> Void) {
+        #if TARGET_MAIN_APP
+        Database.database().reference(withPath: "version").observeSingleEvent(of: .value) { snapshot in
+            guard snapshot.exists(), let data = snapshot.value else { return successHandler() }
+            guard data as? String == Bundle.main.versionString else { return OverlayViewsControl.shared.setState(.wrongVersionView) }
+            successHandler()
+        }
+        #else
+        successHandler()
+        #endif
+    }
     
     /// Fetches lists from database
     func fetchLists(onSuccess successHandler: @escaping () -> Void) {
@@ -173,6 +187,19 @@ class ListData: ObservableObject {
             let decoder = FirebaseDecoder()
             let latePaymentInterest = try? decoder.decode(Settings.LatePaymentInterest?.self, from: data)
             Settings.shared.latePaymentInterest = latePaymentInterest
+            dispatchGroup.leave()
+        }
+        
+        // Get in app payment active
+        dispatchGroup.enter()
+        Database.database().reference(withPath: basePath + "/inAppPaymentActive").observeSingleEvent(of: .value) { snapshot in
+            guard snapshot.exists(), let data = snapshot.value else {
+                Settings.shared.person?.clubProperties.isInAppPaymentActive = false
+                return dispatchGroup.leave()
+            }
+            let decoder = FirebaseDecoder()
+            let inAppPaymentActive = try? decoder.decode(Bool.self, from: data)
+            Settings.shared.person?.clubProperties.isInAppPaymentActive = inAppPaymentActive ?? false
             dispatchGroup.leave()
         }
         

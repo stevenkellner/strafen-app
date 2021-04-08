@@ -11,7 +11,10 @@ import Foundation
 enum Payed {
     
     /// Payed
-    case payed(date: Date)
+    case payed(date: Date, inApp: Bool)
+    
+    /// Settled
+    case settled
     
     /// Unpayed
     case unpayed
@@ -28,6 +31,9 @@ extension Payed: Decodable, Equatable {
         
         /// Date of payment
         let payDate: Date?
+        
+        /// Payed with in app payment
+        let inApp: Bool?
     }
     
     /// Init from decoder
@@ -37,11 +43,13 @@ extension Payed: Decodable, Equatable {
         switch rawPayed.state {
         case "unpayed":
             self = .unpayed
+        case "settled":
+            self = .settled
         case "payed":
             guard let date = rawPayed.payDate else {
                 throw DecodingError.dataCorruptedError(in: container, debugDescription: "Date for payed not found.")
             }
-            self = .payed(date: date)
+            self = .payed(date: date, inApp: rawPayed.inApp ?? false)
         default:
             throw DecodingError.dataCorruptedError(in: container, debugDescription: "Invalid state found: \(rawPayed.state)")
         }
@@ -57,7 +65,9 @@ extension Payed: ParameterableObject {
         switch self {
         case .unpayed:
             return "unpayed"
-        case .payed(date: _):
+        case .settled:
+            return "settled"
+        case .payed(date: _, inApp: _):
             return "payed"
         }
     }
@@ -67,8 +77,21 @@ extension Payed: ParameterableObject {
         switch self {
         case .unpayed:
             return nil
-        case .payed(date: let date):
+        case .settled:
+            return nil
+        case .payed(date: let date, inApp: _):
             return date
+        }
+    }
+    
+    var payedInApp: Bool {
+        switch self {
+        case .unpayed:
+            return false
+        case .settled:
+            return false
+        case .payed(date: _, inApp: let inApp):
+            return inApp
         }
     }
     

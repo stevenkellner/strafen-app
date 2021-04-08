@@ -97,6 +97,11 @@ struct ProfileDetail: View {
                                 .padding(.top, 5)
                         }.padding(.top, 10)
                         
+                        // Payment button
+                        #if DoesntExist // TODO
+                        PaymentButton(personId: personId)
+                        #endif
+                        
                     } else {
                         Text("No available view")
                     }
@@ -107,6 +112,7 @@ struct ProfileDetail: View {
             }.edgesIgnoringSafeArea(.all)
                 .hideNavigationBarTitle()
                 .onAppear {
+                    Payment.shared.checkTransactions()
                     guard let person = settings.person else { return }
                     ImageStorage.shared.getImage(.personImage(clubId: person.clubProperties.id, personId: person.id), size: .thumbBig) { image in
                         self.image = image

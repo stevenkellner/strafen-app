@@ -28,12 +28,18 @@ struct ActivityView: UIViewControllerRepresentable {
     
     /// share image
     func shareImage(_ image: UIImage, title: String) {
-        activityViewController.shareImage(image, title: title)
+        OverlayViewsControl.shared.setState(.activityView)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            activityViewController.shareImage(image, title: title)
+        }
     }
     
     /// share text
     func shareText(_ text: String) {
-        activityViewController.shareText(text)
+        OverlayViewsControl.shared.setState(.activityView)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            activityViewController.shareText(text)
+        }
     }
 }
 
@@ -51,6 +57,7 @@ class ActivityViewController: UIViewController, UIActivityItemSource {
     func shareImage(_ image: UIImage, title: String) {
         shareType = .image(image: image, title: title)
         let vc = UIActivityViewController(activityItems: [image, self], applicationActivities: nil)
+        vc.completionWithItemsHandler = { _, _, _, _ in OverlayViewsControl.shared.reset(old: .activityView) }
         present(vc, animated: true, completion: nil)
         vc.popoverPresentationController?.sourceView = view
     }

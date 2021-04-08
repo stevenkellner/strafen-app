@@ -8,11 +8,13 @@
 import XCTest
 import FirebaseStorage
 import FirebaseFunctions
+import FirebaseAuth
 @testable import Strafen
 
 /// Test all functions of FunctionCaller
 class CallerTest: XCTestCase {
     
+    // MARK: set up
     /// Create a test club
     override func setUpWithError() throws {
         continueAfterFailure = false
@@ -39,7 +41,7 @@ class CallerTest: XCTestCase {
         let callItem = NewClubCall(cachedProperties: cachedProperty, clubCredentials: clubCredentials, clubId: clubId, personId: personId)
         
         // Function call to create test club
-        let error: Error? = try await { handler in
+        let error: Error? = try awaitValue { handler in
             FunctionCaller.shared.call(callItem, errorHandler: handler)
         }
         XCTAssertNil(error)
@@ -49,7 +51,7 @@ class CallerTest: XCTestCase {
     private func _setUpCheckClubPropertries() throws {
         let clubId = TestProperty.shared.testClub.id
         let clubProperties: Club = try awaitResult { handler in
-            let url = URL(string: "clubs/\(clubId)")!
+            let url = URL(string: "\(Bundle.main.firebaseClubsComponent)/\(clubId)")!
             Fetcher.shared.fetchItem(from: url, handler: handler)
         }
         XCTAssertEqual(clubProperties, TestProperty.shared.testClub.club)
@@ -59,7 +61,7 @@ class CallerTest: XCTestCase {
     private func _setUpCheckPersonList() throws {
         let clubId = TestProperty.shared.testClub.id
         let personList: [Person] = try awaitResult { handler in
-            let url = URL(string: "clubs/\(clubId)/persons")!
+            let url = URL(string: "\(Bundle.main.firebaseClubsComponent)/\(clubId)/persons")!
             Fetcher.shared.fetchList(from: url, handler: handler)
         }
         XCTAssertEqual(personList.count, 1)
@@ -73,7 +75,7 @@ class CallerTest: XCTestCase {
     private func _setUpCheckReasonList() throws {
         let clubId = TestProperty.shared.testClub.id
         try awaitExistsNoData { handler in
-            let url = URL(string: "clubs/\(clubId)/reasons")!
+            let url = URL(string: "\(Bundle.main.firebaseClubsComponent)/\(clubId)/reasons")!
             Fetcher.shared.existsNoData(at: url, handler: handler)
         }
     }
@@ -82,11 +84,12 @@ class CallerTest: XCTestCase {
     private func _setUpCheckFineList() throws {
         let clubId = TestProperty.shared.testClub.id
         try awaitExistsNoData { handler in
-            let url = URL(string: "clubs/\(clubId)/fines")!
+            let url = URL(string: "\(Bundle.main.firebaseClubsComponent)/\(clubId)/fines")!
             Fetcher.shared.existsNoData(at: url, handler: handler)
         }
     }
         
+    // MARK: tear down
     /// Delete test club and all associated data
     override func tearDownWithError() throws {
         
@@ -105,7 +108,7 @@ class CallerTest: XCTestCase {
     private func _tearDownDeleteClub() throws {
         let clubId = TestProperty.shared.testClub.id
         let callItem = DeleteClubCall(clubId: clubId)
-        let error: Error? = try await { handler in
+        let error: Error? = try awaitValue { handler in
             FunctionCaller.shared.call(callItem, errorHandler: handler)
         }
         XCTAssertNil(error)
@@ -115,7 +118,7 @@ class CallerTest: XCTestCase {
     private func _tearDownCheckClub() throws {
         let clubId = TestProperty.shared.testClub.id
         try awaitExistsNoData { handler in
-            let url = URL(string: "clubs/\(clubId)")!
+            let url = URL(string: "\(Bundle.main.firebaseClubsComponent)/\(clubId)")!
             Fetcher.shared.existsNoData(at: url, handler: handler)
         }
     }
@@ -123,8 +126,8 @@ class CallerTest: XCTestCase {
     /// Check if club image is deleted
     private func _tearDownCheckClubImage() throws {
         let clubId = TestProperty.shared.testClub.id
-        let imageExists: Bool = try await { handler in
-            let imageUrl = URL.clubImage(with: clubId)
+        let imageExists: Bool = try awaitValue { handler in
+            let imageUrl = URL.clubImage(with: clubId.uuidString)
             Storage.storage(url: ImageStorage.shared.storageBucketUrl).reference(withPath: imageUrl.path).downloadURL { _, error in
                 guard let error = error as NSError?, error.domain == StorageErrorDomain else { return handler(true) }
                 let errorCode = StorageErrorCode(rawValue: error.code)
@@ -135,6 +138,7 @@ class CallerTest: XCTestCase {
     }
 }
 
+// MARK: new club call
 /// Test all functions of NewClubCall
 extension CallerTest {
     
@@ -163,24 +167,31 @@ extension CallerTest {
         
         // Check identifier
         let identifier: String = try awaitResult { handler in
-            let url = URL(string: "clubs/\(clubId)/identifier")!
+            let url = URL(string: "\(Bundle.main.firebaseClubsComponent)/\(clubId)/identifier")!
             Fetcher.shared.fetchPrmitiveItem(from: url, handler: handler)
         }
         XCTAssertEqual(identifier, TestProperty.shared.testClub.identifier)
         
         // Check name
         let name: String = try awaitResult { handler in
-            let url = URL(string: "clubs/\(clubId)/name")!
+            let url = URL(string: "\(Bundle.main.firebaseClubsComponent)/\(clubId)/name")!
             Fetcher.shared.fetchPrmitiveItem(from: url, handler: handler)
         }
         XCTAssertEqual(name, TestProperty.shared.testClub.name)
         
         // Check region code
         let regionCode: String = try awaitResult { handler in
-            let url = URL(string: "clubs/\(clubId)/regionCode")!
+            let url = URL(string: "\(Bundle.main.firebaseClubsComponent)/\(clubId)/regionCode")!
             Fetcher.shared.fetchPrmitiveItem(from: url, handler: handler)
         }
         XCTAssertEqual(regionCode, TestProperty.shared.testClub.regionCode)
+        
+        // Check person user ids
+        let personId: String = try awaitResult { handler in
+            let url = URL(string: "\(Bundle.main.firebaseClubsComponent)/\(clubId)/personUserIds/\(TestProperty.shared.testPersonFirst.userId)")!
+            Fetcher.shared.fetchPrmitiveItem(from: url, handler: handler)
+        }
+        XCTAssertEqual(personId, TestProperty.shared.testPersonFirst.id.uuidString)
     }
     
     /// Create new club with already existing identifier
@@ -194,7 +205,7 @@ extension CallerTest {
         let callItem = NewClubCall(cachedProperties: cachedProperty, clubCredentials: clubCredentials, clubId: clubId, personId: personId)
         
         // Call function
-        let errorCode: FunctionsErrorCode? = try await { handler in
+        let errorCode: FunctionsErrorCode? = try awaitValue { handler in
             FunctionCaller.shared.call(callItem) { _ in
                 handler(nil)
             } failedHandler: { error in
@@ -218,12 +229,12 @@ extension CallerTest {
         let callItem = NewClubCall(cachedProperties: cachedProperty, clubCredentials: clubCredentials, clubId: clubId, personId: personId)
         
         // Call function
-        let error: Error? = try await { handler in
+        let error: Error? = try awaitValue { handler in
             FunctionCaller.shared.call(callItem, errorHandler: handler)
         }
         XCTAssertNil(error)
         let identifierAfterSameId: String = try awaitResult { handler in
-            let url = URL(string: "clubs/\(clubId)/identifier")!
+            let url = URL(string: "\(Bundle.main.firebaseClubsComponent)/\(clubId)/identifier")!
             Fetcher.shared.fetchPrmitiveItem(from: url, handler: handler)
         }
         XCTAssertEqual(identifierAfterSameId, TestProperty.shared.testClub.identifier)
@@ -233,12 +244,12 @@ extension CallerTest {
     private func _testNewClubCallDeleteClub() throws {
         let clubId = TestProperty.shared.testClub.id
         let callItem = DeleteClubCall(clubId: clubId)
-        let error: Error? = try await { handler in
+        let error: Error? = try awaitValue { handler in
             FunctionCaller.shared.call(callItem, errorHandler: handler)
         }
         XCTAssertNil(error)
         try awaitExistsNoData { handler in
-            let url = URL(string: "clubs/\(clubId)")!
+            let url = URL(string: "\(Bundle.main.firebaseClubsComponent)/\(clubId)")!
             Fetcher.shared.existsNoData(at: url, handler: handler)
         }
     }
@@ -254,14 +265,14 @@ extension CallerTest {
         let callItem = NewClubCall(cachedProperties: cachedProperty, clubCredentials: clubCredentials, clubId: clubId, personId: personId)
         
         // Call function
-        let error: Error? = try await { handler in
+        let error: Error? = try awaitValue { handler in
             FunctionCaller.shared.call(callItem, errorHandler: handler)
         }
         XCTAssertNil(error)
         
         // Check person
         let personList: [Person] = try awaitResult { handler in
-            let url = URL(string: "clubs/\(clubId)/persons")!
+            let url = URL(string: "\(Bundle.main.firebaseClubsComponent)/\(clubId)/persons")!
             Fetcher.shared.fetchList(from: url, handler: handler)
         }
         XCTAssertEqual(personList.count, 1)
@@ -272,6 +283,7 @@ extension CallerTest {
     }
 }
 
+// MARK: late payment interest call
 /// Test all functions of LatePaymentInterestCall
 extension CallerTest {
     
@@ -301,14 +313,14 @@ extension CallerTest {
         let callItem = LatePaymentInterestCall(latePaymentInterest: latePaymentInterest, clubId: clubId)
         
         // Call function
-        let error: Error? = try await { handler in
+        let error: Error? = try awaitValue { handler in
             FunctionCaller.shared.call(callItem, errorHandler: handler)
         }
         XCTAssertNil(error)
         
         // Check late payment interest
         let fetchedLatePaymentInterest: Settings.LatePaymentInterest = try awaitResult { handler in
-            let url = URL(string: "clubs/\(clubId)/latePaymentInterest")!
+            let url = URL(string: "\(Bundle.main.firebaseClubsComponent)/\(clubId)/latePaymentInterest")!
             Fetcher.shared.fetchPrmitiveItem(from: url, handler: handler)
         }
         XCTAssertEqual(fetchedLatePaymentInterest, latePaymentInterest)
@@ -328,19 +340,20 @@ extension CallerTest {
         let callItem = LatePaymentInterestCall(latePaymentInterest: nil, clubId: clubId)
         
         // Call function
-        let error: Error? = try await { handler in
+        let error: Error? = try awaitValue { handler in
             FunctionCaller.shared.call(callItem, errorHandler: handler)
         }
         XCTAssertNil(error)
         
         // Check late payment interest
         try awaitExistsNoData { handler in
-            let url = URL(string: "clubs/\(clubId)/latePaymentInterest")!
+            let url = URL(string: "\(Bundle.main.firebaseClubsComponent)/\(clubId)/latePaymentInterest")!
             Fetcher.shared.existsNoData(at: url, handler: handler)
         }
     }
 }
 
+// MARK: register person call
 /// Test all functions of RegisterPersonCall
 extension CallerTest {
     
@@ -366,7 +379,7 @@ extension CallerTest {
         let callItem = RegisterPersonCall(cachedProperties: cachedProperties, personId: personId)
         
         // Call function
-        let callResult: RegisterPersonCall.CallResult? = try await { handler in
+        let callResult: RegisterPersonCall.CallResult? = try awaitValue { handler in
             FunctionCaller.shared.call(callItem) { result in
                 handler(result)
             } failedHandler: { _ in
@@ -379,15 +392,23 @@ extension CallerTest {
         
         // Check person properties
         let person: Person = try awaitResult { handler in
-            let url = URL(string: "clubs/\(clubId)/persons/\(personId)")!
+            let url = URL(string: "\(Bundle.main.firebaseClubsComponent)/\(clubId)/persons/\(personId)")!
             Fetcher.shared.fetchItem(from: url, handler: handler)
         }
         XCTAssertEqual(person.name, personName)
         XCTAssertEqual(person.signInData?.isCashier, false)
         XCTAssertEqual(person.signInData?.userId, userId)
+        
+        // Check person user ids
+        let personIdOfUserId: String = try awaitResult { handler in
+            let url = URL(string: "\(Bundle.main.firebaseClubsComponent)/\(clubId)/personUserIds/\(TestProperty.shared.testPersonSecond.userId)")!
+            Fetcher.shared.fetchPrmitiveItem(from: url, handler: handler)
+        }
+        XCTAssertEqual(personIdOfUserId, TestProperty.shared.testPersonSecond.id.uuidString)
     }
 }
 
+// MARK: force sign out call
 /// Test all functions of ForceSignOutCall
 extension CallerTest {
     
@@ -400,19 +421,20 @@ extension CallerTest {
         let callItem = ForceSignOutCall(personId: personId, clubId: clubId)
         
         // Call function
-        let error: Error? = try await { handler in
+        let error: Error? = try awaitValue { handler in
             FunctionCaller.shared.call(callItem, errorHandler: handler)
         }
         XCTAssertNil(error)
         
         // Check sign in data
         try awaitExistsNoData { handler in
-            let url = URL(string: "clubs/\(clubId)/persons/\(personId)/signInData")!
+            let url = URL(string: "\(Bundle.main.firebaseClubsComponent)/\(clubId)/persons/\(personId)/signInData")!
             Fetcher.shared.existsNoData(at: url, handler: handler)
         }
     }
 }
 
+// MARK: change list call with person
 /// Test all functions of ChangeListCall with person
 extension CallerTest {
     
@@ -453,14 +475,14 @@ extension CallerTest {
         let callItem = ChangeListCall(clubId: clubId, changeType: .add, changeItem: person)
         
         // Call function
-        let error: Error? = try await { handler in
+        let error: Error? = try awaitValue { handler in
             FunctionCaller.shared.call(callItem, errorHandler: handler)
         }
         XCTAssertNil(error)
         
         // Check person
         let fetchedPerson: Person = try awaitResult { handler in
-            let url = URL(string: "clubs/\(clubId)/persons/\(person.id)")!
+            let url = URL(string: "\(Bundle.main.firebaseClubsComponent)/\(clubId)/persons/\(person.id)")!
             Fetcher.shared.fetchItem(from: url, handler: handler)
         }
         XCTAssertEqual(fetchedPerson.id, person.id)
@@ -479,14 +501,14 @@ extension CallerTest {
         let callItem = ChangeListCall(clubId: clubId, changeType: .add, changeItem: person)
         
         // Call function
-        let error: Error? = try await { handler in
+        let error: Error? = try awaitValue { handler in
             FunctionCaller.shared.call(callItem, errorHandler: handler)
         }
         XCTAssertNil(error)
         
         // Check person
         let fetchedPerson: Person = try awaitResult { handler in
-            let url = URL(string: "clubs/\(clubId)/persons/\(person.id)")!
+            let url = URL(string: "\(Bundle.main.firebaseClubsComponent)/\(clubId)/persons/\(person.id)")!
             Fetcher.shared.fetchItem(from: url, handler: handler)
         }
         XCTAssertEqual(fetchedPerson.id, person.id)
@@ -505,14 +527,14 @@ extension CallerTest {
         let callItem = ChangeListCall(clubId: clubId, changeType: .update, changeItem: person)
         
         // Call function
-        let error: Error? = try await { handler in
+        let error: Error? = try awaitValue { handler in
             FunctionCaller.shared.call(callItem, errorHandler: handler)
         }
         XCTAssertNil(error)
         
         // Check person
         let fetchedPerson: Person = try awaitResult { handler in
-            let url = URL(string: "clubs/\(clubId)/persons/\(person.id)")!
+            let url = URL(string: "\(Bundle.main.firebaseClubsComponent)/\(clubId)/persons/\(person.id)")!
             Fetcher.shared.fetchItem(from: url, handler: handler)
         }
         XCTAssertEqual(fetchedPerson.id, person.id)
@@ -529,14 +551,14 @@ extension CallerTest {
         let callItem = ChangeListCall(clubId: clubId, changeType: .delete, changeItem: person)
         
         // Call function
-        let error: Error? = try await { handler in
+        let error: Error? = try awaitValue { handler in
             FunctionCaller.shared.call(callItem, errorHandler: handler)
         }
         XCTAssertNil(error)
         
         // Check person
         try awaitExistsNoData { handler in
-            let url = URL(string: "clubs/\(clubId)/persons/\(person.id)")!
+            let url = URL(string: "\(Bundle.main.firebaseClubsComponent)/\(clubId)/persons/\(person.id)")!
             Fetcher.shared.existsNoData(at: url, handler: handler)
         }
     }
@@ -550,7 +572,7 @@ extension CallerTest {
         let callItem = ChangeListCall(clubId: clubId, changeType: .delete, changeItem: person)
         
         // Call function
-        let _error: Error? = try await { handler in
+        let _error: Error? = try awaitValue { handler in
             FunctionCaller.shared.call(callItem, errorHandler: handler)
         }
         guard let error = _error as NSError?, error.domain == FunctionsErrorDomain else { return XCTAssert(false) }
@@ -559,7 +581,7 @@ extension CallerTest {
         
         // Check person
         let fetchedPerson: Person = try awaitResult { handler in
-            let url = URL(string: "clubs/\(clubId)/persons/\(person.id)")!
+            let url = URL(string: "\(Bundle.main.firebaseClubsComponent)/\(clubId)/persons/\(person.id)")!
             Fetcher.shared.fetchItem(from: url, handler: handler)
         }
         XCTAssertEqual(fetchedPerson.id, person.id)
@@ -577,14 +599,14 @@ extension CallerTest {
         let callItem = ChangeListCall(clubId: clubId, changeType: .add, changeItem: person)
         
         // Call function
-        let error: Error? = try await { handler in
+        let error: Error? = try awaitValue { handler in
             FunctionCaller.shared.call(callItem, errorHandler: handler)
         }
         XCTAssertNil(error)
         
         // Check person
         let fetchedPerson: Person = try awaitResult { handler in
-            let url = URL(string: "clubs/\(clubId)/persons/\(person.id)")!
+            let url = URL(string: "\(Bundle.main.firebaseClubsComponent)/\(clubId)/persons/\(person.id)")!
             Fetcher.shared.fetchItem(from: url, handler: handler)
         }
         XCTAssertEqual(fetchedPerson.id, person.id)
@@ -593,6 +615,7 @@ extension CallerTest {
     }
 }
 
+// MARK: change list call with reason
 /// Test all functions of ChangeListCall with reason
 extension CallerTest {
     
@@ -627,14 +650,14 @@ extension CallerTest {
         let callItem = ChangeListCall(clubId: clubId, changeType: .add, changeItem: reason)
         
         // Call function
-        let error: Error? = try await { handler in
+        let error: Error? = try awaitValue { handler in
             FunctionCaller.shared.call(callItem, errorHandler: handler)
         }
         XCTAssertNil(error)
         
         // Check reason
         let fetchedReason: ReasonTemplate = try awaitResult { handler in
-            let url = URL(string: "clubs/\(clubId)/reasons/\(reason.id)")!
+            let url = URL(string: "\(Bundle.main.firebaseClubsComponent)/\(clubId)/reasons/\(reason.id)")!
             Fetcher.shared.fetchItem(from: url, handler: handler)
         }
         XCTAssertEqual(fetchedReason, reason)
@@ -649,14 +672,14 @@ extension CallerTest {
         let callItem = ChangeListCall(clubId: clubId, changeType: .add, changeItem: reason)
 
         // Call function
-        let error: Error? = try await { handler in
+        let error: Error? = try awaitValue { handler in
             FunctionCaller.shared.call(callItem, errorHandler: handler)
         }
         XCTAssertNil(error)
 
         // Check reason
         let fetchedReason: ReasonTemplate = try awaitResult { handler in
-            let url = URL(string: "clubs/\(clubId)/reasons/\(reason.id)")!
+            let url = URL(string: "\(Bundle.main.firebaseClubsComponent)/\(clubId)/reasons/\(reason.id)")!
             Fetcher.shared.fetchItem(from: url, handler: handler)
         }
         XCTAssertEqual(fetchedReason, TestProperty.shared.testReason.reasonTemplate)
@@ -671,14 +694,14 @@ extension CallerTest {
         let callItem = ChangeListCall(clubId: clubId, changeType: .update, changeItem: reason)
 
         // Call function
-        let error: Error? = try await { handler in
+        let error: Error? = try awaitValue { handler in
             FunctionCaller.shared.call(callItem, errorHandler: handler)
         }
         XCTAssertNil(error)
 
         // Check reason
         let fetchedReason: ReasonTemplate = try awaitResult { handler in
-            let url = URL(string: "clubs/\(clubId)/reasons/\(reason.id)")!
+            let url = URL(string: "\(Bundle.main.firebaseClubsComponent)/\(clubId)/reasons/\(reason.id)")!
             Fetcher.shared.fetchItem(from: url, handler: handler)
         }
         XCTAssertEqual(fetchedReason, reason)
@@ -693,19 +716,20 @@ extension CallerTest {
         let callItem = ChangeListCall(clubId: clubId, changeType: .delete, changeItem: reason)
 
         // Call function
-        let error: Error? = try await { handler in
+        let error: Error? = try awaitValue { handler in
             FunctionCaller.shared.call(callItem, errorHandler: handler)
         }
         XCTAssertNil(error)
 
         // Check reason
         try awaitExistsNoData { handler in
-            let url = URL(string: "clubs/\(clubId)/reasons/\(reason.id)")!
+            let url = URL(string: "\(Bundle.main.firebaseClubsComponent)/\(clubId)/reasons/\(reason.id)")!
             Fetcher.shared.existsNoData(at: url, handler: handler)
         }
     }
 }
 
+// MARK: change list call with fine
 /// Test all functions of ChangeListCall with fine
 extension CallerTest {
     
@@ -743,14 +767,14 @@ extension CallerTest {
         let callItem = ChangeListCall(clubId: clubId, changeType: .add, changeItem: fine)
         
         // Call function
-        let error: Error? = try await { handler in
+        let error: Error? = try awaitValue { handler in
             FunctionCaller.shared.call(callItem, errorHandler: handler)
         }
         XCTAssertNil(error)
         
         // Check fine
         let fetchedFine: Fine = try awaitResult { handler in
-            let url = URL(string: "clubs/\(clubId)/fines/\(fine.id)")!
+            let url = URL(string: "\(Bundle.main.firebaseClubsComponent)/\(clubId)/fines/\(fine.id)")!
             Fetcher.shared.fetchItem(from: url, handler: handler)
         }
         XCTAssertEqual(fetchedFine, fine)
@@ -765,14 +789,14 @@ extension CallerTest {
         let callItem = ChangeListCall(clubId: clubId, changeType: .add, changeItem: fine)
 
         // Call function
-        let error: Error? = try await { handler in
+        let error: Error? = try awaitValue { handler in
             FunctionCaller.shared.call(callItem, errorHandler: handler)
         }
         XCTAssertNil(error)
 
         // Check fine
         let fetchedFine: Fine = try awaitResult { handler in
-            let url = URL(string: "clubs/\(clubId)/fines/\(fine.id)")!
+            let url = URL(string: "\(Bundle.main.firebaseClubsComponent)/\(clubId)/fines/\(fine.id)")!
             Fetcher.shared.fetchItem(from: url, handler: handler)
         }
         XCTAssertEqual(fetchedFine, TestProperty.shared.testFine.withReasonTemplate)
@@ -787,14 +811,14 @@ extension CallerTest {
         let callItem = ChangeListCall(clubId: clubId, changeType: .update, changeItem: fine)
 
         // Call function
-        let error: Error? = try await { handler in
+        let error: Error? = try awaitValue { handler in
             FunctionCaller.shared.call(callItem, errorHandler: handler)
         }
         XCTAssertNil(error)
 
         // Check fine
         let fetchedFine: Fine = try awaitResult { handler in
-            let url = URL(string: "clubs/\(clubId)/fines/\(fine.id)")!
+            let url = URL(string: "\(Bundle.main.firebaseClubsComponent)/\(clubId)/fines/\(fine.id)")!
             Fetcher.shared.fetchItem(from: url, handler: handler)
         }
         XCTAssertEqual(fetchedFine, fine)
@@ -809,14 +833,14 @@ extension CallerTest {
         let callItem = ChangeListCall(clubId: clubId, changeType: .delete, changeItem: fine)
 
         // Call function
-        let error: Error? = try await { handler in
+        let error: Error? = try awaitValue { handler in
             FunctionCaller.shared.call(callItem, errorHandler: handler)
         }
         XCTAssertNil(error)
 
         // Check fine
         try awaitExistsNoData { handler in
-            let url = URL(string: "clubs/\(clubId)/fines/\(fine.id)")!
+            let url = URL(string: "\(Bundle.main.firebaseClubsComponent)/\(clubId)/fines/\(fine.id)")!
             Fetcher.shared.existsNoData(at: url, handler: handler)
         }
     }
@@ -830,20 +854,21 @@ extension CallerTest {
         let callItem = ChangeListCall(clubId: clubId, changeType: .update, changeItem: fine)
 
         // Call function
-        let error: Error? = try await { handler in
+        let error: Error? = try awaitValue { handler in
             FunctionCaller.shared.call(callItem, errorHandler: handler)
         }
         XCTAssertNil(error)
 
         // Check fine
         let fetchedFine: Fine = try awaitResult { handler in
-            let url = URL(string: "clubs/\(clubId)/fines/\(fine.id)")!
+            let url = URL(string: "\(Bundle.main.firebaseClubsComponent)/\(clubId)/fines/\(fine.id)")!
             Fetcher.shared.fetchItem(from: url, handler: handler)
         }
         XCTAssertEqual(fetchedFine, fine)
     }
 }
 
+// MARK: change fine payed call
 /// Test all functions of ChangeFinePayedCall
 extension CallerTest {
     
@@ -879,7 +904,7 @@ extension CallerTest {
         let callItem = ChangeFinePayedCall(clubId: clubId, fineId: fineId, payed: payed)
         
         // Call function
-        let error: Error? = try await { handler in
+        let error: Error? = try awaitValue { handler in
             FunctionCaller.shared.call(callItem, errorHandler: handler)
         }
         XCTAssertNil(error)
@@ -891,18 +916,18 @@ extension CallerTest {
         // Call item
         let clubId = TestProperty.shared.testClub.id
         let fineId = TestProperty.shared.testFine.withReasonTemplate.id
-        let payed: Payed = .payed(date: Date(timeIntervalSinceReferenceDate: payedTimeInterval))
+        let payed: Payed = .payed(date: Date(timeIntervalSinceReferenceDate: payedTimeInterval), inApp: false)
         let callItem = ChangeFinePayedCall(clubId: clubId, fineId: fineId, payed: payed)
         
         // Call function
-        let error: Error? = try await { handler in
+        let error: Error? = try awaitValue { handler in
             FunctionCaller.shared.call(callItem, errorHandler: handler)
         }
         XCTAssertNil(error)
         
         // Check payed
         let fetchedPayed: Payed = try awaitResult { handler in
-            let url = URL(string: "clubs/\(clubId)/fines/\(fineId)/payed")!
+            let url = URL(string: "\(Bundle.main.firebaseClubsComponent)/\(clubId)/fines/\(fineId)/payed")!
             Fetcher.shared.fetchPrmitiveItem(from: url, handler: handler)
         }
         XCTAssertEqual(payed, fetchedPayed)
@@ -918,20 +943,21 @@ extension CallerTest {
         let callItem = ChangeFinePayedCall(clubId: clubId, fineId: fineId, payed: payed)
         
         // Call function
-        let error: Error? = try await { handler in
+        let error: Error? = try awaitValue { handler in
             FunctionCaller.shared.call(callItem, errorHandler: handler)
         }
         XCTAssertNil(error)
         
         // Check payed
         let fetchedPayed: Payed = try awaitResult { handler in
-            let url = URL(string: "clubs/\(clubId)/fines/\(fineId)/payed")!
+            let url = URL(string: "\(Bundle.main.firebaseClubsComponent)/\(clubId)/fines/\(fineId)/payed")!
             Fetcher.shared.fetchPrmitiveItem(from: url, handler: handler)
         }
         XCTAssertEqual(payed, fetchedPayed)
     }
 }
 
+// MARK: get person properties call
 /// Test all functions of GetPersonPropertiesCall
 extension CallerTest {
     
@@ -947,21 +973,17 @@ extension CallerTest {
         
         // Register person with only first name
         try _testRegisterPerson(TestProperty.shared.testPersonSecond.name)
-        
-        // Get properties of person with only first name
-        let secondPerson = TestProperty.shared.testPersonSecond
-        try _testGetPersonPropertiesPerson(secondPerson.userId, person: secondPerson.person, isCashier: false)
     }
     
     /// With not existing person
     func _testGetPersonPropertiesNotExistingPerson() throws {
         
         // Call item
-        let userId = TestProperty.shared.testPersonSecond.userId
+        let userId = TestProperty.shared.testPersonThird.userId
         let callItem = GetPersonPropertiesCall(userId: userId)
         
         // Call function
-        let _error: Error? = try await { handler in
+        let _error: Error? = try awaitValue { handler in
             FunctionCaller.shared.call(callItem, errorHandler: handler)
         }
         guard let error = _error as NSError?, error.domain == FunctionsErrorDomain else { return XCTAssert(false) }
@@ -976,7 +998,7 @@ extension CallerTest {
         let callItem = GetPersonPropertiesCall(userId: userId)
         
         // Call function
-        let personProperties: Settings.Person? = try await { handler in
+        let personProperties: Settings.Person? = try awaitValue { handler in
             FunctionCaller.shared.call(callItem) { propertries in
                 handler(propertries)
             } failedHandler: { _ in
@@ -995,6 +1017,7 @@ extension CallerTest {
     }
 }
 
+// MARK: get club id call
 /// Test all functions of GetClubIdCall
 extension CallerTest {
     
@@ -1015,7 +1038,7 @@ extension CallerTest {
         let callItem = GetClubIdCall(identifier: "asdf")
         
         // Call function
-        let _error: Error? = try await { handler in
+        let _error: Error? = try awaitValue { handler in
             FunctionCaller.shared.call(callItem, errorHandler: handler)
         }
         guard let error = _error as NSError?, error.domain == FunctionsErrorDomain else { return XCTAssert(false) }
@@ -1031,7 +1054,7 @@ extension CallerTest {
         let callItem = GetClubIdCall(identifier: identifier)
         
         // Call function
-        let clubId: Club.ID? = try await { handler in
+        let clubId: Club.ID? = try awaitValue { handler in
             FunctionCaller.shared.call(callItem) { id in
                 handler(id)
             } failedHandler: { _ in
@@ -1042,6 +1065,7 @@ extension CallerTest {
     }
 }
 
+// MARK: club identifier already exists call
 /// Test all functions of ClubIdentifierAlreadyExistsCall
 extension CallerTest {
     
@@ -1062,7 +1086,7 @@ extension CallerTest {
         let callItem = ClubIdentifierAlreadyExistsCall(identifier: "asdf")
         
         // Call function
-        let existsClub: Bool? = try await { handler in
+        let existsClub: Bool? = try awaitValue { handler in
             FunctionCaller.shared.call(callItem) { exists in
                 handler(exists)
             } failedHandler: { _ in
@@ -1081,7 +1105,7 @@ extension CallerTest {
         let callItem = ClubIdentifierAlreadyExistsCall(identifier: identifier)
         
         // Call function
-        let existsClub: Bool? = try await { handler in
+        let existsClub: Bool? = try awaitValue { handler in
             FunctionCaller.shared.call(callItem) { exists in
                 handler(exists)
             } failedHandler: { _ in
@@ -1093,6 +1117,7 @@ extension CallerTest {
     }
 }
 
+// MARK: get person properties call
 /// Test all functions of GetPersonPropertiesCall
 extension CallerTest {
     
@@ -1113,7 +1138,7 @@ extension CallerTest {
         let callItem = UserIdAlreadyExistsCall(userId: "asdf")
         
         // Call function
-        let existsPerson: Bool? = try await { handler in
+        let existsPerson: Bool? = try awaitValue { handler in
             FunctionCaller.shared.call(callItem) { exists in
                 handler(exists)
             } failedHandler: { _ in
@@ -1132,7 +1157,7 @@ extension CallerTest {
         let callItem = UserIdAlreadyExistsCall(userId: userId)
         
         // Call function
-        let existsPerson: Bool? = try await { handler in
+        let existsPerson: Bool? = try awaitValue { handler in
             FunctionCaller.shared.call(callItem) { exists in
                 handler(exists)
             } failedHandler: { _ in

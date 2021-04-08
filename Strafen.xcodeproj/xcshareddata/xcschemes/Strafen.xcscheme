@@ -26,32 +26,23 @@
       buildConfiguration = "Debug"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
-      shouldUseLaunchSchemeArgsEnv = "YES">
+      shouldUseLaunchSchemeArgsEnv = "YES"
+      codeCoverageEnabled = "YES">
       <Testables>
          <TestableReference
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "B0E0F83324A63E5A00C82828"
-               BuildableName = "StrafenTests.xctest"
-               BlueprintName = "StrafenTests"
+               BlueprintIdentifier = "B0E0F83E24A63E5A00C82828"
+               BuildableName = "StrafenUITests.xctest"
+               BlueprintName = "StrafenUITests"
                ReferencedContainer = "container:Strafen.xcodeproj">
             </BuildableReference>
             <SkippedTests>
                <Test
-                  Identifier = "StrafenTests">
+                  Identifier = "StrafenUITests">
                </Test>
             </SkippedTests>
-         </TestableReference>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "B0994EBE25446ACE00833EA4"
-               BuildableName = "AlertsAndPickersTests.xctest"
-               BlueprintName = "AlertsAndPickersTests"
-               ReferencedContainer = "container:Strafen.xcodeproj">
-            </BuildableReference>
          </TestableReference>
       </Testables>
    </TestAction>
@@ -79,6 +70,10 @@
          <CommandLineArgument
             argument = "-noFIRAnalyticsDebugEnabled"
             isEnabled = "YES">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "-firebaseDebug"
+            isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument
             argument = "-FIRAnalyticsDebugEnabled"

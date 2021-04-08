@@ -25,21 +25,9 @@ struct TabBar: View {
     var body: some View {
         ZStack {
             
-            if settings.style == .plain {
-                if colorScheme == .light {
-                    Color.plain.lightLightGray
-                        .frame(height: 65)
-                        .offset(y: 65)
-                } else {
-                    Color.plain.darkDarkGray
-                        .frame(height: 65)
-                        .offset(y: 65)
-                }
-            } else {
-                colorScheme.backgroundColor
-                    .frame(height: 65)
-                    .offset(y: 65)
-            }
+            colorScheme.backgroundColorSecondary(settings)
+                .frame(height: 65)
+                .offset(y: 65)
             
             // Outline in default style
             if settings.style == .default {

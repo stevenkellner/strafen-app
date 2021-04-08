@@ -146,6 +146,9 @@ struct ConfirmButton: View {
 /// Red Cancel and confirm button
 struct CancelConfirmButton: View {
     
+    /// Title
+    private var title = "Bestätigen"
+    
     /// Handler by cancel button clicked
     private var cancelButtonHandler: (() -> Void)? = nil
     
@@ -195,7 +198,7 @@ struct CancelConfirmButton: View {
                 HStack(spacing: 0) {
                     
                     // Text
-                    Text("Bestätigen")
+                    Text(title)
                         .foregroundColor(Color.textColor)
                         .font(.text(20))
                         .lineLimit(1)
@@ -212,6 +215,13 @@ struct CancelConfirmButton: View {
                 .onTapGesture(perform: confirmButtonHandler ?? {})
             
         }
+    }
+    
+    /// Set title
+    public func title(_ title: String) -> CancelConfirmButton {
+        var cancelConfirmButton = self
+        cancelConfirmButton.title = title
+        return cancelConfirmButton
     }
     
     /// Set connection state

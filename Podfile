@@ -17,8 +17,19 @@ target 'Strafen' do
   # AdMob
   pod 'Google-Mobile-Ads-SDK'
 
+  # Braintree
+  pod 'Braintree'
+  pod 'Braintree/ApplePay'
+  pod 'Braintree/DataCollector'
+
   # Support Docs
   pod 'SupportDocs'
+
+  # CryptoSwift
+  pod 'CryptoSwift', '~> 1.3.8'
+
+  # Lottie
+  pod 'lottie-ios'
   
   target 'StrafenWidgetExtension' do
     inherit! :search_paths

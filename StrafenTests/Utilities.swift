@@ -8,6 +8,7 @@
 import XCTest
 import FirebaseDatabase
 import CodableFirebase
+import FirebaseAuth
 @testable import Strafen
 
 /// Properties for all test data
@@ -41,7 +42,7 @@ struct TestProperty {
         
         /// Club
         var club: Club {
-            .init(id: id, name: name, identifier: identifier, regionCode: regionCode)
+            .init(id: id, name: name, identifier: identifier, regionCode: regionCode, inAppPaymentActive: true)
         }
     }
     
@@ -52,7 +53,7 @@ struct TestProperty {
         let id = Person.ID(rawValue: UUID(uuidString: "5bf1ffda-4f69-11eb-ae93-0242ac130002")!)
         
         /// User id of the first test person
-        let userId = "First Person User Id"
+        let userId = Auth.auth().currentUser!.uid
         
         /// Name of the first test person
         let name = PersonName(firstName: "First Person First Name", lastName: "First Person Last Name")
@@ -70,7 +71,7 @@ struct TestProperty {
         let id = Person.ID(rawValue: UUID(uuidString: "3530d06e-8c79-4375-ae4c-3b9d1fdd6e28")!)
         
         /// User id of the first test person
-        let userId = "Second Person User Id"
+        let userId = Auth.auth().currentUser!.uid
         
         /// Name of the first test person
         let name = PersonName(firstName: "Second Person First Name")
@@ -88,7 +89,7 @@ struct TestProperty {
         let id = Person.ID(rawValue: UUID(uuidString: "96a9c7c4-5f7b-4ea8-aac5-8ec7f0403960")!)
         
         /// User id of the first test person
-        let userId = "Third Person User Id"
+        let userId = "Third_Person_User_Id"
         
         /// Name of the first test person
         let name = PersonName(firstName: "Third Person First Name", lastName: "Third Person Last Name")
@@ -159,12 +160,12 @@ struct TestProperty {
         
         /// Fine with reason custom
         var withReasonCustom: Fine {
-            .init(id: id, assoiatedPersonId: assoiatedPersonId, date: date, payed: .payed(date: Date(timeIntervalSinceReferenceDate: 234689)), number: 10, fineReason: reasonCustom)
+            .init(id: id, assoiatedPersonId: assoiatedPersonId, date: date, payed: .payed(date: Date(timeIntervalSinceReferenceDate: 234689), inApp: false), number: 10, fineReason: reasonCustom)
         }
         
         /// Fine with reason custom
         func withReasonCustom(_ payedTimeInterval: TimeInterval) -> Fine {
-            .init(id: id, assoiatedPersonId: assoiatedPersonId, date: date, payed: .payed(date: Date(timeIntervalSinceReferenceDate: payedTimeInterval)), number: 10, fineReason: reasonCustom)
+            .init(id: id, assoiatedPersonId: assoiatedPersonId, date: date, payed: .payed(date: Date(timeIntervalSinceReferenceDate: payedTimeInterval), inApp: false), number: 10, fineReason: reasonCustom)
         }
     }
     
@@ -246,7 +247,7 @@ extension XCTestCase {
     }
     
     /// Wait for synchronous tasks
-    func await<ReturnValue>(timeout: TimeInterval = 60, _ handler: (@escaping (ReturnValue) -> Void) throws -> Void) throws -> ReturnValue {
+    func awaitValue<ReturnValue>(timeout: TimeInterval = 60, _ handler: (@escaping (ReturnValue) -> Void) throws -> Void) throws -> ReturnValue {
         let expectation = self.expectation(description: "expecation")
         var result: ReturnValue?
         try handler { value in
@@ -261,12 +262,12 @@ extension XCTestCase {
     }
     
     func awaitResult<ReturnValue>(timeout: TimeInterval = 60, _ handler: (@escaping (Result<ReturnValue, Error>) -> Void) throws -> Void) throws -> ReturnValue {
-        let result: Result<ReturnValue, Error> = try await(timeout: timeout, handler)
+        let result: Result<ReturnValue, Error> = try awaitValue(timeout: timeout, handler)
         return try result.get()
     }
     
     func awaitExistsNoData(timeout: TimeInterval = 60, _ handler: (@escaping (Any?) -> Void) throws -> Void) throws {
-        let result: Any? = try await(timeout: timeout, handler)
+        let result: Any? = try awaitValue(timeout: timeout, handler)
         XCTAssertNil(result)
     }
 }
@@ -288,15 +289,17 @@ extension Club: FetchedItemType, Equatable {
         let name: String
         let identifier: String
         var regionCode: String
+        var inAppPaymentActive: Bool?
     }
     init(with id: ID, codableSelf: CodableSelf) {
-        self = .init(id: id, name: codableSelf.name, identifier: codableSelf.identifier, regionCode: codableSelf.regionCode)
+        self = .init(id: id, name: codableSelf.name, identifier: codableSelf.identifier, regionCode: codableSelf.regionCode, inAppPaymentActive: codableSelf.inAppPaymentActive)
     }
     public static func ==(lhs: Self, rhs: Self) -> Bool {
         lhs.id == rhs.id &&
             lhs.name == rhs.name &&
             lhs.identifier == rhs.identifier &&
-            lhs.regionCode == rhs.regionCode
+            lhs.regionCode == rhs.regionCode &&
+            lhs.isInAppPaymentActive == rhs.isInAppPaymentActive
     }
 }
 
@@ -344,16 +347,26 @@ extension Fetcher {
     }
     
     func existsNoData(at url: URL, handler completionHandler: @escaping (Any?) -> Void) {
+        var state: ConnectionState = .loading
         Database.database().reference(withPath: url.path).observeSingleEvent(of: .value) { snapshot in
-            guard snapshot.exists() else { return completionHandler(nil) }
-            completionHandler(snapshot.value)
+            if state == .loading {
+                state = .passed
+                guard snapshot.exists() else { return completionHandler(nil) }
+                completionHandler(snapshot.value)
+            }
+        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+            if state == .loading {
+                state = .failed
+                completionHandler(nil)
+            }
         }
     }
     
     func decodeFetchedItem<Type>(from data: Any, key: String) throws -> Type where Type: FetchedItemType {
         let decoder = FirebaseDecoder()
         let item = try decoder.decode(Type.CodableSelf.self, from: data)
-        let id = Type.ID(rawValue: UUID(uuidString: key)!)
+        let id = Type.ID(rawId: key)
         return Type.init(with: id, codableSelf: item)
     }
     
@@ -361,7 +374,7 @@ extension Fetcher {
         let decoder = FirebaseDecoder()
         let dictionary = try decoder.decode(Dictionary<String, Type.CodableSelf>.self, from: data)
         let list = dictionary.map { idString, item -> Type in
-            let id = Type.ID(rawValue: UUID(uuidString: idString)!)
+            let id = Type.ID(rawId: idString)
             return Type.init(with: id, codableSelf: item)
         }
         return list

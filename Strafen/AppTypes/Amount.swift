@@ -37,6 +37,21 @@ struct Amount {
             return "\(value),\(subUnitValue)"
         }
     }
+    
+    var forPayment: String {
+        if subUnitValue == 0 {
+            return "\(value).00"
+        } else if (1..<10).contains(subUnitValue) {
+            return "\(value).0\(subUnitValue)"
+        } else {
+            return "\(value).\(subUnitValue)"
+        }
+    }
+    
+    /// Is zero
+    var isZero: Bool {
+        value == 0 && subUnitValue == 0
+    }
 }
 
 // Extension of Amount to confirm to CustomStringConvertible
@@ -107,8 +122,9 @@ extension Amount: VectorArithmetic {
     /// Returns the dot-product of this vector arithmetic instance with itself.
     var magnitudeSquared: Double {
         doubleValue.magnitudeSquared
+    }
 }
-}
+
 // Extension of Amount to multiply with an Int
 extension Amount {
     static func *(amount: Amount, multiplier: Int) -> Amount {

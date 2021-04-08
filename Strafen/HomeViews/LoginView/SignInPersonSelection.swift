@@ -117,7 +117,7 @@ struct SignInPersonSelection: View {
             Logging.shared.log(with: .info, "With result: \(result)")
             signInConnectionState = .passed
             SignInCache.shared.setState(to: nil)
-            let clubProperties = Settings.Person.ClubProperties(id: cachedProperties.clubId, name: result.clubName, identifier: result.clubIdentifier, regionCode: result.regionCode)
+            let clubProperties = Settings.Person.ClubProperties(id: cachedProperties.clubId, name: result.clubName, identifier: result.clubIdentifier, regionCode: result.regionCode, inAppPaymentActive: result.inAppPaymentActive)
             Settings.shared.person = .init(clubProperties: clubProperties, id: personId, name: cachedProperties.name, signInDate: Date(), isCashier: false)
             
         } failedHandler: { error in

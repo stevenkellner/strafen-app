@@ -23,6 +23,16 @@ extension ColorScheme {
     var backgroundColor: Color {
         self == .dark ? Color.custom.darkGray : .white
     }
+    
+    func backgroundColorSecondary(_ settings: Settings) -> Color {
+        if settings.style == .plain {
+            if self == .light {
+                return Color.plain.lightLightGray
+            }
+            return Color.plain.darkDarkGray
+        }
+        return backgroundColor
+    }
 }
 
 /// Extension of Text to configurate it with text color and given font size
@@ -99,6 +109,21 @@ extension URL {
             .appendingPathComponent("person")
             .appendingPathComponent(clubId.uuidString.uppercased())
             .appendingPathComponent(imageName)
+    }
+}
+
+extension Bundle {
+    var firebaseDebugEnabled: Bool {
+        // CommandLine.arguments.contains("-firebaseDebug")
+        #if DEBUG
+        true
+        #else
+        false
+        #endif
+    }
+    
+    var firebaseClubsComponent: String {
+        firebaseDebugEnabled ? "debugClubs" : "clubs"
     }
 }
 
@@ -250,6 +275,13 @@ extension PersonNameComponents {
     }
 }
 
+extension PersonNameComponents {
+    var optionalPersonName: OptionalPersonName {
+        OptionalPersonName(first: givenName, last: familyName)
+    }
+}
+
+
 // Extension of URLSession to execute a data task with task state completion
 extension URLSession {
     
@@ -314,6 +346,35 @@ struct ScreenSizeModifier: ViewModifier {
         GeometryReader { geometry in
             content.screenSize($screenSize, geometry: geometry, after: deadline)
         }
+    }
+}
+
+struct HalfModalModifier<SheetContent>: ViewModifier where SheetContent: View {
+    
+    @Binding var isPresented: Bool
+    
+    let header: String
+    
+    let sheetContent: SheetContent
+    
+    init(isPresented: Binding<Bool>, header: String, @ViewBuilder content: () -> SheetContent) {
+        self._isPresented = isPresented
+        self.header = header
+        self.sheetContent = content()
+    }
+    
+    func body(content: Content) -> some View {
+        ZStack {
+            content
+            if isPresented {
+                HalfModalView(content: AnyView(sheetContent), header: AnyView(Text(header).configurate(size: 20)), isPresented: $isPresented)
+            }
+        }
+    }
+}
+extension View {
+    func halfModal<Content>(isPresented: Binding<Bool>, header: String, @ViewBuilder content: () -> Content) -> some View where Content: View {
+        ModifiedContent(content: self, modifier: HalfModalModifier(isPresented: isPresented, header: header, content: content))
     }
 }
 
@@ -523,6 +584,64 @@ extension Bool {
         isTrue = lhs || isTrue
         isTrue = rhs || isTrue
         return isTrue
+    }
+}
+
+@dynamicMemberLookup struct PropertyListContent {
+    private let content: [String: AnyObject]?
+    
+    init(path: String) {
+        var format =  PropertyListSerialization.PropertyListFormat.xml
+        let data = FileManager.default.contents(atPath: path)!
+        content = try? PropertyListSerialization.propertyList(from: data, options: .mutableContainersAndLeaves, format: &format) as? [String: AnyObject]
+    }
+    
+    @inlinable subscript(dynamicMember key: String) -> AnyObject? {
+        content?[key]
+    }
+    
+    @inlinable subscript(_ key: String) -> AnyObject? {
+        content?[key]
+    }
+}
+
+extension Bundle {
+    static var keysPropertyList: PropertyListContent {
+        PropertyListContent(path: Bundle.main.path(forResource: "KeysInfo", ofType: "plist")!)
+    }
+}
+
+import CryptoSwift
+extension Array where Element == UInt8 {
+    var encrypted: Array<UInt8>? {
+        guard let cryptionKey = Bundle.keysPropertyList.cryptionKey as? String,
+              let cryptionIV = Bundle.keysPropertyList.cryptionIV as? String else { return nil }
+        let aes = try? AES(key: cryptionKey, iv: cryptionIV)
+        return try? aes?.encrypt(self)
+    }
+    
+    var decrypted: Array<UInt8>? {
+        guard let cryptionKey = Bundle.keysPropertyList.cryptionKey as? String,
+              let cryptionIV = Bundle.keysPropertyList.cryptionIV as? String else { return nil }
+        let aes = try? AES(key: cryptionKey, iv: cryptionIV)
+        return try? aes?.decrypt(self)
+    }
+    
+    var isoLatin1String: String? {
+        String(bytes: self, encoding: .isoLatin1)
+    }
+}
+
+extension String {
+    var isoLatin1ByteList: Array<UInt8>? {
+        guard let data = data(using: .isoLatin1) else { return nil }
+        return [UInt8](data)
+    }
+}
+
+extension Bundle {
+    var versionString: String {
+        ((object(forInfoDictionaryKey: "SHARED_CURRENT_PROJECT_VERSION") as? String) ?? "?.?") + "." + ((object(forInfoDictionaryKey: "SHARED_MARKETING_VERSION") as? String) ?? "?")
     }
 }
 #endif

@@ -8,7 +8,7 @@ firebase-debug.log*
 firebase-debug.*.log*
 
 # Firebase cache
-.firebase/
+/firebase/.firebase/
 
 # Firebase config
 
@@ -67,7 +67,10 @@ node_modules/
 
 /Strafen/Controller/GoogleService-Info.plist
 /Strafen/Controller/Strafen.entitlements
+/Strafen/Controller/KeysInfo.plist
 /Strafen/Controller/Info.plist
 /Pods/
 /build/
 /Strafen.xcworkspace
+/utils
+.vscode/

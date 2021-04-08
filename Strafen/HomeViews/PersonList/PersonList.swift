@@ -71,7 +71,7 @@ struct PersonList: View {
                                 LazyVStack(spacing: 15) {
                                     
                                     /// Native Ad
-                                    NativeAdView()
+                                    // NativeAdView() TODO
                                     
                                     ForEach(personList.sortedForList(with: searchText, settings: settings)) { person in
                                         PersonListRow(person: person, searchText: $searchText, dismissHandler: $dismissHandler)

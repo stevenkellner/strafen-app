@@ -10,6 +10,7 @@
 		177D046107D314481E3351BB /* Pods_StrafenUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 21FB69BB8D67A95C3447BAEF /* Pods_StrafenUITests.framework */; };
 		67CDD1AB6A3BBA7C38C64532 /* Pods_Strafen.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28520CB35F7960A3527C91CA /* Pods_Strafen.framework */; };
 		919508DBCD84D1DA492F057B /* Pods_StrafenWidgetExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A28588CC33D58046FD7FA2DC /* Pods_StrafenWidgetExtension.framework */; };
+		B0061F8B25F677760091B17B /* CreditCardValitadion.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0061F8A25F677760091B17B /* CreditCardValitadion.swift */; };
 		B006920624C615D500AE2EF0 /* HomeTabs.swift in Sources */ = {isa = PBXBuildFile; fileRef = B006920524C615D500AE2EF0 /* HomeTabs.swift */; };
 		B00C6EF5258D46700015637D /* MediumWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = B04B71ED24CEDA9C0038B02F /* MediumWidget.swift */; };
 		B00C6F15258E0F5C0015637D /* HelpfulViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00C6F14258E0F5C0015637D /* HelpfulViews.swift */; };
@@ -21,6 +22,8 @@
 		B026766D24BDD346005E79C1 /* AmountDisplay.swift in Sources */ = {isa = PBXBuildFile; fileRef = B026766C24BDD346005E79C1 /* AmountDisplay.swift */; };
 		B0280AB424FFB9D30049202D /* LatePaymentInterestChangerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0280AB324FFB9D30049202D /* LatePaymentInterestChangerView.swift */; };
 		B02B891524BDFDA9004562B9 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B02B891424BDFDA9004562B9 /* SettingsView.swift */; };
+		B02F5CC925FF9A5C00A99678 /* CheckTransactionsCall.swift in Sources */ = {isa = PBXBuildFile; fileRef = B02F5CC825FF9A5C00A99678 /* CheckTransactionsCall.swift */; };
+		B02F5CCD25FFCD1A00A99678 /* PaymentPayPalButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B02F5CCC25FFCD1A00A99678 /* PaymentPayPalButton.swift */; };
 		B02F986F258CF70800B04C48 /* OutlineAndSheetBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E6E86E24CDD38500D467AC /* OutlineAndSheetBar.swift */; };
 		B02F9874258CF71200B04C48 /* RoundedCorners.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0C1C52424A8BC14007B584B /* RoundedCorners.swift */; };
 		B0327C54258BAB4C00DEE05C /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0C1C51A24A78CC2007B584B /* Settings.swift */; };
@@ -46,6 +49,8 @@
 		B03B195D259F861B00D44394 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B03B195C259F861B00D44394 /* GoogleService-Info.plist */; };
 		B03B195E259F861B00D44394 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B03B195C259F861B00D44394 /* GoogleService-Info.plist */; };
 		B03B195F259F861B00D44394 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B03B195C259F861B00D44394 /* GoogleService-Info.plist */; };
+		B03BD6C825FE6B1E005A7B4E /* PaymentFineSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0B9D5D425F53F3D00EED682 /* PaymentFineSelector.swift */; };
+		B03BD6C925FE6B1E005A7B4E /* PaymentCreditCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0DEDDA125F692F9009C5415 /* PaymentCreditCard.swift */; };
 		B03D1DC325934AD200EB8648 /* UnifiedNativeAdView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B03D1DC225934AD200EB8648 /* UnifiedNativeAdView.xib */; };
 		B03EA728259F75F7002EFD4A /* DailyNotificationContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = B03EA727259F75F7002EFD4A /* DailyNotificationContent.swift */; };
 		B03EA72E259F778D002EFD4A /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0C1C51A24A78CC2007B584B /* Settings.swift */; };
@@ -83,10 +88,22 @@
 		B04750B02570370D002C8B99 /* FineEditorTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B04750AF2570370D002C8B99 /* FineEditorTemplate.swift */; };
 		B04D4AA22546AFB900658924 /* SignInNameInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = B04D4AA12546AFB900658924 /* SignInNameInput.swift */; };
 		B04D4AA82546E89E00658924 /* SignInClubInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = B04D4AA72546E89E00658924 /* SignInClubInput.swift */; };
+		B04FD69D260C8B3400177AE6 /* PaymentPayoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B04FD69C260C8B3400177AE6 /* PaymentPayoutView.swift */; };
+		B04FD6A1260CE97300177AE6 /* Transaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = B04FD6A0260CE97300177AE6 /* Transaction.swift */; };
+		B04FD6A3260CE98D00177AE6 /* PaymentTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = B04FD6A2260CE98D00177AE6 /* PaymentTransaction.swift */; };
+		B04FD6A5260CED2700177AE6 /* Payout.swift in Sources */ = {isa = PBXBuildFile; fileRef = B04FD6A4260CED2700177AE6 /* Payout.swift */; };
+		B051CBF826010471007B8119 /* SaveCreditCardCall.swift in Sources */ = {isa = PBXBuildFile; fileRef = B051CBF726010471007B8119 /* SaveCreditCardCall.swift */; };
 		B05C32E725388637004E9923 /* NecessaryObjects.swift in Sources */ = {isa = PBXBuildFile; fileRef = B05C32E625388637004E9923 /* NecessaryObjects.swift */; };
 		B05C3317253B6AEE004E9923 /* SignInCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = B05C3316253B6AEE004E9923 /* SignInCache.swift */; };
 		B05C331D253B6B0F004E9923 /* SignInCacheView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B05C331C253B6B0F004E9923 /* SignInCacheView.swift */; };
 		B05C3330253C3597004E9923 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B05C332F253C3597004E9923 /* LoginView.swift */; };
+		B05F66A72606341A00597372 /* AddNewFineCustomReason.swift in Sources */ = {isa = PBXBuildFile; fileRef = B05F66A62606341A00597372 /* AddNewFineCustomReason.swift */; };
+		B05F66AD26063EE500597372 /* HalfModalButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B05F66A926063EE400597372 /* HalfModalButtonView.swift */; };
+		B05F66AE26063EE500597372 /* HalfModalBlurView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B05F66AA26063EE400597372 /* HalfModalBlurView.swift */; };
+		B05F66AF26063EE500597372 /* HalfModalContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = B05F66AB26063EE500597372 /* HalfModalContent.swift */; };
+		B05F66B026063EE500597372 /* HalfModalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B05F66AC26063EE500597372 /* HalfModalView.swift */; };
+		B05F66B2260649C700597372 /* OverlayViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = B05F66B1260649C700597372 /* OverlayViews.swift */; };
+		B05F66B42606531800597372 /* WrongVersionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B05F66B32606531800597372 /* WrongVersionView.swift */; };
 		B0619BFB24C0B62B008969A1 /* PersonEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0619BFA24C0B62B008969A1 /* PersonEditor.swift */; };
 		B0619C0024C0BD16008969A1 /* ImportanceChanger.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0619BFF24C0BD16008969A1 /* ImportanceChanger.swift */; };
 		B0619C0224C0C1E2008969A1 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0619C0124C0C1E2008969A1 /* String.swift */; };
@@ -97,6 +114,7 @@
 		B0619C1424C21958008969A1 /* AddNewFine.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0619C1324C21958008969A1 /* AddNewFine.swift */; };
 		B0619C1624C236C2008969A1 /* AddNewFinePerson.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0619C1524C236C2008969A1 /* AddNewFinePerson.swift */; };
 		B0619C1824C23911008969A1 /* AddNewFineReason.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0619C1724C23910008969A1 /* AddNewFineReason.swift */; };
+		B0662A9125FA5BCA0002ED63 /* NewTransactionCall.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0662A9025FA5BCA0002ED63 /* NewTransactionCall.swift */; };
 		B0709EDF25A4B55E003D542F /* CallerTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0709EDE25A4B55E003D542F /* CallerTest.swift */; };
 		B075A86F258BBE7C00D74175 /* PlaceholderContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = B04B71EA24CE18560038B02F /* PlaceholderContent.swift */; };
 		B075A874258BEC5100D74175 /* WidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B077B59624CB0801003844CE /* WidgetView.swift */; };
@@ -108,6 +126,8 @@
 		B077B57724CAC652003844CE /* StrafenWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = B077B57624CAC652003844CE /* StrafenWidget.swift */; };
 		B077B57A24CAC655003844CE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B077B57924CAC655003844CE /* Assets.xcassets */; };
 		B077B58024CAC655003844CE /* StrafenWidgetExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = B077B57024CAC652003844CE /* StrafenWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		B0790D4C260662B400FEFC24 /* errorLadder.json in Resources */ = {isa = PBXBuildFile; fileRef = B0790D4B260662B400FEFC24 /* errorLadder.json */; };
+		B0790D4E260665E000FEFC24 /* LottieAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0790D4D260665E000FEFC24 /* LottieAnimation.swift */; };
 		B07938D824BF037900F86E86 /* PersonAddNew.swift in Sources */ = {isa = PBXBuildFile; fileRef = B07938D724BF037900F86E86 /* PersonAddNew.swift */; };
 		B07A51ED25A9B32F00489C4C /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = B07A51EC25A9B32F00489C4C /* Utilities.swift */; };
 		B07AC459258BB56A00908A82 /* Array.swift in Sources */ = {isa = PBXBuildFile; fileRef = B042D43C24BB2BBD0029F2D5 /* Array.swift */; };
@@ -117,6 +137,7 @@
 		B07AC492258BB88E00908A82 /* Provider.swift in Sources */ = {isa = PBXBuildFile; fileRef = B07AC491258BB88E00908A82 /* Provider.swift */; };
 		B07DDDCF256FB9E20003F139 /* ChangeFinePayedCall.swift in Sources */ = {isa = PBXBuildFile; fileRef = B07DDDCE256FB9E20003F139 /* ChangeFinePayedCall.swift */; };
 		B07DDDEF256FF8CF0003F139 /* FineEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = B07DDDEE256FF8CF0003F139 /* FineEditor.swift */; };
+		B0874504261B0AEF004717CC /* StrafenUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0874503261B0AEF004717CC /* StrafenUITests.swift */; };
 		B087CF33258AA484005E819D /* LatePaymentInterestCall.swift in Sources */ = {isa = PBXBuildFile; fileRef = B087CF32258AA484005E819D /* LatePaymentInterestCall.swift */; };
 		B087CF3D258B86C2005E819D /* ForceSignOutCall.swift in Sources */ = {isa = PBXBuildFile; fileRef = B087CF3C258B86C2005E819D /* ForceSignOutCall.swift */; };
 		B09CC1E0259F4BF70079B86B /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B09CC1DF259F4BF70079B86B /* NotificationService.swift */; };
@@ -132,13 +153,14 @@
 		B0B81DC72502524000249447 /* Settings+Person.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0B81DC62502524000249447 /* Settings+Person.swift */; };
 		B0B81DC92502525500249447 /* Settings+LatePaymentInterest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0B81DC82502525500249447 /* Settings+LatePaymentInterest.swift */; };
 		B0B84C822544818C000B94BA /* SignInPersonSelection.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0B84C812544818C000B94BA /* SignInPersonSelection.swift */; };
+		B0BB9E1F25F2AA8F0030DCE1 /* Payment.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0BB9E1E25F2AA8F0030DCE1 /* Payment.swift */; };
+		B0C06D24261F01440034CFD6 /* KeysInfo.plist in Resources */ = {isa = PBXBuildFile; fileRef = B0C06D23261F01440034CFD6 /* KeysInfo.plist */; };
 		B0C1C51524A78BD7007B584B /* LoginEntryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0C1C51424A78BD7007B584B /* LoginEntryView.swift */; };
 		B0C1C51924A78C90007B584B /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0C1C51824A78C90007B584B /* Color.swift */; };
 		B0C1C51B24A78CC2007B584B /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0C1C51A24A78CC2007B584B /* Settings.swift */; };
 		B0C1C52224A7A021007B584B /* PersonName.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0C1C52124A7A021007B584B /* PersonName.swift */; };
 		B0C1C52524A8BC14007B584B /* RoundedCorners.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0C1C52424A8BC14007B584B /* RoundedCorners.swift */; };
 		B0C1C52724A8BEE6007B584B /* Other.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0C1C52624A8BEE6007B584B /* Other.swift */; };
-		B0C246AD2593A6580078EFA4 /* NativeAdView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0C246AC2593A6580078EFA4 /* NativeAdView.swift */; };
 		B0C554052505646400BA3E26 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0C554042505646400BA3E26 /* AppDelegate.swift */; };
 		B0CB61A5257D72C8003F29BE /* Tagged.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0CB61A4257D72C8003F29BE /* Tagged.swift */; };
 		B0D75C502557149500555B03 /* ReasonTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0D75C4F2557149500555B03 /* ReasonTemplate.swift */; };
@@ -160,12 +182,12 @@
 		B0D75CD82558202000555B03 /* ChangeListCall.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0D75CD72558202000555B03 /* ChangeListCall.swift */; };
 		B0D75CDE2558208500555B03 /* Amount.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0D75CDD2558208500555B03 /* Amount.swift */; };
 		B0D75CF0255820FC00555B03 /* ImageStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0D75CEF255820FC00555B03 /* ImageStorage.swift */; };
+		B0DBDCA925FFE45E0043665E /* PaymentApplePayButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0DBDCA825FFE45E0043665E /* PaymentApplePayButton.swift */; };
 		B0DEAAC325A099B1009C6BD9 /* StrafenNotificationService.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = B09CC1DD259F4BF70079B86B /* StrafenNotificationService.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		B0E0F82724A63E5800C82828 /* StrafenApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E0F82624A63E5800C82828 /* StrafenApp.swift */; };
 		B0E0F82924A63E5800C82828 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E0F82824A63E5800C82828 /* ContentView.swift */; };
 		B0E0F82B24A63E5A00C82828 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B0E0F82A24A63E5A00C82828 /* Assets.xcassets */; };
 		B0E0F82E24A63E5A00C82828 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B0E0F82D24A63E5A00C82828 /* Preview Assets.xcassets */; };
-		B0E0F84424A63E5A00C82828 /* StrafenUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E0F84324A63E5A00C82828 /* StrafenUITests.swift */; };
 		B0E1812725A4D9E90054A35E /* DeleteClubCall.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E1812625A4D9E90054A35E /* DeleteClubCall.swift */; };
 		B0E2C19424CC6620009E3666 /* Fine.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E2C19024CC661F009E3666 /* Fine.swift */; };
 		B0E50C9F253DCC44008C7E84 /* SignInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E50C9E253DCC44008C7E84 /* SignInView.swift */; };
@@ -244,6 +266,7 @@
 		9F648314F45F12CD67B093FF /* Pods-StrafenTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StrafenTests.debug.xcconfig"; path = "Target Support Files/Pods-StrafenTests/Pods-StrafenTests.debug.xcconfig"; sourceTree = "<group>"; };
 		A28588CC33D58046FD7FA2DC /* Pods_StrafenWidgetExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_StrafenWidgetExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A4EE6A2E94660E69A2CF1D04 /* Pods-StrafenWidgetExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StrafenWidgetExtension.release.xcconfig"; path = "Target Support Files/Pods-StrafenWidgetExtension/Pods-StrafenWidgetExtension.release.xcconfig"; sourceTree = "<group>"; };
+		B0061F8A25F677760091B17B /* CreditCardValitadion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreditCardValitadion.swift; sourceTree = "<group>"; };
 		B006920524C615D500AE2EF0 /* HomeTabs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTabs.swift; sourceTree = "<group>"; };
 		B00C6F14258E0F5C0015637D /* HelpfulViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpfulViews.swift; sourceTree = "<group>"; };
 		B02019D324FE779000C660B9 /* SettingsFinesFormatterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsFinesFormatterView.swift; sourceTree = "<group>"; };
@@ -253,6 +276,8 @@
 		B026766C24BDD346005E79C1 /* AmountDisplay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmountDisplay.swift; sourceTree = "<group>"; };
 		B0280AB324FFB9D30049202D /* LatePaymentInterestChangerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LatePaymentInterestChangerView.swift; sourceTree = "<group>"; };
 		B02B891424BDFDA9004562B9 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		B02F5CC825FF9A5C00A99678 /* CheckTransactionsCall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckTransactionsCall.swift; sourceTree = "<group>"; };
+		B02F5CCC25FFCD1A00A99678 /* PaymentPayPalButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentPayPalButton.swift; sourceTree = "<group>"; };
 		B0327C96258BB36A00DEE05C /* PropertyWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PropertyWrapper.swift; sourceTree = "<group>"; };
 		B037BCE925419CB4002B81E5 /* SignInEmailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInEmailView.swift; sourceTree = "<group>"; };
 		B03B195C259F861B00D44394 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -274,10 +299,22 @@
 		B04B71F424CF36AE0038B02F /* LargeWidgetSuccess.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LargeWidgetSuccess.swift; sourceTree = "<group>"; };
 		B04D4AA12546AFB900658924 /* SignInNameInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInNameInput.swift; sourceTree = "<group>"; };
 		B04D4AA72546E89E00658924 /* SignInClubInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInClubInput.swift; sourceTree = "<group>"; };
+		B04FD69C260C8B3400177AE6 /* PaymentPayoutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentPayoutView.swift; sourceTree = "<group>"; };
+		B04FD6A0260CE97300177AE6 /* Transaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Transaction.swift; sourceTree = "<group>"; };
+		B04FD6A2260CE98D00177AE6 /* PaymentTransaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentTransaction.swift; sourceTree = "<group>"; };
+		B04FD6A4260CED2700177AE6 /* Payout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Payout.swift; sourceTree = "<group>"; };
+		B051CBF726010471007B8119 /* SaveCreditCardCall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveCreditCardCall.swift; sourceTree = "<group>"; };
 		B05C32E625388637004E9923 /* NecessaryObjects.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NecessaryObjects.swift; sourceTree = "<group>"; };
 		B05C3316253B6AEE004E9923 /* SignInCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInCache.swift; sourceTree = "<group>"; };
 		B05C331C253B6B0F004E9923 /* SignInCacheView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInCacheView.swift; sourceTree = "<group>"; };
 		B05C332F253C3597004E9923 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
+		B05F66A62606341A00597372 /* AddNewFineCustomReason.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewFineCustomReason.swift; sourceTree = "<group>"; };
+		B05F66A926063EE400597372 /* HalfModalButtonView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HalfModalButtonView.swift; sourceTree = "<group>"; };
+		B05F66AA26063EE400597372 /* HalfModalBlurView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HalfModalBlurView.swift; sourceTree = "<group>"; };
+		B05F66AB26063EE500597372 /* HalfModalContent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HalfModalContent.swift; sourceTree = "<group>"; };
+		B05F66AC26063EE500597372 /* HalfModalView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HalfModalView.swift; sourceTree = "<group>"; };
+		B05F66B1260649C700597372 /* OverlayViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverlayViews.swift; sourceTree = "<group>"; };
+		B05F66B32606531800597372 /* WrongVersionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WrongVersionView.swift; sourceTree = "<group>"; };
 		B0619BFA24C0B62B008969A1 /* PersonEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonEditor.swift; sourceTree = "<group>"; };
 		B0619BFF24C0BD16008969A1 /* ImportanceChanger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportanceChanger.swift; sourceTree = "<group>"; };
 		B0619C0124C0C1E2008969A1 /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
@@ -288,6 +325,7 @@
 		B0619C1324C21958008969A1 /* AddNewFine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewFine.swift; sourceTree = "<group>"; };
 		B0619C1524C236C2008969A1 /* AddNewFinePerson.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewFinePerson.swift; sourceTree = "<group>"; };
 		B0619C1724C23910008969A1 /* AddNewFineReason.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewFineReason.swift; sourceTree = "<group>"; };
+		B0662A9025FA5BCA0002ED63 /* NewTransactionCall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewTransactionCall.swift; sourceTree = "<group>"; };
 		B0709EDE25A4B55E003D542F /* CallerTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallerTest.swift; sourceTree = "<group>"; };
 		B075A879258BF02300D74175 /* NoPersonLoggedIn.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoPersonLoggedIn.swift; sourceTree = "<group>"; };
 		B077B57024CAC652003844CE /* StrafenWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = StrafenWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -299,12 +337,15 @@
 		B077B58824CAC9E9003844CE /* Strafen.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Strafen.entitlements; sourceTree = "<group>"; };
 		B077B58924CACA78003844CE /* StrafenWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = StrafenWidgetExtension.entitlements; sourceTree = "<group>"; };
 		B077B59624CB0801003844CE /* WidgetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetView.swift; sourceTree = "<group>"; };
+		B0790D4B260662B400FEFC24 /* errorLadder.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = errorLadder.json; sourceTree = "<group>"; };
+		B0790D4D260665E000FEFC24 /* LottieAnimation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LottieAnimation.swift; sourceTree = "<group>"; };
 		B07938D724BF037900F86E86 /* PersonAddNew.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonAddNew.swift; sourceTree = "<group>"; };
 		B07A51EC25A9B32F00489C4C /* Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
 		B07AC46C258BB7C900908A82 /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 		B07AC491258BB88E00908A82 /* Provider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Provider.swift; sourceTree = "<group>"; };
 		B07DDDCE256FB9E20003F139 /* ChangeFinePayedCall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeFinePayedCall.swift; sourceTree = "<group>"; };
 		B07DDDEE256FF8CF0003F139 /* FineEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FineEditor.swift; sourceTree = "<group>"; };
+		B0874503261B0AEF004717CC /* StrafenUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StrafenUITests.swift; sourceTree = "<group>"; };
 		B087CF32258AA484005E819D /* LatePaymentInterestCall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LatePaymentInterestCall.swift; sourceTree = "<group>"; };
 		B087CF3C258B86C2005E819D /* ForceSignOutCall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForceSignOutCall.swift; sourceTree = "<group>"; };
 		B099522C254472C700833EA4 /* AlertsAndPickers.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = AlertsAndPickers.xcodeproj; path = ../../../../Desktop/AlertsAndPickers/AlertsAndPickers.xcodeproj; sourceTree = "<group>"; };
@@ -323,6 +364,9 @@
 		B0B81DC62502524000249447 /* Settings+Person.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Settings+Person.swift"; sourceTree = "<group>"; };
 		B0B81DC82502525500249447 /* Settings+LatePaymentInterest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Settings+LatePaymentInterest.swift"; sourceTree = "<group>"; };
 		B0B84C812544818C000B94BA /* SignInPersonSelection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInPersonSelection.swift; sourceTree = "<group>"; };
+		B0B9D5D425F53F3D00EED682 /* PaymentFineSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentFineSelector.swift; sourceTree = "<group>"; };
+		B0BB9E1E25F2AA8F0030DCE1 /* Payment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Payment.swift; sourceTree = "<group>"; };
+		B0C06D23261F01440034CFD6 /* KeysInfo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = KeysInfo.plist; sourceTree = "<group>"; };
 		B0C1C51424A78BD7007B584B /* LoginEntryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginEntryView.swift; sourceTree = "<group>"; };
 		B0C1C51824A78C90007B584B /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
 		B0C1C51A24A78CC2007B584B /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
@@ -352,6 +396,8 @@
 		B0D75CDD2558208500555B03 /* Amount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Amount.swift; sourceTree = "<group>"; };
 		B0D75CEF255820FC00555B03 /* ImageStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageStorage.swift; sourceTree = "<group>"; };
 		B0D946BD259F6FCD000BD3F3 /* StrafenNotificationService.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = StrafenNotificationService.entitlements; sourceTree = "<group>"; };
+		B0DBDCA825FFE45E0043665E /* PaymentApplePayButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentApplePayButton.swift; sourceTree = "<group>"; };
+		B0DEDDA125F692F9009C5415 /* PaymentCreditCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentCreditCard.swift; sourceTree = "<group>"; };
 		B0E0F82324A63E5800C82828 /* Strafen.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Strafen.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B0E0F82624A63E5800C82828 /* StrafenApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StrafenApp.swift; sourceTree = "<group>"; };
 		B0E0F82824A63E5800C82828 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -361,7 +407,6 @@
 		B0E0F83424A63E5A00C82828 /* StrafenTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = StrafenTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B0E0F83A24A63E5A00C82828 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B0E0F83F24A63E5A00C82828 /* StrafenUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = StrafenUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		B0E0F84324A63E5A00C82828 /* StrafenUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StrafenUITests.swift; sourceTree = "<group>"; };
 		B0E0F84524A63E5A00C82828 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B0E1812625A4D9E90054A35E /* DeleteClubCall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteClubCall.swift; sourceTree = "<group>"; };
 		B0E2C19024CC661F009E3666 /* Fine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Fine.swift; sourceTree = "<group>"; };
@@ -466,6 +511,8 @@
 				B020C7BF24AF7CC6008940FE /* Person.swift */,
 				B0E2C19024CC661F009E3666 /* Fine.swift */,
 				B0D75C4F2557149500555B03 /* ReasonTemplate.swift */,
+				B04FD6A0260CE97300177AE6 /* Transaction.swift */,
+				B04FD6A4260CED2700177AE6 /* Payout.swift */,
 			);
 			path = ListTypes;
 			sourceTree = "<group>";
@@ -477,6 +524,7 @@
 				B0280AB324FFB9D30049202D /* LatePaymentInterestChangerView.swift */,
 				B02019D324FE779000C660B9 /* SettingsFinesFormatterView.swift */,
 				B0F881AB2506874C008304A8 /* SettingsForceSignOut.swift */,
+				B04FD69C260C8B3400177AE6 /* PaymentPayoutView.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -490,6 +538,10 @@
 				B07DDDEE256FF8CF0003F139 /* FineEditor.swift */,
 				B04750A925703382002C8B99 /* FineEditorAdvanced.swift */,
 				B04750AF2570370D002C8B99 /* FineEditorTemplate.swift */,
+				B0B9D5D425F53F3D00EED682 /* PaymentFineSelector.swift */,
+				B0DEDDA125F692F9009C5415 /* PaymentCreditCard.swift */,
+				B02F5CCC25FFCD1A00A99678 /* PaymentPayPalButton.swift */,
+				B0DBDCA825FFE45E0043665E /* PaymentApplePayButton.swift */,
 			);
 			path = ProfileDetail;
 			sourceTree = "<group>";
@@ -511,6 +563,17 @@
 				B0619BFA24C0B62B008969A1 /* PersonEditor.swift */,
 			);
 			path = PersonDetail;
+			sourceTree = "<group>";
+		};
+		B05F66A826063E8600597372 /* HalfModal */ = {
+			isa = PBXGroup;
+			children = (
+				B05F66AA26063EE400597372 /* HalfModalBlurView.swift */,
+				B05F66AB26063EE500597372 /* HalfModalContent.swift */,
+				B05F66AC26063EE500597372 /* HalfModalView.swift */,
+				B05F66A926063EE400597372 /* HalfModalButtonView.swift */,
+			);
+			path = HalfModal;
 			sourceTree = "<group>";
 		};
 		B061752C24CB46FF00382D9C /* WidgetViews */ = {
@@ -551,6 +614,7 @@
 				B0619C1324C21958008969A1 /* AddNewFine.swift */,
 				B0619C1524C236C2008969A1 /* AddNewFinePerson.swift */,
 				B0619C1724C23910008969A1 /* AddNewFineReason.swift */,
+				B05F66A62606341A00597372 /* AddNewFineCustomReason.swift */,
 			);
 			path = AddNewFine;
 			sourceTree = "<group>";
@@ -574,6 +638,14 @@
 				B077B57B24CAC655003844CE /* Info.plist */,
 			);
 			path = Controller;
+			sourceTree = "<group>";
+		};
+		B0790D4A2606629C00FEFC24 /* Assets */ = {
+			isa = PBXGroup;
+			children = (
+				B0790D4B260662B400FEFC24 /* errorLadder.json */,
+			);
+			path = Assets;
 			sourceTree = "<group>";
 		};
 		B099522D254472C700833EA4 /* Products */ = {
@@ -603,6 +675,7 @@
 				B0D75C65255715C900555B03 /* FineReason.swift */,
 				B0D75C5F2557159900555B03 /* Importance.swift */,
 				B0D75C592557157400555B03 /* Payed.swift */,
+				B04FD6A2260CE98D00177AE6 /* PaymentTransaction.swift */,
 				B0C1C52124A7A021007B584B /* PersonName.swift */,
 			);
 			path = AppTypes;
@@ -633,10 +706,13 @@
 		B0C1C51724A78C69007B584B /* Necessaries */ = {
 			isa = PBXGroup;
 			children = (
+				B05F66A826063E8600597372 /* HalfModal */,
+				B0061F8A25F677760091B17B /* CreditCardValitadion.swift */,
 				B006920524C615D500AE2EF0 /* HomeTabs.swift */,
 				B0D75CEF255820FC00555B03 /* ImageStorage.swift */,
 				B07AC46C258BB7C900908A82 /* Logger.swift */,
 				B05C32E625388637004E9923 /* NecessaryObjects.swift */,
+				B0BB9E1E25F2AA8F0030DCE1 /* Payment.swift */,
 				B0327C96258BB36A00DEE05C /* PropertyWrapper.swift */,
 				B05C3316253B6AEE004E9923 /* SignInCache.swift */,
 				B0B117CB24FA962C006A22F2 /* SignInWithApple.swift */,
@@ -669,12 +745,15 @@
 				B0F881A925065B92008304A8 /* ForceSignedOutView.swift */,
 				B0B799CB24ACA1990027727E /* ImageSelector.swift */,
 				B0619BFF24C0BD16008969A1 /* ImportanceChanger.swift */,
+				B0790D4D260665E000FEFC24 /* LottieAnimation.swift */,
 				B0C246AC2593A6580078EFA4 /* NativeAdView.swift */,
 				B0E6E86E24CDD38500D467AC /* OutlineAndSheetBar.swift */,
+				B05F66B1260649C700597372 /* OverlayViews.swift */,
 				B020C7C124B0B9D0008940FE /* PersonRowImage.swift */,
 				B0C1C52424A8BC14007B584B /* RoundedCorners.swift */,
 				B042D44124BB61810029F2D5 /* SearchBar.swift */,
 				B042D42F24BA42EB0029F2D5 /* TabBar.swift */,
+				B05F66B32606531800597372 /* WrongVersionView.swift */,
 			);
 			path = HelpfulViews;
 			sourceTree = "<group>";
@@ -746,6 +825,7 @@
 				B0D75CA925581FA200555B03 /* FunctionCallable.swift */,
 				B07DDDCE256FB9E20003F139 /* ChangeFinePayedCall.swift */,
 				B0D75CD72558202000555B03 /* ChangeListCall.swift */,
+				B02F5CC825FF9A5C00A99678 /* CheckTransactionsCall.swift */,
 				B0D75CCB2558200900555B03 /* ClubIdentifierAlreadyExistsCall.swift */,
 				B0E1812625A4D9E90054A35E /* DeleteClubCall.swift */,
 				B087CF3C258B86C2005E819D /* ForceSignOutCall.swift */,
@@ -753,7 +833,9 @@
 				B0D75CC525581FFE00555B03 /* GetPersonPropertiesCall.swift */,
 				B087CF32258AA484005E819D /* LatePaymentInterestCall.swift */,
 				B0D75CB925581FE900555B03 /* NewClubCall.swift */,
+				B0662A9025FA5BCA0002ED63 /* NewTransactionCall.swift */,
 				B0D75CB325581FDC00555B03 /* RegisterPersonCall.swift */,
+				B051CBF726010471007B8119 /* SaveCreditCardCall.swift */,
 				B0D75CD12558201400555B03 /* UserIdAlreadyExistsCall.swift */,
 			);
 			path = CallableItems;
@@ -796,6 +878,7 @@
 				B0D75C9325581CB200555B03 /* FunctionCaller */,
 				B0B799D424AE6F990027727E /* AppTypes */,
 				B0C1C51624A78C56007B584B /* Utilities */,
+				B0790D4A2606629C00FEFC24 /* Assets */,
 			);
 			path = Strafen;
 			sourceTree = "<group>";
@@ -821,7 +904,7 @@
 		B0E0F84224A63E5A00C82828 /* StrafenUITests */ = {
 			isa = PBXGroup;
 			children = (
-				B0E0F84324A63E5A00C82828 /* StrafenUITests.swift */,
+				B0874503261B0AEF004717CC /* StrafenUITests.swift */,
 				B0E0F84524A63E5A00C82828 /* Info.plist */,
 			);
 			path = StrafenUITests;
@@ -835,6 +918,7 @@
 				B0E0F82F24A63E5A00C82828 /* Info.plist */,
 				B077B58824CAC9E9003844CE /* Strafen.entitlements */,
 				B03B195C259F861B00D44394 /* GoogleService-Info.plist */,
+				B0C06D23261F01440034CFD6 /* KeysInfo.plist */,
 				B0E0F82C24A63E5A00C82828 /* Preview Content */,
 			);
 			path = Controller;
@@ -897,6 +981,8 @@
 				B0DEAAC525A099B1009C6BD9 /* PBXTargetDependency */,
 			);
 			name = Strafen;
+			packageProductDependencies = (
+			);
 			productName = Strafen;
 			productReference = B0E0F82324A63E5800C82828 /* Strafen.app */;
 			productType = "com.apple.product-type.application";
@@ -976,6 +1062,8 @@
 				Base,
 			);
 			mainGroup = B0E0F81A24A63E5800C82828;
+			packageReferences = (
+			);
 			productRefGroup = B0E0F82424A63E5800C82828 /* Products */;
 			projectDirPath = "";
 			projectReferences = (
@@ -1029,6 +1117,8 @@
 			files = (
 				B0E0F82E24A63E5A00C82828 /* Preview Assets.xcassets in Resources */,
 				B03B195D259F861B00D44394 /* GoogleService-Info.plist in Resources */,
+				B0C06D24261F01440034CFD6 /* KeysInfo.plist in Resources */,
+				B0790D4C260662B400FEFC24 /* errorLadder.json in Resources */,
 				B0E0F82B24A63E5A00C82828 /* Assets.xcassets in Resources */,
 				B03D1DC325934AD200EB8648 /* UnifiedNativeAdView.xib in Resources */,
 			);
@@ -1265,10 +1355,13 @@
 				B0C1C51524A78BD7007B584B /* LoginEntryView.swift in Sources */,
 				B0C1C51924A78C90007B584B /* Color.swift in Sources */,
 				B0D75C5A2557157400555B03 /* Payed.swift in Sources */,
+				B05F66AE26063EE500597372 /* HalfModalBlurView.swift in Sources */,
 				B0F881AC2506874C008304A8 /* SettingsForceSignOut.swift in Sources */,
+				B05F66B42606531800597372 /* WrongVersionView.swift in Sources */,
 				B0619C0224C0C1E2008969A1 /* String.swift in Sources */,
 				B07938D824BF037900F86E86 /* PersonAddNew.swift in Sources */,
 				B0E0F82924A63E5800C82828 /* ContentView.swift in Sources */,
+				B05F66B2260649C700597372 /* OverlayViews.swift in Sources */,
 				B07DDDEF256FF8CF0003F139 /* FineEditor.swift in Sources */,
 				B0619C0024C0BD16008969A1 /* ImportanceChanger.swift in Sources */,
 				B0231D762542FF550030BADE /* SignInClubSelection.swift in Sources */,
@@ -1276,38 +1369,46 @@
 				B02B891524BDFDA9004562B9 /* SettingsView.swift in Sources */,
 				B0619BFB24C0B62B008969A1 /* PersonEditor.swift in Sources */,
 				B0E50D1325418D37008C7E84 /* KeyboardAdaptive.swift in Sources */,
-				B0C246AD2593A6580078EFA4 /* NativeAdView.swift in Sources */,
 				B0B4822424A8D69E00CB7A1A /* Buttons.swift in Sources */,
 				B0C1C52224A7A021007B584B /* PersonName.swift in Sources */,
 				B0C554052505646400BA3E26 /* AppDelegate.swift in Sources */,
 				B0D75CC625581FFE00555B03 /* GetPersonPropertiesCall.swift in Sources */,
 				B020C7C224B0B9D0008940FE /* PersonRowImage.swift in Sources */,
+				B0061F8B25F677760091B17B /* CreditCardValitadion.swift in Sources */,
 				B0280AB424FFB9D30049202D /* LatePaymentInterestChangerView.swift in Sources */,
 				B042D43D24BB2BBD0029F2D5 /* Array.swift in Sources */,
+				B0662A9125FA5BCA0002ED63 /* NewTransactionCall.swift in Sources */,
 				B0E2C19424CC6620009E3666 /* Fine.swift in Sources */,
 				B042D44024BB5B420029F2D5 /* PersonList.swift in Sources */,
 				B0619C1824C23911008969A1 /* AddNewFineReason.swift in Sources */,
+				B03BD6C925FE6B1E005A7B4E /* PaymentCreditCard.swift in Sources */,
 				B0D75CF0255820FC00555B03 /* ImageStorage.swift in Sources */,
 				B04750B02570370D002C8B99 /* FineEditorTemplate.swift in Sources */,
 				B0D75C602557159900555B03 /* Importance.swift in Sources */,
 				B0E0F82724A63E5800C82828 /* StrafenApp.swift in Sources */,
+				B02F5CC925FF9A5C00A99678 /* CheckTransactionsCall.swift in Sources */,
 				B0E6E86F24CDD38500D467AC /* OutlineAndSheetBar.swift in Sources */,
 				B087CF3D258B86C2005E819D /* ForceSignOutCall.swift in Sources */,
 				B0E1812725A4D9E90054A35E /* DeleteClubCall.swift in Sources */,
+				B04FD6A3260CE98D00177AE6 /* PaymentTransaction.swift in Sources */,
 				B0B39A82256D8B06002E2CB9 /* FineListRow.swift in Sources */,
 				B042D42E24BA21540029F2D5 /* ListTypes.swift in Sources */,
+				B04FD6A5260CED2700177AE6 /* Payout.swift in Sources */,
 				B0D75CD82558202000555B03 /* ChangeListCall.swift in Sources */,
 				B0B81DC92502525500249447 /* Settings+LatePaymentInterest.swift in Sources */,
 				B0619C1424C21958008969A1 /* AddNewFine.swift in Sources */,
+				B05F66B026063EE500597372 /* HalfModalView.swift in Sources */,
 				B0D75CD22558201400555B03 /* UserIdAlreadyExistsCall.swift in Sources */,
 				B0B4822024A8D46B00CB7A1A /* Header.swift in Sources */,
 				B042D44724BDAB280029F2D5 /* ActivityView.swift in Sources */,
 				B0E50C9F253DCC44008C7E84 /* SignInView.swift in Sources */,
 				B0CB61A5257D72C8003F29BE /* Tagged.swift in Sources */,
+				B05F66A72606341A00597372 /* AddNewFineCustomReason.swift in Sources */,
 				B0D75C502557149500555B03 /* ReasonTemplate.swift in Sources */,
 				B05C3317253B6AEE004E9923 /* SignInCache.swift in Sources */,
 				B0D75C9D25581D9200555B03 /* Parameters.swift in Sources */,
 				B0D75CA325581E0900555B03 /* FunctionCaller.swift in Sources */,
+				B03BD6C825FE6B1E005A7B4E /* PaymentFineSelector.swift in Sources */,
 				B0D75CAA25581FA300555B03 /* FunctionCallable.swift in Sources */,
 				B0D75C7B255716CD00555B03 /* DataTypeList.swift in Sources */,
 				B0D75CC025581FF400555B03 /* GetClubIdCall.swift in Sources */,
@@ -1318,8 +1419,12 @@
 				B0F4331D2502CA7500B0AAA7 /* HomeViews.swift in Sources */,
 				B0B214DA258E39E7008F0BE9 /* EmailNotVerificatedView.swift in Sources */,
 				B0B117CC24FA962C006A22F2 /* SignInWithApple.swift in Sources */,
+				B04FD69D260C8B3400177AE6 /* PaymentPayoutView.swift in Sources */,
+				B05F66AF26063EE500597372 /* HalfModalContent.swift in Sources */,
 				B0619C0824C1CAB9008969A1 /* CustomDatePicker.swift in Sources */,
 				B006920624C615D500AE2EF0 /* HomeTabs.swift in Sources */,
+				B0BB9E1F25F2AA8F0030DCE1 /* Payment.swift in Sources */,
+				B02F5CCD25FFCD1A00A99678 /* PaymentPayPalButton.swift in Sources */,
 				B0619C0F24C20EAA008969A1 /* ReasonAddNew.swift in Sources */,
 				B0B4822224A8D61300CB7A1A /* CustomTextField.swift in Sources */,
 				B020C7C024AF7CC6008940FE /* Person.swift in Sources */,
@@ -1331,6 +1436,7 @@
 				B05C331D253B6B0F004E9923 /* SignInCacheView.swift in Sources */,
 				B0C1C52724A8BEE6007B584B /* Other.swift in Sources */,
 				B0B81DC32502522600249447 /* Settings+Style.swift in Sources */,
+				B0790D4E260665E000FEFC24 /* LottieAnimation.swift in Sources */,
 				B0619C1624C236C2008969A1 /* AddNewFinePerson.swift in Sources */,
 				B0D75C85255716FB00555B03 /* Fetcher.swift in Sources */,
 				B0B84C822544818C000B94BA /* SignInPersonSelection.swift in Sources */,
@@ -1339,13 +1445,17 @@
 				B0D75CCC2558200900555B03 /* ClubIdentifierAlreadyExistsCall.swift in Sources */,
 				B042C5E8256FA02000DD74B8 /* FineDetail.swift in Sources */,
 				B05C3330253C3597004E9923 /* LoginView.swift in Sources */,
+				B051CBF826010471007B8119 /* SaveCreditCardCall.swift in Sources */,
+				B04FD6A1260CE97300177AE6 /* Transaction.swift in Sources */,
 				B0D75CB425581FDC00555B03 /* RegisterPersonCall.swift in Sources */,
+				B05F66AD26063EE500597372 /* HalfModalButtonView.swift in Sources */,
 				B07DDDCF256FB9E20003F139 /* ChangeFinePayedCall.swift in Sources */,
 				B0D75CBA25581FE900555B03 /* NewClubCall.swift in Sources */,
 				B0D75CDE2558208500555B03 /* Amount.swift in Sources */,
 				B026766D24BDD346005E79C1 /* AmountDisplay.swift in Sources */,
 				B07AC46D258BB7C900908A82 /* Logger.swift in Sources */,
 				B042D43024BA42EB0029F2D5 /* TabBar.swift in Sources */,
+				B0DBDCA925FFE45E0043665E /* PaymentApplePayButton.swift in Sources */,
 				B037BCEA25419CB4002B81E5 /* SignInEmailView.swift in Sources */,
 				B02019D424FE779000C660B9 /* SettingsFinesFormatterView.swift in Sources */,
 				B0D75C712557169000555B03 /* ListData.swift in Sources */,
@@ -1365,7 +1475,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B0E0F84424A63E5A00C82828 /* StrafenUITests.swift in Sources */,
+				B0874504261B0AEF004717CC /* StrafenUITests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1399,12 +1509,12 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = DFF1361C17C6B735143EB7E0 /* Pods-StrafenWidgetExtension.debug.xcconfig */;
 			buildSettings = {
-				APPLICATION_EXTENSION_API_ONLY = NO;
+				APPLICATION_EXTENSION_API_ONLY = YES;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
 				CODE_SIGN_ENTITLEMENTS = StrafenWidget/Controller/StrafenWidgetExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 7;
+				CURRENT_PROJECT_VERSION = "$(SHARED_MARKETING_VERSION)";
 				DEVELOPMENT_TEAM = K7NTJ83ZF8;
 				INFOPLIST_FILE = StrafenWidget/Controller/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1412,6 +1522,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
+				MARKETING_VERSION = "$(SHARED_CURRENT_PROJECT_VERSION)";
 				PRODUCT_BUNDLE_IDENTIFIER = stevenkellner.Strafen.StrafenWidget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -1424,12 +1535,12 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = A4EE6A2E94660E69A2CF1D04 /* Pods-StrafenWidgetExtension.release.xcconfig */;
 			buildSettings = {
-				APPLICATION_EXTENSION_API_ONLY = NO;
+				APPLICATION_EXTENSION_API_ONLY = YES;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
 				CODE_SIGN_ENTITLEMENTS = StrafenWidget/Controller/StrafenWidgetExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 7;
+				CURRENT_PROJECT_VERSION = "$(SHARED_MARKETING_VERSION)";
 				DEVELOPMENT_TEAM = K7NTJ83ZF8;
 				INFOPLIST_FILE = StrafenWidget/Controller/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1437,6 +1548,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
+				MARKETING_VERSION = "$(SHARED_CURRENT_PROJECT_VERSION)";
 				PRODUCT_BUNDLE_IDENTIFIER = stevenkellner.Strafen.StrafenWidget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -1449,10 +1561,10 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = B99112ABC31485A84931F2B5 /* Pods-StrafenNotificationService.debug.xcconfig */;
 			buildSettings = {
-				APPLICATION_EXTENSION_API_ONLY = NO;
+				APPLICATION_EXTENSION_API_ONLY = YES;
 				CODE_SIGN_ENTITLEMENTS = StrafenNotificationService/StrafenNotificationService.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 7;
+				CURRENT_PROJECT_VERSION = "$(SHARED_MARKETING_VERSION)";
 				DEVELOPMENT_TEAM = K7NTJ83ZF8;
 				INFOPLIST_FILE = StrafenNotificationService/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
@@ -1461,6 +1573,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
+				MARKETING_VERSION = "$(SHARED_CURRENT_PROJECT_VERSION)";
 				PRODUCT_BUNDLE_IDENTIFIER = stevenkellner.Strafen.StrafenNotificationService;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -1473,10 +1586,10 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = B6DEE7790E09F9517795ABD8 /* Pods-StrafenNotificationService.release.xcconfig */;
 			buildSettings = {
-				APPLICATION_EXTENSION_API_ONLY = NO;
+				APPLICATION_EXTENSION_API_ONLY = YES;
 				CODE_SIGN_ENTITLEMENTS = StrafenNotificationService/StrafenNotificationService.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 7;
+				CURRENT_PROJECT_VERSION = "$(SHARED_MARKETING_VERSION)";
 				DEVELOPMENT_TEAM = K7NTJ83ZF8;
 				INFOPLIST_FILE = StrafenNotificationService/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
@@ -1485,6 +1598,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
+				MARKETING_VERSION = "$(SHARED_CURRENT_PROJECT_VERSION)";
 				PRODUCT_BUNDLE_IDENTIFIER = stevenkellner.Strafen.StrafenNotificationService;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -1547,8 +1661,11 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
+				NEW_SETTING = "";
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
+				SHARED_CURRENT_PROJECT_VERSION = 2.0;
+				SHARED_MARKETING_VERSION = 11;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
@@ -1602,7 +1719,10 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
+				NEW_SETTING = "";
 				SDKROOT = iphoneos;
+				SHARED_CURRENT_PROJECT_VERSION = 2.0;
+				SHARED_MARKETING_VERSION = 11;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				VALIDATE_PRODUCT = YES;
@@ -1618,7 +1738,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Strafen/Controller/Strafen.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 7;
+				CURRENT_PROJECT_VERSION = "$(SHARED_MARKETING_VERSION)";
 				DEVELOPMENT_ASSET_PATHS = "\"Strafen/Controller/Preview Content\"";
 				DEVELOPMENT_TEAM = K7NTJ83ZF8;
 				ENABLE_PREVIEWS = YES;
@@ -1636,9 +1756,11 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = "$(SHARED_CURRENT_PROJECT_VERSION)";
 				OTHER_SWIFT_FLAGS = "$(inherited) -D COCOAPODS -DTARGET_MAIN_APP";
 				PRODUCT_BUNDLE_IDENTIFIER = stevenkellner.Strafen;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -1653,7 +1775,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Strafen/Controller/Strafen.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 7;
+				CURRENT_PROJECT_VERSION = "$(SHARED_MARKETING_VERSION)";
 				DEVELOPMENT_ASSET_PATHS = "\"Strafen/Controller/Preview Content\"";
 				DEVELOPMENT_TEAM = K7NTJ83ZF8;
 				ENABLE_PREVIEWS = YES;
@@ -1663,6 +1785,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = "$(SHARED_CURRENT_PROJECT_VERSION)";
 				OTHER_SWIFT_FLAGS = "$(inherited) -D COCOAPODS -DTARGET_MAIN_APP";
 				PRODUCT_BUNDLE_IDENTIFIER = stevenkellner.Strafen;
 				PRODUCT_NAME = "$(TARGET_NAME)";

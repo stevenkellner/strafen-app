@@ -16,7 +16,7 @@ struct LoginEntryView: View {
     /// Indicates if cached sign in view is shown
     @State var showCachedState = false
     
-    var body: some View {
+    var body: some View {        
         ZStack {
             
             // Sheet for sign in

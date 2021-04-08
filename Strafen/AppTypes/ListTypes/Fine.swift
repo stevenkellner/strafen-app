@@ -42,7 +42,11 @@ struct Fine {
     
     /// Indicates if fine is payed
     var isPayed: Bool {
-        payed != .unpayed
+        payed != .unpayed && payed != .settled
+    }
+    
+    var isSettled: Bool {
+        payed == .settled
     }
     
     /// Complete amount of this fine
@@ -139,7 +143,7 @@ extension Fine {
         
         // Get end date
         var endDate = Date()
-        if case .payed(date: let paymentDate) = payed {
+        if case .payed(date: let paymentDate, inApp: _) = payed {
             endDate = paymentDate
         }
         

@@ -93,7 +93,21 @@ struct FineDetail: View {
                 Spacer()
                 
                 // Payed display
-                PayedDisplay(fine: $fine)
+                VStack(spacing: 5) {
+                    PayedDisplay(fine: $fine)
+                    
+                    if fine.isSettled {
+                        Text("Zahlung wird bearbeitet")
+                            .configurate(size: 25)
+                            .padding(.horizontal, 25)
+                            .lineLimit(1)
+                    } else if fine.payed.payedInApp {
+                        Text("InApp bezahlt")
+                            .configurate(size: 25)
+                            .padding(.horizontal, 25)
+                            .lineLimit(1)
+                    }
+                }
                 
                 Spacer()
             }
@@ -229,7 +243,9 @@ struct FineDetail: View {
             guard connectionStateToUnpayed != .loading,
                 let signedInPerson = settings.person,
                   signedInPerson.isCashier,
-                  fine.isPayed else { return }
+                  fine.isPayed,
+                  !fine.isSettled,
+                  !fine.payed.payedInApp else { return }
             connectionStateToUnpayed = .loading
             errorMessages = nil
             
@@ -249,11 +265,13 @@ struct FineDetail: View {
             guard connectionStateToPayed != .loading,
                 let signedInPerson = settings.person,
                   signedInPerson.isCashier,
-                  !fine.isPayed else { return }
+                  !fine.isPayed,
+                  !fine.isSettled,
+                  !fine.payed.payedInApp else { return }
             connectionStateToPayed = .loading
             errorMessages = nil
             
-            let payed: Payed = .payed(date: Date())
+            let payed: Payed = .payed(date: Date(), inApp: false)
             let callItem = ChangeFinePayedCall(clubId: signedInPerson.clubProperties.id, fineId: fine.id, payed: payed)
             FunctionCaller.shared.call(callItem) { _ in
                 connectionStateToPayed = .passed

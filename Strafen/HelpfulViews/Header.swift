@@ -53,6 +53,8 @@ struct Title: View {
     /// Title
     private let title: String
     
+    private var color: Color? = nil
+    
     public init(_ title: String) {
         self.title = title
     }
@@ -60,10 +62,18 @@ struct Title: View {
     public var body: some View {
         HStack(spacing: 0) {
             Text("\(title):")
-                .configurate(size: 20)
+                .font(.text(20))
+                .foregroundColor(color ?? .textColor)
+                .lineLimit(1)
                 .padding(.leading, 10)
             Spacer()
         }
+    }
+    
+    func color(_ color: Color?) -> Title {
+        var title = self
+        title.color = color
+        return title
     }
 }
 
@@ -71,16 +81,21 @@ struct Title: View {
 struct TitledContent<Content>: View where Content: View {
     
     /// Title
-    private let title: String
+    private let title: String?
     
     /// Content
     private let content: Content
     
+    private let errorMessages: Binding<ErrorMessages?>?
+    
     /// Frame of content
     private var contentFrame: (width: CGFloat?, height: CGFloat?) = (width: nil, height: nil)
     
-    init(_ title: String, @ViewBuilder content: () -> Content) {
+    private var titleColor: Color? = nil
+    
+    init(_ title: String?, errorMessages: Binding<ErrorMessages?>? = nil, @ViewBuilder content: () -> Content) {
         self.title = title
+        self.errorMessages = errorMessages
         self.content = content()
     }
     
@@ -88,10 +103,17 @@ struct TitledContent<Content>: View where Content: View {
         VStack(spacing: 5) {
             
             // Title
-            Title(title)
+            if let title = title {
+                Title(title).color(titleColor)
+            }
             
             // Content
             content.frame(width: contentFrame.width, height: contentFrame.height)
+            
+            // Error message
+            if let errorMessages = errorMessages {
+                ErrorMessageView(errorMessages: errorMessages)
+            }
             
         }
     }
@@ -107,6 +129,12 @@ struct TitledContent<Content>: View where Content: View {
     func contentFrame(width: CGFloat? = nil, height: CGFloat? = nil) -> TitledContent {
         var content = self
         content.contentFrame = (width: width, height: height)
+        return content
+    }
+    
+    func titleColor(_ color: Color) -> TitledContent {
+        var content = self
+        content.titleColor = color
         return content
     }
 }
@@ -236,6 +264,9 @@ enum ErrorMessages {
     /// No reason given
     case noReasonGiven
     
+    /// No reason selected
+    case noReasonSelected
+    
     /// Future date
     case futureDate
     
@@ -247,6 +278,27 @@ enum ErrorMessages {
     
     /// Late payment interest period is zero
     case periodIsZero
+    
+    /// In app payment currency isn't euro
+    case notEuro
+    
+    /// No fines are selected
+    case noFinesSelected
+    
+    /// Internal error
+    case internalError
+    
+    /// Credit card is invalid
+    case invalidCreditCardNumber
+    
+    /// No valid date format
+    case invalidDateFormat
+    
+    /// Date is in past
+    case dateInPast
+    
+    /// CVV is invalid
+    case invalidCvv
     
     /// Message of the error
     var message: String {
@@ -299,6 +351,8 @@ enum ErrorMessages {
             return "Keine Person ausgewählt!"
         case .noReasonGiven:
             return "Keine Strafe angegeben!"
+        case .noReasonSelected:
+            return "Keine Strafe ausgewählt!"
         case .futureDate:
             return "Datum darf nicht in der Zukunft liegen!"
         case .invalidNumberRange:
@@ -307,6 +361,20 @@ enum ErrorMessages {
             return "Zinssatz darf nicht null sein!"
         case .periodIsZero:
             return "Zeitraum darf nicht null sein!"
+        case .notEuro:
+            return "Funktioniert nur in Ländern mit Euro!"
+        case .noFinesSelected:
+            return "Keine Strafen ausgewählt!"
+        case .internalError:
+            return "Es gab ein Problem!"
+        case .invalidCreditCardNumber:
+            return "Kartennummer is ungültig!"
+        case .invalidDateFormat:
+            return "Format vom Datum ist ungültig!"
+        case .dateInPast:
+            return "Datum muss in der Zukunft liegen!"
+        case .invalidCvv:
+            return "CVV ist ungültig!"
         }
     }
 }
