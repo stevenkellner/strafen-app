@@ -1,8 +1,0 @@
-{
-  "dependencies": {
-    "firebase-admin": "9.5.0",
-    "firebase-functions": "^3.13.2",
-    "guid-typescript": "^1.0.9",
-    "request": "^2.88.2"
-  }
-}

@@ -4,82 +4,10 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
-		<key>AlertsAndPickers.xcscheme_^#shared#^_</key>
-		<dict>
-			<key>orderHint</key>
-			<integer>21</integer>
-		</dict>
 		<key>Strafen.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
 			<integer>0</integer>
-		</dict>
-		<key>StrafenNofificationService.xcscheme_^#shared#^_</key>
-		<dict>
-			<key>orderHint</key>
-			<integer>7</integer>
-		</dict>
-		<key>StrafenNotificationService 1.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-			<key>orderHint</key>
-			<integer>30</integer>
-		</dict>
-		<key>StrafenNotificationService.xcscheme_^#shared#^_</key>
-		<dict>
-			<key>orderHint</key>
-			<integer>4</integer>
-		</dict>
-		<key>StrafenRelease.xcscheme_^#shared#^_</key>
-		<dict>
-			<key>orderHint</key>
-			<integer>34</integer>
-		</dict>
-		<key>StrafenTests.xcscheme_^#shared#^_</key>
-		<dict>
-			<key>orderHint</key>
-			<integer>3</integer>
-		</dict>
-		<key>StrafenWidgetExtension.xcscheme_^#shared#^_</key>
-		<dict>
-			<key>orderHint</key>
-			<integer>1</integer>
-		</dict>
-		<key>WidgetUrlTestExtension.xcscheme_^#shared#^_</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-			<key>orderHint</key>
-			<integer>2</integer>
-		</dict>
-	</dict>
-	<key>SuppressBuildableAutocreation</key>
-	<dict>
-		<key>B077B56F24CAC652003844CE</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>B09CC1DC259F4BF70079B86B</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>B0E0F82224A63E5800C82828</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>B0E0F83324A63E5A00C82828</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>B0E0F83E24A63E5A00C82828</key>
-		<dict>
-			<key>primary</key>
-			<true/>
 		</dict>
 	</dict>
 </dict>
