@@ -3,23 +3,49 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0E82AA7D16D0AFEAC4702ADF /* Pods_Strafen.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 497376F462BDD92F4ACEA486 /* Pods_Strafen.framework */; };
 		B01E96AF2641AEF60034E3D1 /* StrafenApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B01E96AE2641AEF60034E3D1 /* StrafenApp.swift */; };
 		B01E96B12641AEF60034E3D1 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B01E96B02641AEF60034E3D1 /* ContentView.swift */; };
 		B01E96B32641AEF80034E3D1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B01E96B22641AEF80034E3D1 /* Assets.xcassets */; };
 		B01E96B62641AEF80034E3D1 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B01E96B52641AEF80034E3D1 /* Preview Assets.xcassets */; };
+		B02221A72641BEFC0005295B /* Tagged.swift in Sources */ = {isa = PBXBuildFile; fileRef = B02221A62641BEFC0005295B /* Tagged.swift */; };
+		B02221A92641D4FE0005295B /* FirebaseDecoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = B02221A82641D4FE0005295B /* FirebaseDecoder.swift */; };
+		B02221AC2641D5570005295B /* FirebasePerson.swift in Sources */ = {isa = PBXBuildFile; fileRef = B02221AB2641D5570005295B /* FirebasePerson.swift */; };
+		B02221AE2641D6850005295B /* PersonName.swift in Sources */ = {isa = PBXBuildFile; fileRef = B02221AD2641D6850005295B /* PersonName.swift */; };
+		B02221B02641D73C0005295B /* FirebaseListType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B02221AF2641D73C0005295B /* FirebaseListType.swift */; };
+		B0254E082641B6130083752B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B0254E072641B6130083752B /* GoogleService-Info.plist */; };
+		B0447C1A2641B78100148430 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0447C192641B78100148430 /* AppDelegate.swift */; };
+		B0447C1D2641B84600148430 /* Extensions+Other.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0447C1C2641B84600148430 /* Extensions+Other.swift */; };
+		B0447C202641BAFE00148430 /* FirebaseFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0447C1F2641BAFE00148430 /* FirebaseFetcher.swift */; };
+		B0C2A4B02642918800250A8D /* Extensions+Array.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0C2A4AF2642918800250A8D /* Extensions+Array.swift */; };
+		B0EE60ED2641E07000D3B2D2 /* FirebaseObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0EE60EC2641E07000D3B2D2 /* FirebaseObserver.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		26665600F7338340DA6B780E /* Pods-Strafen.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Strafen.release.xcconfig"; path = "Target Support Files/Pods-Strafen/Pods-Strafen.release.xcconfig"; sourceTree = "<group>"; };
+		497376F462BDD92F4ACEA486 /* Pods_Strafen.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Strafen.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		6056592AF99A762541F1BA1F /* Pods-Strafen.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Strafen.debug.xcconfig"; path = "Target Support Files/Pods-Strafen/Pods-Strafen.debug.xcconfig"; sourceTree = "<group>"; };
 		B01E96AB2641AEF60034E3D1 /* Strafen.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Strafen.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B01E96AE2641AEF60034E3D1 /* StrafenApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StrafenApp.swift; sourceTree = "<group>"; };
 		B01E96B02641AEF60034E3D1 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		B01E96B22641AEF80034E3D1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B01E96B52641AEF80034E3D1 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		B01E96B72641AEF80034E3D1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B02221A62641BEFC0005295B /* Tagged.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tagged.swift; sourceTree = "<group>"; };
+		B02221A82641D4FE0005295B /* FirebaseDecoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseDecoder.swift; sourceTree = "<group>"; };
+		B02221AB2641D5570005295B /* FirebasePerson.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebasePerson.swift; sourceTree = "<group>"; };
+		B02221AD2641D6850005295B /* PersonName.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonName.swift; sourceTree = "<group>"; };
+		B02221AF2641D73C0005295B /* FirebaseListType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseListType.swift; sourceTree = "<group>"; };
+		B0254E072641B6130083752B /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		B0447C192641B78100148430 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		B0447C1C2641B84600148430 /* Extensions+Other.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extensions+Other.swift"; sourceTree = "<group>"; };
+		B0447C1F2641BAFE00148430 /* FirebaseFetcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseFetcher.swift; sourceTree = "<group>"; };
+		B0C2A4AF2642918800250A8D /* Extensions+Array.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extensions+Array.swift"; sourceTree = "<group>"; };
+		B0EE60EC2641E07000D3B2D2 /* FirebaseObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseObserver.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -27,6 +53,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0E82AA7D16D0AFEAC4702ADF /* Pods_Strafen.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -38,6 +65,8 @@
 			children = (
 				B01E96AD2641AEF60034E3D1 /* Strafen */,
 				B01E96AC2641AEF60034E3D1 /* Products */,
+				F9C7D290E85B4C78FB12D4EE /* Pods */,
+				B26B91B862AAF1E57E1B2273 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -54,6 +83,8 @@
 			children = (
 				B01E96BD2641AF090034E3D1 /* Controller */,
 				B01E96B02641AEF60034E3D1 /* ContentView.swift */,
+				B0254E062641B54C0083752B /* FirebaseInterface */,
+				B0447C1E2641B90600148430 /* Utilities */,
 			);
 			path = Strafen;
 			sourceTree = "<group>";
@@ -71,10 +102,68 @@
 			children = (
 				B01E96AE2641AEF60034E3D1 /* StrafenApp.swift */,
 				B01E96B22641AEF80034E3D1 /* Assets.xcassets */,
+				B0254E072641B6130083752B /* GoogleService-Info.plist */,
 				B01E96B72641AEF80034E3D1 /* Info.plist */,
 				B01E96B42641AEF80034E3D1 /* Preview Content */,
 			);
 			path = Controller;
+			sourceTree = "<group>";
+		};
+		B02221AA2641D5250005295B /* FirebaseListTypes */ = {
+			isa = PBXGroup;
+			children = (
+				B02221AF2641D73C0005295B /* FirebaseListType.swift */,
+				B02221AB2641D5570005295B /* FirebasePerson.swift */,
+			);
+			path = FirebaseListTypes;
+			sourceTree = "<group>";
+		};
+		B0254E062641B54C0083752B /* FirebaseInterface */ = {
+			isa = PBXGroup;
+			children = (
+				B02221AA2641D5250005295B /* FirebaseListTypes */,
+				B0447C1F2641BAFE00148430 /* FirebaseFetcher.swift */,
+				B0EE60EC2641E07000D3B2D2 /* FirebaseObserver.swift */,
+				B02221A82641D4FE0005295B /* FirebaseDecoder.swift */,
+			);
+			path = FirebaseInterface;
+			sourceTree = "<group>";
+		};
+		B0447C1B2641B82C00148430 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				B0447C1C2641B84600148430 /* Extensions+Other.swift */,
+				B0C2A4AF2642918800250A8D /* Extensions+Array.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		B0447C1E2641B90600148430 /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				B0447C192641B78100148430 /* AppDelegate.swift */,
+				B02221A62641BEFC0005295B /* Tagged.swift */,
+				B02221AD2641D6850005295B /* PersonName.swift */,
+				B0447C1B2641B82C00148430 /* Extensions */,
+			);
+			path = Utilities;
+			sourceTree = "<group>";
+		};
+		B26B91B862AAF1E57E1B2273 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				497376F462BDD92F4ACEA486 /* Pods_Strafen.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		F9C7D290E85B4C78FB12D4EE /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				6056592AF99A762541F1BA1F /* Pods-Strafen.debug.xcconfig */,
+				26665600F7338340DA6B780E /* Pods-Strafen.release.xcconfig */,
+			);
+			path = Pods;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -84,9 +173,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = B01E96BA2641AEF80034E3D1 /* Build configuration list for PBXNativeTarget "Strafen" */;
 			buildPhases = (
+				BE0F2182747821EED71CD5A4 /* [CP] Check Pods Manifest.lock */,
 				B01E96A72641AEF50034E3D1 /* Sources */,
 				B01E96A82641AEF50034E3D1 /* Frameworks */,
 				B01E96A92641AEF50034E3D1 /* Resources */,
+				63A8E3152BE2119C6CC93DA0 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -136,18 +227,71 @@
 			files = (
 				B01E96B62641AEF80034E3D1 /* Preview Assets.xcassets in Resources */,
 				B01E96B32641AEF80034E3D1 /* Assets.xcassets in Resources */,
+				B0254E082641B6130083752B /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		63A8E3152BE2119C6CC93DA0 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Strafen/Pods-Strafen-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Strafen/Pods-Strafen-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Strafen/Pods-Strafen-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		BE0F2182747821EED71CD5A4 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Strafen-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		B01E96A72641AEF50034E3D1 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B02221AE2641D6850005295B /* PersonName.swift in Sources */,
+				B0447C1A2641B78100148430 /* AppDelegate.swift in Sources */,
+				B0EE60ED2641E07000D3B2D2 /* FirebaseObserver.swift in Sources */,
+				B0C2A4B02642918800250A8D /* Extensions+Array.swift in Sources */,
+				B02221B02641D73C0005295B /* FirebaseListType.swift in Sources */,
 				B01E96B12641AEF60034E3D1 /* ContentView.swift in Sources */,
+				B0447C202641BAFE00148430 /* FirebaseFetcher.swift in Sources */,
+				B0447C1D2641B84600148430 /* Extensions+Other.swift in Sources */,
 				B01E96AF2641AEF60034E3D1 /* StrafenApp.swift in Sources */,
+				B02221A92641D4FE0005295B /* FirebaseDecoder.swift in Sources */,
+				B02221A72641BEFC0005295B /* Tagged.swift in Sources */,
+				B02221AC2641D5570005295B /* FirebasePerson.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -272,6 +416,7 @@
 		};
 		B01E96BB2641AEF80034E3D1 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 6056592AF99A762541F1BA1F /* Pods-Strafen.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -298,6 +443,7 @@
 		};
 		B01E96BC2641AEF80034E3D1 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 26665600F7338340DA6B780E /* Pods-Strafen.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;

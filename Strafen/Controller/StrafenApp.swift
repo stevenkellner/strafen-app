@@ -9,6 +9,10 @@ import SwiftUI
 
 @main
 struct StrafenApp: App {
+    
+    /// App Delegate
+    @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
+    
     var body: some Scene {
         WindowGroup {
             ContentView()
