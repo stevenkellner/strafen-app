@@ -17,15 +17,17 @@ struct FirebaseObserver {
     /// Private init for singleton
     private init() {}
     
-    let clubUrl = URL(string: "debugClubs/041D157B-2312-484F-BB49-C1CC0DE7992F")! // TODO
-    
     /// Observes given type at firebase database
     /// - Parameters:
     ///   - type: Type of observed value
     ///   - urlFromClub: Url from club to value in firebase database
+    ///   - level: level of firebase function call
+    ///   - clubId: id of club to fetch from
     ///   - newDataHandler: Handles new data income
-    func observe<T>(_ type: T.Type, url urlFromClub: URL, handler newDataHandler: @escaping (T) -> Void) where T: Decodable {
-        let url = clubUrl.appendingUrl(urlFromClub)
+    func observe<T>(_ type: T.Type, url urlFromClub: URL?, level: FirebaseDatabaseLevel, clubId: UUID, handler newDataHandler: @escaping (T) -> Void) where T: Decodable {
+        let url = URL(string: level.clubComponent)!
+            .appendingPathComponent(clubId.uuidString)
+            .appendingUrl(urlFromClub)
         Database.database().reference(withPath: url.path).observe(.value) { snapshot in
             guard snapshot.exists(),
                   let data = snapshot.value,
@@ -37,9 +39,14 @@ struct FirebaseObserver {
     /// Observes a list at firebase database
     /// - Parameters:
     ///   - type: Type of the list element
+    ///   - event: event to observe
+    ///   - level: level of firebase function call
+    ///   - clubId: id of club to fetch from
     ///   - newDataHandler: Handles new data income
-    func observeList<ListType>(_ type: ListType.Type, event: DataEventType, handler newDataHandler: @escaping (ListType) -> Void) where ListType: FirebaseListType {
-        let url = clubUrl.appendingUrl(ListType.urlFromClub)
+    func observeList<ListType>(_ type: ListType.Type, event: DataEventType, level: FirebaseDatabaseLevel, clubId: UUID, handler newDataHandler: @escaping (ListType) -> Void) where ListType: FirebaseListType {
+        let url = URL(string: level.clubComponent)!
+            .appendingPathComponent(clubId.uuidString)
+            .appendingUrl(ListType.urlFromClub)
         Database.database().reference(withPath: url.path).observe(event) { snapshot in
             guard snapshot.exists(),
                   let data = snapshot.value,
@@ -51,11 +58,13 @@ struct FirebaseObserver {
     /// Observes a list at firebase database
     /// - Parameters:
     ///   - type: Type of the list element
+    ///   - level: level of firebase function call
+    ///   - clubId: id of club to fetch from
     ///   - changeListHandler: Handles the change of given list
-    func observeList<ListType>(_ type: ListType.Type, handler changeListHandler: @escaping ((inout Array<ListType>) -> Void) -> Void) where ListType: FirebaseListType {
+    func observeList<ListType>(_ type: ListType.Type, level: FirebaseDatabaseLevel, clubId: UUID, handler changeListHandler: @escaping ((inout Array<ListType>) -> Void) -> Void) where ListType: FirebaseListType {
         
         // Observes if a child was added
-        observeList(type, event: .childAdded) { newChild in
+        observeList(type, event: .childAdded, level: level, clubId: clubId) { newChild in
             changeListHandler {
                 guard !$0.contains(where: { $0.id == newChild.id }) else { return }
                 $0.append(newChild)
@@ -63,14 +72,14 @@ struct FirebaseObserver {
         }
         
         // Observes if a child was changed
-        observeList(type, event: .childChanged) { changedChild in
+        observeList(type, event: .childChanged, level: level, clubId: clubId) { changedChild in
             changeListHandler {
                 $0.mapped { $0.id == changedChild.id ? changedChild : $0 }
             }
         }
         
         // Observes if a child was removed
-        observeList(type, event: .childRemoved) { removedChild in
+        observeList(type, event: .childRemoved, level: level, clubId: clubId) { removedChild in
             changeListHandler {
                 $0.filtered { $0.id != removedChild.id }
             }

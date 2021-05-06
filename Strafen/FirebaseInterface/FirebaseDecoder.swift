@@ -18,7 +18,7 @@ struct FirebaseDecoder {
     private init() {}
     
     /// An error that occurs during the decoding of a value
-    private enum DecodingError: Error {
+    enum DecodingError: Error {
         
         /// Data can not be converted to Dictionary<String, Any>
         case noKeyedData

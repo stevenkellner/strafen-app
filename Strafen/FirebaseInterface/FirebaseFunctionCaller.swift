@@ -30,11 +30,11 @@ struct FirebaseFunctionCaller {
     ///   - level: level of firebase function call
     /// - Returns: Promise of HTTPS call result
     func call<CallType>(_ item: CallType, level: FirebaseDatabaseLevel) -> Promise<HTTPSCallableResult> where CallType: FirebaseFunctionCallable {
-        Promise<HTTPSCallableResult> { resolve, reject, _ in
+        Promise<HTTPSCallableResult>(in: .main) { resolve, reject, _ in
             guard let privateKey = Bundle.keysPropertyList.privateFirebaseFunctionCallerKey as? String else { throw CallError.noPrivateKey }
             let parameters = FirebaseCallParameterSet(item.parameters) { parameters in
                 parameters["privateKey"] = privateKey
-                parameters["level"] = level.rawValue
+                parameters["clubLevel"] = level.rawValue
             }
             Functions.functions(region: "europe-west1").httpsCallable(item.functionName).call(parameters.primordialParameter) { result, error in
                 if let result = result {

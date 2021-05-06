@@ -21,9 +21,6 @@ struct FirebasePerson {
     
     /// Data if person is signed in
     let signInData: SignInData?
-}
-
-extension FirebasePerson {
     
     /// Additional person informations if person is signed in
     struct SignInData {
@@ -60,3 +57,7 @@ extension FirebasePerson.SignInData: Decodable {
         case signInDate
     }
 }
+
+extension FirebasePerson: Equatable {}
+
+extension FirebasePerson.SignInData: Equatable {}

@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		5F18DC6D522F2A1BAFB8D8E9 /* Pods_Strafen.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DF38919834A1C07EDD4285E4 /* Pods_Strafen.framework */; };
 		B01E96AF2641AEF60034E3D1 /* StrafenApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B01E96AE2641AEF60034E3D1 /* StrafenApp.swift */; };
 		B01E96B12641AEF60034E3D1 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B01E96B02641AEF60034E3D1 /* ContentView.swift */; };
 		B01E96B32641AEF80034E3D1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B01E96B22641AEF80034E3D1 /* Assets.xcassets */; };
@@ -25,13 +24,42 @@
 		B0A7619F2642DBB2003B170F /* FirebaseFunctionCallable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0A7619E2642DBB2003B170F /* FirebaseFunctionCallable.swift */; };
 		B0A761A12642E20C003B170F /* KeysInfo.plist in Resources */ = {isa = PBXBuildFile; fileRef = B0A761A02642E20C003B170F /* KeysInfo.plist */; };
 		B0A761A32642E6C7003B170F /* FirebaseDatabaseLevel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0A761A22642E6C7003B170F /* FirebaseDatabaseLevel.swift */; };
+		B0A761B32642ED1F003B170F /* FirebaseFetcherTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0A761B22642ED1F003B170F /* FirebaseFetcherTests.swift */; };
+		B0AF0A8A26430B2900DF4DC9 /* FirebaseFunctionNewTestClubCall.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0AF0A8926430B2900DF4DC9 /* FirebaseFunctionNewTestClubCall.swift */; };
+		B0AF0A8C26431B0800DF4DC9 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0AF0A8B26431B0800DF4DC9 /* Utils.swift */; };
+		B0AF0A8E2643225300DF4DC9 /* FirebaseFunctionDeleteTestClubCall.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0AF0A8D2643225300DF4DC9 /* FirebaseFunctionDeleteTestClubCall.swift */; };
+		B0AF0A9026432B6F00DF4DC9 /* FirebaseReasonTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0AF0A8F26432B6F00DF4DC9 /* FirebaseReasonTemplate.swift */; };
+		B0AF0A9226432C1A00DF4DC9 /* Importance.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0AF0A9126432C1A00DF4DC9 /* Importance.swift */; };
+		B0AF0A9426432C9500DF4DC9 /* Amount.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0AF0A9326432C9500DF4DC9 /* Amount.swift */; };
+		B0AF0A9626432CE100DF4DC9 /* PropertyWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0AF0A9526432CE100DF4DC9 /* PropertyWrapper.swift */; };
+		B0AF0A9826432F1E00DF4DC9 /* FirebaseFine.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0AF0A9726432F1E00DF4DC9 /* FirebaseFine.swift */; };
+		B0AF0A9A2643303500DF4DC9 /* FineReason.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0AF0A992643303500DF4DC9 /* FineReason.swift */; };
+		B0AF0A9C2643328800DF4DC9 /* Payed.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0AF0A9B2643328800DF4DC9 /* Payed.swift */; };
+		B0AF0A9E2643CE2500DF4DC9 /* FirebaseTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0AF0A9D2643CE2500DF4DC9 /* FirebaseTransaction.swift */; };
+		B0AF0AA02643FFDB00DF4DC9 /* FirebaseFunctionDeleteTestClubPropertyCall.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0AF0A9F2643FFDB00DF4DC9 /* FirebaseFunctionDeleteTestClubPropertyCall.swift */; };
+		B0AF0AA22644013400DF4DC9 /* FirebaseFunctionNewTestClubPropertyCall.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0AF0AA12644013400DF4DC9 /* FirebaseFunctionNewTestClubPropertyCall.swift */; };
+		B0AF0AA42644125400DF4DC9 /* TestClub.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0AF0AA32644125400DF4DC9 /* TestClub.swift */; };
 		B0C2A4B02642918800250A8D /* Extensions+Array.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0C2A4AF2642918800250A8D /* Extensions+Array.swift */; };
 		B0D4B62D2642CD19003A720C /* FirebaseFunctionCaller.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0D4B62C2642CD19003A720C /* FirebaseFunctionCaller.swift */; };
 		B0EE60ED2641E07000D3B2D2 /* FirebaseObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0EE60EC2641E07000D3B2D2 /* FirebaseObserver.swift */; };
+		C70D1F040D51F4BE25BC2A2F /* Pods_Strafen.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 031397CB12201DC4F74FAE1A /* Pods_Strafen.framework */; };
+		DC29AD8394BB40D37B36CC96 /* Pods_StrafenTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D9CE7195E6C9BAAFC542B25 /* Pods_StrafenTests.framework */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		B0A761AD2642ECBC003B170F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B01E96A32641AEF50034E3D1 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = B01E96AA2641AEF50034E3D1;
+			remoteInfo = Strafen;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
-		0EDAC09D7BF3950A063754BB /* Pods-Strafen.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Strafen.release.xcconfig"; path = "Target Support Files/Pods-Strafen/Pods-Strafen.release.xcconfig"; sourceTree = "<group>"; };
+		031397CB12201DC4F74FAE1A /* Pods_Strafen.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Strafen.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		32AE26026A2030C45C5425BD /* Pods-Strafen.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Strafen.release.xcconfig"; path = "Target Support Files/Pods-Strafen/Pods-Strafen.release.xcconfig"; sourceTree = "<group>"; };
+		4D9CE7195E6C9BAAFC542B25 /* Pods_StrafenTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_StrafenTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B01E96AB2641AEF60034E3D1 /* Strafen.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Strafen.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B01E96AE2641AEF60034E3D1 /* StrafenApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StrafenApp.swift; sourceTree = "<group>"; };
 		B01E96B02641AEF60034E3D1 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -52,11 +80,29 @@
 		B0A7619E2642DBB2003B170F /* FirebaseFunctionCallable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseFunctionCallable.swift; sourceTree = "<group>"; };
 		B0A761A02642E20C003B170F /* KeysInfo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = KeysInfo.plist; sourceTree = "<group>"; };
 		B0A761A22642E6C7003B170F /* FirebaseDatabaseLevel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseDatabaseLevel.swift; sourceTree = "<group>"; };
+		B0A761A82642ECBC003B170F /* StrafenTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = StrafenTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		B0A761AC2642ECBC003B170F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B0A761B22642ED1F003B170F /* FirebaseFetcherTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseFetcherTests.swift; sourceTree = "<group>"; };
+		B0AF0A8926430B2900DF4DC9 /* FirebaseFunctionNewTestClubCall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseFunctionNewTestClubCall.swift; sourceTree = "<group>"; };
+		B0AF0A8B26431B0800DF4DC9 /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
+		B0AF0A8D2643225300DF4DC9 /* FirebaseFunctionDeleteTestClubCall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseFunctionDeleteTestClubCall.swift; sourceTree = "<group>"; };
+		B0AF0A8F26432B6F00DF4DC9 /* FirebaseReasonTemplate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseReasonTemplate.swift; sourceTree = "<group>"; };
+		B0AF0A9126432C1A00DF4DC9 /* Importance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Importance.swift; sourceTree = "<group>"; };
+		B0AF0A9326432C9500DF4DC9 /* Amount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Amount.swift; sourceTree = "<group>"; };
+		B0AF0A9526432CE100DF4DC9 /* PropertyWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PropertyWrapper.swift; sourceTree = "<group>"; };
+		B0AF0A9726432F1E00DF4DC9 /* FirebaseFine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseFine.swift; sourceTree = "<group>"; };
+		B0AF0A992643303500DF4DC9 /* FineReason.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FineReason.swift; sourceTree = "<group>"; };
+		B0AF0A9B2643328800DF4DC9 /* Payed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Payed.swift; sourceTree = "<group>"; };
+		B0AF0A9D2643CE2500DF4DC9 /* FirebaseTransaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseTransaction.swift; sourceTree = "<group>"; };
+		B0AF0A9F2643FFDB00DF4DC9 /* FirebaseFunctionDeleteTestClubPropertyCall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseFunctionDeleteTestClubPropertyCall.swift; sourceTree = "<group>"; };
+		B0AF0AA12644013400DF4DC9 /* FirebaseFunctionNewTestClubPropertyCall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseFunctionNewTestClubPropertyCall.swift; sourceTree = "<group>"; };
+		B0AF0AA32644125400DF4DC9 /* TestClub.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestClub.swift; sourceTree = "<group>"; };
 		B0C2A4AF2642918800250A8D /* Extensions+Array.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extensions+Array.swift"; sourceTree = "<group>"; };
 		B0D4B62C2642CD19003A720C /* FirebaseFunctionCaller.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseFunctionCaller.swift; sourceTree = "<group>"; };
 		B0EE60EC2641E07000D3B2D2 /* FirebaseObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseObserver.swift; sourceTree = "<group>"; };
-		D74A307038DA40EE080F4D9B /* Pods-Strafen.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Strafen.debug.xcconfig"; path = "Target Support Files/Pods-Strafen/Pods-Strafen.debug.xcconfig"; sourceTree = "<group>"; };
-		DF38919834A1C07EDD4285E4 /* Pods_Strafen.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Strafen.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		CD8817662F35753A8853C9CA /* Pods-StrafenTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StrafenTests.release.xcconfig"; path = "Target Support Files/Pods-StrafenTests/Pods-StrafenTests.release.xcconfig"; sourceTree = "<group>"; };
+		CE12E5223420AFA22C012E0E /* Pods-StrafenTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StrafenTests.debug.xcconfig"; path = "Target Support Files/Pods-StrafenTests/Pods-StrafenTests.debug.xcconfig"; sourceTree = "<group>"; };
+		DA13E36B21C226A0B82B73B7 /* Pods-Strafen.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Strafen.debug.xcconfig"; path = "Target Support Files/Pods-Strafen/Pods-Strafen.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -64,20 +110,38 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5F18DC6D522F2A1BAFB8D8E9 /* Pods_Strafen.framework in Frameworks */,
+				C70D1F040D51F4BE25BC2A2F /* Pods_Strafen.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B0A761A52642ECBC003B170F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DC29AD8394BB40D37B36CC96 /* Pods_StrafenTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		09C80FFF4592E34B477EAC9D /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				031397CB12201DC4F74FAE1A /* Pods_Strafen.framework */,
+				4D9CE7195E6C9BAAFC542B25 /* Pods_StrafenTests.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		B01E96A22641AEF50034E3D1 = {
 			isa = PBXGroup;
 			children = (
 				B01E96AD2641AEF60034E3D1 /* Strafen */,
+				B0A761A92642ECBC003B170F /* StrafenTests */,
 				B01E96AC2641AEF60034E3D1 /* Products */,
 				F9C7D290E85B4C78FB12D4EE /* Pods */,
-				D4F56DAC0B05FE16EA579820 /* Frameworks */,
+				09C80FFF4592E34B477EAC9D /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -85,6 +149,7 @@
 			isa = PBXGroup;
 			children = (
 				B01E96AB2641AEF60034E3D1 /* Strafen.app */,
+				B0A761A82642ECBC003B170F /* StrafenTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -127,6 +192,9 @@
 			children = (
 				B02221AF2641D73C0005295B /* FirebaseListType.swift */,
 				B02221AB2641D5570005295B /* FirebasePerson.swift */,
+				B0AF0A9726432F1E00DF4DC9 /* FirebaseFine.swift */,
+				B0AF0A8F26432B6F00DF4DC9 /* FirebaseReasonTemplate.swift */,
+				B0AF0A9D2643CE2500DF4DC9 /* FirebaseTransaction.swift */,
 			);
 			path = FirebaseListTypes;
 			sourceTree = "<group>";
@@ -159,8 +227,13 @@
 			isa = PBXGroup;
 			children = (
 				B0447C192641B78100148430 /* AppDelegate.swift */,
-				B02221A62641BEFC0005295B /* Tagged.swift */,
+				B0AF0A9326432C9500DF4DC9 /* Amount.swift */,
+				B0AF0A9126432C1A00DF4DC9 /* Importance.swift */,
+				B0AF0A992643303500DF4DC9 /* FineReason.swift */,
+				B0AF0A9B2643328800DF4DC9 /* Payed.swift */,
 				B02221AD2641D6850005295B /* PersonName.swift */,
+				B0AF0A9526432CE100DF4DC9 /* PropertyWrapper.swift */,
+				B02221A62641BEFC0005295B /* Tagged.swift */,
 				B0447C1B2641B82C00148430 /* Extensions */,
 			);
 			path = Utilities;
@@ -174,19 +247,36 @@
 			path = FirebaseFunctionCallables;
 			sourceTree = "<group>";
 		};
-		D4F56DAC0B05FE16EA579820 /* Frameworks */ = {
+		B0A761A92642ECBC003B170F /* StrafenTests */ = {
 			isa = PBXGroup;
 			children = (
-				DF38919834A1C07EDD4285E4 /* Pods_Strafen.framework */,
+				B0A761AC2642ECBC003B170F /* Info.plist */,
+				B0AF0A8826430AF300DF4DC9 /* FirebaseFunctionCallables */,
+				B0A761B22642ED1F003B170F /* FirebaseFetcherTests.swift */,
+				B0AF0AA32644125400DF4DC9 /* TestClub.swift */,
+				B0AF0A8B26431B0800DF4DC9 /* Utils.swift */,
 			);
-			name = Frameworks;
+			path = StrafenTests;
+			sourceTree = "<group>";
+		};
+		B0AF0A8826430AF300DF4DC9 /* FirebaseFunctionCallables */ = {
+			isa = PBXGroup;
+			children = (
+				B0AF0A8926430B2900DF4DC9 /* FirebaseFunctionNewTestClubCall.swift */,
+				B0AF0A8D2643225300DF4DC9 /* FirebaseFunctionDeleteTestClubCall.swift */,
+				B0AF0AA12644013400DF4DC9 /* FirebaseFunctionNewTestClubPropertyCall.swift */,
+				B0AF0A9F2643FFDB00DF4DC9 /* FirebaseFunctionDeleteTestClubPropertyCall.swift */,
+			);
+			path = FirebaseFunctionCallables;
 			sourceTree = "<group>";
 		};
 		F9C7D290E85B4C78FB12D4EE /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				D74A307038DA40EE080F4D9B /* Pods-Strafen.debug.xcconfig */,
-				0EDAC09D7BF3950A063754BB /* Pods-Strafen.release.xcconfig */,
+				DA13E36B21C226A0B82B73B7 /* Pods-Strafen.debug.xcconfig */,
+				32AE26026A2030C45C5425BD /* Pods-Strafen.release.xcconfig */,
+				CE12E5223420AFA22C012E0E /* Pods-StrafenTests.debug.xcconfig */,
+				CD8817662F35753A8853C9CA /* Pods-StrafenTests.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -198,11 +288,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = B01E96BA2641AEF80034E3D1 /* Build configuration list for PBXNativeTarget "Strafen" */;
 			buildPhases = (
-				9C8BCFBC2B6BFA77BF70919E /* [CP] Check Pods Manifest.lock */,
+				CE95BFE501EC3C76F72E0A30 /* [CP] Check Pods Manifest.lock */,
 				B01E96A72641AEF50034E3D1 /* Sources */,
 				B01E96A82641AEF50034E3D1 /* Frameworks */,
 				B01E96A92641AEF50034E3D1 /* Resources */,
-				4899F263C17D4B19558909ED /* [CP] Embed Pods Frameworks */,
+				13E04E7CA6B3E77DD39075E9 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -212,6 +302,25 @@
 			productName = Strafen;
 			productReference = B01E96AB2641AEF60034E3D1 /* Strafen.app */;
 			productType = "com.apple.product-type.application";
+		};
+		B0A761A72642ECBC003B170F /* StrafenTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B0A761AF2642ECBC003B170F /* Build configuration list for PBXNativeTarget "StrafenTests" */;
+			buildPhases = (
+				F0C2E3AB7C53B16F36B62E69 /* [CP] Check Pods Manifest.lock */,
+				B0A761A42642ECBC003B170F /* Sources */,
+				B0A761A52642ECBC003B170F /* Frameworks */,
+				B0A761A62642ECBC003B170F /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				B0A761AE2642ECBC003B170F /* PBXTargetDependency */,
+			);
+			name = StrafenTests;
+			productName = StrafenTests;
+			productReference = B0A761A82642ECBC003B170F /* StrafenTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
 
@@ -224,6 +333,10 @@
 				TargetAttributes = {
 					B01E96AA2641AEF50034E3D1 = {
 						CreatedOnToolsVersion = 12.5;
+					};
+					B0A761A72642ECBC003B170F = {
+						CreatedOnToolsVersion = 12.5;
+						TestTargetID = B01E96AA2641AEF50034E3D1;
 					};
 				};
 			};
@@ -241,6 +354,7 @@
 			projectRoot = "";
 			targets = (
 				B01E96AA2641AEF50034E3D1 /* Strafen */,
+				B0A761A72642ECBC003B170F /* StrafenTests */,
 			);
 		};
 /* End PBXProject section */
@@ -257,10 +371,17 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		B0A761A62642ECBC003B170F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		4899F263C17D4B19558909ED /* [CP] Embed Pods Frameworks */ = {
+		13E04E7CA6B3E77DD39075E9 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -277,7 +398,7 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Strafen/Pods-Strafen-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		9C8BCFBC2B6BFA77BF70919E /* [CP] Check Pods Manifest.lock */ = {
+		CE95BFE501EC3C76F72E0A30 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -299,6 +420,28 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
+		F0C2E3AB7C53B16F36B62E69 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-StrafenTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -308,12 +451,18 @@
 			files = (
 				B02221AE2641D6850005295B /* PersonName.swift in Sources */,
 				B0A7619C2642D366003B170F /* FirebaseCallParameters.swift in Sources */,
+				B0AF0A9626432CE100DF4DC9 /* PropertyWrapper.swift in Sources */,
+				B0AF0A9E2643CE2500DF4DC9 /* FirebaseTransaction.swift in Sources */,
 				B0447C1A2641B78100148430 /* AppDelegate.swift in Sources */,
+				B0AF0A9426432C9500DF4DC9 /* Amount.swift in Sources */,
 				B0D4B62D2642CD19003A720C /* FirebaseFunctionCaller.swift in Sources */,
 				B0EE60ED2641E07000D3B2D2 /* FirebaseObserver.swift in Sources */,
 				B0C2A4B02642918800250A8D /* Extensions+Array.swift in Sources */,
+				B0AF0A9026432B6F00DF4DC9 /* FirebaseReasonTemplate.swift in Sources */,
 				B02221B02641D73C0005295B /* FirebaseListType.swift in Sources */,
+				B0AF0A9C2643328800DF4DC9 /* Payed.swift in Sources */,
 				B0A761A32642E6C7003B170F /* FirebaseDatabaseLevel.swift in Sources */,
+				B0AF0A9226432C1A00DF4DC9 /* Importance.swift in Sources */,
 				B01E96B12641AEF60034E3D1 /* ContentView.swift in Sources */,
 				B0447C202641BAFE00148430 /* FirebaseFetcher.swift in Sources */,
 				B0A7619F2642DBB2003B170F /* FirebaseFunctionCallable.swift in Sources */,
@@ -321,11 +470,35 @@
 				B01E96AF2641AEF60034E3D1 /* StrafenApp.swift in Sources */,
 				B02221A92641D4FE0005295B /* FirebaseDecoder.swift in Sources */,
 				B02221A72641BEFC0005295B /* Tagged.swift in Sources */,
+				B0AF0A9A2643303500DF4DC9 /* FineReason.swift in Sources */,
 				B02221AC2641D5570005295B /* FirebasePerson.swift in Sources */,
+				B0AF0A9826432F1E00DF4DC9 /* FirebaseFine.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B0A761A42642ECBC003B170F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B0AF0AA22644013400DF4DC9 /* FirebaseFunctionNewTestClubPropertyCall.swift in Sources */,
+				B0A761B32642ED1F003B170F /* FirebaseFetcherTests.swift in Sources */,
+				B0AF0AA42644125400DF4DC9 /* TestClub.swift in Sources */,
+				B0AF0A8A26430B2900DF4DC9 /* FirebaseFunctionNewTestClubCall.swift in Sources */,
+				B0AF0A8C26431B0800DF4DC9 /* Utils.swift in Sources */,
+				B0AF0A8E2643225300DF4DC9 /* FirebaseFunctionDeleteTestClubCall.swift in Sources */,
+				B0AF0AA02643FFDB00DF4DC9 /* FirebaseFunctionDeleteTestClubPropertyCall.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		B0A761AE2642ECBC003B170F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = B01E96AA2641AEF50034E3D1 /* Strafen */;
+			targetProxy = B0A761AD2642ECBC003B170F /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		B01E96B82641AEF80034E3D1 /* Debug */ = {
@@ -446,7 +619,7 @@
 		};
 		B01E96BB2641AEF80034E3D1 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D74A307038DA40EE080F4D9B /* Pods-Strafen.debug.xcconfig */;
+			baseConfigurationReference = DA13E36B21C226A0B82B73B7 /* Pods-Strafen.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -474,7 +647,7 @@
 		};
 		B01E96BC2641AEF80034E3D1 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 0EDAC09D7BF3950A063754BB /* Pods-Strafen.release.xcconfig */;
+			baseConfigurationReference = 32AE26026A2030C45C5425BD /* Pods-Strafen.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -500,6 +673,48 @@
 			};
 			name = Release;
 		};
+		B0A761B02642ECBC003B170F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = CE12E5223420AFA22C012E0E /* Pods-StrafenTests.debug.xcconfig */;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = K7NTJ83ZF8;
+				INFOPLIST_FILE = StrafenTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = stevenkellner.StrafenTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Strafen.app/Strafen";
+			};
+			name = Debug;
+		};
+		B0A761B12642ECBC003B170F /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = CD8817662F35753A8853C9CA /* Pods-StrafenTests.release.xcconfig */;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = K7NTJ83ZF8;
+				INFOPLIST_FILE = StrafenTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = stevenkellner.StrafenTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Strafen.app/Strafen";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -517,6 +732,15 @@
 			buildConfigurations = (
 				B01E96BB2641AEF80034E3D1 /* Debug */,
 				B01E96BC2641AEF80034E3D1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B0A761AF2642ECBC003B170F /* Build configuration list for PBXNativeTarget "StrafenTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B0A761B02642ECBC003B170F /* Debug */,
+				B0A761B12642ECBC003B170F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

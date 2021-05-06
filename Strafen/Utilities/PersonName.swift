@@ -35,6 +35,8 @@ extension PersonName: Decodable {
     }
 }
 
+extension PersonName: Equatable {}
+
 extension PersonName {
     
     /// Name as PersonNameComponents
@@ -52,3 +54,15 @@ extension PersonName {
         return formatter.string(from: personNameComponents)
     }
 }
+
+/// Person name with optional first and last name
+struct OptionalPersonName: Codable {
+    
+    /// Optional first name
+    let first: String?
+    
+    /// Optional last name
+    let last: String?
+}
+
+extension OptionalPersonName: Equatable {}

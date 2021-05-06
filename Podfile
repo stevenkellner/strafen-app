@@ -14,4 +14,7 @@ target 'Strafen' do
   # Hydra
   pod 'HydraAsync'
 
+  target 'StrafenTests' do
+    inherit! :search_paths
+  end
 end

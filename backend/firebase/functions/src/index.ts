@@ -1,4 +1,8 @@
 import * as cf from "./callableFunctions";
+import * as tf from "./testableFunctions";
+import * as admin from "firebase-admin";
+
+admin.initializeApp();
 
 export const newClub = cf.newClub;
 export const deleteClub = cf.deleteClub;
@@ -14,3 +18,8 @@ export const existsPersonWithUserId = cf.existsPersonWithUserId;
 export const newTransaction = cf.newTransaction;
 export const checkTransactions = cf.checkTransactions;
 export const saveCreditCard = cf.saveCreditCard;
+
+export const newTestClub = tf.newTestClub;
+export const deleteTestClub = tf.deleteTestClub;
+export const newTestClubProperty = tf.newTestClubProperty;
+export const deleteTestClubProperty = tf.deleteTestClubProperty;

@@ -22,4 +22,16 @@ enum FirebaseDatabaseLevel: String {
     
     /// For test database to change only the testing database
     case testing
+    
+    /// Club component
+    var clubComponent: String {
+        switch self {
+        case .regular:
+            return "clubs"
+        case .debug:
+            return "debugClubs"
+        case .testing:
+            return "testableClubs"
+        }
+    }
 }

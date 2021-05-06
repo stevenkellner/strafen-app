@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Hydra
 
 extension UISceneConfiguration {
     
@@ -22,7 +23,8 @@ extension URL {
     /// Appends given url and returns combinding url
     /// - Parameter url: url to append
     /// - Returns: combinding url
-    func appendingUrl(_ url: URL) -> URL {
+    func appendingUrl(_ url: URL?) -> URL {
+        guard let url = url else { return self }
         var newUrl = self
         for component in url.pathComponents {
             newUrl.appendPathComponent(component)
@@ -65,5 +67,27 @@ extension Bundle {
     /// Content of `KeysInfo` property list
     static var keysPropertyList: PropertyListContent {
         PropertyListContent(name: "KeysInfo")!
+    }
+}
+
+extension Promise {
+    
+    /// Transforms value to Result.succes(value) and an error to Result.failure(error)
+    /// - Parameter handler: code block to execute
+    func thenResult(_ handler: @escaping (Result<Value, Error>) -> Void) {
+        then { value in
+            handler(.success(value))
+        }.catch { error in
+            handler(.failure(error))
+        }
+    }
+}
+
+extension Result {
+    
+    /// Optional error of the result
+    var error: Failure? {
+        guard case .failure(let error) = self else { return nil }
+        return error
     }
 }

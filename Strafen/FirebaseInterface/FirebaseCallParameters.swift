@@ -133,6 +133,12 @@ extension Date: FirebaseParameterable {
     }
 }
 
+extension URL: FirebaseParameterable {
+    var primordialParameter: FirebasePrimordialParameterable {
+        path
+    }
+}
+
 extension Tagged: FirebaseParameterable where RawValue: FirebaseParameterable {
     var primordialParameter: FirebasePrimordialParameterable {
         rawValue.primordialParameter
