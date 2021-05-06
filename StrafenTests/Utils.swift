@@ -21,11 +21,12 @@ extension XCTestCase {
     /// Wait for synchronous tasks
     /// - Parameters:
     ///   - timeout: time to wait for task
+    ///   - description: expectation description
     ///   - handler: handles task return
     /// - Throws: TimeoutError or rethrowed error
     /// - Returns: return value of the task
-    func waitExpectation<ReturnValue>(timeout: TimeInterval = 60, _ handler: (@escaping (ReturnValue) -> Void) throws -> Void) throws -> ReturnValue {
-        let expectation = self.expectation(description: "expecation")
+    func waitExpectation<ReturnValue>(timeout: TimeInterval = 60, description: String = "expecation", _ handler: (@escaping (ReturnValue) -> Void) throws -> Void) throws -> ReturnValue {
+        let expectation = self.expectation(description: description)
         var result: ReturnValue?
         try handler { value in
             if result == nil {
@@ -41,12 +42,47 @@ extension XCTestCase {
     /// Wait for synchronous tasks
     /// - Parameters:
     ///   - timeout: time to wait for task
+    ///   - description: expectation description
     ///   - handler: handles task return
     /// - Throws: rethrows error
-    func waitExpectation(timeout: TimeInterval = 60, _ handler: (@escaping () -> Void) throws -> Void) rethrows {
-        let expectation = self.expectation(description: "expectation")
+    func waitExpectation(timeout: TimeInterval = 60, description: String = "expecation", _ handler: (@escaping () -> Void) throws -> Void) rethrows {
+        let expectation = self.expectation(description: description)
         try handler { expectation.fulfill() }
         waitForExpectations(timeout: timeout)
+    }
+    
+    /// Wait timeout and expects no value
+    /// - Parameters:
+    ///   - timeout: time to wait for task
+    ///   - description: expectation description
+    ///   - handler: handles task return
+    /// - Throws: rethrows error
+    func waitNoData(timeout: TimeInterval, description: String = "expectation", _ handler: (@escaping (Any?) -> Void) throws -> Void) rethrows {
+        let expectation = self.expectation(description: description)
+        try handler { _ in XCTAssertTrue(false, "No data expected, but got data") }
+        DispatchQueue.main.asyncAfter(deadline: .now() + timeout) { expectation.fulfill() }
+        waitForExpectations(timeout: timeout + 1)
+    }
+    
+    /// Wait timeout and expects no value
+    /// - Parameters:
+    ///   - timeout: time to wait for task
+    ///   - description: expectation description
+    ///   - handler: handles task return
+    /// - Throws: rethrows error
+    func waitNoData(timeout: TimeInterval, description: String = "expectation", _ handler: (@escaping () -> Void) throws -> Void) rethrows {
+        let expectation = self.expectation(description: description)
+        try handler { XCTAssertTrue(false, "No data expected, but got data") }
+        DispatchQueue.main.asyncAfter(deadline: .now() + timeout) { expectation.fulfill() }
+        waitForExpectations(timeout: timeout + 1)
+    }
+    
+    /// Waits for given timeinterval
+    /// - Parameter timeout: timeintval to wait
+    func wait(_ timeout: TimeInterval) {
+        let expectation = self.expectation(description: "waitExpectation")
+        DispatchQueue.main.asyncAfter(deadline: .now() + timeout) { expectation.fulfill() }
+        waitForExpectations(timeout: timeout + 1)
     }
 }
 

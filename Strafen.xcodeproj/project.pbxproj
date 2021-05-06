@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		09EBD8C58E03C87850B3AA40 /* Pods_Strafen.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EE83023EB319E84E0697FDC7 /* Pods_Strafen.framework */; };
 		B01E96AF2641AEF60034E3D1 /* StrafenApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B01E96AE2641AEF60034E3D1 /* StrafenApp.swift */; };
 		B01E96B12641AEF60034E3D1 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B01E96B02641AEF60034E3D1 /* ContentView.swift */; };
 		B01E96B32641AEF80034E3D1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B01E96B22641AEF80034E3D1 /* Assets.xcassets */; };
@@ -17,6 +18,7 @@
 		B02221AE2641D6850005295B /* PersonName.swift in Sources */ = {isa = PBXBuildFile; fileRef = B02221AD2641D6850005295B /* PersonName.swift */; };
 		B02221B02641D73C0005295B /* FirebaseListType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B02221AF2641D73C0005295B /* FirebaseListType.swift */; };
 		B0254E082641B6130083752B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B0254E072641B6130083752B /* GoogleService-Info.plist */; };
+		B0311305264427EB00E65025 /* FirebaseObserverTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0311304264427EB00E65025 /* FirebaseObserverTests.swift */; };
 		B0447C1A2641B78100148430 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0447C192641B78100148430 /* AppDelegate.swift */; };
 		B0447C1D2641B84600148430 /* Extensions+Other.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0447C1C2641B84600148430 /* Extensions+Other.swift */; };
 		B0447C202641BAFE00148430 /* FirebaseFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0447C1F2641BAFE00148430 /* FirebaseFetcher.swift */; };
@@ -42,8 +44,7 @@
 		B0C2A4B02642918800250A8D /* Extensions+Array.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0C2A4AF2642918800250A8D /* Extensions+Array.swift */; };
 		B0D4B62D2642CD19003A720C /* FirebaseFunctionCaller.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0D4B62C2642CD19003A720C /* FirebaseFunctionCaller.swift */; };
 		B0EE60ED2641E07000D3B2D2 /* FirebaseObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0EE60EC2641E07000D3B2D2 /* FirebaseObserver.swift */; };
-		C70D1F040D51F4BE25BC2A2F /* Pods_Strafen.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 031397CB12201DC4F74FAE1A /* Pods_Strafen.framework */; };
-		DC29AD8394BB40D37B36CC96 /* Pods_StrafenTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D9CE7195E6C9BAAFC542B25 /* Pods_StrafenTests.framework */; };
+		E86E082989199837291D283C /* Pods_StrafenTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E83597D410FF30338AF3067 /* Pods_StrafenTests.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -57,9 +58,11 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		031397CB12201DC4F74FAE1A /* Pods_Strafen.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Strafen.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		32AE26026A2030C45C5425BD /* Pods-Strafen.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Strafen.release.xcconfig"; path = "Target Support Files/Pods-Strafen/Pods-Strafen.release.xcconfig"; sourceTree = "<group>"; };
-		4D9CE7195E6C9BAAFC542B25 /* Pods_StrafenTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_StrafenTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		1E83597D410FF30338AF3067 /* Pods_StrafenTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_StrafenTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		223CBBE275283D64C6920929 /* Pods-Strafen.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Strafen.debug.xcconfig"; path = "Target Support Files/Pods-Strafen/Pods-Strafen.debug.xcconfig"; sourceTree = "<group>"; };
+		3ED67D30C38C4D37DA426A80 /* Pods-StrafenTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StrafenTests.debug.xcconfig"; path = "Target Support Files/Pods-StrafenTests/Pods-StrafenTests.debug.xcconfig"; sourceTree = "<group>"; };
+		69A945F062159E4A75C0275C /* Pods-StrafenTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StrafenTests.release.xcconfig"; path = "Target Support Files/Pods-StrafenTests/Pods-StrafenTests.release.xcconfig"; sourceTree = "<group>"; };
+		9659D7D6F5BB8BA2E67E5C9C /* Pods-Strafen.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Strafen.release.xcconfig"; path = "Target Support Files/Pods-Strafen/Pods-Strafen.release.xcconfig"; sourceTree = "<group>"; };
 		B01E96AB2641AEF60034E3D1 /* Strafen.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Strafen.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B01E96AE2641AEF60034E3D1 /* StrafenApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StrafenApp.swift; sourceTree = "<group>"; };
 		B01E96B02641AEF60034E3D1 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -72,6 +75,7 @@
 		B02221AD2641D6850005295B /* PersonName.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonName.swift; sourceTree = "<group>"; };
 		B02221AF2641D73C0005295B /* FirebaseListType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseListType.swift; sourceTree = "<group>"; };
 		B0254E072641B6130083752B /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		B0311304264427EB00E65025 /* FirebaseObserverTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseObserverTests.swift; sourceTree = "<group>"; };
 		B0447C192641B78100148430 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B0447C1C2641B84600148430 /* Extensions+Other.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extensions+Other.swift"; sourceTree = "<group>"; };
 		B0447C1F2641BAFE00148430 /* FirebaseFetcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseFetcher.swift; sourceTree = "<group>"; };
@@ -100,9 +104,7 @@
 		B0C2A4AF2642918800250A8D /* Extensions+Array.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extensions+Array.swift"; sourceTree = "<group>"; };
 		B0D4B62C2642CD19003A720C /* FirebaseFunctionCaller.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseFunctionCaller.swift; sourceTree = "<group>"; };
 		B0EE60EC2641E07000D3B2D2 /* FirebaseObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseObserver.swift; sourceTree = "<group>"; };
-		CD8817662F35753A8853C9CA /* Pods-StrafenTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StrafenTests.release.xcconfig"; path = "Target Support Files/Pods-StrafenTests/Pods-StrafenTests.release.xcconfig"; sourceTree = "<group>"; };
-		CE12E5223420AFA22C012E0E /* Pods-StrafenTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StrafenTests.debug.xcconfig"; path = "Target Support Files/Pods-StrafenTests/Pods-StrafenTests.debug.xcconfig"; sourceTree = "<group>"; };
-		DA13E36B21C226A0B82B73B7 /* Pods-Strafen.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Strafen.debug.xcconfig"; path = "Target Support Files/Pods-Strafen/Pods-Strafen.debug.xcconfig"; sourceTree = "<group>"; };
+		EE83023EB319E84E0697FDC7 /* Pods_Strafen.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Strafen.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -110,7 +112,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C70D1F040D51F4BE25BC2A2F /* Pods_Strafen.framework in Frameworks */,
+				09EBD8C58E03C87850B3AA40 /* Pods_Strafen.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -118,18 +120,18 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DC29AD8394BB40D37B36CC96 /* Pods_StrafenTests.framework in Frameworks */,
+				E86E082989199837291D283C /* Pods_StrafenTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		09C80FFF4592E34B477EAC9D /* Frameworks */ = {
+		26D04EFF26EA2A44B53F687B /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				031397CB12201DC4F74FAE1A /* Pods_Strafen.framework */,
-				4D9CE7195E6C9BAAFC542B25 /* Pods_StrafenTests.framework */,
+				EE83023EB319E84E0697FDC7 /* Pods_Strafen.framework */,
+				1E83597D410FF30338AF3067 /* Pods_StrafenTests.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -141,7 +143,7 @@
 				B0A761A92642ECBC003B170F /* StrafenTests */,
 				B01E96AC2641AEF60034E3D1 /* Products */,
 				F9C7D290E85B4C78FB12D4EE /* Pods */,
-				09C80FFF4592E34B477EAC9D /* Frameworks */,
+				26D04EFF26EA2A44B53F687B /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -253,6 +255,7 @@
 				B0A761AC2642ECBC003B170F /* Info.plist */,
 				B0AF0A8826430AF300DF4DC9 /* FirebaseFunctionCallables */,
 				B0A761B22642ED1F003B170F /* FirebaseFetcherTests.swift */,
+				B0311304264427EB00E65025 /* FirebaseObserverTests.swift */,
 				B0AF0AA32644125400DF4DC9 /* TestClub.swift */,
 				B0AF0A8B26431B0800DF4DC9 /* Utils.swift */,
 			);
@@ -273,10 +276,10 @@
 		F9C7D290E85B4C78FB12D4EE /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				DA13E36B21C226A0B82B73B7 /* Pods-Strafen.debug.xcconfig */,
-				32AE26026A2030C45C5425BD /* Pods-Strafen.release.xcconfig */,
-				CE12E5223420AFA22C012E0E /* Pods-StrafenTests.debug.xcconfig */,
-				CD8817662F35753A8853C9CA /* Pods-StrafenTests.release.xcconfig */,
+				223CBBE275283D64C6920929 /* Pods-Strafen.debug.xcconfig */,
+				9659D7D6F5BB8BA2E67E5C9C /* Pods-Strafen.release.xcconfig */,
+				3ED67D30C38C4D37DA426A80 /* Pods-StrafenTests.debug.xcconfig */,
+				69A945F062159E4A75C0275C /* Pods-StrafenTests.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -288,11 +291,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = B01E96BA2641AEF80034E3D1 /* Build configuration list for PBXNativeTarget "Strafen" */;
 			buildPhases = (
-				CE95BFE501EC3C76F72E0A30 /* [CP] Check Pods Manifest.lock */,
+				CDAE69FB8B73BBE354468A1F /* [CP] Check Pods Manifest.lock */,
 				B01E96A72641AEF50034E3D1 /* Sources */,
 				B01E96A82641AEF50034E3D1 /* Frameworks */,
 				B01E96A92641AEF50034E3D1 /* Resources */,
-				13E04E7CA6B3E77DD39075E9 /* [CP] Embed Pods Frameworks */,
+				85ACDEE0186598E18B957794 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -307,7 +310,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = B0A761AF2642ECBC003B170F /* Build configuration list for PBXNativeTarget "StrafenTests" */;
 			buildPhases = (
-				F0C2E3AB7C53B16F36B62E69 /* [CP] Check Pods Manifest.lock */,
+				A94C8D4EA2B6EF9DE3EDAA82 /* [CP] Check Pods Manifest.lock */,
 				B0A761A42642ECBC003B170F /* Sources */,
 				B0A761A52642ECBC003B170F /* Frameworks */,
 				B0A761A62642ECBC003B170F /* Resources */,
@@ -381,7 +384,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		13E04E7CA6B3E77DD39075E9 /* [CP] Embed Pods Frameworks */ = {
+		85ACDEE0186598E18B957794 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -398,29 +401,7 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Strafen/Pods-Strafen-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		CE95BFE501EC3C76F72E0A30 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-Strafen-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		F0C2E3AB7C53B16F36B62E69 /* [CP] Check Pods Manifest.lock */ = {
+		A94C8D4EA2B6EF9DE3EDAA82 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -436,6 +417,28 @@
 			);
 			outputPaths = (
 				"$(DERIVED_FILE_DIR)/Pods-StrafenTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		CDAE69FB8B73BBE354468A1F /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Strafen-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -482,6 +485,7 @@
 			files = (
 				B0AF0AA22644013400DF4DC9 /* FirebaseFunctionNewTestClubPropertyCall.swift in Sources */,
 				B0A761B32642ED1F003B170F /* FirebaseFetcherTests.swift in Sources */,
+				B0311305264427EB00E65025 /* FirebaseObserverTests.swift in Sources */,
 				B0AF0AA42644125400DF4DC9 /* TestClub.swift in Sources */,
 				B0AF0A8A26430B2900DF4DC9 /* FirebaseFunctionNewTestClubCall.swift in Sources */,
 				B0AF0A8C26431B0800DF4DC9 /* Utils.swift in Sources */,
@@ -619,7 +623,7 @@
 		};
 		B01E96BB2641AEF80034E3D1 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = DA13E36B21C226A0B82B73B7 /* Pods-Strafen.debug.xcconfig */;
+			baseConfigurationReference = 223CBBE275283D64C6920929 /* Pods-Strafen.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -647,7 +651,7 @@
 		};
 		B01E96BC2641AEF80034E3D1 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 32AE26026A2030C45C5425BD /* Pods-Strafen.release.xcconfig */;
+			baseConfigurationReference = 9659D7D6F5BB8BA2E67E5C9C /* Pods-Strafen.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -675,7 +679,7 @@
 		};
 		B0A761B02642ECBC003B170F /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = CE12E5223420AFA22C012E0E /* Pods-StrafenTests.debug.xcconfig */;
+			baseConfigurationReference = 3ED67D30C38C4D37DA426A80 /* Pods-StrafenTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
@@ -696,7 +700,7 @@
 		};
 		B0A761B12642ECBC003B170F /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = CD8817662F35753A8853C9CA /* Pods-StrafenTests.release.xcconfig */;
+			baseConfigurationReference = 69A945F062159E4A75C0275C /* Pods-StrafenTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;

@@ -34,11 +34,12 @@ export const newTestClubProperty = functions.region("europe-west1").https.onCall
     }
     const path = getClubComponent(data) + "/" + data.clubId.toString().toUpperCase() + "/" + data.propertyPath;
     const ref = admin.database().ref(path);
-    if (await existsData(ref)) {
-        ref.update(data.data);
-    } else {
-        ref.set(data.data);
-    }
+    ref.set(data.data);
+    // if (await existsData(ref)) {
+    //     ref.update(data.data);
+    // } else {
+    //     ref.set(data.data);
+    // }
 });
 
 export const deleteTestClubProperty = functions.region("europe-west1").https.onCall(async (data, context) => {
