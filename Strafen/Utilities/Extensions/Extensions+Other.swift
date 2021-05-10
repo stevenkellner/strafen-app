@@ -91,3 +91,36 @@ extension Result {
         return error
     }
 }
+
+extension CGPoint {
+    
+    /// <#Description#>
+    /// - Parameters:
+    ///   - lhs: <#lhs description#>
+    ///   - rhs: <#rhs description#>
+    /// - Returns: <#description#>
+    public static func +(lhs: CGPoint, rhs: CGSize) -> CGPoint {
+        CGPoint(x: lhs.x + rhs.width, y: lhs.y + rhs.height)
+    }
+    
+    /// <#Description#>
+    /// - Parameters:
+    ///   - lhs: <#lhs description#>
+    ///   - rhs: <#rhs description#>
+    /// - Returns: <#description#>
+    public static func -(lhs: CGPoint, rhs: CGSize) -> CGPoint {
+        CGPoint(x: lhs.x - rhs.width, y: lhs.y - rhs.height)
+    }
+}
+    
+extension CGSize {
+    
+    /// <#Description#>
+    /// - Parameters:
+    ///   - lhs: <#lhs description#>
+    ///   - rhs: <#rhs description#>
+    /// - Returns: <#description#>
+    public static func *(lhs: CGSize, rhs: CGFloat) -> CGSize {
+        CGSize(width: lhs.width * rhs, height: lhs.height * rhs)
+    }
+}

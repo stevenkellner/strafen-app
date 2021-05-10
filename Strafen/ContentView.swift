@@ -6,11 +6,11 @@
 //
 
 import SwiftUI
-import FirebaseAuth
 
 struct ContentView: View {
     var body: some View {
-        Text("Hello, world!")
-            .padding()
+        BackgroundWave(amplitute: 0.1, steps: 4)
+            .frame(width: 200, height: 400)
+            .foregroundColor(.blue)
     }
 }

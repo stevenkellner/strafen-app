@@ -7,11 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		09EBD8C58E03C87850B3AA40 /* Pods_Strafen.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EE83023EB319E84E0697FDC7 /* Pods_Strafen.framework */; };
+		12CA706153C57422E4B8EF90 /* Pods_Strafen.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9649B8989B474FB66F6D5A13 /* Pods_Strafen.framework */; };
 		B01E96AF2641AEF60034E3D1 /* StrafenApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B01E96AE2641AEF60034E3D1 /* StrafenApp.swift */; };
 		B01E96B12641AEF60034E3D1 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B01E96B02641AEF60034E3D1 /* ContentView.swift */; };
 		B01E96B32641AEF80034E3D1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B01E96B22641AEF80034E3D1 /* Assets.xcassets */; };
 		B01E96B62641AEF80034E3D1 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B01E96B52641AEF80034E3D1 /* Preview Assets.xcassets */; };
+		B021DF3F264918E400FD418F /* BackgroundWave.swift in Sources */ = {isa = PBXBuildFile; fileRef = B021DF3E264918E400FD418F /* BackgroundWave.swift */; };
 		B02221A72641BEFC0005295B /* Tagged.swift in Sources */ = {isa = PBXBuildFile; fileRef = B02221A62641BEFC0005295B /* Tagged.swift */; };
 		B02221A92641D4FE0005295B /* FirebaseDecoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = B02221A82641D4FE0005295B /* FirebaseDecoder.swift */; };
 		B02221AC2641D5570005295B /* FirebasePerson.swift in Sources */ = {isa = PBXBuildFile; fileRef = B02221AB2641D5570005295B /* FirebasePerson.swift */; };
@@ -43,8 +44,9 @@
 		B0AF0AA42644125400DF4DC9 /* TestClub.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0AF0AA32644125400DF4DC9 /* TestClub.swift */; };
 		B0C2A4B02642918800250A8D /* Extensions+Array.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0C2A4AF2642918800250A8D /* Extensions+Array.swift */; };
 		B0D4B62D2642CD19003A720C /* FirebaseFunctionCaller.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0D4B62C2642CD19003A720C /* FirebaseFunctionCaller.swift */; };
+		B0E9C86826447AF100FB484E /* ListEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E9C86726447AF100FB484E /* ListEnvironment.swift */; };
 		B0EE60ED2641E07000D3B2D2 /* FirebaseObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0EE60EC2641E07000D3B2D2 /* FirebaseObserver.swift */; };
-		E86E082989199837291D283C /* Pods_StrafenTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E83597D410FF30338AF3067 /* Pods_StrafenTests.framework */; };
+		B8018349DC13D19E2D8A1A96 /* Pods_StrafenTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BAD9129E9E223D457CF7797E /* Pods_StrafenTests.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -58,17 +60,16 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		1E83597D410FF30338AF3067 /* Pods_StrafenTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_StrafenTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		223CBBE275283D64C6920929 /* Pods-Strafen.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Strafen.debug.xcconfig"; path = "Target Support Files/Pods-Strafen/Pods-Strafen.debug.xcconfig"; sourceTree = "<group>"; };
-		3ED67D30C38C4D37DA426A80 /* Pods-StrafenTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StrafenTests.debug.xcconfig"; path = "Target Support Files/Pods-StrafenTests/Pods-StrafenTests.debug.xcconfig"; sourceTree = "<group>"; };
-		69A945F062159E4A75C0275C /* Pods-StrafenTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StrafenTests.release.xcconfig"; path = "Target Support Files/Pods-StrafenTests/Pods-StrafenTests.release.xcconfig"; sourceTree = "<group>"; };
-		9659D7D6F5BB8BA2E67E5C9C /* Pods-Strafen.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Strafen.release.xcconfig"; path = "Target Support Files/Pods-Strafen/Pods-Strafen.release.xcconfig"; sourceTree = "<group>"; };
+		4900075C659249C78453D551 /* Pods-Strafen.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Strafen.debug.xcconfig"; path = "Target Support Files/Pods-Strafen/Pods-Strafen.debug.xcconfig"; sourceTree = "<group>"; };
+		7E080994FDC3B1759B22AD23 /* Pods-Strafen.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Strafen.release.xcconfig"; path = "Target Support Files/Pods-Strafen/Pods-Strafen.release.xcconfig"; sourceTree = "<group>"; };
+		9649B8989B474FB66F6D5A13 /* Pods_Strafen.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Strafen.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B01E96AB2641AEF60034E3D1 /* Strafen.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Strafen.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B01E96AE2641AEF60034E3D1 /* StrafenApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StrafenApp.swift; sourceTree = "<group>"; };
 		B01E96B02641AEF60034E3D1 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		B01E96B22641AEF80034E3D1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B01E96B52641AEF80034E3D1 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		B01E96B72641AEF80034E3D1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B021DF3E264918E400FD418F /* BackgroundWave.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundWave.swift; sourceTree = "<group>"; };
 		B02221A62641BEFC0005295B /* Tagged.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tagged.swift; sourceTree = "<group>"; };
 		B02221A82641D4FE0005295B /* FirebaseDecoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseDecoder.swift; sourceTree = "<group>"; };
 		B02221AB2641D5570005295B /* FirebasePerson.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebasePerson.swift; sourceTree = "<group>"; };
@@ -103,8 +104,11 @@
 		B0AF0AA32644125400DF4DC9 /* TestClub.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestClub.swift; sourceTree = "<group>"; };
 		B0C2A4AF2642918800250A8D /* Extensions+Array.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extensions+Array.swift"; sourceTree = "<group>"; };
 		B0D4B62C2642CD19003A720C /* FirebaseFunctionCaller.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseFunctionCaller.swift; sourceTree = "<group>"; };
+		B0E9C86726447AF100FB484E /* ListEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListEnvironment.swift; sourceTree = "<group>"; };
 		B0EE60EC2641E07000D3B2D2 /* FirebaseObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseObserver.swift; sourceTree = "<group>"; };
-		EE83023EB319E84E0697FDC7 /* Pods_Strafen.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Strafen.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		BAD9129E9E223D457CF7797E /* Pods_StrafenTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_StrafenTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		EAAE14DB8E88B5D615F13A5D /* Pods-StrafenTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StrafenTests.debug.xcconfig"; path = "Target Support Files/Pods-StrafenTests/Pods-StrafenTests.debug.xcconfig"; sourceTree = "<group>"; };
+		FD52216F4864E353DAF44788 /* Pods-StrafenTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StrafenTests.release.xcconfig"; path = "Target Support Files/Pods-StrafenTests/Pods-StrafenTests.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -112,7 +116,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				09EBD8C58E03C87850B3AA40 /* Pods_Strafen.framework in Frameworks */,
+				12CA706153C57422E4B8EF90 /* Pods_Strafen.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -120,22 +124,13 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E86E082989199837291D283C /* Pods_StrafenTests.framework in Frameworks */,
+				B8018349DC13D19E2D8A1A96 /* Pods_StrafenTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		26D04EFF26EA2A44B53F687B /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				EE83023EB319E84E0697FDC7 /* Pods_Strafen.framework */,
-				1E83597D410FF30338AF3067 /* Pods_StrafenTests.framework */,
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
 		B01E96A22641AEF50034E3D1 = {
 			isa = PBXGroup;
 			children = (
@@ -143,7 +138,7 @@
 				B0A761A92642ECBC003B170F /* StrafenTests */,
 				B01E96AC2641AEF60034E3D1 /* Products */,
 				F9C7D290E85B4C78FB12D4EE /* Pods */,
-				26D04EFF26EA2A44B53F687B /* Frameworks */,
+				B1448759FED766FC4EFABFBB /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -161,6 +156,7 @@
 			children = (
 				B01E96BD2641AF090034E3D1 /* Controller */,
 				B01E96B02641AEF60034E3D1 /* ContentView.swift */,
+				B021DF3D264918D300FD418F /* HelpfulViews */,
 				B0254E062641B54C0083752B /* FirebaseInterface */,
 				B0447C1E2641B90600148430 /* Utilities */,
 			);
@@ -187,6 +183,14 @@
 				B01E96B42641AEF80034E3D1 /* Preview Content */,
 			);
 			path = Controller;
+			sourceTree = "<group>";
+		};
+		B021DF3D264918D300FD418F /* HelpfulViews */ = {
+			isa = PBXGroup;
+			children = (
+				B021DF3E264918E400FD418F /* BackgroundWave.swift */,
+			);
+			path = HelpfulViews;
 			sourceTree = "<group>";
 		};
 		B02221AA2641D5250005295B /* FirebaseListTypes */ = {
@@ -219,8 +223,8 @@
 		B0447C1B2641B82C00148430 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				B0447C1C2641B84600148430 /* Extensions+Other.swift */,
 				B0C2A4AF2642918800250A8D /* Extensions+Array.swift */,
+				B0447C1C2641B84600148430 /* Extensions+Other.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -232,6 +236,7 @@
 				B0AF0A9326432C9500DF4DC9 /* Amount.swift */,
 				B0AF0A9126432C1A00DF4DC9 /* Importance.swift */,
 				B0AF0A992643303500DF4DC9 /* FineReason.swift */,
+				B0E9C86726447AF100FB484E /* ListEnvironment.swift */,
 				B0AF0A9B2643328800DF4DC9 /* Payed.swift */,
 				B02221AD2641D6850005295B /* PersonName.swift */,
 				B0AF0A9526432CE100DF4DC9 /* PropertyWrapper.swift */,
@@ -273,13 +278,22 @@
 			path = FirebaseFunctionCallables;
 			sourceTree = "<group>";
 		};
+		B1448759FED766FC4EFABFBB /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				9649B8989B474FB66F6D5A13 /* Pods_Strafen.framework */,
+				BAD9129E9E223D457CF7797E /* Pods_StrafenTests.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		F9C7D290E85B4C78FB12D4EE /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				223CBBE275283D64C6920929 /* Pods-Strafen.debug.xcconfig */,
-				9659D7D6F5BB8BA2E67E5C9C /* Pods-Strafen.release.xcconfig */,
-				3ED67D30C38C4D37DA426A80 /* Pods-StrafenTests.debug.xcconfig */,
-				69A945F062159E4A75C0275C /* Pods-StrafenTests.release.xcconfig */,
+				4900075C659249C78453D551 /* Pods-Strafen.debug.xcconfig */,
+				7E080994FDC3B1759B22AD23 /* Pods-Strafen.release.xcconfig */,
+				EAAE14DB8E88B5D615F13A5D /* Pods-StrafenTests.debug.xcconfig */,
+				FD52216F4864E353DAF44788 /* Pods-StrafenTests.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -291,11 +305,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = B01E96BA2641AEF80034E3D1 /* Build configuration list for PBXNativeTarget "Strafen" */;
 			buildPhases = (
-				CDAE69FB8B73BBE354468A1F /* [CP] Check Pods Manifest.lock */,
+				EC7F88385092A8D77F97CC96 /* [CP] Check Pods Manifest.lock */,
 				B01E96A72641AEF50034E3D1 /* Sources */,
 				B01E96A82641AEF50034E3D1 /* Frameworks */,
 				B01E96A92641AEF50034E3D1 /* Resources */,
-				85ACDEE0186598E18B957794 /* [CP] Embed Pods Frameworks */,
+				513BE5779C3A2365EB9CC903 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -310,7 +324,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = B0A761AF2642ECBC003B170F /* Build configuration list for PBXNativeTarget "StrafenTests" */;
 			buildPhases = (
-				A94C8D4EA2B6EF9DE3EDAA82 /* [CP] Check Pods Manifest.lock */,
+				BED64B0C36425B0DD66E685C /* [CP] Check Pods Manifest.lock */,
 				B0A761A42642ECBC003B170F /* Sources */,
 				B0A761A52642ECBC003B170F /* Frameworks */,
 				B0A761A62642ECBC003B170F /* Resources */,
@@ -384,7 +398,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		85ACDEE0186598E18B957794 /* [CP] Embed Pods Frameworks */ = {
+		513BE5779C3A2365EB9CC903 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -401,7 +415,7 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Strafen/Pods-Strafen-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		A94C8D4EA2B6EF9DE3EDAA82 /* [CP] Check Pods Manifest.lock */ = {
+		BED64B0C36425B0DD66E685C /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -423,7 +437,7 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		CDAE69FB8B73BBE354468A1F /* [CP] Check Pods Manifest.lock */ = {
+		EC7F88385092A8D77F97CC96 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -471,8 +485,10 @@
 				B0A7619F2642DBB2003B170F /* FirebaseFunctionCallable.swift in Sources */,
 				B0447C1D2641B84600148430 /* Extensions+Other.swift in Sources */,
 				B01E96AF2641AEF60034E3D1 /* StrafenApp.swift in Sources */,
+				B0E9C86826447AF100FB484E /* ListEnvironment.swift in Sources */,
 				B02221A92641D4FE0005295B /* FirebaseDecoder.swift in Sources */,
 				B02221A72641BEFC0005295B /* Tagged.swift in Sources */,
+				B021DF3F264918E400FD418F /* BackgroundWave.swift in Sources */,
 				B0AF0A9A2643303500DF4DC9 /* FineReason.swift in Sources */,
 				B02221AC2641D5570005295B /* FirebasePerson.swift in Sources */,
 				B0AF0A9826432F1E00DF4DC9 /* FirebaseFine.swift in Sources */,
@@ -623,7 +639,7 @@
 		};
 		B01E96BB2641AEF80034E3D1 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 223CBBE275283D64C6920929 /* Pods-Strafen.debug.xcconfig */;
+			baseConfigurationReference = 4900075C659249C78453D551 /* Pods-Strafen.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -651,7 +667,7 @@
 		};
 		B01E96BC2641AEF80034E3D1 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 9659D7D6F5BB8BA2E67E5C9C /* Pods-Strafen.release.xcconfig */;
+			baseConfigurationReference = 7E080994FDC3B1759B22AD23 /* Pods-Strafen.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -679,7 +695,7 @@
 		};
 		B0A761B02642ECBC003B170F /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 3ED67D30C38C4D37DA426A80 /* Pods-StrafenTests.debug.xcconfig */;
+			baseConfigurationReference = EAAE14DB8E88B5D615F13A5D /* Pods-StrafenTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
@@ -700,7 +716,7 @@
 		};
 		B0A761B12642ECBC003B170F /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 69A945F062159E4A75C0275C /* Pods-StrafenTests.release.xcconfig */;
+			baseConfigurationReference = FD52216F4864E353DAF44788 /* Pods-StrafenTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
