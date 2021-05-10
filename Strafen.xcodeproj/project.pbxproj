@@ -13,6 +13,7 @@
 		B01E96B32641AEF80034E3D1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B01E96B22641AEF80034E3D1 /* Assets.xcassets */; };
 		B01E96B62641AEF80034E3D1 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B01E96B52641AEF80034E3D1 /* Preview Assets.xcassets */; };
 		B021DF3F264918E400FD418F /* BackgroundWave.swift in Sources */ = {isa = PBXBuildFile; fileRef = B021DF3E264918E400FD418F /* BackgroundWave.swift */; };
+		B021DF43264920EA00FD418F /* LoginEntryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B021DF42264920EA00FD418F /* LoginEntryView.swift */; };
 		B02221A72641BEFC0005295B /* Tagged.swift in Sources */ = {isa = PBXBuildFile; fileRef = B02221A62641BEFC0005295B /* Tagged.swift */; };
 		B02221A92641D4FE0005295B /* FirebaseDecoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = B02221A82641D4FE0005295B /* FirebaseDecoder.swift */; };
 		B02221AC2641D5570005295B /* FirebasePerson.swift in Sources */ = {isa = PBXBuildFile; fileRef = B02221AB2641D5570005295B /* FirebasePerson.swift */; };
@@ -23,6 +24,11 @@
 		B0447C1A2641B78100148430 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0447C192641B78100148430 /* AppDelegate.swift */; };
 		B0447C1D2641B84600148430 /* Extensions+Other.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0447C1C2641B84600148430 /* Extensions+Other.swift */; };
 		B0447C202641BAFE00148430 /* FirebaseFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0447C1F2641BAFE00148430 /* FirebaseFetcher.swift */; };
+		B066A2BF26492E2700AB2715 /* SignInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B066A2BE26492E2700AB2715 /* SignInView.swift */; };
+		B0A462912649412C0045D2BE /* Header.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0A462902649412B0045D2BE /* Header.swift */; };
+		B0A4629326494AB90045D2BE /* RoundedCorners.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0A4629226494AB80045D2BE /* RoundedCorners.swift */; };
+		B0A46295264953270045D2BE /* Outline.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0A46294264953270045D2BE /* Outline.swift */; };
+		B0A4629726497FD00045D2BE /* SingleButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0A4629626497FD00045D2BE /* SingleButton.swift */; };
 		B0A7619C2642D366003B170F /* FirebaseCallParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0A7619B2642D366003B170F /* FirebaseCallParameters.swift */; };
 		B0A7619F2642DBB2003B170F /* FirebaseFunctionCallable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0A7619E2642DBB2003B170F /* FirebaseFunctionCallable.swift */; };
 		B0A761A12642E20C003B170F /* KeysInfo.plist in Resources */ = {isa = PBXBuildFile; fileRef = B0A761A02642E20C003B170F /* KeysInfo.plist */; };
@@ -70,6 +76,7 @@
 		B01E96B52641AEF80034E3D1 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		B01E96B72641AEF80034E3D1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B021DF3E264918E400FD418F /* BackgroundWave.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundWave.swift; sourceTree = "<group>"; };
+		B021DF42264920EA00FD418F /* LoginEntryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginEntryView.swift; sourceTree = "<group>"; };
 		B02221A62641BEFC0005295B /* Tagged.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tagged.swift; sourceTree = "<group>"; };
 		B02221A82641D4FE0005295B /* FirebaseDecoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseDecoder.swift; sourceTree = "<group>"; };
 		B02221AB2641D5570005295B /* FirebasePerson.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebasePerson.swift; sourceTree = "<group>"; };
@@ -80,6 +87,11 @@
 		B0447C192641B78100148430 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B0447C1C2641B84600148430 /* Extensions+Other.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extensions+Other.swift"; sourceTree = "<group>"; };
 		B0447C1F2641BAFE00148430 /* FirebaseFetcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseFetcher.swift; sourceTree = "<group>"; };
+		B066A2BE26492E2700AB2715 /* SignInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInView.swift; sourceTree = "<group>"; };
+		B0A462902649412B0045D2BE /* Header.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Header.swift; sourceTree = "<group>"; };
+		B0A4629226494AB80045D2BE /* RoundedCorners.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedCorners.swift; sourceTree = "<group>"; };
+		B0A46294264953270045D2BE /* Outline.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Outline.swift; sourceTree = "<group>"; };
+		B0A4629626497FD00045D2BE /* SingleButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleButton.swift; sourceTree = "<group>"; };
 		B0A7619A2642D307003B170F /* Strafen.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Strafen.entitlements; sourceTree = "<group>"; };
 		B0A7619B2642D366003B170F /* FirebaseCallParameters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseCallParameters.swift; sourceTree = "<group>"; };
 		B0A7619E2642DBB2003B170F /* FirebaseFunctionCallable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseFunctionCallable.swift; sourceTree = "<group>"; };
@@ -156,6 +168,7 @@
 			children = (
 				B01E96BD2641AF090034E3D1 /* Controller */,
 				B01E96B02641AEF60034E3D1 /* ContentView.swift */,
+				B021DF402649194B00FD418F /* HomeViews */,
 				B021DF3D264918D300FD418F /* HelpfulViews */,
 				B0254E062641B54C0083752B /* FirebaseInterface */,
 				B0447C1E2641B90600148430 /* Utilities */,
@@ -189,8 +202,29 @@
 			isa = PBXGroup;
 			children = (
 				B021DF3E264918E400FD418F /* BackgroundWave.swift */,
+				B0A462902649412B0045D2BE /* Header.swift */,
+				B0A46294264953270045D2BE /* Outline.swift */,
+				B0A4629226494AB80045D2BE /* RoundedCorners.swift */,
+				B0A4629626497FD00045D2BE /* SingleButton.swift */,
 			);
 			path = HelpfulViews;
+			sourceTree = "<group>";
+		};
+		B021DF402649194B00FD418F /* HomeViews */ = {
+			isa = PBXGroup;
+			children = (
+				B021DF412649195000FD418F /* LoginView */,
+			);
+			path = HomeViews;
+			sourceTree = "<group>";
+		};
+		B021DF412649195000FD418F /* LoginView */ = {
+			isa = PBXGroup;
+			children = (
+				B021DF42264920EA00FD418F /* LoginEntryView.swift */,
+				B066A2BE26492E2700AB2715 /* SignInView.swift */,
+			);
+			path = LoginView;
 			sourceTree = "<group>";
 		};
 		B02221AA2641D5250005295B /* FirebaseListTypes */ = {
@@ -472,23 +506,29 @@
 				B0AF0A9E2643CE2500DF4DC9 /* FirebaseTransaction.swift in Sources */,
 				B0447C1A2641B78100148430 /* AppDelegate.swift in Sources */,
 				B0AF0A9426432C9500DF4DC9 /* Amount.swift in Sources */,
+				B0A46295264953270045D2BE /* Outline.swift in Sources */,
 				B0D4B62D2642CD19003A720C /* FirebaseFunctionCaller.swift in Sources */,
 				B0EE60ED2641E07000D3B2D2 /* FirebaseObserver.swift in Sources */,
 				B0C2A4B02642918800250A8D /* Extensions+Array.swift in Sources */,
 				B0AF0A9026432B6F00DF4DC9 /* FirebaseReasonTemplate.swift in Sources */,
+				B0A4629726497FD00045D2BE /* SingleButton.swift in Sources */,
+				B0A4629326494AB90045D2BE /* RoundedCorners.swift in Sources */,
 				B02221B02641D73C0005295B /* FirebaseListType.swift in Sources */,
 				B0AF0A9C2643328800DF4DC9 /* Payed.swift in Sources */,
 				B0A761A32642E6C7003B170F /* FirebaseDatabaseLevel.swift in Sources */,
 				B0AF0A9226432C1A00DF4DC9 /* Importance.swift in Sources */,
 				B01E96B12641AEF60034E3D1 /* ContentView.swift in Sources */,
 				B0447C202641BAFE00148430 /* FirebaseFetcher.swift in Sources */,
+				B0A462912649412C0045D2BE /* Header.swift in Sources */,
 				B0A7619F2642DBB2003B170F /* FirebaseFunctionCallable.swift in Sources */,
 				B0447C1D2641B84600148430 /* Extensions+Other.swift in Sources */,
 				B01E96AF2641AEF60034E3D1 /* StrafenApp.swift in Sources */,
 				B0E9C86826447AF100FB484E /* ListEnvironment.swift in Sources */,
 				B02221A92641D4FE0005295B /* FirebaseDecoder.swift in Sources */,
 				B02221A72641BEFC0005295B /* Tagged.swift in Sources */,
+				B066A2BF26492E2700AB2715 /* SignInView.swift in Sources */,
 				B021DF3F264918E400FD418F /* BackgroundWave.swift in Sources */,
+				B021DF43264920EA00FD418F /* LoginEntryView.swift in Sources */,
 				B0AF0A9A2643303500DF4DC9 /* FineReason.swift in Sources */,
 				B02221AC2641D5570005295B /* FirebasePerson.swift in Sources */,
 				B0AF0A9826432F1E00DF4DC9 /* FirebaseFine.swift in Sources */,

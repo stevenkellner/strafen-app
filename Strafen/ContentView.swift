@@ -9,8 +9,6 @@ import SwiftUI
 
 struct ContentView: View {
     var body: some View {
-        BackgroundWave(amplitute: 0.1, steps: 4)
-            .frame(width: 200, height: 400)
-            .foregroundColor(.blue)
+        LoginEntryView()
     }
 }

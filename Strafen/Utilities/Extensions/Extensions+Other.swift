@@ -124,3 +124,33 @@ extension CGSize {
         CGSize(width: lhs.width * rhs, height: lhs.height * rhs)
     }
 }
+
+extension Color {
+    
+    /// Init with red, green and blue vue from 0 to 255
+    /// - Parameters:
+    ///   - red: red color
+    ///   - green: green color
+    ///   - blue: blue color
+    init(red: Int, green: Int, blue: Int) {
+        self.init(red: Double(red) / 255, green: Double(green) / 255, blue: Double(blue) / 255)
+    }
+    
+    /// Gray color of the background
+    static let backgroundGray = Color(red: 47, green: 49, blue: 54)
+    
+    /// Gray color of the wave
+    static let waveGray = Color(red: 70, green: 75, blue: 81)
+    
+    /// Gray color of buttons, textfields, etc.
+    static let fieldGray = Color(red: 55, green: 57, blue: 63)
+    
+    /// Color of a text
+    static let textColor = Color(red: 185, green: 187, blue: 190)
+    
+    /// Red color
+    static let customRed = Color(red: 185, green: 83, blue: 79)
+    
+    /// Green color
+    static let customGreen = Color(red: 95, green: 178, blue: 128)
+}

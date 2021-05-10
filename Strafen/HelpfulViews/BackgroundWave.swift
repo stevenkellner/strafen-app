@@ -38,8 +38,9 @@ struct BackgroundWave: View {
                 Spacer()
                 BackgroundWaveShape(offset: offset, amplitute: amplitute, steps: steps)
                     .frame(width: size?.width, height: size?.height)
-                    .animation(.linear(duration: 2).repeatForever(autoreverses: false))
-                    .onAppear { offset = 1 }
+                    .shadow(color: .black.opacity(0.2), radius: 30, x: 10, y: -10)
+                    .animation(.linear(duration: 5).repeatForever(autoreverses: false))
+                    .onAppear { offset = -1 }
             }
             Spacer()
         }
