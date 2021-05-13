@@ -94,20 +94,20 @@ extension Result {
 
 extension CGPoint {
     
-    /// <#Description#>
+    /// Adds a CGSize to a CGPoint
     /// - Parameters:
-    ///   - lhs: <#lhs description#>
-    ///   - rhs: <#rhs description#>
-    /// - Returns: <#description#>
+    ///   - lhs: point to add to
+    ///   - rhs: size to add to the point
+    /// - Returns: new point
     public static func +(lhs: CGPoint, rhs: CGSize) -> CGPoint {
         CGPoint(x: lhs.x + rhs.width, y: lhs.y + rhs.height)
     }
     
-    /// <#Description#>
+    /// Subtracts a CGSize from a CGPoint
     /// - Parameters:
-    ///   - lhs: <#lhs description#>
-    ///   - rhs: <#rhs description#>
-    /// - Returns: <#description#>
+    ///   - lhs: point to subtract from
+    ///   - rhs: size to subtract from the point
+    /// - Returns: new point
     public static func -(lhs: CGPoint, rhs: CGSize) -> CGPoint {
         CGPoint(x: lhs.x - rhs.width, y: lhs.y - rhs.height)
     }
@@ -115,11 +115,11 @@ extension CGPoint {
     
 extension CGSize {
     
-    /// <#Description#>
+    /// Multiplies a CGFloat to a CGSize
     /// - Parameters:
-    ///   - lhs: <#lhs description#>
-    ///   - rhs: <#rhs description#>
-    /// - Returns: <#description#>
+    ///   - lhs: size to multiply to
+    ///   - rhs: number to multiply to the size
+    /// - Returns: new size
     public static func *(lhs: CGSize, rhs: CGFloat) -> CGSize {
         CGSize(width: lhs.width * rhs, height: lhs.height * rhs)
     }
@@ -153,4 +153,40 @@ extension Color {
     
     /// Green color
     static let customGreen = Color(red: 95, green: 178, blue: 128)
+}
+
+extension View {
+    
+    /// Sets frame to maximum and hide navigation bar
+    var maxFrame: some View {
+        navigationTitle("")
+            .navigationBarHidden(true)
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .edgesIgnoringSafeArea(.all)
+    }
+    
+    /// Toggles given binding on tap gesture
+    /// - Parameter binding: bool binding to toggle
+    /// - Returns: modified view
+    func toggleOnTapGesture(_ binding: Binding<Bool>) -> some View {
+        onTapGesture { binding.wrappedValue.toggle() }
+    }
+}
+
+extension UIApplication {
+    
+    /// Dismisses the keyboard
+    func dismissKeyboard() {
+        sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+    }
+}
+
+extension String {
+    
+    /// Check if string is valid emial
+    var isValidEmail: Bool {
+        let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
+        let emailPred = NSPredicate(format:"SELF MATCHES %@", emailRegEx)
+        return emailPred.evaluate(with: self)
+    }
 }

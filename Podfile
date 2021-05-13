@@ -13,6 +13,8 @@ target 'Strafen' do
 
   # Hydra
   pod 'HydraAsync'
+  
+  pod 'Introspect'
 
   target 'StrafenTests' do
     inherit! :search_paths

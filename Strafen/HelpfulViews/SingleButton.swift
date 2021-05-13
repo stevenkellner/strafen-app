@@ -34,6 +34,9 @@ struct SingleButton: View {
     /// Height of the right symbol
     private var rightSymbolHeight: CGFloat = 27
     
+    /// Button handler
+    private var buttonHandler: (() -> Void)? = nil
+    
     /// Init with text of the button
     /// - Parameter text: text of the button
     init(_ text: String) {
@@ -80,6 +83,7 @@ struct SingleButton: View {
                 
             }
         }.frame(width: UIScreen.main.bounds.width * 0.95, height: 55)
+            .onTapGesture { buttonHandler?() }
     }
     
     /// Sets font size of the text
@@ -160,6 +164,15 @@ struct SingleButton: View {
     func rightSymbolHeight(_ height: CGFloat) -> SingleButton {
         var button = self
         button.rightSymbolHeight = height
+        return button
+    }
+    
+    /// Sets button handler
+    /// - Parameter buttonHandler: button handler
+    /// - Returns: modified single button
+    func onClick(perform buttonHandler: @escaping () -> Void) -> SingleButton {
+        var button = self
+        button.buttonHandler = buttonHandler
         return button
     }
     

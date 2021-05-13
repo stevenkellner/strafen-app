@@ -35,14 +35,14 @@ struct Outline: View {
         RoundedCorners(cornerSet)
             .radius(cornerRadius ?? 5)
             .lineWidth(lineWidth)
-            .fillColor(.fieldGray)
-            .strokeColor(.clear)
+            .fillColor(fillColor ?? .fieldGray)
+            .strokeColor(strokeColor ?? .clear)
     }
     
     /// Set fill color of the outline
     /// - Parameter fillColor: fill color of the outline
     /// - Returns: modified outline
-    func fillColor(_ fillColor: Color) -> Outline {
+    func fillColor(_ fillColor: Color?) -> Outline {
         var outline = self
         outline.fillColor = fillColor
         return outline
@@ -85,6 +85,18 @@ struct SingleOutlinedContent<Content>: View where Content: View {
     /// Content
     let content: Content
     
+    /// Fill Color of the Outline
+    private var fillColor: Color? = nil
+    
+    /// Stroke Color of the outline
+    private var strokeColor: Color? = nil
+    
+    /// Line width of the outline
+    private var lineWidth: CGFloat? = nil
+    
+    /// Cornder radius
+    private var cornerRadius: CGFloat? = nil
+    
     /// Init with corner set and content
     /// - Parameters:
     ///   - cornerSet: corner set
@@ -99,11 +111,51 @@ struct SingleOutlinedContent<Content>: View where Content: View {
             
             // Outline
             Outline(cornerSet)
+                .fillColor(fillColor)
+                .strokeColor(strokeColor)
+                .lineWidth(lineWidth)
+                .radius(cornerRadius)
             
             // Content
             content
             
         }.shadow(color: .black.opacity(0.25), radius: 10)
+    }
+    
+    /// Set fill color of the outline
+    /// - Parameter fillColor: fill color of the outline
+    /// - Returns: modified outline
+    func fillColor(_ fillColor: Color?) -> SingleOutlinedContent {
+        var outline = self
+        outline.fillColor = fillColor
+        return outline
+    }
+    
+    /// Set stroke color of the outline
+    /// - Parameter strokeColor: stroke color of the outline
+    /// - Returns: modified outline
+    func strokeColor(_ strokeColor: Color?) -> SingleOutlinedContent {
+        var outline = self
+        outline.strokeColor = strokeColor
+        return outline
+    }
+    
+    /// Set line width of the outline
+    /// - Parameter lineWidth: line width of the outline
+    /// - Returns: modified outline
+    func lineWidth(_ lineWidth: CGFloat?) -> SingleOutlinedContent {
+        var outline = self
+        outline.lineWidth = lineWidth
+        return outline
+    }
+    
+    /// Set corner radius of the outline
+    /// - Parameter radius: corner radius of the outline
+    /// - Returns: modified outline
+    func radius(_ radius: CGFloat?) -> SingleOutlinedContent {
+        var outline = self
+        outline.cornerRadius = radius
+        return outline
     }
 }
 
