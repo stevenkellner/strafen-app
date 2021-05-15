@@ -9,16 +9,13 @@ import SwiftUI
 import Introspect
 
 /// Text Field with custom Design
-struct CustomTextField<Formatter, InputProperties>: View where Formatter: TextFieldFormatter, InputProperties: InputPropertiesProtocol {
+struct CustomTextField<InputProperties>: View where InputProperties: InputPropertiesProtocol {
     
     /// Type of the textfield
     private let textField: InputProperties.TextFields
     
     /// Binding of the input properties
     private let inputProperties: Binding<InputProperties>
-    
-    /// Textfield formatter
-    private let formatter: Formatter
     
     /// Placeholder of Text field
     private var placeholder: String = "Placeholder"
@@ -35,60 +32,44 @@ struct CustomTextField<Formatter, InputProperties>: View where Formatter: TextFi
     /// Textfield size
     private var textFieldSize: (width: CGFloat?, height: CGFloat?)
     
-    /// Init with textfield and formatter
+    /// Proxy of scroll view reader
+    private var scrollViewProxy: ScrollViewProxy? = nil
+    
+    /// Indicates wheater error messge is shown
+    private var showErrorMessage = true
+    
+    /// Init with textfield
     /// - Parameter textField: type of textfields
     /// - Parameter inputProperties: Binding of the input properties
-    /// - Parameter formatter: text field formatter
-    public init(_ textField: InputProperties.TextFields, inputProperties: Binding<InputProperties>, formatter: Formatter) {
+    public init(_ textField: InputProperties.TextFields, inputProperties: Binding<InputProperties>) {
         self.textField = textField
         self.inputProperties = inputProperties
-        self.formatter = formatter
     }
-    
-    /// Used to format textfield text
-    @State private var formattedText: String = ""
-    
-    /// Indicates whether the textfield is focused
-    @State private var textfieldFocused = false
     
     // -MARK: body
     
     public var body: some View {
         VStack(spacing: 5) {
             SingleOutlinedContent {
-                ZStack {
                     
-                    // Placeholder
-                    if formattedText.isEmpty && !textfieldFocused {
-                        Text(placeholder)
-                            .foregroundColor(.textColor)
-                            .font(.system(size: 24, weight: .light))
-                            .lineLimit(1)
-                            .padding(.horizontal, 10)
-                            .opacity(0.5)
-                            .allowsHitTesting(false)
-                    }
-                    
-                    // Textfield
-                    CustomUITextField($formattedText, secure: isSecure, keyboardType: keyboardType) { newText in
-                        let originalText = formatter.originalText(newText)
-                        formattedText = formatter.formattedText(originalText)
-                        inputProperties.wrappedValue[textField] = originalText
-                    } onEditingChanged: { appears in
-                        textfieldFocused = appears
-                        if !appears {
-                            _ = inputProperties.wrappedValue.validateTextField(textField)
-                            completionHandler?()
-                            if let nextTextField = inputProperties.wrappedValue.nextTextField(after: textField) {
-                                inputProperties.wrappedValue.firstResponders.becomeFirstResponder(nextTextField)
-                            }
+                // Textfield
+                UICustomTextField(text: inputProperties[textField])
+                    .placeholder(placeholder)
+                    .secure(isSecure)
+                    .color(inputProperties.wrappedValue[error: textField].map { _ in .customRed } ?? .textColor)
+                    .onCompletion {
+                        _ = inputProperties.wrappedValue.validateTextField(textField)
+                        completionHandler?()
+                        if let nextTextField = inputProperties.wrappedValue.nextTextField(after: textField) {
+                            inputProperties.wrappedValue.firstResponders.becomeFirstResponder(nextTextField)
+                            scrollViewProxy?.scrollTo(nextTextField, anchor: UnitPoint(x: 0, y: 0.1))
                         }
                     }
-                    
-                }
+
             }.strokeColor(inputProperties.wrappedValue[error: textField].map { _ in .customRed })
                 .lineWidth(inputProperties.wrappedValue[error: textField].map { _ in 2 })
                 .frame(width: textFieldSize.width, height: textFieldSize.height)
+                .id(textField)
                 .introspectTextField { textField in
                     inputProperties.wrappedValue.firstResponders.append(self.textField) {
                         textField.becomeFirstResponder()
@@ -96,12 +77,8 @@ struct CustomTextField<Formatter, InputProperties>: View where Formatter: TextFi
                 }
             
             // Error message
-            if let errorMessage = inputProperties.wrappedValue[error: textField] {
-                Text(errorMessage.message)
-                    .foregroundColor(.customRed)
-                    .font(.system(size: 20, weight: .regular))
-                    .lineLimit(1)
-                    .padding(.horizontal, 10)
+            if showErrorMessage {
+                ErrorMessageView(inputProperties[error: textField])
             }
         }
     }
@@ -165,6 +142,15 @@ struct CustomTextField<Formatter, InputProperties>: View where Formatter: TextFi
         secure(true)
     }
     
+    /// Sets scroll view proxy
+    /// - Parameter proxy: proxy of scroll view reader
+    /// - Returns: modified textfield
+    public func scrollViewProxy(_ proxy: ScrollViewProxy) -> CustomTextField {
+        var textField = self
+        textField.scrollViewProxy = proxy
+        return textField
+    }
+    
     /// Set completion handler
     /// - Parameter handler: completion handler
     /// - Returns: modified textfield
@@ -174,44 +160,70 @@ struct CustomTextField<Formatter, InputProperties>: View where Formatter: TextFi
         return textField
     }
     
-    // -MARK: CustomUITextField
-
-    /// A control that displays an editable text interface.
-    struct CustomUITextField: UIViewRepresentable {
+    /// Sets show error message
+    /// - Parameter show: indicates wheater error messge is shown
+    /// - Returns: modified textfield
+    public func showErrorMessage(_ show: Bool) -> CustomTextField {
+        var textField = self
+        textField.showErrorMessage = show
+        return textField
+    }
+    
+    /// Sets show error message to false
+    public var hideErrorMessage: CustomTextField {
+        showErrorMessage(false)
+    }
+    
+    // -MARK: Custom UI Textfield
+    
+    /// Custom UI Textfield
+    struct UICustomTextField: UIViewRepresentable {
         
+        /// Input text
+        @Binding var text: String
+        
+        /// Init with input text
+        /// - Parameter text: input text
+        init(text: Binding<String>) {
+            self._text = text
+        }
+        
+        /// Placeholder
+        private var placeholder: String = "Placeholder"
+        
+        /// Inidcates whether textfield is secure
+        private var isSecure: Bool = false
+        
+        /// Textfield color
+        private var color: Color = .textColor
+        
+        /// Handler execuded after keyboard dismisses
+        private var completionHandler: (() -> Void)? = nil
+        
+        /// UISecureField Coordinator
         class Coordinator: NSObject, UITextFieldDelegate {
             
-            /// The text to display and edit
-            @Binding private var text: String
+            /// Input text
+            @Binding var text: String
             
-            /// Handler performed when text is changed
-            private let onTextChanged: ((String) -> Void)?
+            /// Handler execuded after keyboard dismisses
+            let completionHandler: (() -> Void)?
             
-            /// The action to perform when the user begins editing text and after the user finishes editing text.
-            /// The closure receives a Boolean value that indicates the editing status: true when the user begins editing, false when they finish
-            private let onEditingChanged: ((Bool) -> Void)?
-            
-            /// Creates a text field with a text
-            /// - Parameters:
-            ///   - text: The text to display and edit.
-            ///   - onTextChanged: handler performed when text is changed
-            ///   - onEditingChanged: The action to perform when the user begins editing text and after the user finishes editing text.
-            ///     The closure receives a Boolean value that indicates the editing status: true when the user begins editing, false when they finish.
-            init(_ text: Binding<String>, onTextChanged: ((String) -> Void)?, onEditingChanged: ((Bool) -> Void)?) {
+            /// Init with text and completion handler
+            /// - Parameter text: input text
+            /// - Parameter completionHandler: handler execuded after keyboard dismisses
+            init(text: Binding<String>, handler completionHandler: (() -> Void)?) {
                 self._text = text
-                self.onTextChanged = onTextChanged
-                self.onEditingChanged = onEditingChanged
+                self.completionHandler = completionHandler
             }
             
             func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-                text = textField.text ?? text
-                onTextChanged?(text)
+                if let text = textField.text { self.text = text }
                 return true
             }
             
             func textFieldShouldClear(_ textField: UITextField) -> Bool {
                 text = ""
-                onTextChanged?(text)
                 return true
             }
             
@@ -220,103 +232,85 @@ struct CustomTextField<Formatter, InputProperties>: View where Formatter: TextFi
                 return true
             }
             
-            func textFieldDidBeginEditing(_ textField: UITextField) {
-                onEditingChanged?(true)
-            }
             
             func textFieldDidEndEditing(_ textField: UITextField) {
-                text = textField.text ?? text
-                onTextChanged?(text)
-                onEditingChanged?(false)
+                if let text = textField.text { self.text = text }
+                completionHandler?()
             }
-        }
-        
-        /// The text to display and edit
-        @Binding private var text: String
-        
-        /// Inidcates whether textfield is secure
-        private let secure: Bool
-        
-        /// Handler performed when text is changed
-        private let onTextChanged: ((String) -> Void)?
-        
-        /// The action to perform when the user begins editing text and after the user finishes editing text.
-        /// The closure receives a Boolean value that indicates the editing status: true when the user begins editing, false when they finish
-        private let onEditingChanged: ((Bool) -> Void)?
-        
-        /// UI textfield
-        private let textField: UITextField
-        
-        /// Creates a text field with a text
-        /// - Parameters:
-        ///   - text: The text to display and edit
-        ///   - secure: Inidcates whether textfield is secure
-        ///   - keyboardType: Keyboard type
-        ///   - onTextChanged: Handler performed when text is changed
-        ///   - onEditingChanged: The action to perform when the user begins editing text and after the user finishes editing text.
-        ///     The closure receives a Boolean value that indicates the editing status: true when the user begins editing, false when they finish.
-        init(_ text: Binding<String>, secure: Bool = false, keyboardType: UIKeyboardType = .default, onTextChanged: ((String) -> Void)? = nil, onEditingChanged: ((Bool) -> Void)? = nil) {
-            self._text = text
-            self.secure = secure
-            self.onTextChanged = onTextChanged
-            self.onEditingChanged = onEditingChanged
-            self.textField = UITextField()
-            self.textField.autocapitalizationType = .none
-            self.textField.isSecureTextEntry = secure
-            self.textField.clearsOnBeginEditing = secure
-            self.textField.textAlignment = .center
-            self.textField.clearButtonMode = .whileEditing
-            self.textField.font = .systemFont(ofSize: 24, weight: .light)
-            self.textField.textColor = UIColor(.textColor)
-            self.textField.keyboardType = keyboardType
         }
         
         func makeCoordinator() -> Coordinator {
-            Coordinator($text, onTextChanged: onTextChanged, onEditingChanged: onEditingChanged)
+            Coordinator(text: $text, handler: completionHandler)
         }
         
-        func makeUIView(context: UIViewRepresentableContext<CustomUITextField>) -> UITextField {
-            self.textField.delegate = context.coordinator
-            return self.textField
+        func makeUIView(context: UIViewRepresentableContext<UICustomTextField>) -> UITextField {
+            let textField = UITextField()
+            textField.delegate = context.coordinator
+            textField.autocapitalizationType = .none
+            textField.isSecureTextEntry = isSecure
+            textField.clearsOnBeginEditing = isSecure
+            textField.attributedPlaceholder = NSAttributedString(string: placeholder, attributes: [.foregroundColor: UIColor(.textColor.opacity(0.5))])
+            textField.textAlignment = .center
+            textField.clearButtonMode = .whileEditing
+            textField.font = .systemFont(ofSize: 20, weight: .regular)
+            textField.textColor = UIColor(color)
+            return textField
         }
         
-        func updateUIView(_ uiView: UITextField, context: UIViewRepresentableContext<CustomUITextField>) {
+        func updateUIView(_ uiView: UITextField, context: UIViewRepresentableContext<UICustomTextField>) {
             uiView.text = text
+        }
+        
+        /// Set placeholder
+        /// - Parameter placeholder: placeholder
+        /// - Returns: modified textfield
+        public func placeholder(_ placeholder: String) -> UICustomTextField {
+            var textField = self
+            textField.placeholder = placeholder
+            return textField
+        }
+        
+        /// Sets text color
+        /// - Parameter color: text color
+        /// - Returns: modified textfield
+        public func color(_ color: Color) -> UICustomTextField {
+            var textField = self
+            textField.color = color
+            return textField
+        }
+        
+        /// Sets if textfield is secure
+        /// - Parameter secure: inidcates whether textfield is secure
+        /// - Returns: modified textfield
+        public func secure(_ secure: Bool) -> UICustomTextField {
+            var textField = self
+            textField.isSecure = secure
+            return textField
+        }
+        
+        /// Sets textfield to secure
+        public var secure: UICustomTextField {
+            secure(true)
+        }
+        
+        /// Set completion handler
+        /// - Parameter handler: completion handler
+        /// - Returns: modified textfield
+        public func onCompletion(_ handler: @escaping () -> Void) -> UICustomTextField {
+            var textField = self
+            textField.completionHandler = handler
+            return textField
         }
     }
 }
 
 // -MARK: extensions for default init
 
-extension CustomTextField where Formatter == DefaultTextFieldFormatter {
-
-    /// Init with textfield
-    /// - Parameter textField: type of textfields
-    /// - Parameter inputProperties: Binding of the input properties
-    init(_ textField: InputProperties.TextFields, inputProperties: Binding<InputProperties>) {
-        self.textField = textField
-        self.inputProperties = inputProperties
-        self.formatter = DefaultTextFieldFormatter()
-    }
-}
-
 extension CustomTextField where InputProperties == DefaultInputProperties {
-    
-    /// Init with formatter
-    /// - Parameter formatter: text field formatter
-    init(formatter: Formatter) {
-        self.textField = .textField
-        self.inputProperties = .constant(DefaultInputProperties())
-        self.formatter = formatter
-    }
-}
-
-extension CustomTextField where Formatter == DefaultTextFieldFormatter, InputProperties == DefaultInputProperties {
     
     /// Init with default properties
     init() {
         self.textField = .textField
         self.inputProperties = .constant(DefaultInputProperties())
-        self.formatter = DefaultTextFieldFormatter()
     }
 }

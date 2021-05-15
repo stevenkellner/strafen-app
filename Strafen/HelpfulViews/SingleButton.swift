@@ -37,6 +37,9 @@ struct SingleButton: View {
     /// Button handler
     private var buttonHandler: (() -> Void)? = nil
     
+    /// Connection state
+    private var connectionState: Binding<ConnectionState>? = nil
+    
     /// Init with text of the button
     /// - Parameter text: text of the button
     init(_ text: String) {
@@ -70,7 +73,12 @@ struct SingleButton: View {
                         Spacer()
                         
                         // Right symbol
-                        if let image = rightImage {
+                        if connectionState?.wrappedValue == .loading {
+                            ProgressView()
+                                .progressViewStyle(CircularProgressViewStyle(tint: .textColor))
+                                .frame(width: rightSymbolHeight, height: rightSymbolHeight)
+                                .padding(.trailing, 25)
+                        } else if let image = rightImage {
                             image.resizable()
                                 .scaledToFit()
                                 .foregroundColor(rightColor)
@@ -89,7 +97,7 @@ struct SingleButton: View {
     /// Sets font size of the text
     /// - Parameter size: font size of the text
     /// - Returns: modified single button
-    func fontSize(_ size: CGFloat) -> SingleButton {
+    public func fontSize(_ size: CGFloat) -> SingleButton {
         var button = self
         button.fontSize = size
         return button
@@ -98,7 +106,7 @@ struct SingleButton: View {
     /// Sets left symbol of the button
     /// - Parameter image: left iamge of the button
     /// - Returns: modified single button
-    func leftSymbol(_ image: Image) -> SingleButton {
+    public func leftSymbol(_ image: Image) -> SingleButton {
         var button = self
         button.leftImage = image
         return button
@@ -107,7 +115,7 @@ struct SingleButton: View {
     /// Sets right symbol of the button
     /// - Parameter image: right image of the button
     /// - Returns: modified single button
-    func rightSymbol(_ image: Image) -> SingleButton {
+    public func rightSymbol(_ image: Image) -> SingleButton {
         var button = self
         button.rightImage = image
         return button
@@ -116,7 +124,7 @@ struct SingleButton: View {
     /// Sets left symbol of the button
     /// - Parameter symbolName: left symbol of the button
     /// - Returns: modified single button
-    func leftSymbol(name symbolName: String) -> SingleButton {
+    public func leftSymbol(name symbolName: String) -> SingleButton {
         var button = self
         button.leftImage = Image(systemName: symbolName)
         return button
@@ -125,7 +133,7 @@ struct SingleButton: View {
     /// Sets right symbol of the button
     /// - Parameter symbolName: right symbol of the button
     /// - Returns: modified single button
-    func rightSymbol(name symbolName: String) -> SingleButton {
+    public func rightSymbol(name symbolName: String) -> SingleButton {
         var button = self
         button.rightImage = Image(systemName: symbolName)
         return button
@@ -134,7 +142,7 @@ struct SingleButton: View {
     /// Sets color of the left symbol
     /// - Parameter color: color of the left symbol
     /// - Returns: modified single button
-    func leftColor(_ color: Color) -> SingleButton {
+    public func leftColor(_ color: Color) -> SingleButton {
         var button = self
         button.leftColor = color
         return button
@@ -143,7 +151,7 @@ struct SingleButton: View {
     /// Sets color of the right symbol
     /// - Parameter color: color of the right symbol
     /// - Returns: modified single button
-    func rightColor(_ color: Color) -> SingleButton {
+    public func rightColor(_ color: Color) -> SingleButton {
         var button = self
         button.rightColor = color
         return button
@@ -152,7 +160,7 @@ struct SingleButton: View {
     /// Sets height of the left symbol
     /// - Parameter height: height of the left symbol
     /// - Returns: modified single button
-    func leftSymbolHeight(_ height: CGFloat) -> SingleButton {
+    public func leftSymbolHeight(_ height: CGFloat) -> SingleButton {
         var button = self
         button.leftSymbolHeight = height
         return button
@@ -161,7 +169,7 @@ struct SingleButton: View {
     /// Sets height of the right symbol
     /// - Parameter height: height of the right symbol
     /// - Returns: modified single button
-    func rightSymbolHeight(_ height: CGFloat) -> SingleButton {
+    public func rightSymbolHeight(_ height: CGFloat) -> SingleButton {
         var button = self
         button.rightSymbolHeight = height
         return button
@@ -170,11 +178,21 @@ struct SingleButton: View {
     /// Sets button handler
     /// - Parameter buttonHandler: button handler
     /// - Returns: modified single button
-    func onClick(perform buttonHandler: @escaping () -> Void) -> SingleButton {
+    public func onClick(perform buttonHandler: @escaping () -> Void) -> SingleButton {
         var button = self
         button.buttonHandler = buttonHandler
         return button
     }
+    
+    /// Sets connection state
+    /// - Parameter connectionState: connection state
+    /// - Returns: modified single button
+    public func connectionState(_ connectionState: Binding<ConnectionState>) -> SingleButton {
+        var button = self
+        button.connectionState = connectionState
+        return button
+    }
+
     
     /// Cancel button
     static let cancel = SingleButton("Abbrechen")

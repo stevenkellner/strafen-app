@@ -153,6 +153,9 @@ extension Color {
     
     /// Green color
     static let customGreen = Color(red: 95, green: 178, blue: 128)
+    
+    /// Blue color
+    static let customBlue = Color(red: 78, green: 90, blue: 240)
 }
 
 extension View {
@@ -188,5 +191,17 @@ extension String {
         let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
         let emailPred = NSPredicate(format:"SELF MATCHES %@", emailRegEx)
         return emailPred.evaluate(with: self)
+    }
+}
+
+extension Bundle {
+    
+    /// Indicates whether build configuration is debug
+    var isDebug: Bool {
+        #if DEBUG
+        true
+        #else
+        false
+        #endif
     }
 }

@@ -34,4 +34,9 @@ enum FirebaseDatabaseLevel: String {
             return "testableClubs"
         }
     }
+    
+    /// `.debug` if build configuration is DEBUG, `.regular` otherwise
+    static var defaultValue: FirebaseDatabaseLevel {
+        Bundle.main.isDebug ? .debug : .regular
+    }
 }

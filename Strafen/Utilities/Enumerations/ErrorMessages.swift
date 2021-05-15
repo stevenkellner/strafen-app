@@ -40,6 +40,9 @@ enum ErrorMessages {
     /// Passwword is too weak
     case weakPassword
     
+    /// Club doesn't exist
+    case clubNotExists
+    
     /// Message of the error
     var message: String {
         switch self {
@@ -63,6 +66,8 @@ enum ErrorMessages {
             return "Diese Email ist bereits registriert!"
         case .weakPassword:
             return "Das Passwort ist zu schwach!"
+        case .clubNotExists:
+            return "Es gibt keinen Verein mit dieser Kennung!"
         }
     }
 }

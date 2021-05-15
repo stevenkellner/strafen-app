@@ -76,16 +76,14 @@ extension InputPropertiesProtocol {
     /// Gets the next invalid textfield
     /// - Parameters:
     ///   - textfield: textfield to find after
-    ///   - startingTextField: starting textfield
     /// - Returns: next invalid textfield
-    public mutating func nextTextField(after textfield: TextFields, startingTextField: TextFields? = nil) -> TextFields? {
-        let startingTextField = startingTextField ?? textfield
+    public mutating func nextTextField(after textfield: TextFields) -> TextFields? {
+        guard textfield.rawValue != TextFields.allCases.count - 1 else { return nil }
         let _nextTextField = textfield.next
-        guard _nextTextField != startingTextField else { return nil }
         if validateTextField(_nextTextField, setErrorMessage: false) == .invalid {
             return _nextTextField
         }
-        return nextTextField(after: _nextTextField, startingTextField: startingTextField)
+        return nextTextField(after: _nextTextField)
     }
 }
 

@@ -1,5 +1,6 @@
 import * as cf from "./callableFunctions";
 import * as tf from "./testableFunctions";
+import { getClubIdCall } from "./regularFunctions/getClubIdCall";
 import * as admin from "firebase-admin";
 
 admin.initializeApp();
@@ -12,12 +13,13 @@ export const forceSignOut = cf.forceSignOut;
 export const changeList = cf.changeList;
 export const changeFinePayed = cf.changeFinePayed;
 export const getPersonProperties = cf.getPersonProperties;
-export const getClubId = cf.getClubId;
 export const existsClubWithIdentifier = cf.existsClubWithIdentifier;
 export const existsPersonWithUserId = cf.existsPersonWithUserId;
 export const newTransaction = cf.newTransaction;
 export const checkTransactions = cf.checkTransactions;
 export const saveCreditCard = cf.saveCreditCard;
+
+export const getClubId = getClubIdCall;
 
 export const newTestClub = tf.newTestClub;
 export const deleteTestClub = tf.deleteTestClub;

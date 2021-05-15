@@ -20,7 +20,7 @@ struct EmptyNavigationLink<Destination>: View where Destination: View {
     /// - Parameters:
     ///   - isActive: indicates wheter navigation link is active
     ///   - destination: destination view
-    init(isActive: Binding<Bool>, @ViewBuilder destination: () -> Destination) {
+    init(isActive: Binding<Bool> = .constant(true), @ViewBuilder destination: () -> Destination) {
         self._isActive = isActive
         self.destination = destination()
     }

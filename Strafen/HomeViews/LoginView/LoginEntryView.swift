@@ -10,6 +10,7 @@ import SwiftUI
 /// Used to navigate through all login and signin views
 struct LoginEntryView: View {
     var body: some View {
-        SignInView()
+        // SignInView()
+        SignInClubSelectionView(signInProperty: SignInProperty.UserIdName(userId: "userId", name: PersonName(firstName: "First", lastName: "LastName")))
     }
 }

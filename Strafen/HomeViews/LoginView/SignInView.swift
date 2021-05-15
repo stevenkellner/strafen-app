@@ -14,7 +14,7 @@ struct SignInView: View {
     @State var signInProperties: (name: PersonNameComponents, userId: String)? = nil
     
     /// Indicates whether navigation link is active
-    @State var isNavigationLinkActive = true
+    @State var isNavigationLinkActive = false
     
     var body: some View {
         NavigationView {
@@ -44,7 +44,7 @@ struct SignInView: View {
                             .leftSymbol(name: "envelope")
                             .leftColor(.textColor)
                             .leftSymbolHeight(24)
-                            .onTapGesture {
+                            .onClick {
                                 signInProperties = nil
                                 isNavigationLinkActive = true
                             }

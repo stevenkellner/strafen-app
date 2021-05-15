@@ -123,7 +123,7 @@ struct SignInEmailView: View {
         /// State of continue button press
         var connectionState: ConnectionState = .notStarted
         
-        /// Sign in property
+        /// Sign in property with userId and name
         var signInProperty: SignInProperty.UserIdName? = nil
         
         /// Evaluates auth error and sets associated error messages
@@ -166,8 +166,8 @@ struct SignInEmailView: View {
         ZStack {
             
             if let signInProperty = inputProperties.signInProperty {
-                EmptyNavigationLink(isActive: .constant(true)) {
-                    Text(signInProperty.userId)
+                EmptyNavigationLink {
+                    SignInClubSelectionView(signInProperty: signInProperty)
                 }
             }
             
@@ -188,72 +188,80 @@ struct SignInEmailView: View {
                 Spacer()
                 
                 ScrollView(showsIndicators: false) {
-                    VStack(spacing: 15) {
-                        
-                        if signInProperties != nil {
-                            Text("Dein Name ist für die Registrierung erforderlich.")
-                                .foregroundColor(.customRed)
-                                .font(.system(size: 24, weight: .regular))
-                                .multilineTextAlignment(.center)
-                                .padding(.horizontal, 10)
-                                .padding(.top, 30)
-                        }
-                        
-                        // Name
-                        TitledContent("Name") {
-                            VStack(spacing: 5) {
-                                
-                                // First name
-                                CustomTextField(.firstName, inputProperties: $inputProperties)
-                                    .placeholder("Vorname")
-                                    .defaultTextFieldSize
-                                
-                                // Last name
-                                CustomTextField(.lastName, inputProperties: $inputProperties)
-                                    .placeholder("Nachname (optional)")
-                                    .defaultTextFieldSize
-                                
-                            }
-                        }
-                        
-                        if signInProperties == nil {
+                    ScrollViewReader { proxy in
+                        VStack(spacing: 15) {
                             
-                            // Email
-                            TitledContent("Email") {
-                                CustomTextField(.email, inputProperties: $inputProperties)
-                                    .placeholder("Email")
-                                    .defaultTextFieldSize
-                                
+                            if signInProperties != nil {
+                                Text("Dein Name ist für die Registrierung erforderlich.")
+                                    .foregroundColor(.customRed)
+                                    .font(.system(size: 24, weight: .regular))
+                                    .multilineTextAlignment(.center)
+                                    .lineLimit(2)
+                                    .padding(.horizontal, 15)
+                                    .padding(.top, 30)
                             }
                             
-                            // Password
-                            TitledContent("Passwort") {
+                            // Name
+                            TitledContent("Name") {
                                 VStack(spacing: 5) {
                                     
-                                    // Password
-                                    CustomTextField(.password, inputProperties: $inputProperties)
-                                        .placeholder("Passwort")
+                                    // First name
+                                    CustomTextField(.firstName, inputProperties: $inputProperties)
+                                        .placeholder("Vorname")
                                         .defaultTextFieldSize
-                                        .secure
+                                        .scrollViewProxy(proxy)
                                     
-                                    // Repeat password
-                                    CustomTextField(.repeatPassword, inputProperties: $inputProperties)
-                                        .placeholder("Passwort Wiederholen")
+                                    // Last name
+                                    CustomTextField(.lastName, inputProperties: $inputProperties)
+                                        .placeholder("Nachname (optional)")
                                         .defaultTextFieldSize
-                                        .secure
+                                        .scrollViewProxy(proxy)
                                     
                                 }
                             }
                             
-                        }
-                    }.padding(.vertical, 10)
-                        .keyboardAdaptiveOffset
+                            if signInProperties == nil {
+                                
+                                // Email
+                                TitledContent("Email") {
+                                    CustomTextField(.email, inputProperties: $inputProperties)
+                                        .placeholder("Email")
+                                        .defaultTextFieldSize
+                                        .scrollViewProxy(proxy)
+                                    
+                                }
+                                
+                                // Password
+                                TitledContent("Passwort") {
+                                    VStack(spacing: 5) {
+                                        
+                                        // Password
+                                        CustomTextField(.password, inputProperties: $inputProperties)
+                                            .placeholder("Passwort")
+                                            .defaultTextFieldSize
+                                            .scrollViewProxy(proxy)
+                                            .secure
+                                        
+                                        // Repeat password
+                                        CustomTextField(.repeatPassword, inputProperties: $inputProperties)
+                                            .placeholder("Passwort Wiederholen")
+                                            .defaultTextFieldSize
+                                            .scrollViewProxy(proxy)
+                                            .secure
+                                        
+                                    }
+                                }
+                                
+                            }
+                        }.padding(.vertical, 10)
+                    }
                 }
                 
                 Spacer()
                 
                 // Continue button
                 SingleButton.continue
+                    .connectionState($inputProperties.connectionState)
                     .onClick(perform: handleContinueButtonPress)
                     .padding(.bottom, 55)
                 
