@@ -92,11 +92,11 @@ extension FirebaseFetcher {
     /// - Parameter clubId: id of the club
     /// - Returns: promise of the club
     func fetchClub(_ clubId: UUID) -> Promise<TestClub> {
-        let properties = fetch(TestClub.Properties.self, url: nil, level: .testing, clubId: clubId)
-        let persons = fetchList(FirebasePerson.self, level: .testing, clubId: clubId)
-        let fines = fetchList(FirebaseFine.self, level: .testing, clubId: clubId)
-        let reasons = fetchList(FirebaseReasonTemplate.self, level: .testing, clubId: clubId)
-        let transactions = fetchList(FirebaseTransaction.self, level: .testing, clubId: clubId)
+        let properties = fetch(TestClub.Properties.self, url: nil, clubId: clubId)
+        let persons = fetchList(FirebasePerson.self, clubId: clubId)
+        let fines = fetchList(FirebaseFine.self, clubId: clubId)
+        let reasons = fetchList(FirebaseReasonTemplate.self, clubId: clubId)
+        let transactions = fetchList(FirebaseTransaction.self, clubId: clubId)
         return zip(a: properties, b: persons, c: fines, d: reasons, e: transactions).then { properties, persons, fines, reasons, transactions in
             return TestClub(properties: properties, persons: persons, fines: fines, reasons: reasons, transactions: transactions)
         }

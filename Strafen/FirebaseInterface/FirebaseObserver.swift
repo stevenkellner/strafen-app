@@ -11,8 +11,11 @@ import FirebaseDatabase
 /// Observers data from firebase database
 struct FirebaseObserver {
     
+    /// Level of a firebase database observe
+    public var level: FirebaseDatabaseLevel = .defaultValue
+    
     /// Shared instance for singelton
-    static let shared = FirebaseObserver()
+    static var shared = FirebaseObserver()
     
     /// Private init for singleton
     private init() {}
@@ -21,12 +24,11 @@ struct FirebaseObserver {
     /// - Parameters:
     ///   - type: Type of observed value
     ///   - urlFromClub: Url from club to value in firebase database
-    ///   - level: level of firebase function call
     ///   - clubId: id of club to fetch from
     ///   - changeHandler: handles data change
     ///   - removeHandler: handles data remove
     /// - Returns: Closure to remove the observer
-    @discardableResult func observe<T>(_ type: T.Type, url urlFromClub: URL?, level: FirebaseDatabaseLevel, clubId: UUID, onChange changeHandler: ((T) -> Void)? = nil, onRemove removeHandler: (() -> Void)? = nil) -> () -> Void where T: Decodable {
+    @discardableResult func observe<T>(_ type: T.Type, url urlFromClub: URL?, clubId: UUID, onChange changeHandler: ((T) -> Void)? = nil, onRemove removeHandler: (() -> Void)? = nil) -> () -> Void where T: Decodable {
         let url = URL(string: level.clubComponent)!
             .appendingPathComponent(clubId.uuidString)
             .appendingUrl(urlFromClub)
@@ -45,11 +47,10 @@ struct FirebaseObserver {
     /// - Parameters:
     ///   - type: Type of the list element
     ///   - event: event to observe
-    ///   - level: level of firebase function call
     ///   - clubId: id of club to fetch from
     ///   - newDataHandler: Handles new data income
     /// - Returns: Closure to remove the observer
-    @discardableResult func observeList<ListType>(_ type: ListType.Type, event: DataEventType, level: FirebaseDatabaseLevel, clubId: UUID, handler newDataHandler: @escaping (ListType) -> Void) -> () -> Void where ListType: FirebaseListType {
+    @discardableResult func observeList<ListType>(_ type: ListType.Type, event: DataEventType, clubId: UUID, handler newDataHandler: @escaping (ListType) -> Void) -> () -> Void where ListType: FirebaseListType {
         let url = URL(string: level.clubComponent)!
             .appendingPathComponent(clubId.uuidString)
             .appendingUrl(ListType.urlFromClub)
@@ -65,14 +66,13 @@ struct FirebaseObserver {
     /// Observes a list at firebase database
     /// - Parameters:
     ///   - type: Type of the list element
-    ///   - level: level of firebase function call
     ///   - clubId: id of club to fetch from
     ///   - changeListHandler: Handles the change of given list
     /// - Returns: Closure to remove the observer
-    @discardableResult func observeList<ListType>(_ type: ListType.Type, level: FirebaseDatabaseLevel, clubId: UUID, handler changeListHandler: @escaping ((inout Array<ListType>) -> Void) -> Void) -> () -> Void where ListType: FirebaseListType {
+    @discardableResult func observeList<ListType>(_ type: ListType.Type, clubId: UUID, handler changeListHandler: @escaping ((inout Array<ListType>) -> Void) -> Void) -> () -> Void where ListType: FirebaseListType {
         
         // Observes if a child was added
-        let removeAddObserver = observeList(type, event: .childAdded, level: level, clubId: clubId) { newChild in
+        let removeAddObserver = observeList(type, event: .childAdded, clubId: clubId) { newChild in
             changeListHandler {
                 guard !$0.contains(where: { $0.id == newChild.id }) else { return }
                 $0.append(newChild)
@@ -80,14 +80,14 @@ struct FirebaseObserver {
         }
         
         // Observes if a child was changed
-        let removeChangeObserver = observeList(type, event: .childChanged, level: level, clubId: clubId) { changedChild in
+        let removeChangeObserver = observeList(type, event: .childChanged, clubId: clubId) { changedChild in
             changeListHandler {
                 $0.mapped { $0.id == changedChild.id ? changedChild : $0 }
             }
         }
         
         // Observes if a child was removed
-        let removeRemoveObserver = observeList(type, event: .childRemoved, level: level, clubId: clubId) { removedChild in
+        let removeRemoveObserver = observeList(type, event: .childRemoved, clubId: clubId) { removedChild in
             changeListHandler {
                 $0.filtered { $0.id != removedChild.id }
             }

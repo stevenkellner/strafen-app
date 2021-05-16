@@ -16,6 +16,8 @@ class FirebaseFetcherTests: XCTestCase {
     
     override func setUpWithError() throws {
         continueAfterFailure = false
+        FirebaseFunctionCaller.shared.level = .testing
+        FirebaseFetcher.shared.level = .testing
 
         // Delete old test club
         _setUpDeleteOldTestClub()
@@ -31,7 +33,7 @@ class FirebaseFetcherTests: XCTestCase {
     func _setUpDeleteOldTestClub() {
         waitExpectation { handler in
             let callItem = FirebaseFunctionDeleteTestClubCall(clubId: clubId)
-            FirebaseFunctionCaller.shared.call(callItem, level: .testing).thenResult { result in
+            FirebaseFunctionCaller.shared.call(callItem).thenResult { result in
                 XCTAssertNoThrow { try result.get() }
                 handler()
             }
@@ -42,7 +44,7 @@ class FirebaseFetcherTests: XCTestCase {
     func _setUpCreateNewTestClub() {
         waitExpectation { handler in
             let callItem = FirebaseFunctionNewTestClubCall(clubId: clubId, testClubType: .fetcherTestClub)
-            FirebaseFunctionCaller.shared.call(callItem, level: .testing).thenResult { result in
+            FirebaseFunctionCaller.shared.call(callItem).thenResult { result in
                 XCTAssertNoThrow { try result.get() }
                 handler()
             }
@@ -95,7 +97,7 @@ class FirebaseFetcherTests: XCTestCase {
     /// Test fetch list: fetch person list
     func _testFetchListPerson() throws {
         let result: Result<[FirebasePerson], Error> = try waitExpectation { handler in
-            FirebaseFetcher.shared.fetchList(FirebasePerson.self, level: .testing, clubId: clubId).thenResult(handler)
+            FirebaseFetcher.shared.fetchList(FirebasePerson.self, clubId: clubId).thenResult(handler)
         }
         let personList = try result.get().sorted { $0.id.uuidString < $1.id.uuidString }
         XCTAssertEqual(personList, TestClub.fetcherTestClub.persons)
@@ -104,7 +106,7 @@ class FirebaseFetcherTests: XCTestCase {
     /// Test fetch list: fetch fine list
     func _testFetchListFine() throws {
         let result: Result<[FirebaseFine], Error> = try waitExpectation { handler in
-            FirebaseFetcher.shared.fetchList(FirebaseFine.self, level: .testing, clubId: clubId).thenResult(handler)
+            FirebaseFetcher.shared.fetchList(FirebaseFine.self, clubId: clubId).thenResult(handler)
         }
         let fineList = try result.get().sorted { $0.id.uuidString < $1.id.uuidString }
         XCTAssertEqual(fineList, TestClub.fetcherTestClub.fines)
@@ -113,7 +115,7 @@ class FirebaseFetcherTests: XCTestCase {
     /// Test fetch list: fetch reason list
     func _testFetchListReason() throws {
         let result: Result<[FirebaseReasonTemplate], Error> = try waitExpectation { handler in
-            FirebaseFetcher.shared.fetchList(FirebaseReasonTemplate.self, level: .testing, clubId: clubId).thenResult(handler)
+            FirebaseFetcher.shared.fetchList(FirebaseReasonTemplate.self, clubId: clubId).thenResult(handler)
         }
         let reasonList = try result.get().sorted { $0.id.uuidString < $1.id.uuidString }
         XCTAssertEqual(reasonList, TestClub.fetcherTestClub.reasons)
@@ -122,7 +124,7 @@ class FirebaseFetcherTests: XCTestCase {
     /// Test fetch list: fetch transaction list
     func _testFetchListTransaction() throws {
         let result: Result<[FirebaseTransaction], Error> = try waitExpectation { handler in
-            FirebaseFetcher.shared.fetchList(FirebaseTransaction.self, level: .testing, clubId: clubId).thenResult(handler)
+            FirebaseFetcher.shared.fetchList(FirebaseTransaction.self, clubId: clubId).thenResult(handler)
         }
         let transactionList = try result.get().sorted { $0.id < $1.id }
         XCTAssertEqual(transactionList, TestClub.fetcherTestClub.transactions)
@@ -134,7 +136,7 @@ class FirebaseFetcherTests: XCTestCase {
         // Delete person list
         waitExpectation { handler in
             let callItem = FirebaseFunctionDeleteTestClubPropertyCall(clubId: clubId, urlFromClub: URL(string: "persons")!)
-            FirebaseFunctionCaller.shared.call(callItem, level: .testing).thenResult { result in
+            FirebaseFunctionCaller.shared.call(callItem).thenResult { result in
                 XCTAssertNoThrow { try result.get() }
                 handler()
             }
@@ -142,7 +144,7 @@ class FirebaseFetcherTests: XCTestCase {
         
         // Try fetch non existing person list
         let result: Result<[FirebasePerson], Error> = try waitExpectation { handler in
-            FirebaseFetcher.shared.fetchList(FirebasePerson.self, level: .testing, clubId: clubId).thenResult(handler)
+            FirebaseFetcher.shared.fetchList(FirebasePerson.self, clubId: clubId).thenResult(handler)
         }
         XCTAssertEqual(result.error as? FirebaseFetcher.FetchError, FirebaseFetcher.FetchError.noData)
     }
@@ -153,7 +155,7 @@ class FirebaseFetcherTests: XCTestCase {
         // Set non person list to person list
         waitExpectation { handler in
             let callItem = FirebaseFunctionNewTestClubPropertyCall(clubId: clubId, urlFromClub: URL(string: "persons")!, property: ["id": ["test": "value"]])
-            FirebaseFunctionCaller.shared.call(callItem, level: .testing).thenResult { result in
+            FirebaseFunctionCaller.shared.call(callItem).thenResult { result in
                 XCTAssertNoThrow { try result.get() }
                 handler()
             }
@@ -161,7 +163,7 @@ class FirebaseFetcherTests: XCTestCase {
         
         // Try fetch person list
         let result: Result<[FirebasePerson], Error> = try waitExpectation { handler in
-            FirebaseFetcher.shared.fetchList(FirebasePerson.self, level: .testing, clubId: clubId).thenResult(handler)
+            FirebaseFetcher.shared.fetchList(FirebasePerson.self, clubId: clubId).thenResult(handler)
         }
         XCTAssertTrue(result.error is FirebaseDecoder.DecodingError || result.error is DecodingError)
     }
@@ -195,21 +197,21 @@ class FirebaseFetcherTests: XCTestCase {
         
         // Fetch string
         let stringResult: Result<String, Error> = try waitExpectation { handler in
-            FirebaseFetcher.shared.fetch(String.self, url: URL(string: "identifier")!, level: .testing, clubId: clubId).thenResult(handler)
+            FirebaseFetcher.shared.fetch(String.self, url: URL(string: "identifier")!, clubId: clubId).thenResult(handler)
         }
         let stringValue = try stringResult.get()
         XCTAssertEqual(stringValue, TestClub.fetcherTestClub.properties.identifier)
         
         // Fetch bool
         let boolResult: Result<Bool, Error> = try waitExpectation { handler in
-            FirebaseFetcher.shared.fetch(Bool.self, url: URL(string: "inAppPaymentActive")!, level: .testing, clubId: clubId).thenResult(handler)
+            FirebaseFetcher.shared.fetch(Bool.self, url: URL(string: "inAppPaymentActive")!, clubId: clubId).thenResult(handler)
         }
         let boolValue = try boolResult.get()
         XCTAssertEqual(boolValue, TestClub.fetcherTestClub.properties.inAppPaymentActive)
         
         // Fetch double
         let doubleResult: Result<Double, Error> = try waitExpectation { handler in
-            FirebaseFetcher.shared.fetch(Double.self, url: URL(string: "fines/02462A8B-107F-4BAE-A85B-EFF1F727C00F/date")!, level: .testing, clubId: clubId).thenResult(handler)
+            FirebaseFetcher.shared.fetch(Double.self, url: URL(string: "fines/02462A8B-107F-4BAE-A85B-EFF1F727C00F/date")!, clubId: clubId).thenResult(handler)
         }
         let doubleValue = try doubleResult.get()
         let fine = TestClub.fetcherTestClub.fines.first { $0.id.uuidString == "02462A8B-107F-4BAE-A85B-EFF1F727C00F" }
@@ -220,7 +222,7 @@ class FirebaseFetcherTests: XCTestCase {
     /// Test fetch object: fetch non existing primitive type
     func _testFetchObjectNonExistingPrimitiveType() throws {
         let result: Result<String, Error> = try waitExpectation { handler in
-            FirebaseFetcher.shared.fetch(String.self, url: URL(string: "nonExsisting")!, level: .testing, clubId: clubId).thenResult(handler)
+            FirebaseFetcher.shared.fetch(String.self, url: URL(string: "nonExsisting")!, clubId: clubId).thenResult(handler)
         }
         XCTAssertEqual(result.error as? FirebaseFetcher.FetchError, FirebaseFetcher.FetchError.noData)
     }
@@ -230,13 +232,13 @@ class FirebaseFetcherTests: XCTestCase {
         
         // Try fetch bool as string
         let result1: Result<String, Error> = try waitExpectation { handler in
-            FirebaseFetcher.shared.fetch(String.self, url: URL(string: "inAppPaymentActive")!, level: .testing, clubId: clubId).thenResult(handler)
+            FirebaseFetcher.shared.fetch(String.self, url: URL(string: "inAppPaymentActive")!, clubId: clubId).thenResult(handler)
         }
         XCTAssertTrue(result1.error is FirebaseDecoder.DecodingError || result1.error is DecodingError)
         
         // Try fetch object as string
         let result2: Result<String, Error> = try waitExpectation { handler in
-            FirebaseFetcher.shared.fetch(String.self, url: URL(string: "fines/02462A8B-107F-4BAE-A85B-EFF1F727C00F")!, level: .testing, clubId: clubId).thenResult(handler)
+            FirebaseFetcher.shared.fetch(String.self, url: URL(string: "fines/02462A8B-107F-4BAE-A85B-EFF1F727C00F")!, clubId: clubId).thenResult(handler)
         }
         XCTAssertTrue(result2.error is FirebaseDecoder.DecodingError || result2.error is DecodingError)
     }
@@ -244,7 +246,7 @@ class FirebaseFetcherTests: XCTestCase {
     /// Test fetch object: fetch object
     func _testFetchObjectObject() throws {
         let result: Result<Dictionary<String, String>, Error> = try waitExpectation { handler in
-            FirebaseFetcher.shared.fetch(Dictionary<String, String>.self, url: URL(string: "personUserIds")!, level: .testing, clubId: clubId).thenResult(handler)
+            FirebaseFetcher.shared.fetch(Dictionary<String, String>.self, url: URL(string: "personUserIds")!, clubId: clubId).thenResult(handler)
         }
         let value = Dictionary(try result.get().sorted { $0.key < $1.key }) { first, _ in first }
         XCTAssertEqual(value, TestClub.fetcherTestClub.properties.personUserIds)
@@ -253,7 +255,7 @@ class FirebaseFetcherTests: XCTestCase {
     /// Test fetch object: fetch non existing object
     func _testFetchObjectNonExistingObject() throws {
         let result: Result<FirebasePerson, Error> = try waitExpectation { handler in
-            FirebaseFetcher.shared.fetch(FirebasePerson.self, url: URL(string: "nonExsisting")!, level: .testing, clubId: clubId).thenResult(handler)
+            FirebaseFetcher.shared.fetch(FirebasePerson.self, url: URL(string: "nonExsisting")!, clubId: clubId).thenResult(handler)
         }
         XCTAssertEqual(result.error as? FirebaseFetcher.FetchError, FirebaseFetcher.FetchError.noData)
     }
@@ -263,13 +265,13 @@ class FirebaseFetcherTests: XCTestCase {
         
         // Try fetch string as object
         let result1: Result<FirebasePerson, Error> = try waitExpectation { handler in
-            FirebaseFetcher.shared.fetch(FirebasePerson.self, url: URL(string: "identifier")!, level: .testing, clubId: clubId).thenResult(handler)
+            FirebaseFetcher.shared.fetch(FirebasePerson.self, url: URL(string: "identifier")!, clubId: clubId).thenResult(handler)
         }
         XCTAssertTrue(result1.error is FirebaseDecoder.DecodingError || result1.error is DecodingError)
         
         // Try fetch object as object
         let result2: Result<FirebasePerson, Error> = try waitExpectation { handler in
-            FirebaseFetcher.shared.fetch(FirebasePerson.self, url: URL(string: "fines/02462A8B-107F-4BAE-A85B-EFF1F727C00F")!, level: .testing, clubId: clubId).thenResult(handler)
+            FirebaseFetcher.shared.fetch(FirebasePerson.self, url: URL(string: "fines/02462A8B-107F-4BAE-A85B-EFF1F727C00F")!, clubId: clubId).thenResult(handler)
         }
         XCTAssertTrue(result2.error is FirebaseDecoder.DecodingError || result2.error is DecodingError)
     }

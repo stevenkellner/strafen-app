@@ -11,8 +11,11 @@ import Hydra
 /// Used to call firebase functions
 struct FirebaseFunctionCaller {
     
+    /// Level of a firebase function call
+    public var level: FirebaseDatabaseLevel = .defaultValue
+    
     /// Shared instance for singelton
-    static let shared = FirebaseFunctionCaller()
+    static var shared = FirebaseFunctionCaller()
     
     /// Private init for singleton
     private init() {}
@@ -27,9 +30,8 @@ struct FirebaseFunctionCaller {
     /// Calls a firebase function with given callable item
     /// - Parameters:
     ///   - item: callable item for firebase function call
-    ///   - level: level of firebase function call
     /// - Returns: Promise of HTTPS call result
-    func call<CallType>(_ item: CallType, level: FirebaseDatabaseLevel) -> Promise<HTTPSCallableResult> where CallType: FirebaseFunctionCallable {
+    func call<CallType>(_ item: CallType) -> Promise<HTTPSCallableResult> where CallType: FirebaseFunctionCallable {
         Promise<HTTPSCallableResult>(in: .main) { resolve, reject, _ in
             guard let privateKey = Bundle.keysPropertyList.privateFirebaseFunctionCallerKey as? String else { throw CallError.noPrivateKey }
             let parameters = FirebaseCallParameterSet(item.parameters) { parameters in
@@ -51,10 +53,9 @@ struct FirebaseFunctionCaller {
     /// Calls a firebase function with given callable item
     /// - Parameters:
     ///   - item: callable item for firebase function call
-    ///   - level: level of firebase function call
     /// - Returns: Promise of decoded call result
-    func call<CallType>(_ item: CallType, level: FirebaseDatabaseLevel) -> Promise<CallType.CallResult> where CallType: FirebaseFunctionCallable & FirebaseFunctionCallResult {
-        call(item, level: level).then { (result: HTTPSCallableResult) in
+    func call<CallType>(_ item: CallType) -> Promise<CallType.CallResult> where CallType: FirebaseFunctionCallable & FirebaseFunctionCallResult {
+        call(item).then { (result: HTTPSCallableResult) in
             try FirebaseDecoder.shared.decodeOrThrow(CallType.CallResult.self, result.data)
         }
     }

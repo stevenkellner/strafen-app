@@ -12,8 +12,11 @@ import Hydra
 /// Fetches data from firebase database
 struct FirebaseFetcher {
     
+    /// Level of a firebase database fetch
+    public var level: FirebaseDatabaseLevel = .defaultValue
+    
     /// Shared instance for singelton
-    static let shared = FirebaseFetcher()
+    static var shared = FirebaseFetcher()
     
     /// Private init for singleton
     private init() {}
@@ -29,10 +32,9 @@ struct FirebaseFetcher {
     /// - Parameters:
     ///   - type: Type of fetched value
     ///   - urlFromClub: Url from club to value in firebase database
-    ///   - level: level of firebase function call
     ///   - clubId: id of club to fetch from
     /// - Returns: Promise of retrieved value
-    func fetch<T>(_ type: T.Type, url urlFromClub: URL?, level: FirebaseDatabaseLevel, clubId: UUID) -> Promise<T> where T: Decodable {
+    func fetch<T>(_ type: T.Type, url urlFromClub: URL?, clubId: UUID) -> Promise<T> where T: Decodable {
         Promise<T>(in: .main) { resolve, reject, _ in
             let url = URL(string: level.clubComponent)!
                 .appendingPathComponent(clubId.uuidString)
@@ -49,10 +51,9 @@ struct FirebaseFetcher {
     /// Fetches a list from firebase database
     /// - Parameter type: Type of the list element
     /// - Parameters:
-    ///   - level: level of firebase function call
     ///   - clubId: id of club to fetch from
     /// - Returns: Promise of retrieved list
-    func fetchList<ListType>(_ type: ListType.Type, level: FirebaseDatabaseLevel, clubId: UUID) -> Promise<[ListType]> where ListType: FirebaseListType {
+    func fetchList<ListType>(_ type: ListType.Type, clubId: UUID) -> Promise<[ListType]> where ListType: FirebaseListType {
         Promise<[ListType]>(in: .main) { resolve, reject, _ in
             let url = URL(string: level.clubComponent)!
                 .appendingPathComponent(clubId.uuidString)

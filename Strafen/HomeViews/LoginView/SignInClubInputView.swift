@@ -255,22 +255,21 @@ struct SignInClubInputView: View {
     /// - Parameter oldSignInProperty: sign in property with userId and name
     /// - Parameter inputProperties: binding of the input properties
     /// - Parameter level: level of function call
-    static func handleConfirmButtonPress(oldSignInProperty: SignInProperty.UserIdName, inputProperties: Binding<InputProperties>, level: FirebaseDatabaseLevel = .defaultValue) {
+    static func handleConfirmButtonPress(oldSignInProperty: SignInProperty.UserIdName, inputProperties: Binding<InputProperties>) {
         guard inputProperties.wrappedValue.connectionState.restart() == .passed else { return }
         guard inputProperties.wrappedValue.validateAllInputs() == .valid else { return }
-        checkClubIdentifierExists(level: level, inputProperties: inputProperties) {
-            createNewClub(oldSignInProperty: oldSignInProperty, level: level, inputProperties: inputProperties)
+        checkClubIdentifierExists(inputProperties: inputProperties) {
+            createNewClub(oldSignInProperty: oldSignInProperty, inputProperties: inputProperties)
         }
     }
     
     /// Checks if club with identifier already exists
     /// - Parameters:
-    ///   - level: level of function call
     ///   - inputProperties: binding of the input properties
     ///   - successHandler: executed if no club with identifier exists
-    static func checkClubIdentifierExists(level: FirebaseDatabaseLevel, inputProperties: Binding<InputProperties>, handler successHandler: @escaping () -> Void) {
+    static func checkClubIdentifierExists(inputProperties: Binding<InputProperties>, handler successHandler: @escaping () -> Void) {
         let callItem = FirebaseFunctionExistsClubWithIdentifierCall(identifier: inputProperties.wrappedValue[.clubIdentifier])
-        FirebaseFunctionCaller.shared.call(callItem, level: level).then { clubExists in
+        FirebaseFunctionCaller.shared.call(callItem).then { clubExists in
             if clubExists {
                 inputProperties.wrappedValue[error: .clubIdentifier] = .identifierAlreadyExists
                 inputProperties.wrappedValue.connectionState.failed()
@@ -285,10 +284,9 @@ struct SignInClubInputView: View {
     
     /// Creates a new club
     /// - Parameters:
-    /// - Parameter oldSignInProperty: sign in property with userId and name
-    ///   - level: level of function call
+    ///   - oldSignInProperty: sign in property with userId and name
     ///   - inputProperties: binding of the input properties
-    static func createNewClub(oldSignInProperty: SignInProperty.UserIdName, level: FirebaseDatabaseLevel, inputProperties: Binding<InputProperties>) {
+    static func createNewClub(oldSignInProperty: SignInProperty.UserIdName, inputProperties: Binding<InputProperties>) {
         let callItem = FirebaseFunctionNewClubCall(
             signInProperty: oldSignInProperty,
             clubId: UUID(),
@@ -297,7 +295,7 @@ struct SignInClubInputView: View {
             regionCode: inputProperties.wrappedValue.regionCode!,
             clubIdentifier: inputProperties.wrappedValue[.clubIdentifier],
             inAppPayment: inputProperties.wrappedValue.inAppPayment)
-        FirebaseFunctionCaller.shared.call(callItem, level: level).then { _ in
+        FirebaseFunctionCaller.shared.call(callItem).then { _ in
             inputProperties.wrappedValue.connectionState.passed()
             // TODO set settings
         }.catch { error in
