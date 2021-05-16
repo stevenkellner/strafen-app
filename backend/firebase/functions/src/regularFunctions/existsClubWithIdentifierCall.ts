@@ -3,41 +3,35 @@ import * as admin from "firebase-admin";
 import {ParameterContainer, checkPrerequirements, getClubComponent} from "../utils";
 
 /**
- * Get club id with given club identifier
+ * Checks if club with given identifier already exists
  * @params
  *  - privateKey (string): private key to check whether the caller is authenticated to use this function
  *  - clubLevel (string): level of the club (`regular`, `debug`, `testing`)
  *  - identifier (string): identifer of the club to search
- * @returns (string): club id of club with given identifer
+ * @returns (boolean): `true` if a club with given identifier already exists, `false` otherwise
  * @throws
  *  - functions.https.HttpsError:
  *    - permission-denied: if private key isn't valid
  *    - invalid-argument: if a required parameter isn't give over
  *    - invalid-argument: if a parameter hasn't the right type
  *    - failed-precondition: if function is called while no person is sign in
- *    - not-found: if no club with given identifier exists
  */
-export const getClubIdCall = functions.region("europe-west1").https.onCall(async (data, context) => {
+export const existsClubWithIdentifierCall = functions.region("europe-west1").https.onCall(async (data, context) => {
     // Check prerequirements and get a reference to all clubs
     const parameterContainer = new ParameterContainer(data);
     await checkPrerequirements(parameterContainer, context.auth, false);
     const path = getClubComponent(parameterContainer);
     const ref = admin.database().ref(path);
 
-    // Get club id
-    let clubId = null;
+    // Check if club identifier exists
+    let clubExists = false;
     await ref.once("value", (snapshot) => {
         snapshot.forEach((child) => {
             const identifier = child.child("identifier").val();
-            if (identifier == parameterContainer.getParameter<string>("identifer", "string")) {
-                clubId = child.key;
+            if (identifier == parameterContainer.getParameter<string>("identifier", "string")) {
+                clubExists = true;
             }
         });
     });
-
-    // Return club id
-    if (clubId == null) {
-        throw new functions.https.HttpsError("not-found", "Club doesn't exists.");
-    }
-    return clubId;
+    return clubExists;
 });

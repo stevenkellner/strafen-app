@@ -57,12 +57,12 @@ struct CustomTextField<InputProperties>: View where InputProperties: InputProper
                     .placeholder(placeholder)
                     .secure(isSecure)
                     .color(inputProperties.wrappedValue[error: textField].map { _ in .customRed } ?? .textColor)
+                    .onFocus { scrollViewProxy?.scrollTo(textField, anchor: UnitPoint(x: 0.5, y: 0.1)) }
                     .onCompletion {
                         _ = inputProperties.wrappedValue.validateTextField(textField)
                         completionHandler?()
                         if let nextTextField = inputProperties.wrappedValue.nextTextField(after: textField) {
                             inputProperties.wrappedValue.firstResponders.becomeFirstResponder(nextTextField)
-                            scrollViewProxy?.scrollTo(nextTextField, anchor: UnitPoint(x: 0, y: 0.1))
                         }
                     }
 
@@ -200,6 +200,9 @@ struct CustomTextField<InputProperties>: View where InputProperties: InputProper
         /// Handler execuded after keyboard dismisses
         private var completionHandler: (() -> Void)? = nil
         
+        /// Handler execuded when textfield is focues
+        private var focusedHandler: (() -> Void)? = nil
+        
         /// UISecureField Coordinator
         class Coordinator: NSObject, UITextFieldDelegate {
             
@@ -209,16 +212,23 @@ struct CustomTextField<InputProperties>: View where InputProperties: InputProper
             /// Handler execuded after keyboard dismisses
             let completionHandler: (() -> Void)?
             
+            /// Handler execuded when textfield is focues
+            private var focusedHandler: (() -> Void)?
+            
             /// Init with text and completion handler
             /// - Parameter text: input text
             /// - Parameter completionHandler: handler execuded after keyboard dismisses
-            init(text: Binding<String>, handler completionHandler: (() -> Void)?) {
+            init(text: Binding<String>, completionHandler: (() -> Void)?, focusedHandler: (() -> Void)?) {
                 self._text = text
                 self.completionHandler = completionHandler
+                self.focusedHandler = focusedHandler
             }
             
             func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-                if let text = textField.text { self.text = text }
+                if let text = textField.text as NSString? {
+                    self.text = text.replacingCharacters(in: range, with: string)
+                    
+                }
                 return true
             }
             
@@ -232,6 +242,9 @@ struct CustomTextField<InputProperties>: View where InputProperties: InputProper
                 return true
             }
             
+            func textFieldDidBeginEditing(_ textField: UITextField) {
+                focusedHandler?()
+            }
             
             func textFieldDidEndEditing(_ textField: UITextField) {
                 if let text = textField.text { self.text = text }
@@ -240,7 +253,7 @@ struct CustomTextField<InputProperties>: View where InputProperties: InputProper
         }
         
         func makeCoordinator() -> Coordinator {
-            Coordinator(text: $text, handler: completionHandler)
+            Coordinator(text: $text, completionHandler: completionHandler, focusedHandler: focusedHandler)
         }
         
         func makeUIView(context: UIViewRepresentableContext<UICustomTextField>) -> UITextField {
@@ -258,7 +271,15 @@ struct CustomTextField<InputProperties>: View where InputProperties: InputProper
         }
         
         func updateUIView(_ uiView: UITextField, context: UIViewRepresentableContext<UICustomTextField>) {
+            var offset: Int? = nil
+            if let selectedRange = uiView.selectedTextRange {
+                offset = uiView.offset(from: uiView.endOfDocument, to: selectedRange.end)
+            }
             uiView.text = text
+            if let offset = offset,
+               let position = uiView.position(from: uiView.endOfDocument, offset: offset) {
+                uiView.selectedTextRange = uiView.textRange(from: position, to: position)
+            }
         }
         
         /// Set placeholder
@@ -299,6 +320,15 @@ struct CustomTextField<InputProperties>: View where InputProperties: InputProper
         public func onCompletion(_ handler: @escaping () -> Void) -> UICustomTextField {
             var textField = self
             textField.completionHandler = handler
+            return textField
+        }
+        
+        /// Set focused handler
+        /// - Parameter handler: focused handler
+        /// - Returns: modified textfield
+        public func onFocus(_ handler: @escaping () -> Void) -> UICustomTextField {
+            var textField = self
+            textField.focusedHandler = handler
             return textField
         }
     }

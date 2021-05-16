@@ -273,7 +273,7 @@ struct SignInEmailView: View {
     
     /// Handles the click on the continue button
     func handleContinueButtonPress() {
-        SignInEmailView.handleContinueButtonPress(userId: signInProperties?.userId, inputProperties: $inputProperties)
+        Self.handleContinueButtonPress(userId: signInProperties?.userId, inputProperties: $inputProperties)
     }
     
     /// Handles the click on the continue button

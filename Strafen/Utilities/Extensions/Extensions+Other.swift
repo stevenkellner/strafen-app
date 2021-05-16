@@ -156,6 +156,12 @@ extension Color {
     
     /// Blue color
     static let customBlue = Color(red: 78, green: 90, blue: 240)
+    
+    /// Orange color
+    static let customOrange = Color(red: 249, green: 156, blue: 25)
+    
+    /// Yellow color
+    static let customYellow = Color(red: 231, green: 197, blue: 5)
 }
 
 extension View {
@@ -203,5 +209,28 @@ extension Bundle {
         #else
         false
         #endif
+    }
+}
+
+extension Locale {
+    
+    /// All available region codes with valid currency Symbol
+    static var availableRegionCodes: [String] {
+        availableIdentifiers.compactMap { identifier in
+            guard let regionCode = Locale(identifier: identifier).regionCode else { return nil }
+            let locale = Locale(identifier: Locale.identifier(fromComponents: ["kCFLocaleCountryCodeKey": regionCode]))
+            guard locale.currencyCode != nil else { return nil }
+            return regionCode
+        }.unique.sorted { identifier in
+            Locale.regionName(of: identifier)
+        }
+    }
+    
+    /// Region name of given region code
+    /// - Parameter regionCode: region code
+    /// - Returns: region name
+    static func regionName(of regionCode: String) -> String {
+        let regionName = Locale.current.localizedString(forRegionCode: regionCode)
+        return regionName ?? regionCode
     }
 }

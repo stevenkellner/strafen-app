@@ -115,11 +115,12 @@ struct SingleOutlinedContent<Content>: View where Content: View {
                 .strokeColor(strokeColor)
                 .lineWidth(lineWidth)
                 .radius(cornerRadius)
+                .shadow(color: .black.opacity(0.25), radius: 10)
             
             // Content
             content
             
-        }.shadow(color: .black.opacity(0.25), radius: 10)
+        }
     }
     
     /// Set fill color of the outline
@@ -170,6 +171,30 @@ struct SplitedOutlinedContent<LeftContent, RightContent>: View where LeftContent
     /// Right content
     let rightContent: RightContent
     
+    /// Fill Color of the left outline
+    private var leftFillColor: Color? = nil
+    
+    /// Fill Color of the right outline
+    private var rightFillColor: Color? = nil
+    
+    /// Stroke Color of the left outline
+    private var leftStrokeColor: Color? = nil
+    
+    /// Stroke Color of the right outline
+    private var rightStrokeColor: Color? = nil
+    
+    /// Line width of the left outline
+    private var leftLineWidth: CGFloat? = nil
+    
+    /// Line width of the right outline
+    private var rightLineWidth: CGFloat? = nil
+    
+    /// Cornder radius of the left outline
+    private var leftCornerRadius: CGFloat? = nil
+    
+    /// Cornder radius of the right outline
+    private var rightCornerRadius: CGFloat? = nil
+    
     /// Init with corner set and content
     /// - Parameters:
     ///   - cornerSet: corner set
@@ -183,13 +208,17 @@ struct SplitedOutlinedContent<LeftContent, RightContent>: View where LeftContent
     
     var body: some View {
         GeometryReader { geometry in
-            HStack(spacing: 0) {
+            HStack(spacing: (leftLineWidth ?? 0) + (rightLineWidth ?? 0)) {
                 
                 // Left outlined content
                 ZStack {
                     
                     // Outline
                     Outline(cornerSet.intersection(.left))
+                        .fillColor(leftFillColor)
+                        .strokeColor(leftStrokeColor)
+                        .lineWidth(leftLineWidth)
+                        .radius(leftCornerRadius)
                     
                     // Content
                     leftContent
@@ -201,6 +230,10 @@ struct SplitedOutlinedContent<LeftContent, RightContent>: View where LeftContent
                     
                     // Outline
                     Outline(cornerSet.intersection(.right))
+                        .fillColor(rightFillColor)
+                        .strokeColor(rightStrokeColor)
+                        .lineWidth(rightLineWidth)
+                        .radius(rightCornerRadius)
                     
                     // Content
                     rightContent
@@ -209,5 +242,77 @@ struct SplitedOutlinedContent<LeftContent, RightContent>: View where LeftContent
                 
             }
         }.shadow(color: .black.opacity(0.25), radius: 10)
+    }
+    
+    /// Set fill color of the left outline
+    /// - Parameter fillColor: fill color of the left outline
+    /// - Returns: modified outline
+    func leftFillColor(_ fillColor: Color?) -> SplitedOutlinedContent {
+        var outline = self
+        outline.leftFillColor = fillColor
+        return outline
+    }
+    
+    /// Set fill color of the right outline
+    /// - Parameter fillColor: fill color of the right outline
+    /// - Returns: modified outline
+    func rightFillColor(_ fillColor: Color?) -> SplitedOutlinedContent {
+        var outline = self
+        outline.rightFillColor = fillColor
+        return outline
+    }
+    
+    /// Set stroke color of the left outline
+    /// - Parameter strokeColor: stroke color of the left outline
+    /// - Returns: modified outline
+    func leftStrokeColor(_ strokeColor: Color?) -> SplitedOutlinedContent {
+        var outline = self
+        outline.leftStrokeColor = strokeColor
+        return outline
+    }
+    
+    /// Set stroke color of the right outline
+    /// - Parameter strokeColor: stroke color of the right outline
+    /// - Returns: modified outline
+    func rightStrokeColor(_ strokeColor: Color?) -> SplitedOutlinedContent {
+        var outline = self
+        outline.rightStrokeColor = strokeColor
+        return outline
+    }
+    
+    /// Set line width of the left outline
+    /// - Parameter lineWidth: line width of the left outline
+    /// - Returns: modified outline
+    func leftLineWidth(_ lineWidth: CGFloat?) -> SplitedOutlinedContent {
+        var outline = self
+        outline.leftLineWidth = lineWidth
+        return outline
+    }
+    
+    /// Set line width of the right outline
+    /// - Parameter lineWidth: line width of the right outline
+    /// - Returns: modified outline
+    func rightLineWidth(_ lineWidth: CGFloat?) -> SplitedOutlinedContent {
+        var outline = self
+        outline.rightLineWidth = lineWidth
+        return outline
+    }
+    
+    /// Set corner radius of the left outline
+    /// - Parameter radius: corner radius of the left outline
+    /// - Returns: modified outline
+    func leftRadius(_ radius: CGFloat?) -> SplitedOutlinedContent {
+        var outline = self
+        outline.leftCornerRadius = radius
+        return outline
+    }
+    
+    /// Set corner radius of the right outline
+    /// - Parameter radius: corner radius of the right outline
+    /// - Returns: modified outline
+    func rightRadius(_ radius: CGFloat?) -> SplitedOutlinedContent {
+        var outline = self
+        outline.rightCornerRadius = radius
+        return outline
     }
 }

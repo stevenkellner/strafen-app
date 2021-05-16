@@ -89,11 +89,11 @@ struct SignInClubSelectionView: View {
             // Navigation links
             if let signInProperty = inputProperties.signInProperty {
                 EmptyNavigationLink {
-                    Text(signInProperty.userId)
+                    Text(signInProperty.userId) // TODO
                 }
             }
             EmptyNavigationLink(isActive: $isNavigationLinkSignInClubInputViewActive) {
-                Text("Tasd")
+                SignInClubInputView(signInProperty: oldSignInProperty)
             }
             
             // Background color
@@ -150,8 +150,8 @@ struct SignInClubSelectionView: View {
                     }
                     
                     Text("Du bekommst die Kennung von deinem Trainer oder Kassier.")
-                        .foregroundColor(.textColor)
-                        .font(.system(size: 24, weight: .light))
+                        .foregroundColor(.white)
+                        .font(.system(size: 24, weight: .thin))
                         .multilineTextAlignment(.center)
                         .padding(.horizontal, 15)
                         .lineLimit(2)
@@ -170,8 +170,8 @@ struct SignInClubSelectionView: View {
                         .onClick { isNavigationLinkSignInClubInputViewActive = true }
                     
                     Text("Wenn du der Kassier bist:\nErstelle eine neuen Verein.")
-                        .foregroundColor(.textColor)
-                        .font(.system(size: 24, weight: .light))
+                        .foregroundColor(.white)
+                        .font(.system(size: 24, weight: .thin))
                         .multilineTextAlignment(.center)
                         .padding(.horizontal, 15)
                         .lineLimit(2)
@@ -194,17 +194,17 @@ struct SignInClubSelectionView: View {
     
     /// Handles the click on the continue button
     func handleContinueButtonPress() {
-        SignInClubSelectionView.handleContinueButtonPress(oldSignInProperty: oldSignInProperty, inputProperties: $inputProperties)
+        Self.handleContinueButtonPress(oldSignInProperty: oldSignInProperty, inputProperties: $inputProperties)
     }
     
     /// Handles the click on the continue button
     /// - Parameter oldSignInProperty: sign in property with userId and name
     /// - Parameter inputProperties: binding of the input properties
-    static func handleContinueButtonPress(oldSignInProperty: SignInProperty.UserIdName, inputProperties: Binding<InputProperties>) {
+    static func handleContinueButtonPress(oldSignInProperty: SignInProperty.UserIdName, inputProperties: Binding<InputProperties>, level: FirebaseDatabaseLevel = .defaultValue) {
         guard inputProperties.wrappedValue.connectionState.restart() == .passed else { return }
         guard inputProperties.wrappedValue.validateAllInputs() == .valid else { return }
         let callItem = FirebaseFunctionGetClubIdCall(identifier: inputProperties.wrappedValue[.clubIdentifier])
-        FirebaseFunctionCaller.shared.call(callItem).then { clubId in
+        FirebaseFunctionCaller.shared.call(callItem, level: level).then { clubId in
             inputProperties.wrappedValue.signInProperty = SignInProperty.UserIdNameClubId(oldSignInProperty, clubId: clubId)
             inputProperties.wrappedValue.connectionState.passed()
         }.catch { error in

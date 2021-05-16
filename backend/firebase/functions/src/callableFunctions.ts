@@ -489,63 +489,6 @@ export const getPersonProperties = functions.region("europe-west1").https
         }
     });
 
-// Get club uuid of club identifier
-export const getClubId = functions.region("europe-west1").https
-    .onCall(async (data, context) => {
-        // Check prerequirements
-        const requiredArguements = ["identifier"];
-        await checkPrerequirements(requiredArguements, data, context, false);
-        const clubsPathComponent = data["debug"] ? "debugClubs" : "clubs";
-
-        // Ref to club
-        const clubsRef = admin.database().ref(clubsPathComponent);
-
-        // Get club id
-        let clubId = null;
-        await clubsRef.once("value", (snapshot) => {
-            snapshot.forEach((child) => {
-                const identifier = child.child("identifier").val();
-                if (identifier == data.identifier) {
-                    clubId = child.key;
-                }
-            });
-        });
-
-        // Return club id
-        if (clubId == null) {
-            throw new functions.https.HttpsError(
-                "not-found",
-                "Club doesn't exist"
-            );
-        } else {
-            return clubId;
-        }
-    });
-
-// Check if club with given identifier already exists
-export const existsClubWithIdentifier = functions.region("europe-west1").https
-    .onCall(async (data, context) => {
-        // Check prerequirements
-        const requiredArguements = ["identifier"];
-        await checkPrerequirements(requiredArguements, data, context, false);
-        const clubsPathComponent = data["debug"] ? "debugClubs" : "clubs";
-
-        // Ref to clubs
-        const clubsRef = admin.database().ref(clubsPathComponent);
-
-        // Check if exists
-        let clubExists = false;
-        await clubsRef.once("value", (snapshot) => {
-            snapshot.forEach((child) => {
-                const identifier = child.child("identifier").val();
-                if (identifier == data.identifier) {
-                    clubExists = true;
-                }
-            });
-        });
-        return clubExists;
-    });
-
 // Check if person with user id already exists
 export const existsPersonWithUserId = functions.region("europe-west1").https
     .onCall(async (data, context) => {

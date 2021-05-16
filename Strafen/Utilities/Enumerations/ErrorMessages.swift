@@ -43,6 +43,15 @@ enum ErrorMessages {
     /// Club doesn't exist
     case clubNotExists
     
+    /// No region given
+    case noRegionGiven
+    
+    /// In app payment currency isn't euro
+    case notEuro
+    
+    /// Club identifier already exists
+    case identifierAlreadyExists
+    
     /// Message of the error
     var message: String {
         switch self {
@@ -68,6 +77,12 @@ enum ErrorMessages {
             return "Das Passwort ist zu schwach!"
         case .clubNotExists:
             return "Es gibt keinen Verein mit dieser Kennung!"
+        case .noRegionGiven:
+            return "Keine Region angegeben!"
+        case .notEuro:
+            return "Funktioniert nur in Ländern mit Euro!"
+        case .identifierAlreadyExists:
+            return "Vereinskennung ist bereits vergeben!"
         }
     }
 }

@@ -2,31 +2,55 @@ import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
 import {privateKey} from "./privateKeys";
 
-export async function checkPrerequirements(data: any, context: functions.https.CallableContext, parameters: string[], checkPersonIsInClub = true) {
+
+export class ParameterContainer {
+  data: any;
+
+  constructor(data: any) {
+      this.data = data;
+  }
+
+  getParameter<T>(parameterName: string, expectedType: "string" | "number" | "bigint" | "boolean" | "symbol" | "undefined" | "object" | "function"): T {
+      const parameter = this.data[parameterName];
+      if (parameter === null || parameter === undefined) {
+          throw new functions.https.HttpsError("invalid-argument", "Argument \"" + parameterName + "\" not found");
+      }
+      if (typeof(parameter) !== expectedType) {
+          throw new functions.https.HttpsError("invalid-argument", "Argument \"" + parameterName + "\" couldn't be converted to expected type \"" + expectedType + "\"");
+      }
+      return <T>parameter;
+  }
+
+  getOptionalParameter<T>(parameterName: string, expectedType: "string" | "number" | "bigint" | "boolean" | "symbol" | "undefined" | "object" | "function"): T | null {
+      const parameter = this.data[parameterName];
+      if (parameter === null || parameter === undefined) {
+          return null;
+      }
+      if (typeof(parameter) !== expectedType) {
+          throw new functions.https.HttpsError("invalid-argument", "Argument \"" + parameterName + "\" couldn't be converted to expected type \"" + expectedType + "\"");
+      }
+      return <T>parameter;
+  }
+}
+
+export async function checkPrerequirements(parameterContainer: ParameterContainer, auth: { uid: string } | undefined, checkPersonIsInClub = true) {
     // Check if key is valid
-    if (data.privateKey != privateKey) {
+    if (parameterContainer.getParameter<string>("privateKey", "string") != privateKey) {
         throw new functions.https.HttpsError("permission-denied", "Private key is invalid.");
     }
 
-    // Check if all parameters are hand over to this function
-    parameters.push("clubLevel");
-    for (const parameter of parameters) {
-        if (data[parameter] == null) {
-            throw new functions.https.HttpsError("invalid-argument", "Argument \"" + parameter + "\" not found");
-        }
-    }
-
     // Check if user is authorized to call a function
-    if (context.auth == null) {
+    if (auth == null) {
         throw new functions.https.HttpsError("failed-precondition", "The function must be called while authenticated.");
     }
 
     // Check if person is sign in to club
     if (checkPersonIsInClub) {
-        if (data.clubId == null) {
+        const clubId = parameterContainer.getParameter<string>("clubId", "string");
+        if (clubId == null) {
             throw new functions.https.HttpsError("invalid-argument", "Argument \"clubId\" not found");
         }
-        const path = getClubComponent(data) + "/" + data.clubId.toString().toUpperCase() + "/personUserIds/" + context.auth.uid;
+        const path = getClubComponent(parameterContainer) + "/" + clubId.toUpperCase() + "/personUserIds/" + auth.uid;
         const ref = admin.database().ref(path);
         if (!await existsData(ref)) {
             throw new functions.https.HttpsError("failed-precondition", "The function must be called while authenticated.");
@@ -42,8 +66,9 @@ export async function existsData(reference: admin.database.Reference): Promise<b
     return exists;
 }
 
-export function getClubComponent(data: any): string {
-    switch (data.clubLevel) {
+export function getClubComponent(parameterContainer: ParameterContainer): string {
+    const clubLevel = parameterContainer.getParameter<string>("clubLevel", "string");
+    switch (clubLevel) {
     case "regular":
         return "clubs";
     case "debug":
@@ -51,6 +76,6 @@ export function getClubComponent(data: any): string {
     case "testing":
         return "testableClubs";
     default:
-        throw new functions.https.HttpsError("invalid-argument", "Argument clubLevel is invalid " + data.clubLevel.toString());
+        throw new functions.https.HttpsError("invalid-argument", "Argument clubLevel is invalid " + clubLevel);
     }
 }

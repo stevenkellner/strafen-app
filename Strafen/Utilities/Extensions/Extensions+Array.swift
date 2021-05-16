@@ -24,4 +24,68 @@ extension Array {
     mutating func filtered(_ isIncluded: (Element) throws -> Bool) rethrows {
         self = try filter(isIncluded)
     }
+    
+    /// Order of sorted array
+    enum Order {
+        
+        /// Ascending
+        case ascending
+        
+        /// Descanding
+        case descanding
+    }
+    
+    /// Sorts the elements by value returned by closure for a element in the given order
+    /// - Parameters:
+    ///   - order: order to sort
+    ///   - sortValue: returns value to sort for a element
+    /// - Throws: rethrows error
+    /// - Returns: sorted array
+    func sorted<T>(order: Order = .ascending, byValue sortValue: (Element) throws -> T) rethrows -> [Element] where T: Comparable {
+        try sorted { firstElement, secondElement in
+            switch order {
+            case .ascending:
+                return try sortValue(firstElement) < sortValue(secondElement)
+            case .descanding:
+                return try sortValue(firstElement) > sortValue(secondElement)
+            }
+        }
+    }
+    
+    /// Sorts the element by value of the keypath for a element in the given order
+    /// - Parameters:
+    ///   - order: order to sort
+    ///   - keyPath: used to get the value of the keypath for a element
+    /// - Returns: sorted array
+    func sorted<T>(order: Order = .ascending, by keyPath: KeyPath<Element, T>) -> [Element] where T: Comparable {
+        sorted(order: order) { $0[keyPath: keyPath] }
+    }
+}
+
+extension Array where Element: Comparable {
+    
+    /// Sorts the arra by value of the keypath for a element in the given order
+    /// - Parameters:
+    ///   - order: order to sort
+    ///   - sortValue: returns value to sort for a element
+    /// - Throws: rethrows error
+    mutating func sort(order: Order = .ascending, byValue sortValue: (Element) throws -> Element) rethrows {
+        self = try sorted(order: order, byValue: sortValue)
+    }
+    
+    /// Sorts the array by value of the keypath for a element in the given order
+    /// - Parameters:
+    ///   - order: order to sort
+    ///   - keyPath: used to get the value of the keypath for a element
+    mutating func sort(order: Order = .ascending, by keyPath: KeyPath<Element, Element>) {
+        self = sorted(order: order, by: keyPath)
+    }
+}
+
+extension Array where Element: Hashable {
+    
+    /// Contains only unique elements
+    var unique: [Element] {
+        Array(Set(self))
+    }
 }

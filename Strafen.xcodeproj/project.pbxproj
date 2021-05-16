@@ -19,6 +19,10 @@
 		B02221AC2641D5570005295B /* FirebasePerson.swift in Sources */ = {isa = PBXBuildFile; fileRef = B02221AB2641D5570005295B /* FirebasePerson.swift */; };
 		B02221AE2641D6850005295B /* PersonName.swift in Sources */ = {isa = PBXBuildFile; fileRef = B02221AD2641D6850005295B /* PersonName.swift */; };
 		B02221B02641D73C0005295B /* FirebaseListType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B02221AF2641D73C0005295B /* FirebaseListType.swift */; };
+		B0225D2226504CD300D75CDA /* SignInClubInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0225D2126504CD300D75CDA /* SignInClubInputView.swift */; };
+		B0225D24265119D300D75CDA /* CustomToggle.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0225D23265119D300D75CDA /* CustomToggle.swift */; };
+		B0225D2626513C4900D75CDA /* FirebaseFunctionExistsClubWithIdentifierCall.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0225D2526513C4900D75CDA /* FirebaseFunctionExistsClubWithIdentifierCall.swift */; };
+		B0225D2826513C8800D75CDA /* FirebaseFunctionNewClubCall.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0225D2726513C8800D75CDA /* FirebaseFunctionNewClubCall.swift */; };
 		B0254E082641B6130083752B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B0254E072641B6130083752B /* GoogleService-Info.plist */; };
 		B0311305264427EB00E65025 /* FirebaseObserverTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0311304264427EB00E65025 /* FirebaseObserverTests.swift */; };
 		B03697BB2650115B00DA938D /* ErrorMessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B03697BA2650115B00DA938D /* ErrorMessageView.swift */; };
@@ -98,6 +102,10 @@
 		B02221AB2641D5570005295B /* FirebasePerson.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebasePerson.swift; sourceTree = "<group>"; };
 		B02221AD2641D6850005295B /* PersonName.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonName.swift; sourceTree = "<group>"; };
 		B02221AF2641D73C0005295B /* FirebaseListType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseListType.swift; sourceTree = "<group>"; };
+		B0225D2126504CD300D75CDA /* SignInClubInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInClubInputView.swift; sourceTree = "<group>"; };
+		B0225D23265119D300D75CDA /* CustomToggle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomToggle.swift; sourceTree = "<group>"; };
+		B0225D2526513C4900D75CDA /* FirebaseFunctionExistsClubWithIdentifierCall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseFunctionExistsClubWithIdentifierCall.swift; sourceTree = "<group>"; };
+		B0225D2726513C8800D75CDA /* FirebaseFunctionNewClubCall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseFunctionNewClubCall.swift; sourceTree = "<group>"; };
 		B0254E072641B6130083752B /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		B0311304264427EB00E65025 /* FirebaseObserverTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseObserverTests.swift; sourceTree = "<group>"; };
 		B03697BA2650115B00DA938D /* ErrorMessageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorMessageView.swift; sourceTree = "<group>"; };
@@ -236,6 +244,7 @@
 				B0A4629A2649A1B90045D2BE /* BackButton.swift */,
 				B021DF3E264918E400FD418F /* BackgroundWave.swift */,
 				B0A4629E2649A7070045D2BE /* CustomTextField.swift */,
+				B0225D23265119D300D75CDA /* CustomToggle.swift */,
 				B03697BA2650115B00DA938D /* ErrorMessageView.swift */,
 				B0A462902649412B0045D2BE /* Header.swift */,
 				B0A46294264953270045D2BE /* Outline.swift */,
@@ -262,6 +271,7 @@
 				B066A2BE26492E2700AB2715 /* SignInView.swift */,
 				B0A46298264989E80045D2BE /* SignInEmailView.swift */,
 				B07148D4264DB45000C5F7EF /* SignInClubSelectionView.swift */,
+				B0225D2126504CD300D75CDA /* SignInClubInputView.swift */,
 			);
 			path = LoginView;
 			sourceTree = "<group>";
@@ -348,6 +358,8 @@
 			children = (
 				B0A7619E2642DBB2003B170F /* FirebaseFunctionCallable.swift */,
 				B03697BC265028F500DA938D /* FirebaseFunctionGetClubIdCall.swift */,
+				B0225D2526513C4900D75CDA /* FirebaseFunctionExistsClubWithIdentifierCall.swift */,
+				B0225D2726513C8800D75CDA /* FirebaseFunctionNewClubCall.swift */,
 			);
 			path = FirebaseFunctionCallables;
 			sourceTree = "<group>";
@@ -564,6 +576,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B0225D2226504CD300D75CDA /* SignInClubInputView.swift in Sources */,
+				B0225D2826513C8800D75CDA /* FirebaseFunctionNewClubCall.swift in Sources */,
 				B02221AE2641D6850005295B /* PersonName.swift in Sources */,
 				B0A7619C2642D366003B170F /* FirebaseCallParameters.swift in Sources */,
 				B0AF0A9626432CE100DF4DC9 /* PropertyWrapper.swift in Sources */,
@@ -575,6 +589,7 @@
 				B0A4629B2649A1B90045D2BE /* BackButton.swift in Sources */,
 				B0AF0A9426432C9500DF4DC9 /* Amount.swift in Sources */,
 				B0A4629F2649A7070045D2BE /* CustomTextField.swift in Sources */,
+				B0225D24265119D300D75CDA /* CustomToggle.swift in Sources */,
 				B0A46295264953270045D2BE /* Outline.swift in Sources */,
 				B0720817264D89200084FDE6 /* ConnectionState.swift in Sources */,
 				B0D4B62D2642CD19003A720C /* FirebaseFunctionCaller.swift in Sources */,
@@ -589,6 +604,7 @@
 				B0720814264D6B9C0084FDE6 /* TextFieldsProtocol.swift in Sources */,
 				B0A4629326494AB90045D2BE /* RoundedCorners.swift in Sources */,
 				B02221B02641D73C0005295B /* FirebaseListType.swift in Sources */,
+				B0225D2626513C4900D75CDA /* FirebaseFunctionExistsClubWithIdentifierCall.swift in Sources */,
 				B0AF0A9C2643328800DF4DC9 /* Payed.swift in Sources */,
 				B07148D5264DB45000C5F7EF /* SignInClubSelectionView.swift in Sources */,
 				B0A761A32642E6C7003B170F /* FirebaseDatabaseLevel.swift in Sources */,
