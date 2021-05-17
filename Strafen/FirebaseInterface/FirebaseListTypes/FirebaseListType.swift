@@ -12,4 +12,7 @@ protocol FirebaseListType: Decodable, Identifiable {
 
     /// Url from club to list in firebase database
     static var urlFromClub: URL { get }
+
+    /// Set of parameters to call a firebase function
+    var parameterSet: FirebaseCallParameterSet { get }
 }

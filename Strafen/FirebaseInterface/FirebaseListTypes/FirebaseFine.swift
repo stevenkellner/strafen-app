@@ -77,6 +77,19 @@ extension FirebaseFine: FirebaseListType {
         case number
         case codableFineReason = "reason"
      }
+
+    var parameterSet: FirebaseCallParameterSet {
+        FirebaseCallParameterSet(fineReason.parameterSet) { parameter in
+            parameter["listType"] = "fine"
+            parameter["itemId"] = id
+            parameter["personId"] = assoiatedPersonId
+            parameter["payedState"] = payed.state
+            parameter["payedPayDate"] = payed.payDate
+            parameter["payedInApp"] = payed.payedInApp
+            parameter["date"] = date
+            parameter["number"] = number
+        }
+    }
 }
 
 extension FirebaseFine: Equatable {}

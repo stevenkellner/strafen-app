@@ -9,7 +9,7 @@ import {ParameterContainer, checkPrerequirements, getClubComponent, existsData} 
  *  - privateKey (string): private key to check whether the caller is authenticated to use this function
  *  - clubLevel (string): level of the club (`regular`, `debug`, `testing`)
  *  - clubId (string): id of the club to force sign out the person
- *  - listType (string): type of the list to change (`person`, `fine`, `reason`)
+ *  - listType (string): type of the list to change (`person`, `fine`, `reason`, `transaction`)
  *  - itemId (string): id of the item to change
  *  - changeType (string): type of the change (`update`, `delete`)
  *  - for person update:
@@ -30,6 +30,14 @@ import {ParameterContainer, checkPrerequirements, getClubComponent, existsData} 
  *    - reason (string): reason of the reason to update
  *    - amount (number): amount of the reason to update
  *    - importance (string): importance of the reason to update (`high`, `medium`, `low`)
+ *  - for transaction update:
+ *    - approved (boolean): indicates whether the transaction is approved
+ *    - fineIds (string[]): ids of fines payed with the transaction
+ *    - firstName (string | null): first name of the person who payed the transaction
+ *    - lastName (string | null): last name of the person who payed the transaction
+ *    - payDate (number): date of payment
+ *    - personId (string): id of the person who payed the transaction
+ *    - payoutId (string | null): id of payout
  * @throws
  *  - functions.https.HttpsError:
  *    - permission-denied: if private key isn't valid
@@ -55,7 +63,7 @@ export const changeListCall = functions.region("europe-west1").https.onCall(asyn
     // Delete list item
     case "delete":
         const listType = parameterContainer.getParameter<string>("listType", "string");
-        if (listType != "person" && listType != "fine" && listType != "reason") {
+        if (listType != "person" && listType != "fine" && listType != "reason" && listType != "transaction") {
             throw new functions.https.HttpsError("invalid-argument", "Argument listType is invalid \"" + listType + "\"");
         }
         if (listType == "person") {
@@ -159,6 +167,20 @@ function getItem(parameterContainer: ParameterContainer): object {
             reason: parameterContainer.getOptionalParameter<string>("reason", "string"),
             amount: parameterContainer.getOptionalParameter<number>("amount", "number"),
             importance: importance,
+        };
+
+    // Get transaction
+    case "tranaction":
+        return {
+            approved: parameterContainer.getParameter<boolean>("approved", "boolean"),
+            fineids: parameterContainer.getParameter<object>("fineIds", "object"),
+            name: {
+                first: parameterContainer.getOptionalParameter<string>("firstName", "string"),
+                last: parameterContainer.getOptionalParameter<string>("lastName", "string"),
+            },
+            payDate: parameterContainer.getParameter<number>("payDate", "number"),
+            personId: parameterContainer.getParameter<string>("payDate", "string"),
+            payoutId: parameterContainer.getOptionalParameter<string>("payoutId", "string"),
         };
 
     // Throw error if change type is invalid

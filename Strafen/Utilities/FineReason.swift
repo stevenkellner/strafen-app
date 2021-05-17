@@ -23,7 +23,7 @@ protocol FineReason {
     func importance(with reasonList: [FirebaseReasonTemplate]) -> Importance
 
     /// Parameters for firebase function call
-    var callParameters: FirebaseCallParameterSet { get }
+    var parameterSet: FirebaseCallParameterSet { get }
 }
 
 /// Fine Reason for reason / amount / importance
@@ -44,7 +44,7 @@ struct FineReasonCustom: FineReason, Equatable {
 
     func importance(with reasonList: [FirebaseReasonTemplate]) -> Importance { importance }
 
-    var callParameters: FirebaseCallParameterSet {
+    var parameterSet: FirebaseCallParameterSet {
         FirebaseCallParameterSet { parameters in
             parameters["reason"] = reason
             parameters["amount"] = amount
@@ -71,7 +71,7 @@ struct FineReasonTemplate: FineReason, Equatable {
         reasonList.first(where: { $0.id == templateId })?.importance ?? .low
     }
 
-    var callParameters: FirebaseCallParameterSet {
+    var parameterSet: FirebaseCallParameterSet {
         FirebaseCallParameterSet { parameters in
             parameters["templateId"] = templateId
         }

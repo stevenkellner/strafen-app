@@ -54,7 +54,7 @@ extension Payed: Decodable, Equatable {
     }
 }
 
-extension Payed: FirebaseParameterable {
+extension Payed {
 
     /// State of payment
     var state: String {
@@ -90,10 +90,5 @@ extension Payed: FirebaseParameterable {
         case .payed(date: _, inApp: let inApp):
             return inApp
         }
-    }
-
-    /// Object call with Firebase function as Parameter
-    var primordialParameter: FirebasePrimordialParameterable {
-        ["state": state, "payDate": payDate?.primordialParameter, "inApp": payedInApp]
     }
 }

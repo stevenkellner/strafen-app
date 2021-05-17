@@ -40,6 +40,16 @@ extension FirebaseReasonTemplate: FirebaseListType {
         case importance
         case amount
     }
+
+    var parameterSet: FirebaseCallParameterSet {
+        FirebaseCallParameterSet { parameter in
+            parameter["listType"] = "reason"
+            parameter["itemId"] = id
+            parameter["reason"] = reason
+            parameter["amount"] = amount
+            parameter["importance"] = importance
+        }
+    }
 }
 
 extension FirebaseReasonTemplate: Equatable {}

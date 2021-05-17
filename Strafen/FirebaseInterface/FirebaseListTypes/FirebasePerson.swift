@@ -49,6 +49,15 @@ extension FirebasePerson: FirebaseListType {
         case name
         case signInData
     }
+
+    var parameterSet: FirebaseCallParameterSet {
+        FirebaseCallParameterSet { parameter in
+            parameter["listType"] = "person"
+            parameter["itemId"] = id
+            parameter["firstName"] = name.firstName
+            parameter["lastName"] = name.lastName
+        }
+    }
 }
 
 extension FirebasePerson.SignInData: Decodable {

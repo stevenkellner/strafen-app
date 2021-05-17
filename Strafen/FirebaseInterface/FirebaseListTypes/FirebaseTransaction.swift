@@ -62,6 +62,20 @@ extension FirebaseTransaction: FirebaseListType {
         case personId
         case payoutId
     }
+
+    var parameterSet: FirebaseCallParameterSet {
+        FirebaseCallParameterSet { parameter in
+            parameter["listType"] = "transaction"
+            parameter["itemId"] = id
+            parameter["approved"] = approved
+            parameter["fineIds"] = fineIds
+            parameter["firstName"] = name?.first
+            parameter["lastName"] = name?.last
+            parameter["payDate"] = payDate
+            parameter["personId"] = personId
+            parameter["payoutId"] = payoutId
+        }
+    }
 }
 
 extension FirebaseTransaction: Equatable {}

@@ -9,7 +9,6 @@ import {ParameterContainer, checkPrerequirements, getClubComponent, existsData} 
  *  - clubLevel (string): level of the club (`regular`, `debug`, `testing`)
  *  - clubId (string): id of the club to force sign out the person
  *  - personId (string): id of person to be force signed out
- *  - userId (string): user id of person to be force signed out
  * @throws
  *  - functions.https.HttpsError:
  *    - permission-denied: if private key isn't valid
@@ -19,21 +18,28 @@ import {ParameterContainer, checkPrerequirements, getClubComponent, existsData} 
  *    - internal: if an error occurs while force sign out the person in database
  */
 export const forceSignOutCall = functions.region("europe-west1").https.onCall(async (data, context) => {
-    // Check prerequirements and get a reference to the person sign in data and person user id
+    // Check prerequirements and get a reference to the person sign in data
     const parameterContainer = new ParameterContainer(data);
     await checkPrerequirements(parameterContainer, context.auth);
     const clubPath = getClubComponent(parameterContainer) + "/" + parameterContainer.getParameter<string>("clubId", "string").toUpperCase();
     const signInDataPath = clubPath + "/persons/" + parameterContainer.getParameter<string>("personId", "string").toUpperCase() + "/signInData";
-    const personUserIdPath = clubPath + "/personUserIds/" + parameterContainer.getParameter<string>("userId", "string");
     const signInDataRef = admin.database().ref(signInDataPath);
-    const personUserIdRef = admin.database().ref(personUserIdPath);
 
     // Force sign out
     if (await existsData(signInDataRef)) {
+        let userId = null;
+        await signInDataRef.child("userId").once("value", (snapshot) => {
+            userId = snapshot.val();
+        });
         let errorOccured = false;
         await signInDataRef.remove((error) => {
             errorOccured = errorOccured || error != null;
         });
+        if (userId == null) {
+            throw new functions.https.HttpsError("internal", "Couldn't force sign out person in database.");
+        }
+        const personUserIdPath = clubPath + "/personUserIds/" + userId;
+        const personUserIdRef = admin.database().ref(personUserIdPath);
         if (await existsData(personUserIdRef)) {
             await personUserIdRef.remove((error) => {
                 errorOccured = errorOccured || error != null;
