@@ -10,34 +10,34 @@ import Introspect
 
 /// Text Field with custom Design
 struct CustomTextField<InputProperties>: View where InputProperties: InputPropertiesProtocol {
-    
+
     /// Type of the textfield
     private let textField: InputProperties.TextFields
-    
+
     /// Binding of the input properties
     private let inputProperties: Binding<InputProperties>
-    
+
     /// Placeholder of Text field
     private var placeholder: String = "Placeholder"
-    
+
     /// Handler execuded after keyboard dismisses
-    private var completionHandler: (() -> Void)? = nil
-    
+    private var completionHandler: (() -> Void)?
+
     /// Inidcates whether textfield is secure
     private var isSecure: Bool = false
-    
+
     /// Keyboard type
     private var keyboardType: UIKeyboardType = .default
-    
+
     /// Textfield size
     private var textFieldSize: (width: CGFloat?, height: CGFloat?)
-    
+
     /// Proxy of scroll view reader
-    private var scrollViewProxy: ScrollViewProxy? = nil
-    
+    private var scrollViewProxy: ScrollViewProxy?
+
     /// Indicates wheater error messge is shown
     private var showErrorMessage = true
-    
+
     /// Init with textfield
     /// - Parameter textField: type of textfields
     /// - Parameter inputProperties: Binding of the input properties
@@ -45,13 +45,13 @@ struct CustomTextField<InputProperties>: View where InputProperties: InputProper
         self.textField = textField
         self.inputProperties = inputProperties
     }
-    
-    // -MARK: body
-    
+
+    // MARK: body
+
     public var body: some View {
         VStack(spacing: 5) {
             SingleOutlinedContent {
-                    
+
                 // Textfield
                 UICustomTextField(text: inputProperties[textField])
                     .placeholder(placeholder)
@@ -75,16 +75,16 @@ struct CustomTextField<InputProperties>: View where InputProperties: InputProper
                         textField.becomeFirstResponder()
                     }
                 }
-            
+
             // Error message
             if showErrorMessage {
                 ErrorMessageView(inputProperties[error: textField])
             }
         }
     }
-    
-    // -MARK: textfield modifier
-    
+
+    // MARK: textfield modifier
+
     /// Set textfield size
     /// - Parameters:
     ///   - width: width of the fextfield
@@ -95,7 +95,7 @@ struct CustomTextField<InputProperties>: View where InputProperties: InputProper
         textfield.textFieldSize = (width: width, height: height)
         return textfield
     }
-    
+
     /// Set textfield size
     /// - Parameter size: textfield size
     /// - Returns: modified textfield
@@ -104,12 +104,12 @@ struct CustomTextField<InputProperties>: View where InputProperties: InputProper
         textfield.textFieldSize = (width: size.width, height: size.height)
         return textfield
     }
-    
+
     /// Sets textfield size to UIScreen.main.bounds.width * 0.95 x 55
     public var defaultTextFieldSize: CustomTextField {
         textFieldSize(width: UIScreen.main.bounds.width * 0.95, height: 55)
     }
-    
+
     /// Set placeholder
     /// - Parameter placeholder: placeholder
     /// - Returns: modified textfield
@@ -118,7 +118,7 @@ struct CustomTextField<InputProperties>: View where InputProperties: InputProper
         textField.placeholder = placeholder
         return textField
     }
-    
+
     /// Set keyboard type
     /// - Parameter keyboardType: keyboard type
     /// - Returns: modified textfield
@@ -127,7 +127,7 @@ struct CustomTextField<InputProperties>: View where InputProperties: InputProper
         textField.keyboardType = keyboardType
         return textField
     }
-    
+
     /// Sets if textfield is secure
     /// - Parameter secure: inidcates whether textfield is secure
     /// - Returns: modified textfield
@@ -136,12 +136,12 @@ struct CustomTextField<InputProperties>: View where InputProperties: InputProper
         textField.isSecure = secure
         return textField
     }
-    
+
     /// Sets textfield to secure
     public var secure: CustomTextField {
         secure(true)
     }
-    
+
     /// Sets scroll view proxy
     /// - Parameter proxy: proxy of scroll view reader
     /// - Returns: modified textfield
@@ -150,7 +150,7 @@ struct CustomTextField<InputProperties>: View where InputProperties: InputProper
         textField.scrollViewProxy = proxy
         return textField
     }
-    
+
     /// Set completion handler
     /// - Parameter handler: completion handler
     /// - Returns: modified textfield
@@ -159,7 +159,7 @@ struct CustomTextField<InputProperties>: View where InputProperties: InputProper
         textField.completionHandler = handler
         return textField
     }
-    
+
     /// Sets show error message
     /// - Parameter show: indicates wheater error messge is shown
     /// - Returns: modified textfield
@@ -168,53 +168,53 @@ struct CustomTextField<InputProperties>: View where InputProperties: InputProper
         textField.showErrorMessage = show
         return textField
     }
-    
+
     /// Sets show error message to false
     public var hideErrorMessage: CustomTextField {
         showErrorMessage(false)
     }
-    
-    // -MARK: Custom UI Textfield
-    
+
+    // MARK: Custom UI Textfield
+
     /// Custom UI Textfield
     struct UICustomTextField: UIViewRepresentable {
-        
+
         /// Input text
         @Binding var text: String
-        
+
         /// Init with input text
         /// - Parameter text: input text
         init(text: Binding<String>) {
             self._text = text
         }
-        
+
         /// Placeholder
         private var placeholder: String = "Placeholder"
-        
+
         /// Inidcates whether textfield is secure
         private var isSecure: Bool = false
-        
+
         /// Textfield color
         private var color: Color = .textColor
-        
+
         /// Handler execuded after keyboard dismisses
-        private var completionHandler: (() -> Void)? = nil
-        
+        private var completionHandler: (() -> Void)?
+
         /// Handler execuded when textfield is focues
-        private var focusedHandler: (() -> Void)? = nil
-        
+        private var focusedHandler: (() -> Void)?
+
         /// UISecureField Coordinator
         class Coordinator: NSObject, UITextFieldDelegate {
-            
+
             /// Input text
             @Binding var text: String
-            
+
             /// Handler execuded after keyboard dismisses
             let completionHandler: (() -> Void)?
-            
+
             /// Handler execuded when textfield is focues
             private var focusedHandler: (() -> Void)?
-            
+
             /// Init with text and completion handler
             /// - Parameter text: input text
             /// - Parameter completionHandler: handler execuded after keyboard dismisses
@@ -223,39 +223,39 @@ struct CustomTextField<InputProperties>: View where InputProperties: InputProper
                 self.completionHandler = completionHandler
                 self.focusedHandler = focusedHandler
             }
-            
+
             func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
                 if let text = textField.text as NSString? {
                     self.text = text.replacingCharacters(in: range, with: string)
-                    
+
                 }
                 return true
             }
-            
+
             func textFieldShouldClear(_ textField: UITextField) -> Bool {
                 text = ""
                 return true
             }
-            
+
             func textFieldShouldReturn(_ textField: UITextField) -> Bool {
                 UIApplication.shared.dismissKeyboard()
                 return true
             }
-            
+
             func textFieldDidBeginEditing(_ textField: UITextField) {
                 focusedHandler?()
             }
-            
+
             func textFieldDidEndEditing(_ textField: UITextField) {
                 if let text = textField.text { self.text = text }
                 completionHandler?()
             }
         }
-        
+
         func makeCoordinator() -> Coordinator {
             Coordinator(text: $text, completionHandler: completionHandler, focusedHandler: focusedHandler)
         }
-        
+
         func makeUIView(context: UIViewRepresentableContext<UICustomTextField>) -> UITextField {
             let textField = UITextField()
             textField.delegate = context.coordinator
@@ -269,9 +269,9 @@ struct CustomTextField<InputProperties>: View where InputProperties: InputProper
             textField.textColor = UIColor(color)
             return textField
         }
-        
+
         func updateUIView(_ uiView: UITextField, context: UIViewRepresentableContext<UICustomTextField>) {
-            var offset: Int? = nil
+            var offset: Int?
             if let selectedRange = uiView.selectedTextRange {
                 offset = uiView.offset(from: uiView.endOfDocument, to: selectedRange.end)
             }
@@ -281,7 +281,7 @@ struct CustomTextField<InputProperties>: View where InputProperties: InputProper
                 uiView.selectedTextRange = uiView.textRange(from: position, to: position)
             }
         }
-        
+
         /// Set placeholder
         /// - Parameter placeholder: placeholder
         /// - Returns: modified textfield
@@ -290,7 +290,7 @@ struct CustomTextField<InputProperties>: View where InputProperties: InputProper
             textField.placeholder = placeholder
             return textField
         }
-        
+
         /// Sets text color
         /// - Parameter color: text color
         /// - Returns: modified textfield
@@ -299,7 +299,7 @@ struct CustomTextField<InputProperties>: View where InputProperties: InputProper
             textField.color = color
             return textField
         }
-        
+
         /// Sets if textfield is secure
         /// - Parameter secure: inidcates whether textfield is secure
         /// - Returns: modified textfield
@@ -308,12 +308,12 @@ struct CustomTextField<InputProperties>: View where InputProperties: InputProper
             textField.isSecure = secure
             return textField
         }
-        
+
         /// Sets textfield to secure
         public var secure: UICustomTextField {
             secure(true)
         }
-        
+
         /// Set completion handler
         /// - Parameter handler: completion handler
         /// - Returns: modified textfield
@@ -322,7 +322,7 @@ struct CustomTextField<InputProperties>: View where InputProperties: InputProper
             textField.completionHandler = handler
             return textField
         }
-        
+
         /// Set focused handler
         /// - Parameter handler: focused handler
         /// - Returns: modified textfield
@@ -334,10 +334,10 @@ struct CustomTextField<InputProperties>: View where InputProperties: InputProper
     }
 }
 
-// -MARK: extensions for default init
+// MARK: extensions for default init
 
 extension CustomTextField where InputProperties == DefaultInputProperties {
-    
+
     /// Init with default properties
     init() {
         self.textField = .textField

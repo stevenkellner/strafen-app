@@ -21,12 +21,12 @@
 		B02221B02641D73C0005295B /* FirebaseListType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B02221AF2641D73C0005295B /* FirebaseListType.swift */; };
 		B0225D2226504CD300D75CDA /* SignInClubInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0225D2126504CD300D75CDA /* SignInClubInputView.swift */; };
 		B0225D24265119D300D75CDA /* CustomToggle.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0225D23265119D300D75CDA /* CustomToggle.swift */; };
-		B0225D2626513C4900D75CDA /* FirebaseFunctionExistsClubWithIdentifierCall.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0225D2526513C4900D75CDA /* FirebaseFunctionExistsClubWithIdentifierCall.swift */; };
-		B0225D2826513C8800D75CDA /* FirebaseFunctionNewClubCall.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0225D2726513C8800D75CDA /* FirebaseFunctionNewClubCall.swift */; };
+		B0225D2626513C4900D75CDA /* FFExistsClubWithIdentifierCall.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0225D2526513C4900D75CDA /* FFExistsClubWithIdentifierCall.swift */; };
+		B0225D2826513C8800D75CDA /* FFNewClubCall.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0225D2726513C8800D75CDA /* FFNewClubCall.swift */; };
 		B0254E082641B6130083752B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B0254E072641B6130083752B /* GoogleService-Info.plist */; };
 		B0311305264427EB00E65025 /* FirebaseObserverTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0311304264427EB00E65025 /* FirebaseObserverTests.swift */; };
 		B03697BB2650115B00DA938D /* ErrorMessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B03697BA2650115B00DA938D /* ErrorMessageView.swift */; };
-		B03697BD265028F500DA938D /* FirebaseFunctionGetClubIdCall.swift in Sources */ = {isa = PBXBuildFile; fileRef = B03697BC265028F500DA938D /* FirebaseFunctionGetClubIdCall.swift */; };
+		B03697BD265028F500DA938D /* FFGetClubIdCall.swift in Sources */ = {isa = PBXBuildFile; fileRef = B03697BC265028F500DA938D /* FFGetClubIdCall.swift */; };
 		B0447C1A2641B78100148430 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0447C192641B78100148430 /* AppDelegate.swift */; };
 		B0447C1D2641B84600148430 /* Extensions+Other.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0447C1C2641B84600148430 /* Extensions+Other.swift */; };
 		B0447C202641BAFE00148430 /* FirebaseFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0447C1F2641BAFE00148430 /* FirebaseFetcher.swift */; };
@@ -50,13 +50,13 @@
 		B0A4629F2649A7070045D2BE /* CustomTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0A4629E2649A7070045D2BE /* CustomTextField.swift */; };
 		B0A462A12649B3020045D2BE /* TitledContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0A462A02649B3020045D2BE /* TitledContent.swift */; };
 		B0A7619C2642D366003B170F /* FirebaseCallParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0A7619B2642D366003B170F /* FirebaseCallParameters.swift */; };
-		B0A7619F2642DBB2003B170F /* FirebaseFunctionCallable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0A7619E2642DBB2003B170F /* FirebaseFunctionCallable.swift */; };
+		B0A7619F2642DBB2003B170F /* FFCallable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0A7619E2642DBB2003B170F /* FFCallable.swift */; };
 		B0A761A12642E20C003B170F /* KeysInfo.plist in Resources */ = {isa = PBXBuildFile; fileRef = B0A761A02642E20C003B170F /* KeysInfo.plist */; };
 		B0A761A32642E6C7003B170F /* FirebaseDatabaseLevel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0A761A22642E6C7003B170F /* FirebaseDatabaseLevel.swift */; };
 		B0A761B32642ED1F003B170F /* FirebaseFetcherTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0A761B22642ED1F003B170F /* FirebaseFetcherTests.swift */; };
-		B0AF0A8A26430B2900DF4DC9 /* FirebaseFunctionNewTestClubCall.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0AF0A8926430B2900DF4DC9 /* FirebaseFunctionNewTestClubCall.swift */; };
+		B0AF0A8A26430B2900DF4DC9 /* FFNewTestClubCall.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0AF0A8926430B2900DF4DC9 /* FFNewTestClubCall.swift */; };
 		B0AF0A8C26431B0800DF4DC9 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0AF0A8B26431B0800DF4DC9 /* Utils.swift */; };
-		B0AF0A8E2643225300DF4DC9 /* FirebaseFunctionDeleteTestClubCall.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0AF0A8D2643225300DF4DC9 /* FirebaseFunctionDeleteTestClubCall.swift */; };
+		B0AF0A8E2643225300DF4DC9 /* FFDeleteTestClubCall.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0AF0A8D2643225300DF4DC9 /* FFDeleteTestClubCall.swift */; };
 		B0AF0A9026432B6F00DF4DC9 /* FirebaseReasonTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0AF0A8F26432B6F00DF4DC9 /* FirebaseReasonTemplate.swift */; };
 		B0AF0A9426432C9500DF4DC9 /* Amount.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0AF0A9326432C9500DF4DC9 /* Amount.swift */; };
 		B0AF0A9626432CE100DF4DC9 /* PropertyWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0AF0A9526432CE100DF4DC9 /* PropertyWrapper.swift */; };
@@ -64,8 +64,8 @@
 		B0AF0A9A2643303500DF4DC9 /* FineReason.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0AF0A992643303500DF4DC9 /* FineReason.swift */; };
 		B0AF0A9C2643328800DF4DC9 /* Payed.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0AF0A9B2643328800DF4DC9 /* Payed.swift */; };
 		B0AF0A9E2643CE2500DF4DC9 /* FirebaseTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0AF0A9D2643CE2500DF4DC9 /* FirebaseTransaction.swift */; };
-		B0AF0AA02643FFDB00DF4DC9 /* FirebaseFunctionDeleteTestClubPropertyCall.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0AF0A9F2643FFDB00DF4DC9 /* FirebaseFunctionDeleteTestClubPropertyCall.swift */; };
-		B0AF0AA22644013400DF4DC9 /* FirebaseFunctionNewTestClubPropertyCall.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0AF0AA12644013400DF4DC9 /* FirebaseFunctionNewTestClubPropertyCall.swift */; };
+		B0AF0AA02643FFDB00DF4DC9 /* FFDeleteTestClubPropertyCall.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0AF0A9F2643FFDB00DF4DC9 /* FFDeleteTestClubPropertyCall.swift */; };
+		B0AF0AA22644013400DF4DC9 /* FFNewTestClubPropertyCall.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0AF0AA12644013400DF4DC9 /* FFNewTestClubPropertyCall.swift */; };
 		B0AF0AA42644125400DF4DC9 /* TestClub.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0AF0AA32644125400DF4DC9 /* TestClub.swift */; };
 		B0C2A4B02642918800250A8D /* Extensions+Array.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0C2A4AF2642918800250A8D /* Extensions+Array.swift */; };
 		B0D4B62D2642CD19003A720C /* FirebaseFunctionCaller.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0D4B62C2642CD19003A720C /* FirebaseFunctionCaller.swift */; };
@@ -104,12 +104,12 @@
 		B02221AF2641D73C0005295B /* FirebaseListType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseListType.swift; sourceTree = "<group>"; };
 		B0225D2126504CD300D75CDA /* SignInClubInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInClubInputView.swift; sourceTree = "<group>"; };
 		B0225D23265119D300D75CDA /* CustomToggle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomToggle.swift; sourceTree = "<group>"; };
-		B0225D2526513C4900D75CDA /* FirebaseFunctionExistsClubWithIdentifierCall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseFunctionExistsClubWithIdentifierCall.swift; sourceTree = "<group>"; };
-		B0225D2726513C8800D75CDA /* FirebaseFunctionNewClubCall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseFunctionNewClubCall.swift; sourceTree = "<group>"; };
+		B0225D2526513C4900D75CDA /* FFExistsClubWithIdentifierCall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FFExistsClubWithIdentifierCall.swift; sourceTree = "<group>"; };
+		B0225D2726513C8800D75CDA /* FFNewClubCall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FFNewClubCall.swift; sourceTree = "<group>"; };
 		B0254E072641B6130083752B /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		B0311304264427EB00E65025 /* FirebaseObserverTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseObserverTests.swift; sourceTree = "<group>"; };
 		B03697BA2650115B00DA938D /* ErrorMessageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorMessageView.swift; sourceTree = "<group>"; };
-		B03697BC265028F500DA938D /* FirebaseFunctionGetClubIdCall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseFunctionGetClubIdCall.swift; sourceTree = "<group>"; };
+		B03697BC265028F500DA938D /* FFGetClubIdCall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FFGetClubIdCall.swift; sourceTree = "<group>"; };
 		B0447C192641B78100148430 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B0447C1C2641B84600148430 /* Extensions+Other.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extensions+Other.swift"; sourceTree = "<group>"; };
 		B0447C1F2641BAFE00148430 /* FirebaseFetcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseFetcher.swift; sourceTree = "<group>"; };
@@ -134,15 +134,15 @@
 		B0A462A02649B3020045D2BE /* TitledContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitledContent.swift; sourceTree = "<group>"; };
 		B0A7619A2642D307003B170F /* Strafen.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Strafen.entitlements; sourceTree = "<group>"; };
 		B0A7619B2642D366003B170F /* FirebaseCallParameters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseCallParameters.swift; sourceTree = "<group>"; };
-		B0A7619E2642DBB2003B170F /* FirebaseFunctionCallable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseFunctionCallable.swift; sourceTree = "<group>"; };
+		B0A7619E2642DBB2003B170F /* FFCallable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FFCallable.swift; sourceTree = "<group>"; };
 		B0A761A02642E20C003B170F /* KeysInfo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = KeysInfo.plist; sourceTree = "<group>"; };
 		B0A761A22642E6C7003B170F /* FirebaseDatabaseLevel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseDatabaseLevel.swift; sourceTree = "<group>"; };
 		B0A761A82642ECBC003B170F /* StrafenTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = StrafenTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B0A761AC2642ECBC003B170F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B0A761B22642ED1F003B170F /* FirebaseFetcherTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseFetcherTests.swift; sourceTree = "<group>"; };
-		B0AF0A8926430B2900DF4DC9 /* FirebaseFunctionNewTestClubCall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseFunctionNewTestClubCall.swift; sourceTree = "<group>"; };
+		B0AF0A8926430B2900DF4DC9 /* FFNewTestClubCall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FFNewTestClubCall.swift; sourceTree = "<group>"; };
 		B0AF0A8B26431B0800DF4DC9 /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
-		B0AF0A8D2643225300DF4DC9 /* FirebaseFunctionDeleteTestClubCall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseFunctionDeleteTestClubCall.swift; sourceTree = "<group>"; };
+		B0AF0A8D2643225300DF4DC9 /* FFDeleteTestClubCall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FFDeleteTestClubCall.swift; sourceTree = "<group>"; };
 		B0AF0A8F26432B6F00DF4DC9 /* FirebaseReasonTemplate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseReasonTemplate.swift; sourceTree = "<group>"; };
 		B0AF0A9326432C9500DF4DC9 /* Amount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Amount.swift; sourceTree = "<group>"; };
 		B0AF0A9526432CE100DF4DC9 /* PropertyWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PropertyWrapper.swift; sourceTree = "<group>"; };
@@ -150,8 +150,8 @@
 		B0AF0A992643303500DF4DC9 /* FineReason.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FineReason.swift; sourceTree = "<group>"; };
 		B0AF0A9B2643328800DF4DC9 /* Payed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Payed.swift; sourceTree = "<group>"; };
 		B0AF0A9D2643CE2500DF4DC9 /* FirebaseTransaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseTransaction.swift; sourceTree = "<group>"; };
-		B0AF0A9F2643FFDB00DF4DC9 /* FirebaseFunctionDeleteTestClubPropertyCall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseFunctionDeleteTestClubPropertyCall.swift; sourceTree = "<group>"; };
-		B0AF0AA12644013400DF4DC9 /* FirebaseFunctionNewTestClubPropertyCall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseFunctionNewTestClubPropertyCall.swift; sourceTree = "<group>"; };
+		B0AF0A9F2643FFDB00DF4DC9 /* FFDeleteTestClubPropertyCall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FFDeleteTestClubPropertyCall.swift; sourceTree = "<group>"; };
+		B0AF0AA12644013400DF4DC9 /* FFNewTestClubPropertyCall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FFNewTestClubPropertyCall.swift; sourceTree = "<group>"; };
 		B0AF0AA32644125400DF4DC9 /* TestClub.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestClub.swift; sourceTree = "<group>"; };
 		B0C2A4AF2642918800250A8D /* Extensions+Array.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extensions+Array.swift"; sourceTree = "<group>"; };
 		B0D4B62C2642CD19003A720C /* FirebaseFunctionCaller.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseFunctionCaller.swift; sourceTree = "<group>"; };
@@ -292,7 +292,7 @@
 			isa = PBXGroup;
 			children = (
 				B02221AA2641D5250005295B /* FirebaseListTypes */,
-				B0A7619D2642DB86003B170F /* FirebaseFunctionCallables */,
+				B0A7619D2642DB86003B170F /* FFCallables */,
 				B0D4B62C2642CD19003A720C /* FirebaseFunctionCaller.swift */,
 				B0447C1F2641BAFE00148430 /* FirebaseFetcher.swift */,
 				B0EE60EC2641E07000D3B2D2 /* FirebaseObserver.swift */,
@@ -353,22 +353,22 @@
 			path = Enumerations;
 			sourceTree = "<group>";
 		};
-		B0A7619D2642DB86003B170F /* FirebaseFunctionCallables */ = {
+		B0A7619D2642DB86003B170F /* FFCallables */ = {
 			isa = PBXGroup;
 			children = (
-				B0A7619E2642DBB2003B170F /* FirebaseFunctionCallable.swift */,
-				B03697BC265028F500DA938D /* FirebaseFunctionGetClubIdCall.swift */,
-				B0225D2526513C4900D75CDA /* FirebaseFunctionExistsClubWithIdentifierCall.swift */,
-				B0225D2726513C8800D75CDA /* FirebaseFunctionNewClubCall.swift */,
+				B0A7619E2642DBB2003B170F /* FFCallable.swift */,
+				B03697BC265028F500DA938D /* FFGetClubIdCall.swift */,
+				B0225D2526513C4900D75CDA /* FFExistsClubWithIdentifierCall.swift */,
+				B0225D2726513C8800D75CDA /* FFNewClubCall.swift */,
 			);
-			path = FirebaseFunctionCallables;
+			path = FFCallables;
 			sourceTree = "<group>";
 		};
 		B0A761A92642ECBC003B170F /* StrafenTests */ = {
 			isa = PBXGroup;
 			children = (
 				B0A761AC2642ECBC003B170F /* Info.plist */,
-				B0AF0A8826430AF300DF4DC9 /* FirebaseFunctionCallables */,
+				B0AF0A8826430AF300DF4DC9 /* FFCallables */,
 				B0A761B22642ED1F003B170F /* FirebaseFetcherTests.swift */,
 				B0311304264427EB00E65025 /* FirebaseObserverTests.swift */,
 				B0AF0AA32644125400DF4DC9 /* TestClub.swift */,
@@ -377,15 +377,15 @@
 			path = StrafenTests;
 			sourceTree = "<group>";
 		};
-		B0AF0A8826430AF300DF4DC9 /* FirebaseFunctionCallables */ = {
+		B0AF0A8826430AF300DF4DC9 /* FFCallables */ = {
 			isa = PBXGroup;
 			children = (
-				B0AF0A8926430B2900DF4DC9 /* FirebaseFunctionNewTestClubCall.swift */,
-				B0AF0A8D2643225300DF4DC9 /* FirebaseFunctionDeleteTestClubCall.swift */,
-				B0AF0AA12644013400DF4DC9 /* FirebaseFunctionNewTestClubPropertyCall.swift */,
-				B0AF0A9F2643FFDB00DF4DC9 /* FirebaseFunctionDeleteTestClubPropertyCall.swift */,
+				B0AF0A8926430B2900DF4DC9 /* FFNewTestClubCall.swift */,
+				B0AF0A8D2643225300DF4DC9 /* FFDeleteTestClubCall.swift */,
+				B0AF0AA12644013400DF4DC9 /* FFNewTestClubPropertyCall.swift */,
+				B0AF0A9F2643FFDB00DF4DC9 /* FFDeleteTestClubPropertyCall.swift */,
 			);
-			path = FirebaseFunctionCallables;
+			path = FFCallables;
 			sourceTree = "<group>";
 		};
 		B1448759FED766FC4EFABFBB /* Frameworks */ = {
@@ -541,7 +541,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if which swiftlint >/dev/null; then\n  swiftlint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+			shellScript = "if which swiftlint >/dev/null; then\n  swiftlint autocorrect && swiftlint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
 		};
 		BED64B0C36425B0DD66E685C /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -595,12 +595,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				B0225D2226504CD300D75CDA /* SignInClubInputView.swift in Sources */,
-				B0225D2826513C8800D75CDA /* FirebaseFunctionNewClubCall.swift in Sources */,
+				B0225D2826513C8800D75CDA /* FFNewClubCall.swift in Sources */,
 				B02221AE2641D6850005295B /* PersonName.swift in Sources */,
 				B0A7619C2642D366003B170F /* FirebaseCallParameters.swift in Sources */,
 				B0AF0A9626432CE100DF4DC9 /* PropertyWrapper.swift in Sources */,
 				B072080C264C56E40084FDE6 /* ValidationResult.swift in Sources */,
-				B03697BD265028F500DA938D /* FirebaseFunctionGetClubIdCall.swift in Sources */,
+				B03697BD265028F500DA938D /* FFGetClubIdCall.swift in Sources */,
 				B0AF0A9E2643CE2500DF4DC9 /* FirebaseTransaction.swift in Sources */,
 				B0A46299264989E90045D2BE /* SignInEmailView.swift in Sources */,
 				B0447C1A2641B78100148430 /* AppDelegate.swift in Sources */,
@@ -622,7 +622,7 @@
 				B0720814264D6B9C0084FDE6 /* TextFieldsProtocol.swift in Sources */,
 				B0A4629326494AB90045D2BE /* RoundedCorners.swift in Sources */,
 				B02221B02641D73C0005295B /* FirebaseListType.swift in Sources */,
-				B0225D2626513C4900D75CDA /* FirebaseFunctionExistsClubWithIdentifierCall.swift in Sources */,
+				B0225D2626513C4900D75CDA /* FFExistsClubWithIdentifierCall.swift in Sources */,
 				B0AF0A9C2643328800DF4DC9 /* Payed.swift in Sources */,
 				B07148D5264DB45000C5F7EF /* SignInClubSelectionView.swift in Sources */,
 				B0A761A32642E6C7003B170F /* FirebaseDatabaseLevel.swift in Sources */,
@@ -630,7 +630,7 @@
 				B01E96B12641AEF60034E3D1 /* ContentView.swift in Sources */,
 				B0447C202641BAFE00148430 /* FirebaseFetcher.swift in Sources */,
 				B0A462912649412C0045D2BE /* Header.swift in Sources */,
-				B0A7619F2642DBB2003B170F /* FirebaseFunctionCallable.swift in Sources */,
+				B0A7619F2642DBB2003B170F /* FFCallable.swift in Sources */,
 				B0447C1D2641B84600148430 /* Extensions+Other.swift in Sources */,
 				B01E96AF2641AEF60034E3D1 /* StrafenApp.swift in Sources */,
 				B0E9C86826447AF100FB484E /* ListEnvironment.swift in Sources */,
@@ -653,14 +653,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B0AF0AA22644013400DF4DC9 /* FirebaseFunctionNewTestClubPropertyCall.swift in Sources */,
+				B0AF0AA22644013400DF4DC9 /* FFNewTestClubPropertyCall.swift in Sources */,
 				B0A761B32642ED1F003B170F /* FirebaseFetcherTests.swift in Sources */,
 				B0311305264427EB00E65025 /* FirebaseObserverTests.swift in Sources */,
 				B0AF0AA42644125400DF4DC9 /* TestClub.swift in Sources */,
-				B0AF0A8A26430B2900DF4DC9 /* FirebaseFunctionNewTestClubCall.swift in Sources */,
+				B0AF0A8A26430B2900DF4DC9 /* FFNewTestClubCall.swift in Sources */,
 				B0AF0A8C26431B0800DF4DC9 /* Utils.swift in Sources */,
-				B0AF0A8E2643225300DF4DC9 /* FirebaseFunctionDeleteTestClubCall.swift in Sources */,
-				B0AF0AA02643FFDB00DF4DC9 /* FirebaseFunctionDeleteTestClubPropertyCall.swift in Sources */,
+				B0AF0A8E2643225300DF4DC9 /* FFDeleteTestClubCall.swift in Sources */,
+				B0AF0AA02643FFDB00DF4DC9 /* FFDeleteTestClubPropertyCall.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -13,16 +13,16 @@ import Foundation
 /// * `debug`: for debug database to change only the debug database
 /// * `testing`: for test database to change only the testing database
 enum FirebaseDatabaseLevel: String {
-    
+
     /// For default database to change the actual database
     case regular
-    
+
     /// For debug database to change only the debug database
     case debug
-    
+
     /// For test database to change only the testing database
     case testing
-    
+
     /// Club component
     var clubComponent: String {
         switch self {
@@ -34,7 +34,7 @@ enum FirebaseDatabaseLevel: String {
             return "testableClubs"
         }
     }
-    
+
     /// `.debug` if build configuration is DEBUG, `.regular` otherwise
     static var defaultValue: FirebaseDatabaseLevel {
         Bundle.main.isDebug ? .debug : .regular

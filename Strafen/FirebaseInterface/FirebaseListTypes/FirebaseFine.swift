@@ -7,30 +7,33 @@
 
 import Foundation
 
+// swiftlint:disable identifier_name
+// swiftlint:disable type_name
+
 /// Contains all properties of a fine in firebase database
 struct FirebaseFine {
-    
+
     /// Tagged UUID type of the id
     typealias ID = Tagged<(FirebaseFine, id: Void), UUID>
-    
+
     /// Id
     let id: ID
-    
+
     /// Id of the associated person
     let assoiatedPersonId: FirebasePerson.ID
-    
+
     /// Date this fine was issued
     let date: Date
-    
+
     /// Is fine payed
     var payed: Payed
-    
+
     /// Number of fines
     let number: Int
-    
+
     /// Codable fine reason for reason / amount / importance or templateId
     private var codableFineReason: CodableFineReason
-    
+
     /// Fine reason for reason / amount / importance or templateId
     var fineReason: FineReason {
         get { codableFineReason.fineReason }
@@ -44,7 +47,7 @@ struct FirebaseFine {
             }
         }
     }
-    
+
     init(id: ID, assoiatedPersonId: FirebasePerson.ID, date: Date, payed: Payed, number: Int, fineReason: FineReason) {
         self.id = id
         self.assoiatedPersonId = assoiatedPersonId
@@ -62,9 +65,9 @@ struct FirebaseFine {
 }
 
 extension FirebaseFine: FirebaseListType {
-    
+
     static let urlFromClub = URL(string: "fines")!
-    
+
     /// Coding Keys for Decodable
     enum CodingKeys: String, CodingKey {
         case id = "key"

@@ -9,49 +9,49 @@ import Foundation
 
 /// All error messages
 enum ErrorMessages {
-    
+
     /// Textfield is empty
     case emptyField
-    
+
     /// Invalid email
     case invalidEmail
-    
+
     /// Less than 8 characters in password
     case tooFewCharacters
-    
+
     /// No upper character in password
     case noUpperCharacter
-    
+
     /// No lower character in password
     case noLowerCharacter
-    
+
     /// No digit in password
     case noDigit
-    
+
     /// Not same password
     case notSamePassword
-    
+
     /// Internal error for sign in
     case internalErrorSignIn
-    
+
     /// Email is already signed in
     case alreadySignedIn
-    
+
     /// Passwword is too weak
     case weakPassword
-    
+
     /// Club doesn't exist
     case clubNotExists
-    
+
     /// No region given
     case noRegionGiven
-    
+
     /// In app payment currency isn't euro
     case notEuro
-    
+
     /// Club identifier already exists
     case identifierAlreadyExists
-    
+
     /// Message of the error
     var message: String {
         switch self {

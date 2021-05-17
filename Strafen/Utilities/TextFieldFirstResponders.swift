@@ -9,13 +9,13 @@ import Foundation
 
 /// Contains list of all textfield handlers to become first responder
 struct TextFieldFirstResponders<TextFields> where TextFields: TextFieldsProtocol {
-    
+
     /// List of all textfield handlers to become first responder
     private var handlerList = [(textField: TextFields, handler: () -> Void)]()
-    
+
     /// Init with textfields type
     init() {}
-    
+
     /// Append new handler with given textfield to all textfield handlers
     /// - Parameters:
     ///   - textField: textfield of new handler
@@ -24,7 +24,7 @@ struct TextFieldFirstResponders<TextFields> where TextFields: TextFieldsProtocol
         handlerList.append((textField: textField, handler: becomeFirstResponderHandler))
         handlerList.sort { $0.textField < $1.textField }
     }
-    
+
     /// Makes given textfield to first responder
     /// - Parameter textField: textField
     public func becomeFirstResponder(_ textField: TextFields) {
@@ -34,7 +34,7 @@ struct TextFieldFirstResponders<TextFields> where TextFields: TextFieldsProtocol
 }
 
 extension TextFieldFirstResponders where TextFields == DefaultTextFields {
-    
+
     /// Init with default values
     init() {}
 }

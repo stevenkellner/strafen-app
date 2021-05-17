@@ -9,13 +9,13 @@ import SwiftUI
 
 /// Back  button
 struct BackButton: View {
-    
+
     /// Presentation mode
     @Environment(\.presentationMode) private var presentationMode
 
     public var body: some View {
         HStack(spacing: 0) {
-            
+
             // Back Button
             Text("Zurück")
                 .font(.system(size: 24, weight: .light))
@@ -23,7 +23,7 @@ struct BackButton: View {
                 .lineLimit(1)
                 .padding(.leading, 10)
                 .onTapGesture { presentationMode.wrappedValue.dismiss() }
-            
+
             Spacer()
         }
     }

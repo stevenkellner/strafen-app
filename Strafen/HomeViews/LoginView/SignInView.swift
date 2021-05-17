@@ -9,25 +9,25 @@ import SwiftUI
 
 /// View to select different sign in methods
 struct SignInView: View {
-    
+
     /// Sign in properties if not signed in with email
-    @State var signInProperties: (name: PersonNameComponents, userId: String)? = nil
-    
+    @State var signInProperties: (name: PersonNameComponents, userId: String)?
+
     /// Indicates whether navigation link is active
     @State var isNavigationLinkActive = false
-    
+
     var body: some View {
         NavigationView {
             ZStack {
-                
+
                 // Navigation View
                 EmptyNavigationLink(isActive: $isNavigationLinkActive) {
                     SignInEmailView(signInProperties)
                 }
-                
+
                 // Background color
                 Color.backgroundGray
-                
+
                 // Content
                 VStack(spacing: 0) {
 
@@ -71,7 +71,7 @@ struct SignInView: View {
                         .padding(.bottom, 55)
 
                 }
-                
+
             }.maxFrame
         }
     }

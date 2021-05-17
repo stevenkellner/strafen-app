@@ -9,13 +9,13 @@ import Foundation
 
 /// Result of a validation
 enum ValidationResult {
-    
+
     /// Validation was valid
     case valid
-    
+
     /// Validation was invalid
     case invalid
-    
+
     /// Toggles the ValidationResult variable's value.
     ///
     /// Use this method to toggle a ValidationResult value from `.valid` to `.invalid` or from
@@ -26,7 +26,7 @@ enum ValidationResult {
         }
         self = .valid
     }
-    
+
     /// Performs a logical AND operation on two ValidationResult values.
     ///
     /// The logical AND operator (`&&`) combines two ValidationResult values and returns
@@ -38,13 +38,13 @@ enum ValidationResult {
     ///   - rhs: right-hand side of the operation
     /// - Throws: rethrows error
     /// - Returns: result of logical AND operation
-    static func &&(lhs: ValidationResult, rhs: @autoclosure () throws -> ValidationResult) rethrows -> ValidationResult {
+    static func && (lhs: ValidationResult, rhs: @autoclosure () throws -> ValidationResult) rethrows -> ValidationResult {
         if lhs == .invalid {
             return .invalid
         }
         return try rhs()
     }
-    
+
     /// Performs a logical OR operation on two ValidationResult values.
     ///
     /// The logical OR operator (`||`) combines two ValidationResult values and returns
@@ -56,30 +56,30 @@ enum ValidationResult {
     ///   - rhs: right-hand side of the operation
     /// - Throws: rethrows error
     /// - Returns: result of logical OR operation
-    static func ||(lhs: ValidationResult, rhs: @autoclosure () throws -> ValidationResult) rethrows -> ValidationResult {
+    static func || (lhs: ValidationResult, rhs: @autoclosure () throws -> ValidationResult) rethrows -> ValidationResult {
         if lhs == .valid {
             return .valid
         }
         return try rhs()
     }
-    
+
     /// Performs a logical NOT operation on a ValidationResult value.
     ///
     /// The logical NOT operator (`!`) inverts a ValidationResult value. If the value is
     /// `.valid`, the result of the operation is `.invalid`; if the value is `.invalid`,
     /// the result is `.valid`.
     /// 
-    /// - Parameter a: validation result value to negate
+    /// - Parameter rhs: validation result value to negate
     /// - Returns: negated validation result
-    static prefix func !(a: ValidationResult) -> ValidationResult {
-        var b = a
-        b.toggle()
-        return b
+    static prefix func ! (rhs: ValidationResult) -> ValidationResult {
+        var result = rhs
+        result.toggle()
+        return result
     }
 }
 
 extension Collection where Element == ValidationResult {
-    
+
     /// `.valid` if all elements are `.valid`, else `.invalid`
     var validateAll: ValidationResult {
         allSatisfy { validationResult in
@@ -88,7 +88,7 @@ extension Collection where Element == ValidationResult {
     }
 }
 extension Collection {
-    
+
     /// `.valid` if validation of all elements are `.valid`, `.invalid` otherwise
     /// - Parameter validation: closure to validate element
     /// - Throws: rethrows error

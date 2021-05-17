@@ -9,13 +9,13 @@ import Foundation
 
 /// Contains first and last name of a person
 struct PersonName {
-    
+
     /// First name of the name
     let firstName: String
-    
+
     /// Last name of the name, can be optional
     let lastName: String?
-    
+
     /// Init person name with first and optional last name.
     /// - Parameters:
     ///   - firstName: first name
@@ -27,7 +27,7 @@ struct PersonName {
 }
 
 extension PersonName: Decodable {
-    
+
     /// Coding Keys for Decodable
     enum CodingKeys: String, CodingKey {
         case firstName = "first"
@@ -38,7 +38,7 @@ extension PersonName: Decodable {
 extension PersonName: Equatable {}
 
 extension PersonName {
-    
+
     /// Name as PersonNameComponents
     private var personNameComponents: PersonNameComponents {
         var componets = PersonNameComponents()
@@ -46,7 +46,7 @@ extension PersonName {
         componets.familyName = lastName
         return componets
     }
-    
+
     /// Formatted person name
     var formatted: String {
         let formatter = PersonNameComponentsFormatter()
@@ -57,10 +57,10 @@ extension PersonName {
 
 /// Person name with optional first and last name
 struct OptionalPersonName: Codable {
-    
+
     /// Optional first name
     let first: String?
-    
+
     /// Optional last name
     let last: String?
 }

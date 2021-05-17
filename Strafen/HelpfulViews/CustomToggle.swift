@@ -9,13 +9,13 @@ import SwiftUI
 
 /// View used to toggle a bool
 struct CustomToggle: View {
-    
+
     /// Title of the bool to change
     private let title: String
-    
+
     /// Bool to change
     @Binding private var boolToToggle: Bool
-    
+
     /// Init with title and bool to change
     /// - Parameters:
     ///   - title: title of the bool to change
@@ -24,28 +24,28 @@ struct CustomToggle: View {
         self.title = title
         self._boolToToggle = boolToToggle
     }
-    
+
     /// Error message of the bool
-    private var errorMessage: Binding<ErrorMessages?>? = nil
-    
+    private var errorMessage: Binding<ErrorMessages?>?
+
     /// Textfield size
-    private var fieldSize: (width: CGFloat?, height: CGFloat?)? = nil
-    
+    private var fieldSize: (width: CGFloat?, height: CGFloat?)?
+
     var body: some View {
         VStack(spacing: 5) {
             SingleOutlinedContent {
                 HStack(spacing: 0) {
                     Spacer()
-                    
+
                     // Title
                     Text("\(title):")
                         .foregroundColor(.textColor)
                         .font(.system(size: 20, weight: .light))
                         .padding(.horizontal, 15)
                         .lineLimit(1)
-                    
+
                     Spacer()
-                    
+
                     // Toggle
                     HStack(spacing: 0) {
                         SplitedOutlinedContent {
@@ -70,19 +70,19 @@ struct CustomToggle: View {
                     }.frame(height: fieldSize?.height.map { $0 * 0.75 })
                         .toggleOnTapGesture($boolToToggle)
                         .padding(.trailing, 15)
-                    
+
                 }
             }.strokeColor(errorMessage?.wrappedValue.map { _ in .customRed })
                 .lineWidth(errorMessage?.wrappedValue.map { _ in 2 })
                 .frame(width: fieldSize?.width, height: fieldSize?.height)
-            
+
             // Error message
             if let errorMessage = errorMessage {
                 ErrorMessageView(errorMessage)
             }
         }
     }
-    
+
     /// Sets error message of the bool
     /// - Parameter errorMessage: error message of the bool
     /// - Returns: modified toggle
@@ -91,7 +91,7 @@ struct CustomToggle: View {
         toggle.errorMessage = errorMessage
         return toggle
     }
-    
+
     /// Set field size
     /// - Parameters:
     ///   - width: width of the field
@@ -102,7 +102,7 @@ struct CustomToggle: View {
         toggle.fieldSize = (width: width, height: height)
         return toggle
     }
-    
+
     /// Set field size
     /// - Parameter size: field size
     /// - Returns: modified toggle
@@ -112,4 +112,3 @@ struct CustomToggle: View {
         return toggle
     }
 }
-

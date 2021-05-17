@@ -9,21 +9,21 @@ import SwiftUI
 
 /// Set of parameters that can be used as a parameter in a firebase function call.
 struct FirebaseCallParameterSet {
-    
+
     /// Dicticionary of parameters that can be used as a parameter in a firebase function call.
-    private(set) var parameters: [String : FirebaseParameterable]
-    
+    private(set) var parameters: [String: FirebaseParameterable]
+
     /// Inits parameter set with old parameters and a closure to add more parameters
     /// - Parameters:
     ///   - parameters: old parameters to append to this set
     ///   - adding: closure to add more parameters
-    init(_ parameters: FirebaseCallParameterSet? = nil, _ adding: ((inout [String : FirebaseParameterable]) -> Void)? = nil) {
+    init(_ parameters: FirebaseCallParameterSet? = nil, _ adding: ((inout [String: FirebaseParameterable]) -> Void)? = nil) {
         self.parameters = parameters?.parameters ?? [:]
         if let adding = adding {
             adding(&self.parameters)
         }
     }
-    
+
     /// Add a single parameter with given key to the parameter set
     /// - Parameters:
     ///   - value: the new parameter
@@ -31,19 +31,19 @@ struct FirebaseCallParameterSet {
     mutating func add(_ value: FirebaseParameterable, for key: String) {
         parameters[key] = value
     }
-    
+
     /// Adds parameters of given set to this parameter set
     /// - Parameter moreParameters: parameters to append to this set
     mutating func add(_ moreParameters: FirebaseCallParameterSet) {
         add(moreParameters.parameters)
     }
-    
+
     /// Adds parameters of given set to this parameter set
     /// - Parameter moreParameters: parameters to append to this set
-    mutating func add(_ moreParameters: [String : FirebaseParameterable]) {
+    mutating func add(_ moreParameters: [String: FirebaseParameterable]) {
         parameters.merge(moreParameters) { firstValue, _ in firstValue}
     }
-    
+
     /// Sets and gets parameter with given key
     /// - Parameters:
     ///   - key: key of the parameter
@@ -52,7 +52,7 @@ struct FirebaseCallParameterSet {
         get { parameters[key] }
         set { parameters[key] = newValue }
     }
-    
+
     /// Transformed parameters as Dictionaray of [String : FirebasePrimordialParameterable]
     /// that can be used as a parameter in a firebase function call.
     var primordialParameter: [String: FirebasePrimordialParameterable] {
@@ -62,12 +62,12 @@ struct FirebaseCallParameterSet {
     }
 }
 
-// -MARK: Firebase Primordial Parameterable
+// MARK: Firebase Primordial Parameterable
 
 /// All types that can be used as a parameter in a firebase function call.
 protocol FirebasePrimordialParameterable {}
 
-// -MARK: Conformance of necessary types to FirebasePrimordialParameterable
+// MARK: Conformance of necessary types to FirebasePrimordialParameterable
 
 extension Bool: FirebasePrimordialParameterable {}
 extension Int: FirebasePrimordialParameterable {}
@@ -78,18 +78,18 @@ extension Array: FirebasePrimordialParameterable where Element == FirebasePrimor
 extension Optional: FirebasePrimordialParameterable where Wrapped == FirebasePrimordialParameterable {}
 extension Dictionary: FirebasePrimordialParameterable where Key == String, Value == FirebasePrimordialParameterable {}
 
-// -MARK: Firebase Parameterable
+// MARK: Firebase Parameterable
 
 /// All types that can be transformed to FirebasePrimordialParameterable
 /// that can be used as a parameter in a firebase function call.
 protocol FirebaseParameterable {
-    
+
     /// Transformed parameters as FirebasePrimordialParameterable
     /// that can be used as a parameter in a firebase function call.
     var primordialParameter: FirebasePrimordialParameterable { get }
 }
 
-// -MARK: Conformance of common types to FirebaseParameterable
+// MARK: Conformance of common types to FirebaseParameterable
 
 extension FirebaseParameterable where Self: FirebasePrimordialParameterable {
     var primordialParameter: FirebasePrimordialParameterable { self }
@@ -128,8 +128,8 @@ extension UUID: FirebaseParameterable {
 extension Date: FirebaseParameterable {
     var primordialParameter: FirebasePrimordialParameterable {
         let encoder = JSONEncoder()
-        let data = try! encoder.encode(self)
-        return Double(String(data: data, encoding: .utf8)!)!
+        let data = try? encoder.encode(self)
+        return Double(String(data: data!, encoding: .utf8)!)!
     }
 }
 

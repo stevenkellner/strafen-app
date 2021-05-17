@@ -9,40 +9,40 @@ import SwiftUI
 import FirebaseFunctions
 
 struct SignInClubInputView: View {
-    
-    // -MARK: input properties
-    
+
+    // MARK: input properties
+
     /// Contains all properties of the textfield inputs
     struct InputProperties: InputPropertiesProtocol {
-        
+
         /// All textfields
         enum TextFields: Int, TextFieldsProtocol {
             case clubName, clubIdentifier
         }
-        
-        var inputProperties = [TextFields : String]()
-        
-        var errorMessages = [TextFields : ErrorMessages]()
-        
+
+        var inputProperties = [TextFields: String]()
+
+        var errorMessages = [TextFields: ErrorMessages]()
+
         var firstResponders = TextFieldFirstResponders<TextFields>()
-        
+
         /// Region code
         var regionCode: String?
-        
+
         /// Is in app paypent active
         var inAppPayment: Bool = true
-        
+
         /// Error message of region code
-        var regionCodeErrorMessage: ErrorMessages? = nil
-        
+        var regionCodeErrorMessage: ErrorMessages?
+
         /// Error message of in app payment
-        var inAppPaymentErrorMessage: ErrorMessages? = nil
-        
+        var inAppPaymentErrorMessage: ErrorMessages?
+
         /// Validates the club name input and sets associated error messages
         /// - Parameter setErrorMessage: Indicates whether error message will be set
         /// - Returns: result of this validation
         private mutating func validateClubName(setErrorMessage: Bool = true) -> ValidationResult {
-            var errorMessage: ErrorMessages? = nil
+            var errorMessage: ErrorMessages?
             if self[.clubName].isEmpty {
                 errorMessage = .emptyField
             } else {
@@ -52,12 +52,12 @@ struct SignInClubInputView: View {
             if setErrorMessage { self[error: .clubName] = errorMessage }
             return .invalid
         }
-        
+
         /// Validates the club identifer input and sets associated error messages
         /// - Parameter setErrorMessage: Indicates whether error message will be set
         /// - Returns: result of this validation
         private mutating func validateClubIdentifier(setErrorMessage: Bool = true) -> ValidationResult {
-            var errorMessage: ErrorMessages? = nil
+            var errorMessage: ErrorMessages?
             if self[.clubIdentifier].isEmpty {
                 errorMessage = .emptyField
             } else {
@@ -67,14 +67,14 @@ struct SignInClubInputView: View {
             if setErrorMessage { self[error: .clubIdentifier] = errorMessage }
             return .invalid
         }
-        
+
         mutating func validateTextField(_ textfield: TextFields, setErrorMessage: Bool) -> ValidationResult {
             switch textfield {
             case .clubName: return validateClubName(setErrorMessage: setErrorMessage)
             case .clubIdentifier: return validateClubIdentifier(setErrorMessage: setErrorMessage)
             }
         }
-        
+
         /// Validates the region code and sets associated error messages
         /// - Returns: result of this validation
         mutating func validateRegionCode() -> ValidationResult {
@@ -86,7 +86,7 @@ struct SignInClubInputView: View {
             }
             return .invalid
         }
-        
+
         /// Validates in app payment and sets associated error messages
         /// - Returns: result of this validation
         mutating func validateActivateInAppPayment() -> ValidationResult {
@@ -105,7 +105,7 @@ struct SignInClubInputView: View {
             inAppPaymentErrorMessage = nil
             return .valid
         }
-        
+
         /// Validates all input and sets associated error messages
         /// - Returns: result of this validation
         public mutating func validateAllInputs() -> ValidationResult {
@@ -113,10 +113,10 @@ struct SignInClubInputView: View {
                 validateTextField(textField)
             }, validateRegionCode(), validateActivateInAppPayment()].validateAll
         }
-        
+
         /// State of continue button press
         var connectionState: ConnectionState = .notStarted
-        
+
         /// Evaluates auth error and sets associated error messages
         /// - Parameter error: auth error
         mutating func evaluateErrorCode(of error: NSError) {
@@ -130,57 +130,56 @@ struct SignInClubInputView: View {
             }
         }
     }
-    
-    // -MARK: properties
-    
+
+    // MARK: properties
+
     /// Sign in property with userId and name
     let oldSignInProperty: SignInProperty.UserIdName
-    
+
     /// Init with sign in property
     /// - Parameter signInProperty: Sign in property with userId and name
     init(signInProperty: SignInProperty.UserIdName) {
         self.oldSignInProperty = signInProperty
     }
-    
+
     /// All properties of the textfield inputs
     @State private var inputProperties = InputProperties()
-    
-    // -MARK: body
-    
+
+    // MARK: body
+
     var body: some View {
         ZStack {
-            
+
             // Background color
             Color.backgroundGray
-            
+
             // Content
             VStack(spacing: 0) {
-                
+
                 // Back button
                 BackButton()
                     .padding(.top, 50)
-                
+
                 // Header
                 Header("Neuer Verein")
                     .padding(.top, 10)
-                
+
                 Spacer()
-                
-                
+
                 ScrollView(showsIndicators: false) {
                     ScrollViewReader { proxy in
                         VStack(spacing: 15) {
-                            
+
                             // Club name
-                            
+
                             TitledContent("Vereinsname") {
                                 CustomTextField(.clubName, inputProperties: $inputProperties)
                                     .placeholder("Vereinsname")
                                     .defaultTextFieldSize
                                     .scrollViewProxy(proxy)
-                                
+
                             }
-                            
+
                             // Region code
                             VStack(spacing: 5) {
                                 TitledContent("Region") {
@@ -188,7 +187,7 @@ struct SignInClubInputView: View {
                                 }
                                 ErrorMessageView($inputProperties.regionCodeErrorMessage)
                             }
-                            
+
                             // Aktivate in app payment
                             VStack(spacing: 5) {
                                 VStack(spacing: 5) {
@@ -207,7 +206,7 @@ struct SignInClubInputView: View {
                                     .padding(.horizontal, 15)
                                     .lineLimit(3)
                             }
-                            
+
                             // Club identifier
                             VStack(spacing: 5) {
                                 TitledContent("Vereinskennung") {
@@ -226,31 +225,31 @@ struct SignInClubInputView: View {
                                     .lineLimit(2)
 
                             }
-                            
+
                         }
                     }
                 }
-                
+
                 Spacer()
-                    
+
                 // Confirm button
                 SingleButton.confirm
                     .connectionState($inputProperties.connectionState)
                     .onClick(perform: handleConfirmButtonPress)
                     .padding(.bottom, 55)
-                
+
             }
-            
+
         }.maxFrame
     }
-    
-    // -MARK: handle cofirm button press
-    
+
+    // MARK: handle cofirm button press
+
     /// Handles the click on the confirm button
     func handleConfirmButtonPress() {
         Self.handleConfirmButtonPress(oldSignInProperty: oldSignInProperty, inputProperties: $inputProperties)
     }
-    
+
     /// Handles the click on the confirm button
     /// - Parameter oldSignInProperty: sign in property with userId and name
     /// - Parameter inputProperties: binding of the input properties
@@ -262,13 +261,13 @@ struct SignInClubInputView: View {
             createNewClub(oldSignInProperty: oldSignInProperty, inputProperties: inputProperties)
         }
     }
-    
+
     /// Checks if club with identifier already exists
     /// - Parameters:
     ///   - inputProperties: binding of the input properties
     ///   - successHandler: executed if no club with identifier exists
     static func checkClubIdentifierExists(inputProperties: Binding<InputProperties>, handler successHandler: @escaping () -> Void) {
-        let callItem = FirebaseFunctionExistsClubWithIdentifierCall(identifier: inputProperties.wrappedValue[.clubIdentifier])
+        let callItem = FFExistsClubWithIdentifierCall(identifier: inputProperties.wrappedValue[.clubIdentifier])
         FirebaseFunctionCaller.shared.call(callItem).then { clubExists in
             if clubExists {
                 inputProperties.wrappedValue[error: .clubIdentifier] = .identifierAlreadyExists
@@ -281,13 +280,13 @@ struct SignInClubInputView: View {
             inputProperties.wrappedValue.connectionState.failed()
         }
     }
-    
+
     /// Creates a new club
     /// - Parameters:
     ///   - oldSignInProperty: sign in property with userId and name
     ///   - inputProperties: binding of the input properties
     static func createNewClub(oldSignInProperty: SignInProperty.UserIdName, inputProperties: Binding<InputProperties>) {
-        let callItem = FirebaseFunctionNewClubCall(
+        let callItem = FFNewClubCall(
             signInProperty: oldSignInProperty,
             clubId: UUID(),
             personId: FirebasePerson.ID(rawValue: UUID()),
@@ -303,15 +302,15 @@ struct SignInClubInputView: View {
             inputProperties.wrappedValue.connectionState.failed()
         }
     }
-    
-    // -MARK: region nput
-    
+
+    // MARK: region nput
+
     /// Region input
     struct RegionInput: View {
-        
+
         /// All properties of the textfield inputs
         @Binding var inputProperties: InputProperties
-        
+
         var body: some View {
             SingleOutlinedContent {
                 Picker({ () -> String in

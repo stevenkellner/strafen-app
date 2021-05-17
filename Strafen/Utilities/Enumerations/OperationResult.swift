@@ -9,13 +9,13 @@ import Foundation
 
 /// Result of a check
 enum OperationResult {
-    
+
     /// Operation is passed
     case passed
-    
+
     /// Operation is failed
     case failed
-    
+
     /// Toggles the ValidationResult OperationResult's value.
     ///
     /// Use this method to toggle a OperationResult value from `.passed` to `.failed` or from
@@ -26,8 +26,7 @@ enum OperationResult {
         }
         self = .passed
     }
-    
-    
+
     /// Performs a logical AND operation on two OperationResult values.
     ///
     /// The logical AND operator (`&&`) combines two OperationResult values and returns
@@ -39,13 +38,13 @@ enum OperationResult {
     ///   - rhs: right-hand side of the operation
     /// - Throws: rethrows error
     /// - Returns: result of logical AND operation
-    static func &&(lhs: OperationResult, rhs: @autoclosure () throws -> OperationResult) rethrows -> OperationResult {
+    static func && (lhs: OperationResult, rhs: @autoclosure () throws -> OperationResult) rethrows -> OperationResult {
         if lhs == .failed {
             return .failed
         }
         return try rhs()
     }
-    
+
     /// Performs a logical OR operation on two OperationResult values.
     ///
     /// The logical OR operator (`||`) combines two OperationResult values and returns
@@ -57,30 +56,30 @@ enum OperationResult {
     ///   - rhs: right-hand side of the operation
     /// - Throws: rethrows error
     /// - Returns: result of logical OR operation
-    static func ||(lhs: OperationResult, rhs: @autoclosure () throws -> OperationResult) rethrows -> OperationResult {
+    static func || (lhs: OperationResult, rhs: @autoclosure () throws -> OperationResult) rethrows -> OperationResult {
         if lhs == .passed {
             return .passed
         }
         return try rhs()
     }
-    
+
     /// Performs a logical NOT operation on a OperationResult value.
     ///
     /// The logical NOT operator (`!`) inverts a OperationResult value. If the value is
     /// `.passed`, the result of the operation is `.failed`; if the value is `.failed`,
     /// the result is `.passed`.
     ///
-    /// - Parameter a: validation result value to negate
+    /// - Parameter rhs: validation result value to negate
     /// - Returns: negated validation result
-    static prefix func !(a: OperationResult) -> OperationResult {
-        var b = a
-        b.toggle()
-        return b
+    static prefix func ! (rhs: OperationResult) -> OperationResult {
+        var result = rhs
+        result.toggle()
+        return result
     }
 }
 
 extension Collection where Element == OperationResult {
-    
+
     /// `.passed` if all elements are `.passed`, else `.failed`
     var allPassed: OperationResult {
         allSatisfy { checkResult in
@@ -89,7 +88,7 @@ extension Collection where Element == OperationResult {
     }
 }
 extension Collection {
-    
+
     /// `.passed` if check of all elements are `.passed`, `.failed` otherwise
     /// - Parameter passed: closure to check if element is passed
     /// - Throws: rethrows error

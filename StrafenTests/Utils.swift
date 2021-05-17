@@ -10,14 +10,14 @@ import Hydra
 @testable import Strafen
 
 extension XCTestCase {
-    
+
     /// An error that occurs during waiting for tasks
     enum TimeoutError: Error {
-        
+
         /// Data task expired error
         case dataTaskExpired
     }
-    
+
     /// Wait for synchronous tasks
     /// - Parameters:
     ///   - timeout: time to wait for task
@@ -38,7 +38,7 @@ extension XCTestCase {
         guard let unwrappedResult = result else { throw TimeoutError.dataTaskExpired }
         return unwrappedResult
     }
-    
+
     /// Wait for synchronous tasks
     /// - Parameters:
     ///   - timeout: time to wait for task
@@ -50,7 +50,7 @@ extension XCTestCase {
         try handler { expectation.fulfill() }
         waitForExpectations(timeout: timeout)
     }
-    
+
     /// Wait timeout and expects no value
     /// - Parameters:
     ///   - timeout: time to wait for task
@@ -63,7 +63,7 @@ extension XCTestCase {
         DispatchQueue.main.asyncAfter(deadline: .now() + timeout) { expectation.fulfill() }
         waitForExpectations(timeout: timeout + 1)
     }
-    
+
     /// Wait timeout and expects no value
     /// - Parameters:
     ///   - timeout: time to wait for task
@@ -76,7 +76,7 @@ extension XCTestCase {
         DispatchQueue.main.asyncAfter(deadline: .now() + timeout) { expectation.fulfill() }
         waitForExpectations(timeout: timeout + 1)
     }
-    
+
     /// Waits for given timeinterval
     /// - Parameter timeout: timeintval to wait
     func wait(_ timeout: TimeInterval) {
@@ -87,7 +87,7 @@ extension XCTestCase {
 }
 
 extension FirebaseFetcher {
-    
+
     /// Fetches a testable club from firebase database
     /// - Parameter clubId: id of the club
     /// - Returns: promise of the club
@@ -114,8 +114,8 @@ extension FirebaseFetcher {
 ///   - d: promise d
 ///   - e: promise e
 /// - Returns: joined promise of type Promise<(A,B)>
-public func zip<A, B, C, D, E>(in context: Context? = nil, a: Promise<A>, b: Promise<B>, c: Promise<C>, d: Promise<D>, e: Promise<E>) -> Promise<(A, B, C, D, E)> {
-    zip(in: context, zip(in: context, a: a, b: b, c: c, d: d), e).then { tuple, e in
-        return (tuple.0, tuple.1, tuple.2, tuple.3, e)
+public func zip<A, B, C, D, E>(in context: Context? = nil, a promiseA: Promise<A>, b promiseB: Promise<B>, c promiseC: Promise<C>, d promiseD: Promise<D>, e promiseE: Promise<E>) -> Promise<(A, B, C, D, E)> { // swiftlint:disable:this large_tuple
+    zip(in: context, zip(in: context, a: promiseA, b: promiseB, c: promiseC, d: promiseD), promiseE).then { tuple, promiseE in
+        return (tuple.0, tuple.1, tuple.2, tuple.3, promiseE)
     }
 }

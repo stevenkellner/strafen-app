@@ -9,13 +9,13 @@ import SwiftUI
 
 /// Stores an amount
 struct Amount {
-    
+
     /// Value of the amount
     @NonNegative private var value: Int = .zero
-    
+
     /// Value of the subunit of this amount
     @Clamping(0...99) private var subUnitValue: Int = .zero
-    
+
     /// Init with euro and cent
     /// - Parameters:
     ///   - value: value of the amount
@@ -24,12 +24,12 @@ struct Amount {
         self.value = value
         self.subUnitValue = subUnit
     }
-    
+
     /// Double value
     var doubleValue: Double {
         Double(value) + Double(subUnitValue) / 100
     }
-    
+
     /// String value
     var stringValue: String {
         if subUnitValue == 0 {
@@ -43,7 +43,7 @@ struct Amount {
 }
 
 extension Amount: CustomStringConvertible {
-    
+
     /// Locale
     static var locale: Locale {
         let countryCodeKey = "DE" // Settings.shared.person?.clubProperties.regionCode ?? "DE" TODO
@@ -54,7 +54,7 @@ extension Amount: CustomStringConvertible {
         ])
         return Locale(identifier: identifier)
     }
-    
+
     var description: String {
         let numberFormatter = NumberFormatter()
         numberFormatter.locale = Amount.locale
@@ -64,7 +64,7 @@ extension Amount: CustomStringConvertible {
 }
 
 extension Amount: CustomDebugStringConvertible {
-    
+
     var debugDescription: String {
         let numberFormatter = NumberFormatter()
         numberFormatter.locale = Locale.current
@@ -74,19 +74,19 @@ extension Amount: CustomDebugStringConvertible {
 }
 
 extension Amount: AdditiveArithmetic {
-    
+
     static var zero: Amount {
         Amount(.zero, subUnit: .zero)
     }
-    
-    static func +(lhs: Amount, rhs: Amount) -> Amount {
+
+    static func + (lhs: Amount, rhs: Amount) -> Amount {
         let newSubUnitValue = lhs.subUnitValue + rhs.subUnitValue
         let value = lhs.value + rhs.value + newSubUnitValue / 100
         let subUnitValue = newSubUnitValue % 100
         return Amount(value, subUnit: subUnitValue)
     }
-    
-    static func -(lhs: Amount, rhs: Amount) -> Amount {
+
+    static func - (lhs: Amount, rhs: Amount) -> Amount {
         let newSubUnitValue = lhs.subUnitValue - rhs.subUnitValue
         let value = lhs.value - rhs.value - (newSubUnitValue >= 0 ? 0 : 1)
         let subUnitValue = (newSubUnitValue + 100) % 100
@@ -96,7 +96,7 @@ extension Amount: AdditiveArithmetic {
 }
 
 extension Amount: VectorArithmetic {
-    
+
     mutating func scale(by rhs: Double) {
         self *= rhs
     }
@@ -107,32 +107,34 @@ extension Amount: VectorArithmetic {
 }
 
 extension Amount {
-    
+
     /// Multiplies amount with an Int
     /// - Parameters:
     ///   - amount: amount value
     ///   - multiplier: multiplier
     /// - Returns: multiplied value
-    static func *(amount: Amount, multiplier: Int) -> Amount {
+    static func * (amount: Amount, multiplier: Int) -> Amount {
         let multiplier = abs(multiplier)
         let value = amount.value * multiplier + (amount.subUnitValue * multiplier) / 100
         let subUnitValue = (amount.subUnitValue * multiplier) % 100
         return Amount(value, subUnit: subUnitValue)
     }
-    
+
     /// Multiplies amount with an Double
     /// - Parameters:
     ///   - amount: amount value
     ///   - multiplier: multiplier
     /// - Returns: multiplied value
-    static func *(amount: Amount, multiplier: Double) -> Amount {
+    static func * (amount: Amount, multiplier: Double) -> Amount {
         let multiplier = abs(multiplier)
         let doubleValue = amount.doubleValue * multiplier
         let value = Int(doubleValue)
         let subUnitValue = Int(doubleValue * 100) - value * 100
         return Amount(value, subUnit: subUnitValue)
     }
-    
+
+    // swiftlint:disable shorthand_operator
+
     /// Multiplies amount with an Int
     /// - Parameters:
     ///   - amount: amount value
@@ -140,7 +142,7 @@ extension Amount {
     static func *= (amount: inout Amount, multiplier: Int) {
         amount = amount * multiplier
     }
-    
+
     /// Multiplies amount with an Double
     /// - Parameters:
     ///   - amount: amount value
@@ -151,15 +153,15 @@ extension Amount {
 }
 
 extension Amount: Equatable {
-    
-    static func ==(lhs: Amount, rhs: Amount) -> Bool {
+
+    static func == (lhs: Amount, rhs: Amount) -> Bool {
         lhs.value == rhs.value && lhs.subUnitValue == rhs.subUnitValue
     }
 }
 
 extension Amount: Comparable {
-    
-    static func <(lhs: Amount, rhs: Amount) -> Bool {
+
+    static func < (lhs: Amount, rhs: Amount) -> Bool {
         if lhs.value < rhs.value {
             return true
         } else if lhs.value == rhs.value && lhs.subUnitValue < rhs.subUnitValue {
@@ -170,7 +172,7 @@ extension Amount: Comparable {
 }
 
 extension Amount: Decodable {
-    
+
     /// Init amount with a double value
     /// - Parameter doubleValue: double value
     init(doubleValue: Double) {
@@ -178,22 +180,22 @@ extension Amount: Decodable {
         self.value = Int(doubleValue)
         self.subUnitValue = Int(doubleValue * 100) - value * 100
     }
-    
+
     init(from decoder: Decoder) throws {
         let container = try decoder.singleValueContainer()
         let rawAmount = try container.decode(Double.self)
-        
+
         // Check if amount is positive
         guard rawAmount >= 0 else {
             throw DecodingError.dataCorruptedError(in: container, debugDescription: "Amount is negative.")
         }
-        
+
         self.init(doubleValue: rawAmount)
     }
 }
 
 extension Amount: FirebaseParameterable {
-    
+
     var primordialParameter: FirebasePrimordialParameterable {
         doubleValue
     }

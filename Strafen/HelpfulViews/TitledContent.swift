@@ -9,19 +9,19 @@ import SwiftUI
 
 /// Content with title
 struct TitledContent<Content>: View where Content: View {
-    
+
     /// Title
     let title: String
-    
+
     /// Content
     let content: Content
 
     /// Frame of content
     private var contentFrame: (width: CGFloat?, height: CGFloat?) = (width: nil, height: nil)
-    
+
     /// Title color
-    private var titleColor: Color? = nil
-    
+    private var titleColor: Color?
+
     /// Init with title
     /// - Parameter title: title
     /// - Parameter content: content
@@ -29,7 +29,7 @@ struct TitledContent<Content>: View where Content: View {
         self.title = title
         self.content = content()
     }
-    
+
     var body: some View {
         VStack(spacing: 5) {
 
@@ -69,7 +69,7 @@ struct TitledContent<Content>: View where Content: View {
         content.contentFrame = (width: width, height: height)
         return content
     }
-    
+
     /// Sets title color
     /// - Parameter color: title color
     /// - Returns: modified content

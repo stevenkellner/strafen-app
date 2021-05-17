@@ -9,28 +9,28 @@ import SwiftUI
 
 /// Outline for Row, Text or TextField
 struct Outline: View {
-    
+
     /// Set of rounded corners
     let cornerSet: RoundedCorners.CornerSet
-    
+
     /// Cornder radius
-    private var cornerRadius: CGFloat? = nil
-    
+    private var cornerRadius: CGFloat?
+
     /// Fill Color of the Outline
-    private var fillColor: Color? = nil
-    
+    private var fillColor: Color?
+
     /// Stroke Color of the outline
-    private var strokeColor: Color? = nil
-    
+    private var strokeColor: Color?
+
     /// Line width of the outline
-    private var lineWidth: CGFloat? = nil
-    
+    private var lineWidth: CGFloat?
+
     /// Init with corner set
     /// - Parameter cornerSet: corner set
     init(_ cornerSet: RoundedCorners.CornerSet = .all) {
         self.cornerSet = cornerSet
     }
-    
+
     var body: some View {
         RoundedCorners(cornerSet)
             .radius(cornerRadius ?? 5)
@@ -38,7 +38,7 @@ struct Outline: View {
             .fillColor(fillColor ?? .fieldGray)
             .strokeColor(strokeColor ?? .clear)
     }
-    
+
     /// Set fill color of the outline
     /// - Parameter fillColor: fill color of the outline
     /// - Returns: modified outline
@@ -47,7 +47,7 @@ struct Outline: View {
         outline.fillColor = fillColor
         return outline
     }
-    
+
     /// Set stroke color of the outline
     /// - Parameter strokeColor: stroke color of the outline
     /// - Returns: modified outline
@@ -56,7 +56,7 @@ struct Outline: View {
         outline.strokeColor = strokeColor
         return outline
     }
-    
+
     /// Set line width of the outline
     /// - Parameter lineWidth: line width of the outline
     /// - Returns: modified outline
@@ -65,7 +65,7 @@ struct Outline: View {
         outline.lineWidth = lineWidth
         return outline
     }
-    
+
     /// Set corner radius of the outline
     /// - Parameter radius: corner radius of the outline
     /// - Returns: modified outline
@@ -78,25 +78,25 @@ struct Outline: View {
 
 /// Single content with default outline
 struct SingleOutlinedContent<Content>: View where Content: View {
-    
+
     /// Set of rounded corners
     let cornerSet: RoundedCorners.CornerSet
-    
+
     /// Content
     let content: Content
-    
+
     /// Fill Color of the Outline
-    private var fillColor: Color? = nil
-    
+    private var fillColor: Color?
+
     /// Stroke Color of the outline
-    private var strokeColor: Color? = nil
-    
+    private var strokeColor: Color?
+
     /// Line width of the outline
-    private var lineWidth: CGFloat? = nil
-    
+    private var lineWidth: CGFloat?
+
     /// Cornder radius
-    private var cornerRadius: CGFloat? = nil
-    
+    private var cornerRadius: CGFloat?
+
     /// Init with corner set and content
     /// - Parameters:
     ///   - cornerSet: corner set
@@ -105,10 +105,10 @@ struct SingleOutlinedContent<Content>: View where Content: View {
         self.cornerSet = cornerSet
         self.content = content()
     }
-    
+
     var body: some View {
         ZStack {
-            
+
             // Outline
             Outline(cornerSet)
                 .fillColor(fillColor)
@@ -116,13 +116,13 @@ struct SingleOutlinedContent<Content>: View where Content: View {
                 .lineWidth(lineWidth)
                 .radius(cornerRadius)
                 .shadow(color: .black.opacity(0.25), radius: 10)
-            
+
             // Content
             content
-            
+
         }
     }
-    
+
     /// Set fill color of the outline
     /// - Parameter fillColor: fill color of the outline
     /// - Returns: modified outline
@@ -131,7 +131,7 @@ struct SingleOutlinedContent<Content>: View where Content: View {
         outline.fillColor = fillColor
         return outline
     }
-    
+
     /// Set stroke color of the outline
     /// - Parameter strokeColor: stroke color of the outline
     /// - Returns: modified outline
@@ -140,7 +140,7 @@ struct SingleOutlinedContent<Content>: View where Content: View {
         outline.strokeColor = strokeColor
         return outline
     }
-    
+
     /// Set line width of the outline
     /// - Parameter lineWidth: line width of the outline
     /// - Returns: modified outline
@@ -149,7 +149,7 @@ struct SingleOutlinedContent<Content>: View where Content: View {
         outline.lineWidth = lineWidth
         return outline
     }
-    
+
     /// Set corner radius of the outline
     /// - Parameter radius: corner radius of the outline
     /// - Returns: modified outline
@@ -161,40 +161,40 @@ struct SingleOutlinedContent<Content>: View where Content: View {
 }
 
 struct SplitedOutlinedContent<LeftContent, RightContent>: View where LeftContent: View, RightContent: View {
-    
+
     /// Set of rounded corners
     let cornerSet: RoundedCorners.CornerSet
-    
+
     /// Left content
     let leftContent: LeftContent
-    
+
     /// Right content
     let rightContent: RightContent
-    
+
     /// Fill Color of the left outline
-    private var leftFillColor: Color? = nil
-    
+    private var leftFillColor: Color?
+
     /// Fill Color of the right outline
-    private var rightFillColor: Color? = nil
-    
+    private var rightFillColor: Color?
+
     /// Stroke Color of the left outline
-    private var leftStrokeColor: Color? = nil
-    
+    private var leftStrokeColor: Color?
+
     /// Stroke Color of the right outline
-    private var rightStrokeColor: Color? = nil
-    
+    private var rightStrokeColor: Color?
+
     /// Line width of the left outline
-    private var leftLineWidth: CGFloat? = nil
-    
+    private var leftLineWidth: CGFloat?
+
     /// Line width of the right outline
-    private var rightLineWidth: CGFloat? = nil
-    
+    private var rightLineWidth: CGFloat?
+
     /// Cornder radius of the left outline
-    private var leftCornerRadius: CGFloat? = nil
-    
+    private var leftCornerRadius: CGFloat?
+
     /// Cornder radius of the right outline
-    private var rightCornerRadius: CGFloat? = nil
-    
+    private var rightCornerRadius: CGFloat?
+
     /// Init with corner set and content
     /// - Parameters:
     ///   - cornerSet: corner set
@@ -205,45 +205,45 @@ struct SplitedOutlinedContent<LeftContent, RightContent>: View where LeftContent
         self.leftContent = leftContent()
         self.rightContent = rightContent()
     }
-    
+
     var body: some View {
         GeometryReader { geometry in
             HStack(spacing: (leftLineWidth ?? 0) + (rightLineWidth ?? 0)) {
-                
+
                 // Left outlined content
                 ZStack {
-                    
+
                     // Outline
                     Outline(cornerSet.intersection(.left))
                         .fillColor(leftFillColor)
                         .strokeColor(leftStrokeColor)
                         .lineWidth(leftLineWidth)
                         .radius(leftCornerRadius)
-                    
+
                     // Content
                     leftContent
-                    
+
                 }.frame(width: geometry.size.width / 2, height: geometry.size.height)
-                
+
                 // Right outlined content
                 ZStack {
-                    
+
                     // Outline
                     Outline(cornerSet.intersection(.right))
                         .fillColor(rightFillColor)
                         .strokeColor(rightStrokeColor)
                         .lineWidth(rightLineWidth)
                         .radius(rightCornerRadius)
-                    
+
                     // Content
                     rightContent
-                    
+
                 }.frame(width: geometry.size.width / 2, height: geometry.size.height)
-                
+
             }
         }.shadow(color: .black.opacity(0.25), radius: 10)
     }
-    
+
     /// Set fill color of the left outline
     /// - Parameter fillColor: fill color of the left outline
     /// - Returns: modified outline
@@ -252,7 +252,7 @@ struct SplitedOutlinedContent<LeftContent, RightContent>: View where LeftContent
         outline.leftFillColor = fillColor
         return outline
     }
-    
+
     /// Set fill color of the right outline
     /// - Parameter fillColor: fill color of the right outline
     /// - Returns: modified outline
@@ -261,7 +261,7 @@ struct SplitedOutlinedContent<LeftContent, RightContent>: View where LeftContent
         outline.rightFillColor = fillColor
         return outline
     }
-    
+
     /// Set stroke color of the left outline
     /// - Parameter strokeColor: stroke color of the left outline
     /// - Returns: modified outline
@@ -270,7 +270,7 @@ struct SplitedOutlinedContent<LeftContent, RightContent>: View where LeftContent
         outline.leftStrokeColor = strokeColor
         return outline
     }
-    
+
     /// Set stroke color of the right outline
     /// - Parameter strokeColor: stroke color of the right outline
     /// - Returns: modified outline
@@ -279,7 +279,7 @@ struct SplitedOutlinedContent<LeftContent, RightContent>: View where LeftContent
         outline.rightStrokeColor = strokeColor
         return outline
     }
-    
+
     /// Set line width of the left outline
     /// - Parameter lineWidth: line width of the left outline
     /// - Returns: modified outline
@@ -288,7 +288,7 @@ struct SplitedOutlinedContent<LeftContent, RightContent>: View where LeftContent
         outline.leftLineWidth = lineWidth
         return outline
     }
-    
+
     /// Set line width of the right outline
     /// - Parameter lineWidth: line width of the right outline
     /// - Returns: modified outline
@@ -297,7 +297,7 @@ struct SplitedOutlinedContent<LeftContent, RightContent>: View where LeftContent
         outline.rightLineWidth = lineWidth
         return outline
     }
-    
+
     /// Set corner radius of the left outline
     /// - Parameter radius: corner radius of the left outline
     /// - Returns: modified outline
@@ -306,7 +306,7 @@ struct SplitedOutlinedContent<LeftContent, RightContent>: View where LeftContent
         outline.leftCornerRadius = radius
         return outline
     }
-    
+
     /// Set corner radius of the right outline
     /// - Parameter radius: corner radius of the right outline
     /// - Returns: modified outline

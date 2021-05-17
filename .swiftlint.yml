@@ -1,0 +1,9 @@
+excluded:
+  - Carthage
+  - Pods
+
+disabled_rules:
+  - line_length
+  - file_length
+  - type_body_length
+  - nesting

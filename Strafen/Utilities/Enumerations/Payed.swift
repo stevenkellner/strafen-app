@@ -9,32 +9,32 @@ import Foundation
 
 /// Fine payed
 enum Payed {
-    
+
     /// Payed
     case payed(date: Date, inApp: Bool)
-    
+
     /// Settled
     case settled
-    
+
     /// Unpayed
     case unpayed
 }
 
 extension Payed: Decodable, Equatable {
-    
+
     /// Used to decode payed state and date
     private struct CodablePayed: Decodable {
-        
+
         /// State (payed ot unpayed)
         let state: String
-        
+
         /// Date of payment
         let payDate: Date?
-        
+
         /// Payed with in app payment
         let inApp: Bool?
     }
-    
+
     init(from decoder: Decoder) throws {
         let container = try decoder.singleValueContainer()
         let rawPayed = try container.decode(CodablePayed.self)
@@ -55,7 +55,7 @@ extension Payed: Decodable, Equatable {
 }
 
 extension Payed: FirebaseParameterable {
-    
+
     /// State of payment
     var state: String {
         switch self {
@@ -67,7 +67,7 @@ extension Payed: FirebaseParameterable {
             return "payed"
         }
     }
-    
+
     /// Pay date (only for payed)
     var payDate: Date? {
         switch self {
@@ -79,7 +79,7 @@ extension Payed: FirebaseParameterable {
             return date
         }
     }
-    
+
     /// In app payed
     var payedInApp: Bool {
         switch self {
@@ -91,7 +91,7 @@ extension Payed: FirebaseParameterable {
             return inApp
         }
     }
-    
+
     /// Object call with Firebase function as Parameter
     var primordialParameter: FirebasePrimordialParameterable {
         ["state": state, "payDate": payDate?.primordialParameter, "inApp": payedInApp]

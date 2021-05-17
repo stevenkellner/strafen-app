@@ -9,13 +9,13 @@ import SwiftUI
 
 /// Empty navigation link
 struct EmptyNavigationLink<Destination>: View where Destination: View {
-    
+
     /// Indicates wheter navigation link is active
     @Binding var isActive: Bool
-    
+
     /// Destination view
     let destination: Destination
-    
+
     /// Init with is active binding and destination
     /// - Parameters:
     ///   - isActive: indicates wheter navigation link is active
@@ -24,7 +24,7 @@ struct EmptyNavigationLink<Destination>: View where Destination: View {
         self._isActive = isActive
         self.destination = destination()
     }
-    
+
     var body: some View {
         NavigationLink( destination: destination, isActive: $isActive) {}
     }

@@ -11,23 +11,23 @@ import Hydra
 
 /// Fetches data from firebase database
 struct FirebaseFetcher {
-    
+
     /// Level of a firebase database fetch
     public var level: FirebaseDatabaseLevel = .defaultValue
-    
+
     /// Shared instance for singelton
     static var shared = FirebaseFetcher()
-    
+
     /// Private init for singleton
     private init() {}
-    
+
     /// An error that occurs during fetching
     enum FetchError: Error {
-        
+
         /// No data exists in retrieving snapshot
         case noData
     }
-    
+
     /// Fetches given type from firebase database
     /// - Parameters:
     ///   - type: Type of fetched value
@@ -47,7 +47,7 @@ struct FirebaseFetcher {
             }
         }
     }
-    
+
     /// Fetches a list from firebase database
     /// - Parameter type: Type of the list element
     /// - Parameters:

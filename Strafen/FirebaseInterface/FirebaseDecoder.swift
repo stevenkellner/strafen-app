@@ -10,23 +10,23 @@ import CodableFirebase
 
 /// Decodes firebase database types
 struct FirebaseDecoder {
-    
+
     /// Shared instance for singelton
     static let shared = FirebaseDecoder()
-    
+
     /// Private init for singleton
     private init() {}
-    
+
     /// An error that occurs during the decoding of a value
     enum DecodingError: Error {
-        
+
         /// Data can not be converted to Dictionary<String, Any>
         case noKeyedData
-        
+
         /// Data can not be converted to Array<Any>
         case noList
     }
-    
+
     /// Decodes given type from firebase database data and given key.
     /// Throws error if data can not be decoded.
     /// - Parameters:
@@ -36,12 +36,12 @@ struct FirebaseDecoder {
     /// - Throws: DecodingError and FirebaseDecoder.DecodingError if data can not be decoded.
     /// - Returns: Decoded data of given type
     func decodeOrThrow<T>(_ type: T.Type, _ data: Any, key: String) throws -> T where T: Decodable {
-        guard var dict = data as? Dictionary<String, Any> else { throw DecodingError.noKeyedData }
+        guard var dict = data as? [String: Any] else { throw DecodingError.noKeyedData }
         dict["key"] = key
         let decoder = CodableFirebase.FirebaseDecoder()
         return try decoder.decode(type, from: dict)
     }
-    
+
     /// Decodes given type from firebase database data and given key.
     /// Returns nil if data can not be decoded.
     /// - Parameters:
@@ -52,7 +52,7 @@ struct FirebaseDecoder {
     func decode<T>(_ type: T.Type, _ data: Any, key: String) -> T? where T: Decodable {
         try? decodeOrThrow(type, data, key: key)
     }
-    
+
     /// Decodes given type from firebase database data.
     /// Throws error if data can not be decoded.
     /// - Parameters:
@@ -64,7 +64,7 @@ struct FirebaseDecoder {
         let decoder = CodableFirebase.FirebaseDecoder()
         return try decoder.decode(type, from: data)
     }
-    
+
     /// Decodes given type from firebase database data.
     /// Returns nil if data can not be decoded.
     /// - Parameters:
@@ -74,7 +74,7 @@ struct FirebaseDecoder {
     func decode<T>(_ type: T.Type, _ data: Any) -> T? where T: Decodable {
         try? decodeOrThrow(type, data)
     }
-    
+
     /// Decodes array of given type from firebase database data.
     /// Throws error if data can not be decoded.
     /// - Parameters:
@@ -83,12 +83,12 @@ struct FirebaseDecoder {
     /// - Throws: DecodingError and FirebaseDecoder.DecodingError if data can not be decoded.
     /// - Returns: Decoded data of array of given type
     func decodeListOrThrow<T>(_ type: T.Type, _ data: Any) throws -> [T] where T: Decodable {
-        guard let dict = data as? Dictionary<String, Any> else { throw DecodingError.noKeyedData }
+        guard let dict = data as? [String: Any] else { throw DecodingError.noKeyedData }
         return try dict.map { key, value in
             try decodeOrThrow(type, value, key: key)
         }
     }
-    
+
     /// Decodes array of given type from firebase database data.
     /// Returns nil if data can not be decoded.
     /// - Parameters:
@@ -98,7 +98,7 @@ struct FirebaseDecoder {
     func decodeList<T>(_ type: T.Type, _ data: Any) -> [T]? where T: Decodable {
         try? decodeListOrThrow(type, data)
     }
-    
+
     /// Decodes array of given unkeyed type from firebase database data.
     /// Throws error if data can not be decoded.
     /// - Parameters:
@@ -107,12 +107,12 @@ struct FirebaseDecoder {
     /// - Throws: DecodingError and FirebaseDecoder.DecodingError if data can not be decoded.
     /// - Returns: Decoded data of array of given primitive type
     func decodeUnkeyedListOrThrow<T>(_ type: T.Type, _ data: Any) throws -> [T] where T: Decodable {
-        guard let list = data as? Array<Any> else { throw DecodingError.noList }
+        guard let list = data as? [Any] else { throw DecodingError.noList }
         return try list.map { value in
             try decodeOrThrow(type, value)
         }
     }
-    
+
     /// Decodes array of given unkeyed type from firebase database data.
     /// Returns nil if data can not be decoded.
     /// - Parameters:

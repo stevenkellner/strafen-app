@@ -8,7 +8,7 @@
 import Foundation
 
 extension Array {
-    
+
     /// Map this array containing the results of mapping the given closure over the sequence’s elements.
     /// - Parameter transform: A mapping closure.
     ///   Transform accepts an element of this sequence as its parameter.
@@ -16,7 +16,7 @@ extension Array {
     mutating func mapped(_ transform: (Element) throws -> Element) rethrows {
         self = try map(transform)
     }
-    
+
     /// Filter this array given result of closure over the sequence's elements.
     /// - Parameter isIncluded: A isIncluded closure.
     ///     It takes an element if this sequence and returns true if element should retain in this sequence.
@@ -24,17 +24,17 @@ extension Array {
     mutating func filtered(_ isIncluded: (Element) throws -> Bool) rethrows {
         self = try filter(isIncluded)
     }
-    
+
     /// Order of sorted array
     enum Order {
-        
+
         /// Ascending
         case ascending
-        
+
         /// Descanding
         case descanding
     }
-    
+
     /// Sorts the elements by value returned by closure for a element in the given order
     /// - Parameters:
     ///   - order: order to sort
@@ -51,7 +51,7 @@ extension Array {
             }
         }
     }
-    
+
     /// Sorts the element by value of the keypath for a element in the given order
     /// - Parameters:
     ///   - order: order to sort
@@ -63,7 +63,7 @@ extension Array {
 }
 
 extension Array where Element: Comparable {
-    
+
     /// Sorts the arra by value of the keypath for a element in the given order
     /// - Parameters:
     ///   - order: order to sort
@@ -72,7 +72,7 @@ extension Array where Element: Comparable {
     mutating func sort(order: Order = .ascending, byValue sortValue: (Element) throws -> Element) rethrows {
         self = try sorted(order: order, byValue: sortValue)
     }
-    
+
     /// Sorts the array by value of the keypath for a element in the given order
     /// - Parameters:
     ///   - order: order to sort
@@ -83,7 +83,7 @@ extension Array where Element: Comparable {
 }
 
 extension Array where Element: Hashable {
-    
+
     /// Contains only unique elements
     var unique: [Element] {
         Array(Set(self))

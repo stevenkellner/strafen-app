@@ -15,15 +15,15 @@ struct TestClub: Equatable {
     let fines: [FirebaseFine]
     let reasons: [FirebaseReasonTemplate]
     let transactions: [FirebaseTransaction]
-    
+
     struct Properties: Decodable, Equatable {
         let identifier: String
         let inAppPaymentActive: Bool?
         let name: String
         let regionCode: String
-        let personUserIds: Dictionary<String, String>
-        
-        init(identifier: String, inAppPaymentActive: Bool?, name: String, regionCode: String, personUserIds: Dictionary<String, String>) {
+        let personUserIds: [String: String]
+
+        init(identifier: String, inAppPaymentActive: Bool?, name: String, regionCode: String, personUserIds: [String: String]) {
             self.identifier = identifier
             self.inAppPaymentActive = inAppPaymentActive
             self.name = name
@@ -31,7 +31,7 @@ struct TestClub: Equatable {
             self.personUserIds = Dictionary(personUserIds.sorted { $0.key < $1.key }) { first, _ in first }
         }
     }
-    
+
     init(properties: Properties, persons: [FirebasePerson], fines: [FirebaseFine], reasons: [FirebaseReasonTemplate], transactions: [FirebaseTransaction]) {
         self.properties = properties
         self.persons = persons.sorted { $0.id.uuidString < $1.id.uuidString }
@@ -39,7 +39,7 @@ struct TestClub: Equatable {
         self.reasons = reasons.sorted { $0.id.uuidString < $1.id.uuidString }
         self.transactions = transactions.sorted { $0.id < $1.id }
     }
-    
+
     static var fetcherTestClub =
         TestClub(properties:
                 Properties(
