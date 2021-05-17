@@ -19,7 +19,7 @@ import {ParameterContainer, checkPrerequirements, getClubComponent} from "../uti
 export const existsPersonWithUserIdCall = functions.region("europe-west1").https.onCall(async (data, context) => {
     // Check prerequirements and get a reference to all clubs
     const parameterContainer = new ParameterContainer(data);
-    await checkPrerequirements(parameterContainer, context.auth);
+    await checkPrerequirements(parameterContainer, context.auth, false);
     const path = getClubComponent(parameterContainer);
     const ref = admin.database().ref(path);
 

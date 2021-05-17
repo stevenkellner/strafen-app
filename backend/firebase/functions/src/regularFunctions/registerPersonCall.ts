@@ -46,7 +46,7 @@ export const registerPersonCall = functions.region("europe-west1").https.onCall(
             last: parameterContainer.getOptionalParameter<string>("lastName", "string"),
         },
         signInData: {
-            cashier: true,
+            cashier: false,
             userId: parameterContainer.getParameter<string>("userId", "string"),
             signInDate: parameterContainer.getParameter<number>("signInDate", "number"),
         },
@@ -57,7 +57,7 @@ export const registerPersonCall = functions.region("europe-west1").https.onCall(
     await personRef.set(person, (error) => {
         errorOccured = errorOccured || error != null;
     });
-    await personUserIdRef.set(clubPath + "/persons/" + parameterContainer.getParameter<string>("id", "string").toUpperCase(), (error) => {
+    await personUserIdRef.set(parameterContainer.getParameter<string>("id", "string").toUpperCase(), (error) => {
         errorOccured = errorOccured || error != null;
     });
     if (errorOccured) {

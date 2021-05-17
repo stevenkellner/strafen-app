@@ -21,7 +21,7 @@ struct FFNewTestClubCall: FFCallable {
     }
 
     /// Id of new test club
-    let clubId: UUID
+    let clubId: Club.ID
 
     /// Type of new test club
     let testClubType: TestClubType

@@ -52,6 +52,8 @@ extension FirebaseTransaction: FirebaseListType {
 
     static let urlFromClub = URL(string: "transactions")!
 
+    static let listType: String = "transaction"
+
     /// Coding Keys for Decodable
     enum CodingKeys: String, CodingKey {
         case id = "key"
@@ -65,8 +67,6 @@ extension FirebaseTransaction: FirebaseListType {
 
     var parameterSet: FirebaseCallParameterSet {
         FirebaseCallParameterSet { parameter in
-            parameter["listType"] = "transaction"
-            parameter["itemId"] = id
             parameter["approved"] = approved
             parameter["fineIds"] = fineIds
             parameter["firstName"] = name?.first

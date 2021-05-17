@@ -10,7 +10,7 @@ import Foundation
 /// Get club id with given club identifier
 struct FFGetClubIdCall: FFCallable, FFCallResult {
 
-    typealias CallResult = UUID
+    typealias CallResult = Club.ID
 
     /// Identifer of the club to search
     let identifier: String

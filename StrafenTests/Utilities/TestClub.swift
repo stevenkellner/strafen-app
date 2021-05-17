@@ -30,6 +30,10 @@ struct TestClub: Equatable {
             self.regionCode = regionCode
             self.personUserIds = Dictionary(personUserIds.sorted { $0.key < $1.key }) { first, _ in first }
         }
+
+        func club(with clubId: Club.ID) -> Club {
+            Club(id: clubId, name: name, identifier: identifier, regionCode: regionCode, inAppPaymentActive: inAppPaymentActive)
+        }
     }
 
     init(properties: Properties, persons: [FirebasePerson], fines: [FirebaseFine], reasons: [FirebaseReasonTemplate], transactions: [FirebaseTransaction]) {

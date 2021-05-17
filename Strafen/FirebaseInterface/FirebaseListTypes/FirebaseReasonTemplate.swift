@@ -33,6 +33,8 @@ extension FirebaseReasonTemplate: FirebaseListType {
 
     static let urlFromClub = URL(string: "reasons")!
 
+    static let listType: String = "reason"
+
     /// Coding Keys for Decodable
     enum CodingKeys: String, CodingKey {
         case id = "key"
@@ -43,8 +45,6 @@ extension FirebaseReasonTemplate: FirebaseListType {
 
     var parameterSet: FirebaseCallParameterSet {
         FirebaseCallParameterSet { parameter in
-            parameter["listType"] = "reason"
-            parameter["itemId"] = id
             parameter["reason"] = reason
             parameter["amount"] = amount
             parameter["importance"] = importance

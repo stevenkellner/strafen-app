@@ -11,7 +11,7 @@ import Foundation
 struct FFChangeFinePayed: FFCallable {
 
     /// Club id
-    let clubId: UUID
+    let clubId: Club.ID
 
     /// Fine id
     let fineId: FirebaseFine.ID

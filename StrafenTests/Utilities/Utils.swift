@@ -25,7 +25,7 @@ extension XCTestCase {
     ///   - handler: handles task return
     /// - Throws: TimeoutError or rethrowed error
     /// - Returns: return value of the task
-    func waitExpectation<ReturnValue>(timeout: TimeInterval = 60, description: String = "expecation", _ handler: (@escaping (ReturnValue) -> Void) throws -> Void) throws -> ReturnValue {
+    func waitExpectation<ReturnValue>(timeout: TimeInterval = 30, description: String = "expecation", _ handler: (@escaping (ReturnValue) -> Void) throws -> Void) throws -> ReturnValue {
         let expectation = self.expectation(description: description)
         var result: ReturnValue?
         try handler { value in
@@ -45,7 +45,7 @@ extension XCTestCase {
     ///   - description: expectation description
     ///   - handler: handles task return
     /// - Throws: rethrows error
-    func waitExpectation(timeout: TimeInterval = 60, description: String = "expecation", _ handler: (@escaping () -> Void) throws -> Void) rethrows {
+    func waitExpectation(timeout: TimeInterval = 30, description: String = "expecation", _ handler: (@escaping () -> Void) throws -> Void) rethrows {
         let expectation = self.expectation(description: description)
         try handler { expectation.fulfill() }
         waitForExpectations(timeout: timeout)
@@ -57,9 +57,9 @@ extension XCTestCase {
     ///   - description: expectation description
     ///   - handler: handles task return
     /// - Throws: rethrows error
-    func waitNoData(timeout: TimeInterval, description: String = "expectation", _ handler: (@escaping (Any?) -> Void) throws -> Void) rethrows {
+    func waitNoData(timeout: TimeInterval, description: String = "expectation", file: StaticString = #file, line: UInt = #line, _ handler: (@escaping (Any?) -> Void) throws -> Void) rethrows {
         let expectation = self.expectation(description: description)
-        try handler { _ in XCTAssertTrue(false, "No data expected, but got data") }
+        try handler { _ in XCTAssertTrue(false, "No data expected, but got data", file: file, line: line) }
         DispatchQueue.main.asyncAfter(deadline: .now() + timeout) { expectation.fulfill() }
         waitForExpectations(timeout: timeout + 1)
     }
@@ -70,9 +70,9 @@ extension XCTestCase {
     ///   - description: expectation description
     ///   - handler: handles task return
     /// - Throws: rethrows error
-    func waitNoData(timeout: TimeInterval, description: String = "expectation", _ handler: (@escaping () -> Void) throws -> Void) rethrows {
+    func waitNoData(timeout: TimeInterval, description: String = "expectation", file: StaticString = #file, line: UInt = #line, _ handler: (@escaping () -> Void) throws -> Void) rethrows {
         let expectation = self.expectation(description: description)
-        try handler { XCTAssertTrue(false, "No data expected, but got data") }
+        try handler { XCTAssertTrue(false, "No data expected, but got data", file: file, line: line) }
         DispatchQueue.main.asyncAfter(deadline: .now() + timeout) { expectation.fulfill() }
         waitForExpectations(timeout: timeout + 1)
     }
@@ -91,7 +91,7 @@ extension FirebaseFetcher {
     /// Fetches a testable club from firebase database
     /// - Parameter clubId: id of the club
     /// - Returns: promise of the club
-    func fetchClub(_ clubId: UUID) -> Promise<TestClub> {
+    func fetchClub(_ clubId: Club.ID) -> Promise<TestClub> {
         let properties = fetch(TestClub.Properties.self, url: nil, clubId: clubId)
         let persons = fetchList(FirebasePerson.self, clubId: clubId)
         let fines = fetchList(FirebaseFine.self, clubId: clubId)
@@ -117,5 +117,15 @@ extension FirebaseFetcher {
 public func zip<A, B, C, D, E>(in context: Context? = nil, a promiseA: Promise<A>, b promiseB: Promise<B>, c promiseC: Promise<C>, d promiseD: Promise<D>, e promiseE: Promise<E>) -> Promise<(A, B, C, D, E)> { // swiftlint:disable:this large_tuple
     zip(in: context, zip(in: context, a: promiseA, b: promiseB, c: promiseC, d: promiseD), promiseE).then { tuple, promiseE in
         return (tuple.0, tuple.1, tuple.2, tuple.3, promiseE)
+    }
+}
+
+extension Club: Equatable {
+    public static func == (lhs: Club, rhs: Club) -> Bool {
+        lhs.id == rhs.id &&
+            lhs.identifier == rhs.identifier &&
+            lhs.name == rhs.name &&
+            lhs.regionCode == rhs.regionCode &&
+            lhs.isInAppPaymentActive == rhs.isInAppPaymentActive
     }
 }

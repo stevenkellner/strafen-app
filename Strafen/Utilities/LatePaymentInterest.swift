@@ -8,10 +8,10 @@
 import Foundation
 
 /// Late payement interest
-struct LatePaymentInterest {
+struct LatePaymentInterest: Codable, Equatable {
 
     /// Components of date (day / month / year)
-    enum DateComponent: String {
+    enum DateComponent: String, Codable, Equatable {
 
         /// Day component
         case day
@@ -24,7 +24,7 @@ struct LatePaymentInterest {
     }
 
     /// Contains value and unit of a time period
-    struct TimePeriod {
+    struct TimePeriod: Codable, Equatable {
 
         /// Value of the time period
         var value: Int

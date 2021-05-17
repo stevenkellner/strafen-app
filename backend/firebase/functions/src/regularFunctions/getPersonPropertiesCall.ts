@@ -14,12 +14,13 @@ import {ParameterContainer, checkPrerequirements, getClubComponent} from "../uti
  *    - name (string): name of the club the person is in
  *    - identifier (string): identifer of the club the person is in
  *    - regionCode (string): region code of the club the person is in
+ *    - inAppPaymentActive (Bool): indicates if in app payment is active
  *  - id (string): id of the person
  *  - signInDate (number): sign in date of the person
  *  - isCashier (boolean): indicates whether the person is cashier
  *  - name:
- *    - firstName (string): first name of the person
- *    - lastName (string | null): last name of the person
+ *    - first (string): first name of the person
+ *    - last (string | null): last name of the person
  * @throws
  *  - functions.https.HttpsError:
  *    - permission-denied: if private key isn't valid
@@ -49,19 +50,21 @@ export const getPersonPropertiesCall = functions.region("europe-west1").https.on
                     const clubName = club.child("name").val();
                     const clubIdentifier = club.child("identifier").val();
                     const regionCode = club.child("regionCode").val();
+                    const inAppPaymentActive = club.child("inAppPaymentActive").val();
                     personProperties = {
                         clubProperties: {
                             id: club.key,
                             name: clubName,
                             identifier: clubIdentifier,
                             regionCode: regionCode,
+                            inAppPaymentActive: inAppPaymentActive,
                         },
                         id: person.key,
                         signInDate: signInDate,
                         isCashier: isCashier,
                         name: {
-                            firstName: firstName,
-                            lastName: lastName,
+                            first: firstName,
+                            last: lastName,
                         },
                     };
                 }

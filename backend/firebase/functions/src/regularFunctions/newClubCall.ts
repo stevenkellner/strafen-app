@@ -38,10 +38,11 @@ export const newClubCall = functions.region("europe-west1").https.onCall(async (
 
     // Check if identifier already exists
     let clubExists = false;
+    const clubIdentifier = parameterContainer.getParameter<string>("clubIdentifier", "string");
     await allclubsRef.once("value", (snapshot) => {
         snapshot.forEach((child) => {
             const identifier = child.child("identifier").val();
-            if (identifier == parameterContainer.getParameter<string>("identifier", "string")) {
+            if (identifier == clubIdentifier) {
                 clubExists = true;
             }
         });

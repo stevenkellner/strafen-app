@@ -30,7 +30,7 @@ export const getClubIdCall = functions.region("europe-west1").https.onCall(async
     await ref.once("value", (snapshot) => {
         snapshot.forEach((child) => {
             const identifier = child.child("identifier").val();
-            if (identifier == parameterContainer.getParameter<string>("identifer", "string")) {
+            if (identifier == parameterContainer.getParameter<string>("identifier", "string")) {
                 clubId = child.key;
             }
         });

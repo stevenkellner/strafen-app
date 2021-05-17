@@ -68,6 +68,8 @@ extension FirebaseFine: FirebaseListType {
 
     static let urlFromClub = URL(string: "fines")!
 
+    static let listType: String = "fine"
+
     /// Coding Keys for Decodable
     enum CodingKeys: String, CodingKey {
         case id = "key"
@@ -80,8 +82,6 @@ extension FirebaseFine: FirebaseListType {
 
     var parameterSet: FirebaseCallParameterSet {
         FirebaseCallParameterSet(fineReason.parameterSet) { parameter in
-            parameter["listType"] = "fine"
-            parameter["itemId"] = id
             parameter["personId"] = assoiatedPersonId
             parameter["payedState"] = payed.state
             parameter["payedPayDate"] = payed.payDate

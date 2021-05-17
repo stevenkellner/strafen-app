@@ -55,10 +55,11 @@ export const changeListCall = functions.region("europe-west1").https.onCall(asyn
     // Check prerequirements and get a reference to the item to change
     const parameterContainer = new ParameterContainer(data);
     await checkPrerequirements(parameterContainer, context.auth);
-    const path = getClubComponent(parameterContainer) + "/" + parameterContainer.getParameter<string>("listType", "string") + "s/" + parameterContainer.getParameter<string>("itemId", "string").toUpperCase();
+    const path = getClubComponent(parameterContainer) + "/" + parameterContainer.getParameter<string>("clubId", "string").toUpperCase() + "/" + parameterContainer.getParameter<string>("listType", "string") + "s/" + parameterContainer.getParameter<string>("itemId", "string").toUpperCase();
     const ref = admin.database().ref(path);
 
     const changeType = parameterContainer.getParameter<string>("changeType", "string");
+    let errorOccured = false;
     switch (changeType) {
     // Delete list item
     case "delete":
@@ -71,7 +72,7 @@ export const changeListCall = functions.region("europe-west1").https.onCall(asyn
                 throw new functions.https.HttpsError("unavailable", "Person is already signed in!");
             }
         }
-        let errorOccured = false;
+        errorOccured = false;
         if (await existsData(ref)) {
             await ref.remove((error) => {
                 errorOccured = error != null;
@@ -103,6 +104,7 @@ export const changeListCall = functions.region("europe-west1").https.onCall(asyn
 
 function getItem(parameterContainer: ParameterContainer): object {
     const listType = parameterContainer.getParameter<string>("listType", "string");
+    let importance = null;
     switch (listType) {
     // Get person
     case "person":
@@ -118,7 +120,7 @@ function getItem(parameterContainer: ParameterContainer): object {
         const templateId = parameterContainer.getOptionalParameter<string>("templateId", "string");
         const reason = parameterContainer.getOptionalParameter<string>("reason", "string");
         const amount = parameterContainer.getOptionalParameter<number>("amount", "number");
-        let importance = parameterContainer.getOptionalParameter<string>("importance", "string");
+        importance = parameterContainer.getOptionalParameter<string>("importance", "string");
         let reasonTemplate = null;
         if (templateId != null) {
             reasonTemplate = {

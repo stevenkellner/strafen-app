@@ -34,7 +34,7 @@ struct FirebaseFetcher {
     ///   - urlFromClub: Url from club to value in firebase database
     ///   - clubId: id of club to fetch from
     /// - Returns: Promise of retrieved value
-    func fetch<T>(_ type: T.Type, url urlFromClub: URL?, clubId: UUID) -> Promise<T> where T: Decodable {
+    func fetch<T>(_ type: T.Type, url urlFromClub: URL?, clubId: Club.ID) -> Promise<T> where T: Decodable {
         Promise<T>(in: .main) { resolve, reject, _ in
             let url = URL(string: level.clubComponent)!
                 .appendingPathComponent(clubId.uuidString)
@@ -53,13 +53,13 @@ struct FirebaseFetcher {
     /// - Parameters:
     ///   - clubId: id of club to fetch from
     /// - Returns: Promise of retrieved list
-    func fetchList<ListType>(_ type: ListType.Type, clubId: UUID) -> Promise<[ListType]> where ListType: FirebaseListType {
+    func fetchList<ListType>(_ type: ListType.Type, clubId: Club.ID) -> Promise<[ListType]> where ListType: FirebaseListType {
         Promise<[ListType]>(in: .main) { resolve, reject, _ in
             let url = URL(string: level.clubComponent)!
                 .appendingPathComponent(clubId.uuidString)
                 .appendingUrl(ListType.urlFromClub)
             Database.database().reference(withPath: url.path).observeSingleEvent(of: .value) { snapshot in
-                guard snapshot.exists(), let data = snapshot.value else { return reject(FetchError.noData) }
+                guard snapshot.exists(), let data = snapshot.value else { return resolve([]) }
                 do {
                     resolve(try FirebaseDecoder.shared.decodeListOrThrow(ListType.self, data))
                 } catch { reject(error) }

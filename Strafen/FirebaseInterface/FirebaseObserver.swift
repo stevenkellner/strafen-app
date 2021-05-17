@@ -28,7 +28,7 @@ struct FirebaseObserver {
     ///   - changeHandler: handles data change
     ///   - removeHandler: handles data remove
     /// - Returns: Closure to remove the observer
-    @discardableResult func observe<T>(_ type: T.Type, url urlFromClub: URL?, clubId: UUID, onChange changeHandler: ((T) -> Void)? = nil, onRemove removeHandler: (() -> Void)? = nil) -> () -> Void where T: Decodable {
+    @discardableResult func observe<T>(_ type: T.Type, url urlFromClub: URL?, clubId: Club.ID, onChange changeHandler: ((T) -> Void)? = nil, onRemove removeHandler: (() -> Void)? = nil) -> () -> Void where T: Decodable {
         let url = URL(string: level.clubComponent)!
             .appendingPathComponent(clubId.uuidString)
             .appendingUrl(urlFromClub)
@@ -50,7 +50,7 @@ struct FirebaseObserver {
     ///   - clubId: id of club to fetch from
     ///   - newDataHandler: Handles new data income
     /// - Returns: Closure to remove the observer
-    @discardableResult func observeList<ListType>(_ type: ListType.Type, event: DataEventType, clubId: UUID, handler newDataHandler: @escaping (ListType) -> Void) -> () -> Void where ListType: FirebaseListType {
+    @discardableResult func observeList<ListType>(_ type: ListType.Type, event: DataEventType, clubId: Club.ID, handler newDataHandler: @escaping (ListType) -> Void) -> () -> Void where ListType: FirebaseListType {
         let url = URL(string: level.clubComponent)!
             .appendingPathComponent(clubId.uuidString)
             .appendingUrl(ListType.urlFromClub)
@@ -69,7 +69,7 @@ struct FirebaseObserver {
     ///   - clubId: id of club to fetch from
     ///   - changeListHandler: Handles the change of given list
     /// - Returns: Closure to remove the observer
-    @discardableResult func observeList<ListType>(_ type: ListType.Type, clubId: UUID, handler changeListHandler: @escaping ((inout [ListType]) -> Void) -> Void) -> () -> Void where ListType: FirebaseListType {
+    @discardableResult func observeList<ListType>(_ type: ListType.Type, clubId: Club.ID, handler changeListHandler: @escaping ((inout [ListType]) -> Void) -> Void) -> () -> Void where ListType: FirebaseListType {
 
         // Observes if a child was added
         let removeAddObserver = observeList(type, event: .childAdded, clubId: clubId) { newChild in

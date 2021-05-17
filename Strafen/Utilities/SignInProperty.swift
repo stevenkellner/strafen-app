@@ -30,7 +30,7 @@ struct SignInProperty {
         let name: PersonName
 
         /// Id of the club
-        let clubId: UUID
+        let clubId: Club.ID
     }
 }
 
@@ -40,7 +40,7 @@ extension SignInProperty.UserIdNameClubId {
     /// - Parameters:
     ///   - oldSignInProperty: Sign in property with userId and name
     ///   - clubId: Id of the new club
-    init(_ oldSignInProperty: SignInProperty.UserIdName, clubId: UUID) {
+    init(_ oldSignInProperty: SignInProperty.UserIdName, clubId: Club.ID) {
         self.userId = oldSignInProperty.userId
         self.name = oldSignInProperty.name
         self.clubId = clubId

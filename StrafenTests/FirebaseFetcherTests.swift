@@ -6,12 +6,13 @@
 //
 
 import XCTest
+import FirebaseFunctions
 @testable import Strafen
 
 // swiftlint:disable identifier_name
 class FirebaseFetcherTests: XCTestCase {
 
-    let clubId = UUID(uuidString: "fb3f6718-8cc5-4d2e-aca1-398a15fc1be7")!
+    let clubId = Club.ID(rawValue: UUID(uuidString: "fb3f6718-8cc5-4d2e-aca1-398a15fc1be7")!)
 
     // MARK: set up
 
@@ -21,43 +22,37 @@ class FirebaseFetcherTests: XCTestCase {
         FirebaseFetcher.shared.level = .testing
 
         // Delete old test club
-        _setUpDeleteOldTestClub()
+        try _setUpDeleteOldTestClub()
 
         // Create new test club
-        _setUpCreateNewTestClub()
+        try _setUpCreateNewTestClub()
 
         // Check test club
         try _setUpCheckTestClub()
     }
 
     /// Set up: deletes old test club
-    func _setUpDeleteOldTestClub() {
-        waitExpectation { handler in
+    func _setUpDeleteOldTestClub() throws {
+        let result: Result<HTTPSCallableResult, Error> = try waitExpectation { handler in
             let callItem = FFDeleteTestClubCall(clubId: clubId)
-            FirebaseFunctionCaller.shared.call(callItem).thenResult { result in
-                XCTAssertNoThrow { try result.get() }
-                handler()
-            }
+            FirebaseFunctionCaller.shared.call(callItem).thenResult(handler)
         }
+        _ = try result.get()
     }
 
     /// Set up: creates new test club
-    func _setUpCreateNewTestClub() {
-        waitExpectation { handler in
+    func _setUpCreateNewTestClub() throws {
+        let result: Result<HTTPSCallableResult, Error> = try waitExpectation { handler in
             let callItem = FFNewTestClubCall(clubId: clubId, testClubType: .fetcherTestClub)
-            FirebaseFunctionCaller.shared.call(callItem).thenResult { result in
-                XCTAssertNoThrow { try result.get() }
-                handler()
-            }
+            FirebaseFunctionCaller.shared.call(callItem).thenResult(handler)
         }
+        _ = try result.get()
     }
 
     /// Set up: Check test club
     func _setUpCheckTestClub() throws {
         let result: Result<TestClub, Error> = try waitExpectation { handler in
-            FirebaseFetcher.shared.fetchClub(clubId).thenResult { result in
-                handler(result)
-            }
+            FirebaseFetcher.shared.fetchClub(clubId).thenResult(handler)
         }
         let club = try result.get()
         XCTAssertEqual(club, TestClub.fetcherTestClub)
@@ -65,10 +60,10 @@ class FirebaseFetcherTests: XCTestCase {
 
     // MARK: tear down
 
-    override func tearDown() {
+    override func tearDownWithError() throws {
 
         // Delete created test club (same as delete old test club in setUp)
-        _setUpDeleteOldTestClub()
+        try _setUpDeleteOldTestClub()
     }
 
     // MARK: fetch list
@@ -135,13 +130,11 @@ class FirebaseFetcherTests: XCTestCase {
     func _testFetchListNonExistsingList() throws {
 
         // Delete person list
-        waitExpectation { handler in
+        let callResult: Result<HTTPSCallableResult, Error> = try waitExpectation { handler in
             let callItem = FFDeleteTestClubPropertyCall(clubId: clubId, urlFromClub: URL(string: "persons")!)
-            FirebaseFunctionCaller.shared.call(callItem).thenResult { result in
-                XCTAssertNoThrow { try result.get() }
-                handler()
-            }
+            FirebaseFunctionCaller.shared.call(callItem).thenResult(handler)
         }
+        _ = try callResult.get()
 
         // Try fetch non existing person list
         let result: Result<[FirebasePerson], Error> = try waitExpectation { handler in
@@ -154,13 +147,11 @@ class FirebaseFetcherTests: XCTestCase {
     func _testFetchListListWrongType() throws {
 
         // Set non person list to person list
-        waitExpectation { handler in
+        let callResult: Result<HTTPSCallableResult, Error> = try waitExpectation { handler in
             let callItem = FFNewTestClubPropertyCall(clubId: clubId, urlFromClub: URL(string: "persons")!, property: ["id": ["test": "value"]])
-            FirebaseFunctionCaller.shared.call(callItem).thenResult { result in
-                XCTAssertNoThrow { try result.get() }
-                handler()
-            }
+            FirebaseFunctionCaller.shared.call(callItem).thenResult(handler)
         }
+        _ = try callResult.get()
 
         // Try fetch person list
         let result: Result<[FirebasePerson], Error> = try waitExpectation { handler in

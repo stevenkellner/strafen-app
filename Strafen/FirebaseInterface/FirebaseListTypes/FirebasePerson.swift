@@ -43,6 +43,8 @@ extension FirebasePerson: FirebaseListType {
 
     static let urlFromClub = URL(string: "persons")!
 
+    static let listType: String = "person"
+
     /// Coding Keys for Decodable
     enum CodingKeys: String, CodingKey {
         case id = "key"
@@ -52,8 +54,6 @@ extension FirebasePerson: FirebaseListType {
 
     var parameterSet: FirebaseCallParameterSet {
         FirebaseCallParameterSet { parameter in
-            parameter["listType"] = "person"
-            parameter["itemId"] = id
             parameter["firstName"] = name.firstName
             parameter["lastName"] = name.lastName
         }

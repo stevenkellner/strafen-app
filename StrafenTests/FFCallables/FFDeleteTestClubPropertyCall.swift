@@ -12,7 +12,7 @@ import Foundation
 struct FFDeleteTestClubPropertyCall: FFCallable {
 
     /// Id of test club to delete
-    let clubId: UUID
+    let clubId: Club.ID
 
     /// Url from club to property to delete
     let urlFromClub: URL

@@ -288,7 +288,7 @@ struct SignInClubInputView: View {
     static func createNewClub(oldSignInProperty: SignInProperty.UserIdName, inputProperties: Binding<InputProperties>) {
         let callItem = FFNewClubCall(
             signInProperty: oldSignInProperty,
-            clubId: UUID(),
+            clubId: Club.ID(rawValue: UUID()),
             personId: FirebasePerson.ID(rawValue: UUID()),
             clubName: inputProperties.wrappedValue[.clubName],
             regionCode: inputProperties.wrappedValue.regionCode!,

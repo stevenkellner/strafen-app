@@ -17,37 +17,47 @@ struct FFChangeListCall<T>: FFCallable where T: FirebaseListType {
         case update(item: T)
 
         /// Remove a list item
-        case delete
+        case delete(itemId: T.ID)
 
         /// Item to change
         var item: T? {
             switch self {
             case .update(item: let item):
                 return item
-            case .delete:
+            case .delete(itemId: _):
                 return nil
+            }
+        }
+
+        /// Id of the item
+        var itemId: T.ID {
+            switch self {
+            case .update(item: let item):
+                return item.id
+            case .delete(itemId: let itemId):
+                return itemId
             }
         }
     }
 
     /// Club id
-    let clubId: UUID
+    let clubId: Club.ID
 
     /// Type of the change
     let changeType: ChangeType<T>
 
     /// Used to delete a list item
     /// - Parameter clubId: Club id
-    init(clubId: UUID) {
+    init(clubId: Club.ID, id: T.ID) { // swiftlint:disable:this identifier_name
         self.clubId = clubId
-        self.changeType = .delete
+        self.changeType = .delete(itemId: id)
     }
 
     /// Used to update a list item
     /// - Parameters:
     ///   - clubId: Club id
     ///   - item: Item to update
-    init(clubId: UUID, item: T) {
+    init(clubId: Club.ID, item: T) {
         self.clubId = clubId
         self.changeType = .update(item: item)
     }
@@ -58,6 +68,8 @@ struct FFChangeListCall<T>: FFCallable where T: FirebaseListType {
         FirebaseCallParameterSet(changeType.item?.parameterSet) { parameters in
             parameters["clubId"] = clubId
             parameters["changeType"] = changeType
+            parameters["listType"] = T.listType
+            parameters["itemId"] = changeType.itemId
         }
     }
 }
@@ -67,7 +79,7 @@ extension FFChangeListCall.ChangeType: FirebaseParameterable {
         switch self {
         case .update(item: _):
             return "update"
-        case .delete:
+        case .delete(itemId: _):
             return "delete"
         }
     }

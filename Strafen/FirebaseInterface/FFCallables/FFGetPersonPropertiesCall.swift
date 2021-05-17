@@ -13,23 +13,7 @@ struct FFGetPersonPropertiesCall: FFCallable, FFCallResult {
     struct CallResult: Decodable {
 
         /// All properties of the club
-        struct ClubProperties: Decodable {
-
-            /// Id of the club
-            let id: UUID
-
-            /// Name of the club
-            let name: String
-
-            /// Identifier of the club
-            let identifier: String
-
-            /// Region code
-            let regionCode: String
-        }
-
-        /// All properties of the club
-        let clubProperties: ClubProperties
+        let clubProperties: Club
 
         /// Date of sign in
         let signInDate: Date
@@ -39,6 +23,9 @@ struct FFGetPersonPropertiesCall: FFCallable, FFCallResult {
 
         /// Name of the person
         let name: PersonName
+
+        /// Id of the person
+        let id: FirebasePerson.ID
     }
 
     /// User id

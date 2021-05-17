@@ -14,7 +14,7 @@ struct FFNewClubCall: FFCallable {
     let signInProperty: SignInProperty.UserIdName
 
     /// Club id
-    let clubId: UUID
+    let clubId: Club.ID
 
     /// Person id
     let personId: FirebasePerson.ID

@@ -25,7 +25,7 @@ export const changeFinePayedCall = functions.region("europe-west1").https.onCall
     // Check prerequirements and get a reference to payed state of the fine
     const parameterContainer = new ParameterContainer(data);
     await checkPrerequirements(parameterContainer, context.auth);
-    const path = getClubComponent(parameterContainer) + parameterContainer.getParameter<string>("clubId", "string").toUpperCase() + "/fines/" + parameterContainer.getParameter<string>("fineId", "string").toUpperCase() + "/payed";
+    const path = getClubComponent(parameterContainer) + "/" + parameterContainer.getParameter<string>("clubId", "string").toUpperCase() + "/fines/" + parameterContainer.getParameter<string>("fineId", "string").toUpperCase() + "/payed";
     const ref = admin.database().ref(path);
 
     // Get payed state

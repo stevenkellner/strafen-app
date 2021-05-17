@@ -11,7 +11,7 @@ import Foundation
 struct FFForceSignOutCall: FFCallable {
 
     /// Club id
-    let clubId: UUID
+    let clubId: Club.ID
 
     /// Person id
     let personId: FirebasePerson.ID
