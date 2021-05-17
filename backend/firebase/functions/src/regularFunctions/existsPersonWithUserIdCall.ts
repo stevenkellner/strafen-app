@@ -3,36 +3,37 @@ import * as admin from "firebase-admin";
 import {ParameterContainer, checkPrerequirements, getClubComponent} from "../utils";
 
 /**
- * Checks if club with given identifier already exists
+ * Checks if a person with given user id exists.
  * @params
  *  - privateKey (string): private key to check whether the caller is authenticated to use this function
  *  - clubLevel (string): level of the club (`regular`, `debug`, `testing`)
- *  - identifier (string): identifer of the club to search
- * @returns (boolean): `true` if a club with given identifier already exists, `false` otherwise
+ *  - userId (string): user id to search in database
+ * @returns (boolean): `true`if a person with given user id exists
  * @throws
  *  - functions.https.HttpsError:
  *    - permission-denied: if private key isn't valid
  *    - invalid-argument: if a required parameter isn't give over
  *                        or if a parameter hasn't the right type
  *                        or if clubLevel isn't `regular`, `debug` or `testing`
- *    - failed-precondition: if function is called while no person is sign in
  */
-export const existsClubWithIdentifierCall = functions.region("europe-west1").https.onCall(async (data, context) => {
+export const existsPersonWithUserIdCall = functions.region("europe-west1").https.onCall(async (data, context) => {
     // Check prerequirements and get a reference to all clubs
     const parameterContainer = new ParameterContainer(data);
-    await checkPrerequirements(parameterContainer, context.auth, false);
+    await checkPrerequirements(parameterContainer, context.auth);
     const path = getClubComponent(parameterContainer);
     const ref = admin.database().ref(path);
 
-    // Check if club identifier exists
-    let clubExists = false;
+    // Check if person exists
+    let personExists = false;
     await ref.once("value", (snapshot) => {
-        snapshot.forEach((child) => {
-            const identifier = child.child("identifier").val();
-            if (identifier == parameterContainer.getParameter<string>("identifier", "string")) {
-                clubExists = true;
-            }
+        snapshot.forEach((club) => {
+            club.child("persons").forEach((person) => {
+                const userId = person.child("signInData").child("userId").val();
+                if (userId == data.userId) {
+                    personExists = true;
+                }
+            });
         });
     });
-    return clubExists;
+    return personExists;
 });

@@ -420,6 +420,7 @@
 				B01E96A82641AEF50034E3D1 /* Frameworks */,
 				B01E96A92641AEF50034E3D1 /* Resources */,
 				513BE5779C3A2365EB9CC903 /* [CP] Embed Pods Frameworks */,
+				B0225D29265250C900D75CDA /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -524,6 +525,23 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Strafen/Pods-Strafen-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
+		};
+		B0225D29265250C900D75CDA /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if which swiftlint >/dev/null; then\n  swiftlint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
 		};
 		BED64B0C36425B0DD66E685C /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;

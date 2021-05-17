@@ -23,10 +23,11 @@ import {ParameterContainer, checkPrerequirements, getClubComponent, existsData} 
  *  - functions.https.HttpsError:
  *    - permission-denied: if private key isn't valid
  *    - invalid-argument: if a required parameter isn't give over
- *    - invalid-argument: if a parameter hasn't the right type
+ *                        or if a parameter hasn't the right type
+ *                        or if clubLevel isn't `regular`, `debug` or `testing`
  *    - failed-precondition: if function is called while no person is sign in
  *    - already-exists: if already a club with given identifier exists
- *    - internal: if an error occuers while setting club properties in database
+ *    - internal: if an error occurs while setting club properties in database
  */
 export const newClubCall = functions.region("europe-west1").https.onCall(async (data, context) => {
     // Check prerequirements and get a reference to all clubs
@@ -68,7 +69,7 @@ export const newClubCall = functions.region("europe-west1").https.onCall(async (
         signInData: {
             cashier: true,
             userId: parameterContainer.getParameter<string>("userId", "string"),
-            signInDate: parameterContainer.getParameter<number>("userId", "number"),
+            signInDate: parameterContainer.getParameter<number>("signInDate", "number"),
         },
     };
     const personUserIds: { [key: string]: any } = {};
@@ -83,16 +84,16 @@ export const newClubCall = functions.region("europe-west1").https.onCall(async (
     };
 
     // Set club properties
-    let errorOccued = false;
+    let errorOccured = false;
     await ref.set(clubProperties, async (error) => {
         if (error != null) {
             if (await existsData(ref)) {
                 ref.remove();
             }
-            errorOccued = true;
+            errorOccured = true;
         }
     });
-    if (errorOccued) {
+    if (errorOccured) {
         throw new functions.https.HttpsError("internal", "Couldn't add new club to database.");
     }
 });

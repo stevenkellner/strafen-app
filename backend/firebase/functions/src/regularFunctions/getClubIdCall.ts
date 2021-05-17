@@ -13,7 +13,8 @@ import {ParameterContainer, checkPrerequirements, getClubComponent} from "../uti
  *  - functions.https.HttpsError:
  *    - permission-denied: if private key isn't valid
  *    - invalid-argument: if a required parameter isn't give over
- *    - invalid-argument: if a parameter hasn't the right type
+ *                        or if a parameter hasn't the right type
+ *                        or if clubLevel isn't `regular`, `debug` or `testing`
  *    - failed-precondition: if function is called while no person is sign in
  *    - not-found: if no club with given identifier exists
  */
