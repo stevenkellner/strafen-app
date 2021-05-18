@@ -38,6 +38,26 @@
                BlueprintName = "StrafenTests"
                ReferencedContainer = "container:Strafen.xcodeproj">
             </BuildableReference>
+            <SkippedTests>
+               <Test
+                  Identifier = "FirebaseFetcherTests">
+               </Test>
+               <Test
+                  Identifier = "FirebaseFunctionCallerTests">
+               </Test>
+               <Test
+                  Identifier = "FirebaseObserverTests">
+               </Test>
+               <Test
+                  Identifier = "SignInClubInputViewTests">
+               </Test>
+               <Test
+                  Identifier = "SignInClubSelectionTests">
+               </Test>
+               <Test
+                  Identifier = "SignInEmailViewTests">
+               </Test>
+            </SkippedTests>
          </TestableReference>
       </Testables>
    </TestAction>

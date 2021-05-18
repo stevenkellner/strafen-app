@@ -279,15 +279,20 @@ struct SignInEmailView: View {
     /// Handles the click on the continue button
     /// - Parameter userId: userId if not signed in with email
     /// - Parameter inputProperties: binding of the input properties
-    static func handleContinueButtonPress(userId: String?, inputProperties: Binding<InputProperties>) {
+    /// - Parameter completionHandler: handler executed after user is created or error occured (only if userId is nil and textfields are valid)
+    static func handleContinueButtonPress(userId: String?, inputProperties: Binding<InputProperties>, onCompletion completionHandler: (() -> Void)? = nil) {
         guard inputProperties.wrappedValue.connectionState.restart() == .passed else { return }
         if let userId = userId {
-            guard inputProperties.wrappedValue.validateTextFields([.firstName, .lastName]) == .valid else { return }
+            guard inputProperties.wrappedValue.validateTextFields([.firstName, .lastName]) == .valid else {
+                return inputProperties.wrappedValue.connectionState.failed()
+            }
             let name = PersonName(firstName: inputProperties.wrappedValue[.firstName], lastName: inputProperties.wrappedValue[.lastName])
             inputProperties.wrappedValue.signInProperty = SignInProperty.UserIdName(userId: userId, name: name)
             inputProperties.wrappedValue.connectionState.passed()
         } else {
-            guard inputProperties.wrappedValue.validateAllInputs() == .valid else { return }
+            guard inputProperties.wrappedValue.validateAllInputs() == .valid else {
+                return inputProperties.wrappedValue.connectionState.failed()
+            }
             Auth.auth().createUser(withEmail: inputProperties.wrappedValue[.email], password: inputProperties.wrappedValue[.password]) { result, error in
                 if let error = error {
                     inputProperties.wrappedValue.evaluateErrorCode(of: error as NSError)
@@ -301,6 +306,7 @@ struct SignInEmailView: View {
                     inputProperties.wrappedValue[error: .email] = .internalErrorSignIn
                     inputProperties.wrappedValue.connectionState.failed()
                 }
+                completionHandler?()
             }
         }
     }

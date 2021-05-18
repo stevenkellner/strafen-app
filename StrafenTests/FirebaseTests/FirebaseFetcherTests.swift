@@ -140,7 +140,7 @@ class FirebaseFetcherTests: XCTestCase {
         let result: Result<[FirebasePerson], Error> = try waitExpectation { handler in
             FirebaseFetcher.shared.fetchList(FirebasePerson.self, clubId: clubId).thenResult(handler)
         }
-        XCTAssertEqual(result.error as? FirebaseFetcher.FetchError, FirebaseFetcher.FetchError.noData)
+        XCTAssertEqual(try result.get(), [])
     }
 
     /// Test fetch list: fetch list wrong type

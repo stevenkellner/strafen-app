@@ -11,7 +11,7 @@ import Foundation
 struct SignInProperty {
 
     /// Sign in property with userId and name
-    struct UserIdName {
+    struct UserIdName: Equatable {
 
         /// User id of person signed in
         let userId: String
@@ -21,7 +21,7 @@ struct SignInProperty {
     }
 
     /// Sign in property with userId and name
-    struct UserIdNameClubId {
+    struct UserIdNameClubId: Equatable {
 
         /// User id of person signed in
         let userId: String

@@ -51,16 +51,16 @@ struct SignInView: View {
 
                         // Sign in with google button
                         SingleButton("Mit Google registrieren")
-                            .leftSymbol(Image(uiImage: #imageLiteral(resourceName: "google-icon")))
+                            .leftSymbol(Image(uiImage: #imageLiteral(resourceName: "google-icon"))) // TODO
 
                         // Sign in with email button
                         SingleButton("Mit Apple registrieren")
                             .leftSymbol(name: "applelogo")
-                            .leftColor(.white)
+                            .leftColor(.white) // TODO
 
                         // Sign in with facebook button
                         SingleButton("Mit Facebook registrieren")
-                            .leftSymbol(Image(uiImage: #imageLiteral(resourceName: "facebook-icon")))
+                            .leftSymbol(Image(uiImage: #imageLiteral(resourceName: "facebook-icon"))) // TODO
 
                     }
 

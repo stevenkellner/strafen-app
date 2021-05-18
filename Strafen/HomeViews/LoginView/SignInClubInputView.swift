@@ -254,11 +254,16 @@ struct SignInClubInputView: View {
     /// - Parameter oldSignInProperty: sign in property with userId and name
     /// - Parameter inputProperties: binding of the input properties
     /// - Parameter level: level of function call
-    static func handleConfirmButtonPress(oldSignInProperty: SignInProperty.UserIdName, inputProperties: Binding<InputProperties>) {
+    /// - Parameter completionHandler: handler executed after club was created or a error occured at this
+    static func handleConfirmButtonPress(oldSignInProperty: SignInProperty.UserIdName, inputProperties: Binding<InputProperties>, onCompletion completionHandler: ((Club.ID?) -> Void)? = nil) {
         guard inputProperties.wrappedValue.connectionState.restart() == .passed else { return }
-        guard inputProperties.wrappedValue.validateAllInputs() == .valid else { return }
+        guard inputProperties.wrappedValue.validateAllInputs() == .valid else {
+            return inputProperties.wrappedValue.connectionState.failed()
+        }
         checkClubIdentifierExists(inputProperties: inputProperties) {
-            createNewClub(oldSignInProperty: oldSignInProperty, inputProperties: inputProperties)
+            createNewClub(oldSignInProperty: oldSignInProperty, inputProperties: inputProperties, onCompletion: completionHandler)
+        } onFailure: {
+            completionHandler?(nil)
         }
     }
 
@@ -266,18 +271,21 @@ struct SignInClubInputView: View {
     /// - Parameters:
     ///   - inputProperties: binding of the input properties
     ///   - successHandler: executed if no club with identifier exists
-    static func checkClubIdentifierExists(inputProperties: Binding<InputProperties>, handler successHandler: @escaping () -> Void) {
+    ///   - failureHandler: executed if a error occured
+    static func checkClubIdentifierExists(inputProperties: Binding<InputProperties>, handler successHandler: @escaping () -> Void, onFailure failureHandler: @escaping () -> Void) {
         let callItem = FFExistsClubWithIdentifierCall(identifier: inputProperties.wrappedValue[.clubIdentifier])
         FirebaseFunctionCaller.shared.call(callItem).then { clubExists in
             if clubExists {
                 inputProperties.wrappedValue[error: .clubIdentifier] = .identifierAlreadyExists
                 inputProperties.wrappedValue.connectionState.failed()
+                failureHandler()
             } else {
                 successHandler()
             }
         }.catch { _ in
             inputProperties.wrappedValue[error: .clubName] = .internalErrorSignIn
             inputProperties.wrappedValue.connectionState.failed()
+            failureHandler()
         }
     }
 
@@ -285,7 +293,8 @@ struct SignInClubInputView: View {
     /// - Parameters:
     ///   - oldSignInProperty: sign in property with userId and name
     ///   - inputProperties: binding of the input properties
-    static func createNewClub(oldSignInProperty: SignInProperty.UserIdName, inputProperties: Binding<InputProperties>) {
+    ///   - completionHandler: handler executed after club was created
+    static func createNewClub(oldSignInProperty: SignInProperty.UserIdName, inputProperties: Binding<InputProperties>, onCompletion completionHandler: ((Club.ID?) -> Void)?) {
         let callItem = FFNewClubCall(
             signInProperty: oldSignInProperty,
             clubId: Club.ID(rawValue: UUID()),
@@ -300,6 +309,8 @@ struct SignInClubInputView: View {
         }.catch { error in
             inputProperties.wrappedValue.evaluateErrorCode(of: error as NSError)
             inputProperties.wrappedValue.connectionState.failed()
+        }.always {
+            completionHandler?(callItem.clubId)
         }
     }
 

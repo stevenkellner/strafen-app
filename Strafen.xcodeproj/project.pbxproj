@@ -32,6 +32,8 @@
 		B0225D3726526B3800D75CDA /* FFGetPersonPropertiesCall.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0225D3626526B3800D75CDA /* FFGetPersonPropertiesCall.swift */; };
 		B0225D3926526C3E00D75CDA /* FFExistsPersonWithUserIdCall.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0225D3826526C3E00D75CDA /* FFExistsPersonWithUserIdCall.swift */; };
 		B0254E082641B6130083752B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B0254E072641B6130083752B /* GoogleService-Info.plist */; };
+		B02FC7BC2654156D00A99207 /* SignInClubSelectionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B02FC7BB2654156D00A99207 /* SignInClubSelectionTests.swift */; };
+		B02FC7BE265423B700A99207 /* SignInClubInputViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B02FC7BD265423B700A99207 /* SignInClubInputViewTests.swift */; };
 		B0311305264427EB00E65025 /* FirebaseObserverTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0311304264427EB00E65025 /* FirebaseObserverTests.swift */; };
 		B03697BB2650115B00DA938D /* ErrorMessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B03697BA2650115B00DA938D /* ErrorMessageView.swift */; };
 		B03697BD265028F500DA938D /* FFGetClubIdCall.swift in Sources */ = {isa = PBXBuildFile; fileRef = B03697BC265028F500DA938D /* FFGetClubIdCall.swift */; };
@@ -51,6 +53,7 @@
 		B0720817264D89200084FDE6 /* ConnectionState.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0720816264D89200084FDE6 /* ConnectionState.swift */; };
 		B0720819264D8D580084FDE6 /* OperationResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0720818264D8D580084FDE6 /* OperationResult.swift */; };
 		B072081C264DA0270084FDE6 /* SignInProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = B072081B264DA0270084FDE6 /* SignInProperty.swift */; };
+		B08DA658265405DA00FE0C52 /* SignInEmailViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B08DA657265405DA00FE0C52 /* SignInEmailViewTests.swift */; };
 		B0A462912649412C0045D2BE /* Header.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0A462902649412B0045D2BE /* Header.swift */; };
 		B0A4629326494AB90045D2BE /* RoundedCorners.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0A4629226494AB80045D2BE /* RoundedCorners.swift */; };
 		B0A46295264953270045D2BE /* Outline.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0A46294264953270045D2BE /* Outline.swift */; };
@@ -126,6 +129,8 @@
 		B0225D3626526B3800D75CDA /* FFGetPersonPropertiesCall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FFGetPersonPropertiesCall.swift; sourceTree = "<group>"; };
 		B0225D3826526C3E00D75CDA /* FFExistsPersonWithUserIdCall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FFExistsPersonWithUserIdCall.swift; sourceTree = "<group>"; };
 		B0254E072641B6130083752B /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		B02FC7BB2654156D00A99207 /* SignInClubSelectionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInClubSelectionTests.swift; sourceTree = "<group>"; };
+		B02FC7BD265423B700A99207 /* SignInClubInputViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInClubInputViewTests.swift; sourceTree = "<group>"; };
 		B0311304264427EB00E65025 /* FirebaseObserverTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseObserverTests.swift; sourceTree = "<group>"; };
 		B03697BA2650115B00DA938D /* ErrorMessageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorMessageView.swift; sourceTree = "<group>"; };
 		B03697BC265028F500DA938D /* FFGetClubIdCall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FFGetClubIdCall.swift; sourceTree = "<group>"; };
@@ -145,6 +150,7 @@
 		B0720816264D89200084FDE6 /* ConnectionState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectionState.swift; sourceTree = "<group>"; };
 		B0720818264D8D580084FDE6 /* OperationResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OperationResult.swift; sourceTree = "<group>"; };
 		B072081B264DA0270084FDE6 /* SignInProperty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInProperty.swift; sourceTree = "<group>"; };
+		B08DA657265405DA00FE0C52 /* SignInEmailViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInEmailViewTests.swift; sourceTree = "<group>"; };
 		B0A462902649412B0045D2BE /* Header.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Header.swift; sourceTree = "<group>"; };
 		B0A4629226494AB80045D2BE /* RoundedCorners.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedCorners.swift; sourceTree = "<group>"; };
 		B0A46294264953270045D2BE /* Outline.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Outline.swift; sourceTree = "<group>"; };
@@ -387,6 +393,26 @@
 			path = Enumerations;
 			sourceTree = "<group>";
 		};
+		B08DA6552654057400FE0C52 /* LoginViewTests */ = {
+			isa = PBXGroup;
+			children = (
+				B08DA657265405DA00FE0C52 /* SignInEmailViewTests.swift */,
+				B02FC7BB2654156D00A99207 /* SignInClubSelectionTests.swift */,
+				B02FC7BD265423B700A99207 /* SignInClubInputViewTests.swift */,
+			);
+			path = LoginViewTests;
+			sourceTree = "<group>";
+		};
+		B08DA6562654057D00FE0C52 /* FirebaseTests */ = {
+			isa = PBXGroup;
+			children = (
+				B0A761B22642ED1F003B170F /* FirebaseFetcherTests.swift */,
+				B0311304264427EB00E65025 /* FirebaseObserverTests.swift */,
+				B039864B26526E7800C97DF2 /* FirebaseFunctionCallerTests.swift */,
+			);
+			path = FirebaseTests;
+			sourceTree = "<group>";
+		};
 		B0A7619D2642DB86003B170F /* FFCallables */ = {
 			isa = PBXGroup;
 			children = (
@@ -409,9 +435,8 @@
 			isa = PBXGroup;
 			children = (
 				B0A761AC2642ECBC003B170F /* Info.plist */,
-				B0A761B22642ED1F003B170F /* FirebaseFetcherTests.swift */,
-				B0311304264427EB00E65025 /* FirebaseObserverTests.swift */,
-				B039864B26526E7800C97DF2 /* FirebaseFunctionCallerTests.swift */,
+				B08DA6562654057D00FE0C52 /* FirebaseTests */,
+				B08DA6552654057400FE0C52 /* LoginViewTests */,
 				B0AF0A8826430AF300DF4DC9 /* FFCallables */,
 				B039864F2652700800C97DF2 /* Utilities */,
 			);
@@ -707,6 +732,9 @@
 				B0A761B32642ED1F003B170F /* FirebaseFetcherTests.swift in Sources */,
 				B039864E26526F3500C97DF2 /* FunctionCallerTestProperty.swift in Sources */,
 				B0311305264427EB00E65025 /* FirebaseObserverTests.swift in Sources */,
+				B02FC7BE265423B700A99207 /* SignInClubInputViewTests.swift in Sources */,
+				B02FC7BC2654156D00A99207 /* SignInClubSelectionTests.swift in Sources */,
+				B08DA658265405DA00FE0C52 /* SignInEmailViewTests.swift in Sources */,
 				B0AF0AA42644125400DF4DC9 /* TestClub.swift in Sources */,
 				B039864C26526E7800C97DF2 /* FirebaseFunctionCallerTests.swift in Sources */,
 				B0AF0A8A26430B2900DF4DC9 /* FFNewTestClubCall.swift in Sources */,

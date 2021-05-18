@@ -200,9 +200,12 @@ struct SignInClubSelectionView: View {
     /// Handles the click on the continue button
     /// - Parameter oldSignInProperty: sign in property with userId and name
     /// - Parameter inputProperties: binding of the input properties
-    static func handleContinueButtonPress(oldSignInProperty: SignInProperty.UserIdName, inputProperties: Binding<InputProperties>) {
+    /// - Parameter completionHandler: handler executed after function call was made
+    static func handleContinueButtonPress(oldSignInProperty: SignInProperty.UserIdName, inputProperties: Binding<InputProperties>, onCompletion completionHandler: (() -> Void)? = nil) {
         guard inputProperties.wrappedValue.connectionState.restart() == .passed else { return }
-        guard inputProperties.wrappedValue.validateAllInputs() == .valid else { return }
+        guard inputProperties.wrappedValue.validateAllInputs() == .valid else {
+            return inputProperties.wrappedValue.connectionState.failed()
+        }
         let callItem = FFGetClubIdCall(identifier: inputProperties.wrappedValue[.clubIdentifier])
         FirebaseFunctionCaller.shared.call(callItem).then { clubId in
             inputProperties.wrappedValue.signInProperty = SignInProperty.UserIdNameClubId(oldSignInProperty, clubId: clubId)
@@ -210,6 +213,8 @@ struct SignInClubSelectionView: View {
         }.catch { error in
             inputProperties.wrappedValue.evaluateErrorCode(of: error as NSError)
             inputProperties.wrappedValue.connectionState.failed()
+        }.always {
+            completionHandler?()
         }
     }
 }
