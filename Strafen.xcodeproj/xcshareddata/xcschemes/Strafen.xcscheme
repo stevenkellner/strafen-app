@@ -57,6 +57,9 @@
                <Test
                   Identifier = "SignInEmailViewTests">
                </Test>
+               <Test
+                  Identifier = "SignInPersonSelectionViewTests">
+               </Test>
             </SkippedTests>
          </TestableReference>
       </Testables>

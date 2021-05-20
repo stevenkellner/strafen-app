@@ -168,7 +168,7 @@ struct SignInPersonSelectionView: View {
     /// - Parameters:
     ///   - signInProperty: sign in property with user id, name and club id
     ///   - inputProperty: binding of input property
-    static func handleRegisterButtonPress(signInProperty: SignInProperty.UserIdNameClubId, inputProperty: Binding<InputProperties>) {
+    static func handleRegisterButtonPress(signInProperty: SignInProperty.UserIdNameClubId, inputProperty: Binding<InputProperties>, onCompletion completionHandler: (() -> Void)? = nil) {
         guard inputProperty.wrappedValue.registerConnectionState.restart() == .passed,
               inputProperty.wrappedValue.personList != nil else { return }
         inputProperty.wrappedValue.errorMessage = nil
@@ -181,6 +181,8 @@ struct SignInPersonSelectionView: View {
         }.catch { _ in
             inputProperty.wrappedValue.errorMessage = .internalErrorSignIn
             inputProperty.wrappedValue.registerConnectionState.failed()
+        }.always {
+            completionHandler?()
         }
     }
 

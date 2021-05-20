@@ -46,6 +46,7 @@
 		B0447C202641BAFE00148430 /* FirebaseFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0447C1F2641BAFE00148430 /* FirebaseFetcher.swift */; };
 		B04AD2AA26567464001A760F /* PersonRowImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B04AD2A926567464001A760F /* PersonRowImage.swift */; };
 		B04AD2AC26567CD6001A760F /* RandomInstanceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = B04AD2AB26567CD6001A760F /* RandomInstanceProtocol.swift */; };
+		B04AD2AE26569614001A760F /* SignInPersonSelectionViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B04AD2AD26569614001A760F /* SignInPersonSelectionViewTests.swift */; };
 		B066A2BF26492E2700AB2715 /* SignInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B066A2BE26492E2700AB2715 /* SignInView.swift */; };
 		B07148D5264DB45000C5F7EF /* SignInClubSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B07148D4264DB45000C5F7EF /* SignInClubSelectionView.swift */; };
 		B07148D9264E938800C5F7EF /* Importance.swift in Sources */ = {isa = PBXBuildFile; fileRef = B07148D8264E938800C5F7EF /* Importance.swift */; };
@@ -146,6 +147,7 @@
 		B0447C1F2641BAFE00148430 /* FirebaseFetcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseFetcher.swift; sourceTree = "<group>"; };
 		B04AD2A926567464001A760F /* PersonRowImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonRowImage.swift; sourceTree = "<group>"; };
 		B04AD2AB26567CD6001A760F /* RandomInstanceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RandomInstanceProtocol.swift; sourceTree = "<group>"; };
+		B04AD2AD26569614001A760F /* SignInPersonSelectionViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInPersonSelectionViewTests.swift; sourceTree = "<group>"; };
 		B066A2BE26492E2700AB2715 /* SignInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInView.swift; sourceTree = "<group>"; };
 		B07148D4264DB45000C5F7EF /* SignInClubSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInClubSelectionView.swift; sourceTree = "<group>"; };
 		B07148D8264E938800C5F7EF /* Importance.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Importance.swift; sourceTree = "<group>"; };
@@ -408,6 +410,7 @@
 				B08DA657265405DA00FE0C52 /* SignInEmailViewTests.swift */,
 				B02FC7BB2654156D00A99207 /* SignInClubSelectionTests.swift */,
 				B02FC7BD265423B700A99207 /* SignInClubInputViewTests.swift */,
+				B04AD2AD26569614001A760F /* SignInPersonSelectionViewTests.swift */,
 			);
 			path = LoginViewTests;
 			sourceTree = "<group>";
@@ -740,6 +743,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B04AD2AE26569614001A760F /* SignInPersonSelectionViewTests.swift in Sources */,
 				B0AF0AA22644013400DF4DC9 /* FFNewTestClubPropertyCall.swift in Sources */,
 				B0A761B32642ED1F003B170F /* FirebaseFetcherTests.swift in Sources */,
 				B039864E26526F3500C97DF2 /* FunctionCallerTestProperty.swift in Sources */,
