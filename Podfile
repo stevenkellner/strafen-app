@@ -10,6 +10,8 @@ target 'Strafen' do
   pod 'Firebase/Functions'
   pod 'Firebase/Storage'
   pod 'CodableFirebase'
+  
+  pod 'GoogleSignIn'
 
   # Hydra
   pod 'HydraAsync'

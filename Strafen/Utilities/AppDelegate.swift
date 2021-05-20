@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Firebase
+import GoogleSignIn
 
 /// App Delegate
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -24,6 +25,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return true
     }
 
+    func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
+        return GIDSignIn.sharedInstance().handle(url)
+    }
+
     /// Set up the app only once by launch.
     ///
     /// - Configure the firebase app
@@ -34,5 +39,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Configure Firebase
         FirebaseApp.configure()
         try? Auth.auth().useUserAccessGroup("K7NTJ83ZF8.stevenkellner.Strafen.firebaseAuth")
+        GIDSignIn.sharedInstance().clientID = FirebaseApp.app()?.options.clientID
     }
 }

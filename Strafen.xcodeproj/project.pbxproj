@@ -499,6 +499,7 @@
 				B01E96A92641AEF50034E3D1 /* Resources */,
 				513BE5779C3A2365EB9CC903 /* [CP] Embed Pods Frameworks */,
 				B0225D29265250C900D75CDA /* ShellScript */,
+				3B31363F3DD3B92EC35A781E /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -587,6 +588,23 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		3B31363F3DD3B92EC35A781E /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Strafen/Pods-Strafen-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Strafen/Pods-Strafen-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Strafen/Pods-Strafen-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		513BE5779C3A2365EB9CC903 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
