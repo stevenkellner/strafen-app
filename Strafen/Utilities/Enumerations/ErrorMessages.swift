@@ -35,6 +35,9 @@ enum ErrorMessages {
     case internalErrorSignIn
 
     /// Email is already signed in
+    case alreadySignedInEmail
+
+    /// User is already signed in
     case alreadySignedIn
 
     /// Passwword is too weak
@@ -71,8 +74,10 @@ enum ErrorMessages {
             return "Passwörter stimmen nicht überein!"
         case .internalErrorSignIn:
             return "Es gab ein Problem beim Registrieren!"
-        case .alreadySignedIn:
+        case .alreadySignedInEmail:
             return "Diese Email ist bereits registriert!"
+        case .alreadySignedIn:
+            return "Du bist bereits registriert!"
         case .weakPassword:
             return "Das Passwort ist zu schwach!"
         case .clubNotExists:

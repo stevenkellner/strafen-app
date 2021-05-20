@@ -135,7 +135,7 @@ struct SignInEmailView: View {
             case .invalidEmail:
                 self[error: .email] = .invalidEmail
             case .emailAlreadyInUse:
-                self[error: .email] = .alreadySignedIn
+                self[error: .email] = .alreadySignedInEmail
             case .weakPassword:
                 self[error: .password] = .weakPassword
             default:

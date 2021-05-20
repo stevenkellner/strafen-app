@@ -159,7 +159,7 @@ class SignInEmailViewTests: XCTestCase {
             SignInEmailView.handleContinueButtonPress(userId: nil, inputProperties: inputBinding, onCompletion: handler)
         }
         XCTAssertEqual(inputProperties.connectionState, .failed)
-        XCTAssertEqual(inputProperties.errorMessages, [.email: .alreadySignedIn])
+        XCTAssertEqual(inputProperties.errorMessages, [.email: .alreadySignedInEmail])
     }
 
     /// Test without user id

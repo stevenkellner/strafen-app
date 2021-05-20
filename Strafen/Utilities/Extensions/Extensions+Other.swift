@@ -280,3 +280,12 @@ extension CGPoint {
         self + CGVector(dx: cos(angle.radians), dy: -sin(angle.radians)) * radius
     }
 }
+
+extension PersonNameComponents {
+
+    /// Person name
+    var personName: PersonName? {
+        guard let firstName = givenName else { return nil }
+        return PersonName(firstName: firstName, lastName: familyName)
+    }
+}

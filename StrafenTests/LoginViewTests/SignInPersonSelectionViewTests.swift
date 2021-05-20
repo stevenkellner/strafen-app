@@ -75,7 +75,7 @@ class SignInPersonSelectionViewTests: XCTestCase {
             SignInPersonSelectionView.handleRegisterButtonPress(signInProperty: signInProperty, inputProperty: inputBinding, onCompletion: handler)
         }
         XCTAssertNil(inputProperties.errorMessage)
-        
+
         // TODO check settings
 
         let personUserIdResult: Result<String, Error> = try waitExpectation { handler in
