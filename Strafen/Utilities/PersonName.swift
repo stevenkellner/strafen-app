@@ -55,6 +55,18 @@ extension PersonName {
     }
 }
 
+extension PersonName: RandomInstanceProtocol {
+
+    /// Generates a random person name
+    /// - Parameter generator: random number generator
+    /// - Returns: random person name
+    static func random<T>(using generator: inout T) -> PersonName where T: RandomNumberGenerator {
+        let firstName = ["Florence", "Katy", "Rachel", "Rhonda", "Caitlyn", "Antonia", "Ellie-Mae", "Isobelle", "Annabelle", "Charlotte"].randomElement(using: &generator)!
+        let lastName = Bool.random(using: &generator) ? nil : ["Wood", "Stark", "Vinson", "Bush", "Piper", "Santos", "Couch", "Hilton", "Booth", "Fletcher"].randomElement(using: &generator)!
+        return PersonName(firstName: firstName, lastName: lastName)
+    }
+}
+
 /// Person name with optional first and last name
 struct OptionalPersonName: Codable {
 

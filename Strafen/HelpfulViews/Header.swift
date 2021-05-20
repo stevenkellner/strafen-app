@@ -17,7 +17,7 @@ struct Header: View {
     private var lineLimit: Int? = 1
 
     /// Color of the text and underlines
-    private var color: Color = .customYellow
+    private var color: Color = .textColor
 
     /// Init with title
     /// - Parameter title: page title

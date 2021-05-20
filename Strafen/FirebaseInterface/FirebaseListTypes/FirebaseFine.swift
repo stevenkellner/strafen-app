@@ -93,3 +93,27 @@ extension FirebaseFine: FirebaseListType {
 }
 
 extension FirebaseFine: Equatable {}
+
+extension FirebaseFine {
+
+    /// Reason of this fine
+    /// - Parameter reasonList: list of all reason templates
+    /// - Returns: reason of this fine
+    func reason(with reasonList: [FirebaseReasonTemplate]) -> String {
+        fineReason.reason(with: reasonList)
+    }
+
+    /// Amount of this fine
+    /// - Parameter reasonList: list of all reason templates
+    /// - Returns: amount of this fine
+    func amount(with reasonList: [FirebaseReasonTemplate]) -> Amount {
+        fineReason.amount(with: reasonList)
+    }
+
+    /// Importance of this fine
+    /// - Parameter reasonList: list of all reason templates
+    /// - Returns: importance of this fine
+    func importance(with reasonList: [FirebaseReasonTemplate]) -> Importance {
+        fineReason.importance(with: reasonList)
+    }
+}

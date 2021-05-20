@@ -11,6 +11,6 @@ import SwiftUI
 struct LoginEntryView: View {
     var body: some View {
         // SignInView()
-        SignInClubInputView(signInProperty: SignInProperty.UserIdName(userId: "userId", name: PersonName(firstName: "First", lastName: "LastName")))
+        SignInPersonSelectionView(signInProperty: SignInProperty.UserIdNameClubId(SignInProperty.UserIdName(userId: "userId", name: PersonName(firstName: "First", lastName: "Last")), clubId: Club.ID(rawValue: UUID(uuidString: "041D157B-2312-484F-BB49-C1CC0DE7992F")!)))
     }
 }

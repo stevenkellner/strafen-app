@@ -113,6 +113,27 @@ extension CGPoint {
     }
 }
 
+extension CGPoint {
+
+    /// Adds a CGVector to a CGPoint
+    /// - Parameters:
+    ///   - lhs: point to add to
+    ///   - rhs: vector to add to the point
+    /// - Returns: new point
+    public static func + (lhs: CGPoint, rhs: CGVector) -> CGPoint {
+        CGPoint(x: lhs.x + rhs.dx, y: lhs.y + rhs.dy)
+    }
+
+    /// Subtracts a CGVector from a CGPoint
+    /// - Parameters:
+    ///   - lhs: point to subtract from
+    ///   - rhs: vector to subtract from the point
+    /// - Returns: new point
+    public static func - (lhs: CGPoint, rhs: CGVector) -> CGPoint {
+        CGPoint(x: lhs.x - rhs.dx, y: lhs.y - rhs.dy)
+    }
+}
+
 extension CGSize {
 
     /// Multiplies a CGFloat to a CGSize
@@ -122,6 +143,18 @@ extension CGSize {
     /// - Returns: new size
     public static func * (lhs: CGSize, rhs: CGFloat) -> CGSize {
         CGSize(width: lhs.width * rhs, height: lhs.height * rhs)
+    }
+}
+
+extension CGVector {
+
+    /// Multiplies a CGFloat to a CGVector
+    /// - Parameters:
+    ///   - lhs: vector to multiply to
+    ///   - rhs: number to multiply to the vector
+    /// - Returns: new size
+    public static func * (lhs: CGVector, rhs: CGFloat) -> CGVector {
+        CGVector(dx: lhs.dx * rhs, dy: lhs.dy * rhs)
     }
 }
 
@@ -232,5 +265,18 @@ extension Locale {
     static func regionName(of regionCode: String) -> String {
         let regionName = Locale.current.localizedString(forRegionCode: regionCode)
         return regionName ?? regionCode
+    }
+}
+
+extension CGPoint {
+
+    /// Returns a point on a circle with this point as origin and
+    /// given radius and angle starting on the right turning anitclockwise
+    /// - Parameters:
+    ///   - angle: angle starting on the right and turning anticlockwise
+    ///   - radius: radius of the circle
+    /// - Returns: point on the cirlce
+    func onCircle(angle: Angle, radius: CGFloat) -> CGPoint {
+        self + CGVector(dx: cos(angle.radians), dy: -sin(angle.radians)) * radius
     }
 }

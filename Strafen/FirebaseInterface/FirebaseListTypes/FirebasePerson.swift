@@ -73,3 +73,29 @@ extension FirebasePerson.SignInData: Decodable {
 extension FirebasePerson: Equatable {}
 
 extension FirebasePerson.SignInData: Equatable {}
+
+extension FirebasePerson: RandomInstanceProtocol {
+
+    /// Generates random person
+    /// - Parameter generator: random number generator
+    /// - Returns: random person
+    static func random<T>(using generator: inout T) -> FirebasePerson where T: RandomNumberGenerator {
+        let id = ID(rawValue: UUID())
+        let name = PersonName.random(using: &generator)
+        let isCashier = Bool.random(using: &generator)
+        let userId = (0..<Int.random(in: 5...10, using: &generator)).map {_ in String("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmopqrstuvwxyz".randomElement(using: &generator)!) }.joined()
+        let date = Date(timeIntervalSinceReferenceDate: Double.random(in: 100_000...10_000_000, using: &generator))
+        let signInData = Bool.random(using: &generator) ? nil : SignInData(isCashier: isCashier, userId: userId, signInDate: date)
+        return FirebasePerson(id: id, name: name, signInData: signInData)
+    }
+}
+
+extension FirebasePerson {
+
+    /// List of all fines associated to this person
+    /// - Parameter fineList: list of all fines
+    /// - Returns: list of fines associated to this person
+    func fineList(with fineList: [FirebaseFine]) -> [FirebaseFine] {
+        fineList.filter { $0.assoiatedPersonId == id }
+    }
+}
