@@ -276,6 +276,7 @@ struct CustomTextField<InputProperties>: View where InputProperties: InputProper
                 offset = uiView.offset(from: uiView.endOfDocument, to: selectedRange.end)
             }
             uiView.text = text
+            uiView.textColor = UIColor(color)
             if let offset = offset,
                let position = uiView.position(from: uiView.endOfDocument, offset: offset) {
                 uiView.selectedTextRange = uiView.textRange(from: position, to: position)

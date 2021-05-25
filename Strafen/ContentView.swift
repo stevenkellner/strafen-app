@@ -9,6 +9,9 @@ import SwiftUI
 
 struct ContentView: View {
     var body: some View {
-        LoginEntryView()
+        LoginView()
+            .onAppear {
+                UIApplication.shared.windows.first!.overrideUserInterfaceStyle = .dark
+            }
     }
 }

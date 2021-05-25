@@ -34,6 +34,9 @@ enum ErrorMessages {
     /// Internal error for sign in
     case internalErrorSignIn
 
+    /// Internal error for log in
+    case internalErrorLogIn
+
     /// Email is already signed in
     case alreadySignedInEmail
 
@@ -55,6 +58,12 @@ enum ErrorMessages {
     /// Club identifier already exists
     case identifierAlreadyExists
 
+    /// Password is incorrect
+    case incorrectPassword
+
+    /// Not signed in
+    case notSignedIn
+
     /// Message of the error
     var message: String {
         switch self {
@@ -74,6 +83,8 @@ enum ErrorMessages {
             return "Passwörter stimmen nicht überein!"
         case .internalErrorSignIn:
             return "Es gab ein Problem beim Registrieren!"
+        case .internalErrorLogIn:
+            return "Es gab ein Problem beim Anmelden!"
         case .alreadySignedInEmail:
             return "Diese Email ist bereits registriert!"
         case .alreadySignedIn:
@@ -88,6 +99,10 @@ enum ErrorMessages {
             return "Funktioniert nur in Ländern mit Euro!"
         case .identifierAlreadyExists:
             return "Vereinskennung ist bereits vergeben!"
+        case .incorrectPassword:
+            return "Das eingegebene Passwort ist falsch!"
+        case .notSignedIn:
+            return "Du bist noch nicht registriert!"
         }
     }
 }
