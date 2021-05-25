@@ -89,7 +89,7 @@ struct SignInClubSelectionView: View {
             // Navigation links
             if let signInProperty = inputProperties.signInProperty {
                 EmptyNavigationLink {
-                    Text(signInProperty.userId) // TODO
+                    SignInPersonSelectionView(signInProperty: signInProperty)
                 }
             }
             EmptyNavigationLink(isActive: $navigationLinkSignInClubInputViewActive) {

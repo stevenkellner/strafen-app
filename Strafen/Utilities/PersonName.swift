@@ -26,7 +26,7 @@ struct PersonName {
     }
 }
 
-extension PersonName: Decodable {
+extension PersonName: Codable {
 
     /// Coding Keys for Decodable
     enum CodingKeys: String, CodingKey {

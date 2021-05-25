@@ -175,9 +175,10 @@ struct SignInPersonSelectionView: View {
 
         let personId = inputProperty.wrappedValue.selectedPersonId ?? FirebasePerson.ID(rawValue: UUID())
         let callItem = FFRegisterPersonCall(signInProperty: signInProperty, personId: personId)
-        FirebaseFunctionCaller.shared.call(callItem).then { _ in
+        FirebaseFunctionCaller.shared.call(callItem).then { clubProperties in
             inputProperty.wrappedValue.registerConnectionState.passed()
-            // TODO set settings
+            let club = Club(id: signInProperty.clubId, name: clubProperties.clubName, identifier: clubProperties.clubIdentifier, regionCode: clubProperties.regionCode, inAppPaymentActive: clubProperties.inAppPaymentActive)
+            Settings.shared.person = Settings.Person(club: club, id: personId, name: signInProperty.name, signInDate: callItem.signInDate, isCashier: false)
         }.catch { _ in
             inputProperty.wrappedValue.errorMessage = .internalErrorSignIn
             inputProperty.wrappedValue.registerConnectionState.failed()

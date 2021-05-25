@@ -25,6 +25,9 @@ struct FFNewClubCall: FFCallable {
     /// Region code
     let regionCode: String
 
+    /// Date of sign in
+    let signInDate = Date()
+
     /// Identifier of the club
     let clubIdentifier: String
 
@@ -43,8 +46,14 @@ struct FFNewClubCall: FFCallable {
             parameters["personLastName"] = signInProperty.name.lastName
             parameters["clubIdentifier"] = clubIdentifier
             parameters["userId"] = signInProperty.userId
-            parameters["signInDate"] = Date()
+            parameters["signInDate"] = signInDate
             parameters["inAppPayment"] = inAppPayment
         }
+    }
+
+    /// Logged in person
+    var settingPerson: Settings.Person {
+        let club = Club(id: clubId, name: clubName, identifier: clubIdentifier, regionCode: regionCode, inAppPaymentActive: inAppPayment)
+        return Settings.Person(club: club, id: personId, name: signInProperty.name, signInDate: signInDate, isCashier: true)
     }
 }

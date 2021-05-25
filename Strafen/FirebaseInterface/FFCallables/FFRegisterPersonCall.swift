@@ -28,6 +28,9 @@ struct FFRegisterPersonCall: FFCallable, FFCallResult {
     /// Sign in property with userId and name
     let signInProperty: SignInProperty.UserIdNameClubId
 
+    /// Sign in date
+    let signInDate = Date()
+
     /// Person id
     let personId: FirebasePerson.ID
 
@@ -40,7 +43,7 @@ struct FFRegisterPersonCall: FFCallable, FFCallResult {
             parameters["firstName"] = signInProperty.name.firstName
             parameters["lastName"] = signInProperty.name.lastName
             parameters["userId"] = signInProperty.userId
-            parameters["signInDate"] = Date()
+            parameters["signInDate"] = signInDate
         }
     }
 }

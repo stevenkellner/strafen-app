@@ -262,7 +262,7 @@ struct LoginView: View {
         googleErrorMessage = nil
         inputProperties.errorMessages = [:]
     }
-    
+
     /// Handles log in button press tp log in with email
     func handleLogInButtonPress() {
         guard connectionState.restart() == .passed else { return }
@@ -292,7 +292,7 @@ struct LoginView: View {
             }
         }
     }
-    
+
     /// Get person properties and sets it to the settings
     /// - Parameters:
     ///   - userId: id of signed in user
@@ -300,8 +300,8 @@ struct LoginView: View {
     ///   - isEmail: true if log in with email
     func getPersonProperties(userId: String, errorMessage: Binding<ErrorMessages?>, isEmail: Bool = false) {
         let callItem = FFGetPersonPropertiesCall(userId: userId)
-        FirebaseFunctionCaller.shared.call(callItem).then { _ in
-            // TODO: set settings
+        FirebaseFunctionCaller.shared.call(callItem).then { personProperties in
+            Settings.shared.person = personProperties.settingsPerson
             connectionState.passed()
         }.catch { error in
             if isEmail { emailInputActive = true }

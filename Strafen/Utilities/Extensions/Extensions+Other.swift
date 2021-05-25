@@ -289,3 +289,11 @@ extension PersonNameComponents {
         return PersonName(firstName: firstName, lastName: familyName)
     }
 }
+
+extension FileManager {
+
+    /// Url of shared container
+    var sharedContainerUrl: URL {
+        FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: "group.stevenkellner.Strafen.settings")!
+    }
+}

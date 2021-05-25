@@ -126,6 +126,6 @@ extension Club: Equatable {
             lhs.identifier == rhs.identifier &&
             lhs.name == rhs.name &&
             lhs.regionCode == rhs.regionCode &&
-            lhs.isInAppPaymentActive == rhs.isInAppPaymentActive
+            lhs.inAppPaymentActive == rhs.inAppPaymentActive
     }
 }

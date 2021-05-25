@@ -305,7 +305,7 @@ struct SignInClubInputView: View {
             inAppPayment: inputProperties.wrappedValue.inAppPayment)
         FirebaseFunctionCaller.shared.call(callItem).then { _ in
             inputProperties.wrappedValue.connectionState.passed()
-            // TODO set settings
+            Settings.shared.person = callItem.settingPerson
         }.catch { error in
             inputProperties.wrappedValue.evaluateErrorCode(of: error as NSError)
             inputProperties.wrappedValue.connectionState.failed()

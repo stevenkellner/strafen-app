@@ -15,7 +15,7 @@ struct Club: Codable {
     /// Type of Id
     typealias ID = Tagged<(Club, id: Void), UUID>
 
-    init(id: ID, name: String, identifier: String, regionCode: String, inAppPaymentActive: Bool?) {
+    init(id: ID, name: String, identifier: String, regionCode: String, inAppPaymentActive: Bool) {
         self.id = id
         self.name = name
         self.identifier = identifier
@@ -36,10 +36,5 @@ struct Club: Codable {
     var regionCode: String
 
     /// Is in app payment active
-    private var inAppPaymentActive: Bool?
-
-    var isInAppPaymentActive: Bool {
-        get { inAppPaymentActive ?? false }
-        set { inAppPaymentActive = newValue }
-    }
+    @DecodableDefault.False var inAppPaymentActive: Bool
 }

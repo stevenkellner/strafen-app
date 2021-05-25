@@ -18,12 +18,12 @@ struct TestClub: Equatable {
 
     struct Properties: Decodable, Equatable {
         let identifier: String
-        let inAppPaymentActive: Bool?
+        let inAppPaymentActive: Bool
         let name: String
         let regionCode: String
         let personUserIds: [String: String]
 
-        init(identifier: String, inAppPaymentActive: Bool?, name: String, regionCode: String, personUserIds: [String: String]) {
+        init(identifier: String, inAppPaymentActive: Bool, name: String, regionCode: String, personUserIds: [String: String]) {
             self.identifier = identifier
             self.inAppPaymentActive = inAppPaymentActive
             self.name = name

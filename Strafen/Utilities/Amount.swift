@@ -46,7 +46,7 @@ extension Amount: CustomStringConvertible {
 
     /// Locale
     static var locale: Locale {
-        let countryCodeKey = "DE" // Settings.shared.person?.clubProperties.regionCode ?? "DE" TODO
+        let countryCodeKey = Settings.shared.person?.club.regionCode ?? "DE"
         let languageCodeKey = Locale.current.languageCode ?? "de"
         let identifier = Locale.identifier(fromComponents: [
             "kCFLocaleCountryCodeKey": countryCodeKey,

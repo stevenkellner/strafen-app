@@ -58,6 +58,8 @@
 		B0720819264D8D580084FDE6 /* OperationResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0720818264D8D580084FDE6 /* OperationResult.swift */; };
 		B072081C264DA0270084FDE6 /* SignInProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = B072081B264DA0270084FDE6 /* SignInProperty.swift */; };
 		B08DA658265405DA00FE0C52 /* SignInEmailViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B08DA657265405DA00FE0C52 /* SignInEmailViewTests.swift */; };
+		B08FC117265D31C600F63975 /* DecodableDefault.swift in Sources */ = {isa = PBXBuildFile; fileRef = B08FC116265D31C600F63975 /* DecodableDefault.swift */; };
+		B08FC119265D38C400F63975 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = B08FC118265D38C400F63975 /* Settings.swift */; };
 		B09CCE1826593E4C008C545A /* SignInAppleController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B09CCE1726593E4C008C545A /* SignInAppleController.swift */; };
 		B09CCE1A26593E5C008C545A /* SignInGoogleController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B09CCE1926593E5C008C545A /* SignInGoogleController.swift */; };
 		B0A462912649412C0045D2BE /* Header.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0A462902649412B0045D2BE /* Header.swift */; };
@@ -161,6 +163,8 @@
 		B0720818264D8D580084FDE6 /* OperationResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OperationResult.swift; sourceTree = "<group>"; };
 		B072081B264DA0270084FDE6 /* SignInProperty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInProperty.swift; sourceTree = "<group>"; };
 		B08DA657265405DA00FE0C52 /* SignInEmailViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInEmailViewTests.swift; sourceTree = "<group>"; };
+		B08FC116265D31C600F63975 /* DecodableDefault.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DecodableDefault.swift; sourceTree = "<group>"; };
+		B08FC118265D38C400F63975 /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		B09CCE1726593E4C008C545A /* SignInAppleController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInAppleController.swift; sourceTree = "<group>"; };
 		B09CCE1926593E5C008C545A /* SignInGoogleController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInGoogleController.swift; sourceTree = "<group>"; };
 		B0A462902649412B0045D2BE /* Header.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Header.swift; sourceTree = "<group>"; };
@@ -370,11 +374,13 @@
 				B0AF0A9326432C9500DF4DC9 /* Amount.swift */,
 				B0447C192641B78100148430 /* AppDelegate.swift */,
 				B03986502652776F00C97DF2 /* Club.swift */,
+				B08FC116265D31C600F63975 /* DecodableDefault.swift */,
 				B0AF0A992643303500DF4DC9 /* FineReason.swift */,
 				B0225D2C26525D8900D75CDA /* LatePaymentInterest.swift */,
 				B0E9C86726447AF100FB484E /* ListEnvironment.swift */,
 				B02221AD2641D6850005295B /* PersonName.swift */,
 				B0AF0A9526432CE100DF4DC9 /* PropertyWrapper.swift */,
+				B08FC118265D38C400F63975 /* Settings.swift */,
 				B09CCE1726593E4C008C545A /* SignInAppleController.swift */,
 				B09CCE1926593E5C008C545A /* SignInGoogleController.swift */,
 				B072081B264DA0270084FDE6 /* SignInProperty.swift */,
@@ -750,6 +756,7 @@
 				B0E9C86826447AF100FB484E /* ListEnvironment.swift in Sources */,
 				B0E29C8E264C052400E4BA3B /* TextFieldFirstResponders.swift in Sources */,
 				B0A4629D2649A5600045D2BE /* EmptyNavigationLink.swift in Sources */,
+				B08FC119265D38C400F63975 /* Settings.swift in Sources */,
 				B02221A92641D4FE0005295B /* FirebaseDecoder.swift in Sources */,
 				B02221A72641BEFC0005295B /* Tagged.swift in Sources */,
 				B066A2BF26492E2700AB2715 /* SignInView.swift in Sources */,
@@ -762,6 +769,7 @@
 				B02221AC2641D5570005295B /* FirebasePerson.swift in Sources */,
 				B0AF0A9826432F1E00DF4DC9 /* FirebaseFine.swift in Sources */,
 				B072080E264C56FB0084FDE6 /* ErrorMessages.swift in Sources */,
+				B08FC117265D31C600F63975 /* DecodableDefault.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

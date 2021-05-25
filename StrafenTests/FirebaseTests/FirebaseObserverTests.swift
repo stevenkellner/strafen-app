@@ -344,7 +344,7 @@ class FirebaseObserverTests: XCTestCase {
     func _testObserveListWrongType() throws {
 
         // Set non person list to person list
-        var result: Result<HTTPSCallableResult, Error> = try waitExpectation { handler in
+        let result: Result<HTTPSCallableResult, Error> = try waitExpectation { handler in
             let callItem = FFNewTestClubPropertyCall(clubId: clubId, urlFromClub: URL(string: "persons")!, property: ["id": ["test": "value"]])
             FirebaseFunctionCaller.shared.call(callItem).thenResult(handler)
         }
