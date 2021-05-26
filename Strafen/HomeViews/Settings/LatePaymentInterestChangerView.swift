@@ -245,7 +245,7 @@ struct LatePaymentInterestChangerView: View {
             presentationMode.wrappedValue.dismiss()
         } failedHandler: { _ in
             inputProperties.connectionState = .failed
-            inputProperties.functionCallErrorMessages = .internalErrorSave
+            inputProperties.functionCallErrorMessages = .internalErrorSave(code: 11)
         }
     }
     

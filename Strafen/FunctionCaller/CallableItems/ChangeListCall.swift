@@ -49,7 +49,7 @@ struct ChangeListCall<Type>: FunctionCallable where Type: ListType {
     var parameters: Parameters {
         Parameters(changeItem.callParameters) { parameters in
             parameters["clubId"] = clubId
-            parameters["changeType"] = changeType
+            parameters["changeType"] = changeType == .delete ? "delete" : "update"
         }
     }
 }

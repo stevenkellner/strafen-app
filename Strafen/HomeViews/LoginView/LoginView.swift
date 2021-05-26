@@ -34,14 +34,14 @@ struct LoginView: View {
             // Check if input email is empty
             if email.isEmpty {
                 isEmpty = true
-                emailErrorMessages = .emptyField
+                emailErrorMessages = .emptyField(code: 1)
                 Logging.shared.log(with: .info, "Email textfield is empty.")
             }
             
             // Check if input password is empty
             if password.isEmpty {
                 isEmpty = true
-                passwordErrorMessages = .emptyField
+                passwordErrorMessages = .emptyField(code: 2)
                 Logging.shared.log(with: .info, "Password textfield is empty.")
             }
             
@@ -52,7 +52,7 @@ struct LoginView: View {
         mutating func evaluteEmailError() {
             if email.isEmpty {
                 Logging.shared.log(with: .info, "Email textfield is empty.")
-                emailErrorMessages = .emptyField
+                emailErrorMessages = .emptyField(code: 3)
             } else {
                 emailErrorMessages = nil
             }
@@ -62,7 +62,7 @@ struct LoginView: View {
         mutating func evalutePasswordError() {
             if password.isEmpty {
                 Logging.shared.log(with: .info, "Password textfield is empty.")
-                passwordErrorMessages = .emptyField
+                passwordErrorMessages = .emptyField(code: 4)
             } else {
                 passwordErrorMessages = nil
             }
@@ -74,7 +74,7 @@ struct LoginView: View {
             /// Get auth error code
             guard let error = _error as NSError?, error.domain == AuthErrorDomain else {
                 Logging.shared.log(with: .error, "An error occurs, that hasn't the auth error domain: \(_error.localizedDescription)")
-                return emailErrorMessages = .internalErrorSignIn
+                return emailErrorMessages = .internalErrorSignIn(code: 1)
             }
             let errorCode = AuthErrorCode(rawValue: error.code)
             
@@ -82,7 +82,7 @@ struct LoginView: View {
             
             // Email is invalid
             case .invalidEmail:
-                emailErrorMessages = .invalidEmail
+                emailErrorMessages = .invalidEmail(code: 1)
                 Logging.shared.log(with: .debug, "Email is invalid.")
                 
             // Wrong password
@@ -91,7 +91,7 @@ struct LoginView: View {
                 Logging.shared.log(with: .debug, "Password is incorrect.")
                 
             default:
-                emailErrorMessages = .internalErrorLogIn
+                emailErrorMessages = .internalErrorLogIn(code: 1)
                 Logging.shared.log(with: .error, "An error occurs, that isn't handled: \(error.localizedDescription)")
             }
         }
@@ -258,7 +258,7 @@ struct LoginView: View {
             // Internal error occurs
             } else {
                 Logging.shared.log(with: .fault, "No result and no error is given back to sign in closure.")
-                emailCredentials.emailErrorMessages = .internalErrorLogIn
+                emailCredentials.emailErrorMessages = .internalErrorLogIn(code: 2)
                 connectionState = .failed
             }
         }
@@ -273,11 +273,11 @@ struct LoginView: View {
             
             // Person user id isn't found in database
             Logging.shared.log(with: .error, "Person user id not found in database.")
-            emailCredentials.emailErrorMessages = .notSignedIn
+            emailCredentials.emailErrorMessages = .notSignedIn(code: 1)
             
         } else {
             Logging.shared.log(with: .error, "Unhandled error uccured: \(error.localizedDescription)")
-            emailCredentials.emailErrorMessages = .internalErrorLogIn
+            emailCredentials.emailErrorMessages = .internalErrorLogIn(code: 3)
         }
     }
     
@@ -295,7 +295,7 @@ struct LoginView: View {
         // Log in ended with an error
         case .failure(let error):
             connectionState = .failed
-            signInWithAppleErrorMessages = .internalErrorLogIn
+            signInWithAppleErrorMessages = .internalErrorLogIn(code: 4)
             Logging.shared.log(with: .error, "Unhandled error uccured: \(error.localizedDescription)")
             
         case .success((userId: let userId, name: let name)):
@@ -335,11 +335,11 @@ struct LoginView: View {
             }
             SignInCache.shared.setState(to: state)
             showCachedState = true
-            signInWithAppleErrorMessages = .notSignedIn
+            signInWithAppleErrorMessages = .notSignedIn(code: 2)
             
         } else {
             Logging.shared.log(with: .error, "Unhandled error uccured: \(error.localizedDescription)")
-            signInWithAppleErrorMessages = .internalErrorLogIn
+            signInWithAppleErrorMessages = .internalErrorLogIn(code: 5)
         }
     }
     

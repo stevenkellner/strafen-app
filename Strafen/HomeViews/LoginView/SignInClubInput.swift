@@ -46,7 +46,7 @@ struct SignInClubInput: View {
         @discardableResult mutating func evaluteClubNameError() -> Bool {
             if clubName.isEmpty {
                 Logging.shared.log(with: .debug, "Club name textfield is empty.")
-                clubNameErrorMessages = .emptyField
+                clubNameErrorMessages = .emptyField(code: 11)
             } else {
                 clubNameErrorMessages = nil
                 return false
@@ -58,7 +58,7 @@ struct SignInClubInput: View {
         @discardableResult mutating func evaluateClubIdentifierError() -> Bool {
             if clubIdentifier.isEmpty {
                 Logging.shared.log(with: .debug, "Club identifier textfield is empty.")
-                clubIdentifierErrorMessages = .emptyField
+                clubIdentifierErrorMessages = .emptyField(code: 12)
             } else {
                 clubIdentifierErrorMessages = nil
                 return false
@@ -185,12 +185,12 @@ struct SignInClubInput: View {
             if !clubExists {
                 doesnotExistsHandler()
             } else {
-                clubCredentials.clubIdentifierErrorMessages = .identifierAlreadyExists
+                clubCredentials.clubIdentifierErrorMessages = .identifierAlreadyExists(code: 1)
                 connectionState = .failed
             }
         } failedHandler: { error in
             Logging.shared.log(with: .error, "An error occurs, that isn't handled: \(error.localizedDescription)")
-            clubCredentials.clubNameErrorMessages = .internalErrorSignIn
+            clubCredentials.clubNameErrorMessages = .internalErrorSignIn(code: 10)
             connectionState = .failed
         }
     }
@@ -212,7 +212,7 @@ struct SignInClubInput: View {
             // An error occurs
             } failedHandler: { error in
                 Logging.shared.log(with: .error, "An error occurs, that isn't handled: \(error.localizedDescription)")
-                clubCredentials.clubNameErrorMessages = .internalErrorSignIn
+                clubCredentials.clubNameErrorMessages = .internalErrorSignIn(code: 11)
                 connectionState = .failed
                 imageUploadProgess = nil
                 
@@ -255,17 +255,17 @@ struct SignInClubInput: View {
         // Get function error code
         guard let error = _error as NSError?, error.domain == FunctionsErrorDomain else {
             Logging.shared.log(with: .error, "An error occurs, that isn't handled: \(_error.localizedDescription)")
-            return clubCredentials.clubNameErrorMessages = .internalErrorSignIn
+            return clubCredentials.clubNameErrorMessages = .internalErrorSignIn(code: 12)
         }
         let errorCode = FunctionsErrorCode(rawValue: error.code)
         
         switch errorCode {
         case .alreadyExists:
             Logging.shared.log(with: .debug, "Club identifier already exists.")
-            clubCredentials.clubIdentifierErrorMessages = .identifierAlreadyExists
+            clubCredentials.clubIdentifierErrorMessages = .identifierAlreadyExists(code: 2)
         default:
             Logging.shared.log(with: .error, "An error occurs, that isn't handled: \(error.localizedDescription)")
-            clubCredentials.clubNameErrorMessages = .internalErrorSignIn
+            clubCredentials.clubNameErrorMessages = .internalErrorSignIn(code: 13)
         }
         connectionState = .failed
         imageUploadProgess = nil

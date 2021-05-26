@@ -64,7 +64,7 @@ struct PaymentCreditCard: View {
         
         @discardableResult mutating func evaluateCardNumberError() -> Bool {
             if cardNumber.isEmpty {
-                cardNumberErrorMessages = .emptyField
+                cardNumberErrorMessages = .emptyField(code: 14)
             } else if !creditCardValidation.isCardNumberValid {
                 cardNumberErrorMessages = .invalidCreditCardNumber
             } else {
@@ -76,7 +76,7 @@ struct PaymentCreditCard: View {
         
         @discardableResult mutating func evaluateExpirationDateError() -> Bool {
             if expirationDate.isEmpty {
-                expirationDateErrorMessages = .emptyField
+                expirationDateErrorMessages = .emptyField(code: 15)
             } else if !creditCardValidation.isExpirationDateValid {
                 expirationDateErrorMessages = .invalidDateFormat
             } else if !creditCardValidation.isExpirationDateInFuture {
@@ -90,7 +90,7 @@ struct PaymentCreditCard: View {
         
         @discardableResult mutating func evaluateCvvError() -> Bool {
             if cvv.isEmpty {
-                cvvErrorMessages = .emptyField
+                cvvErrorMessages = .emptyField(code: 16)
             } else if !creditCardValidation.isCvvValid {
                 cvvErrorMessages = .invalidCvv
             } else {
@@ -102,7 +102,7 @@ struct PaymentCreditCard: View {
         
         @discardableResult mutating func evaluateFirstNameError() -> Bool {
             if firstName.isEmpty {
-                firstNameErrorMessages = .emptyField
+                firstNameErrorMessages = .emptyField(code: 17)
             } else {
                 firstNameErrorMessages = nil
                 return false
@@ -112,7 +112,7 @@ struct PaymentCreditCard: View {
         
         @discardableResult mutating func evaluateLastNameError() -> Bool {
             if lastName.isEmpty {
-                lastNameErrorMessages = .emptyField
+                lastNameErrorMessages = .emptyField(code: 18)
             } else {
                 lastNameErrorMessages = nil
                 return false

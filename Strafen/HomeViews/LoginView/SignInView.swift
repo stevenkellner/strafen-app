@@ -133,7 +133,7 @@ struct SignInView: View {
             
             // Sign in ended with an error
             case .failure(let error):
-                signInWithAppleErrorMessages = .internalErrorSignIn
+                signInWithAppleErrorMessages = .internalErrorSignIn(code: 2)
                 Logging.shared.log(with: .error, "Unhandled error uccured: \(error.localizedDescription)")
                 
             case .success((userId: let userId, name: let name)):
@@ -150,7 +150,7 @@ struct SignInView: View {
                     }
                     
                 } failedHandler: { error in
-                    signInWithAppleErrorMessages = .internalErrorSignIn
+                    signInWithAppleErrorMessages = .internalErrorSignIn(code: 3)
                     Logging.shared.log(with: .error, "Unhandled error uccured: \(error.localizedDescription)")
                 }
             }

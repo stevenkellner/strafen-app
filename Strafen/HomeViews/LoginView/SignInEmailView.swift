@@ -46,7 +46,7 @@ struct SignInEMailView: View {
         @discardableResult mutating func evaluteFirstNameError() -> Bool {
             if firstName.isEmpty {
                 Logging.shared.log(with: .debug, "First name textfield is empty.")
-                firstNameErrorMessages = .emptyField
+                firstNameErrorMessages = .emptyField(code: 6)
             } else {
                 firstNameErrorMessages = nil
                 return false
@@ -60,12 +60,12 @@ struct SignInEMailView: View {
             // Textfield is empty
             if email.isEmpty {
                 Logging.shared.log(with: .debug, "Email textfield is empty.")
-                emailErrorMessages = .emptyField
+                emailErrorMessages = .emptyField(code: 7)
                 
             // Email is invalid
             } else if !email.isValidEmail {
                 Logging.shared.log(with: .debug, "Given email isn't valid.")
-                emailErrorMessages = .invalidEmail
+                emailErrorMessages = .invalidEmail(code: 2)
                 
             } else {
                 emailErrorMessages = nil
@@ -83,7 +83,7 @@ struct SignInEMailView: View {
             // Textfield is empty
             if password.isEmpty {
                 Logging.shared.log(with: .debug, "Password textfield is empty.")
-                passwordErrorMessages = .emptyField
+                passwordErrorMessages = .emptyField(code: 8)
                 
             // Password is too short
             } else if password.count < 8 {
@@ -118,7 +118,7 @@ struct SignInEMailView: View {
             // Textfield is empty
             if repeatPassword.isEmpty {
                 Logging.shared.log(with: .debug, "Email textfield is empty.")
-                repeatPasswordErrorMessages = .emptyField
+                repeatPasswordErrorMessages = .emptyField(code: 9)
                 
             // Doesn't match with password
             } else if repeatPassword != password {
@@ -146,7 +146,7 @@ struct SignInEMailView: View {
             // Get auth error code
             guard let error = _error as NSError?, error.domain == AuthErrorDomain else {
                 Logging.shared.log(with: .error, "Unhandled error uccured: \(_error.localizedDescription)")
-                return emailErrorMessages = .internalErrorSignIn
+                return emailErrorMessages = .internalErrorSignIn(code: 4)
             }
             let errorCode = AuthErrorCode(rawValue: error.code)
             
@@ -155,7 +155,7 @@ struct SignInEMailView: View {
             // Invalid email
             case .invalidEmail:
                 Logging.shared.log(with: .debug, "Given email isn't valid.")
-                emailErrorMessages = .invalidEmail
+                emailErrorMessages = .invalidEmail(code: 3)
                 
             // Email is already in use
             case .emailAlreadyInUse:
@@ -169,7 +169,7 @@ struct SignInEMailView: View {
                 
             default:
                 Logging.shared.log(with: .error, "Unhandled error uccured: \(error.localizedDescription)")
-                emailErrorMessages = .internalErrorSignIn
+                emailErrorMessages = .internalErrorSignIn(code: 5)
             }
         }
     }
@@ -265,7 +265,7 @@ struct SignInEMailView: View {
                 // Internal error occurs
                 } else {
                     Logging.shared.log(with: .fault, "No result and no error is given back to sign in closure.")
-                    emailCredentials.emailErrorMessages = .internalErrorSignIn
+                    emailCredentials.emailErrorMessages = .internalErrorSignIn(code: 6)
                     connectionState = .failed
                 }
             }

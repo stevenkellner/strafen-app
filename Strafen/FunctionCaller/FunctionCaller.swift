@@ -12,10 +12,12 @@ import CodableFirebase
 struct FunctionCaller {
     
     /// Shared instance for singelton
-    static let shared = Self()
+    static var shared = Self()
     
     /// Private init for singleton
     private init() {}
+    
+    public var forTesting = false
     
     /// Call errors
     enum CallErrors: Error {
@@ -26,12 +28,10 @@ struct FunctionCaller {
     
     /// Change given item on server and local
     func call<CallType>(_ item: CallType, passedHandler: @escaping (HTTPSCallableResult) -> Void, failedHandler: @escaping (Error) -> Void) where CallType: FunctionCallable {
-        guard let privateKey = Bundle.keysPropertyList.privateFunctionCallerKey as? String else { return failedHandler(CallErrors.noPrivateKey) }
+        guard let privateKey = Bundle.keysPropertyList.privateFirebaseFunctionCallerKey as? String else { return failedHandler(CallErrors.noPrivateKey) }
         var parameters = item.parameters
         parameters.add(privateKey, for: "privateKey")
-        if Bundle.main.firebaseDebugEnabled {
-            parameters.add(true, for: "debug")
-        }
+        parameters.add(forTesting ? "testing" : Bundle.main.firebaseDebugEnabled ? "debug" : "regular", for: "clubLevel")
         Functions.functions(region: "europe-west1").httpsCallable(item.functionName).call(parameters.parameterableObject) { result, error in
             if let result = result {
                 item.successHandler()

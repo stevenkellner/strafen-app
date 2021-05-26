@@ -37,7 +37,7 @@ struct TestProperty {
         
         /// Credentials for the creation of the test club
         var credentials: SignInClubInput.ClubCredentials {
-            .init(clubName: name, clubIdentifier: identifier, regionCode: regionCode)
+            .init(clubName: name, clubIdentifier: identifier, regionCode: regionCode, inAppPaymentActive: true)
         }
         
         /// Club

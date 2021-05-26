@@ -32,7 +32,9 @@ struct ChangeFinePayedCall: FunctionCallable {
         Parameters { parameters in
             parameters["clubId"] = clubId
             parameters["fineId"] = fineId
-            parameters["payed"] = payed
+            parameters["state"] = payed.state
+            parameters["payDate"] = payed.payDate
+            parameters["inApp"] = payed.payedInApp
         }
     }
 }

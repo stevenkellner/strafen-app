@@ -27,6 +27,7 @@ struct LatePaymentInterestCall: FunctionCallable {
     /// Parameters
     var parameters: Parameters {
         Parameters(latePaymentInterest?.parameters) { parameters in
+            parameters["changeType"] = latePaymentInterest == nil ? "remove" : "update"
             parameters["clubId"] = clubId
         }
     }

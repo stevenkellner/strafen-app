@@ -43,7 +43,7 @@ struct AddNewFineCustomReason: View {
         /// Checks if an error occurs while reason input
         @discardableResult mutating func evaluteReasonError() -> Bool {
             if reason.isEmpty {
-                reasonErrorMessages = .emptyField
+                reasonErrorMessages = .emptyField(code: 23)
             } else {
                 reasonErrorMessages = nil
                 return false
@@ -56,7 +56,7 @@ struct AddNewFineCustomReason: View {
             amount = amountString.amountValue
             amountString = amount.stringValue
             if amount == .zero {
-                amountErrorMessages = .amountZero
+                amountErrorMessages = .amountZero(code: 4)
             } else {
                 amountErrorMessages = nil
                 return false

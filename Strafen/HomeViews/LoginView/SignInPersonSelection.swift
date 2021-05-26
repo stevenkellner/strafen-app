@@ -122,7 +122,7 @@ struct SignInPersonSelection: View {
             
         } failedHandler: { error in
             Logging.shared.log(with: .error, "An error occurs, that isn't handled: \(error.localizedDescription)")
-            errorMessages = .internalErrorSignIn
+            errorMessages = .internalErrorSignIn(code: 9)
             signInConnectionState = .failed
         }
     }

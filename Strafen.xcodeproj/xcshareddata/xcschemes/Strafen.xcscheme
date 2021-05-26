@@ -33,16 +33,11 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "B0E0F83E24A63E5A00C82828"
-               BuildableName = "StrafenUITests.xctest"
-               BlueprintName = "StrafenUITests"
+               BlueprintIdentifier = "B0E0F83324A63E5A00C82828"
+               BuildableName = "StrafenTests.xctest"
+               BlueprintName = "StrafenTests"
                ReferencedContainer = "container:Strafen.xcodeproj">
             </BuildableReference>
-            <SkippedTests>
-               <Test
-                  Identifier = "StrafenUITests">
-               </Test>
-            </SkippedTests>
          </TestableReference>
       </Testables>
    </TestAction>

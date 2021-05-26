@@ -40,7 +40,7 @@ struct ReasonAddNew: View {
         /// Checks if an error occurs while reason input
         @discardableResult mutating func evaluteReasonError() -> Bool {
             if reason.isEmpty {
-                reasonErrorMessages = .emptyField
+                reasonErrorMessages = .emptyField(code: 21)
             } else {
                 reasonErrorMessages = nil
                 return false
@@ -53,7 +53,7 @@ struct ReasonAddNew: View {
             amount = amountString.amountValue
             amountString = amount.stringValue
             if amount == .zero {
-                amountErrorMessages = .amountZero
+                amountErrorMessages = .amountZero(code: 2)
             } else {
                 amountErrorMessages = nil
                 return false
@@ -175,7 +175,7 @@ struct ReasonAddNew: View {
             presentationMode.wrappedValue.dismiss()
         } failedHandler: { _ in
             reasonInputProperties.connectionState = .failed
-            reasonInputProperties.functionCallErrorMessages = .internalErrorSave
+            reasonInputProperties.functionCallErrorMessages = .internalErrorSave(code: 8)
         }
     }
     

@@ -46,7 +46,7 @@ struct AddNewFine: View {
         /// Checks if an error occurs while person id input
         @discardableResult mutating func evaluatePersonIdError() -> Bool {
             if personIds.isEmpty {
-                personIdErrorMessages = .noPersonsSelected
+                personIdErrorMessages = .noPersonsSelected(code: 1)
             } else {
                 personIdErrorMessages = nil
                 return false
@@ -235,7 +235,7 @@ struct AddNewFine: View {
                 dispatchGroup.leave()
             } failedHandler: { _ in
                 fineInputProperties.connectionState = .failed
-                fineInputProperties.functionCallErrorMessages = .internalErrorSave
+                fineInputProperties.functionCallErrorMessages = .internalErrorSave(code: 10)
             }
         }
         

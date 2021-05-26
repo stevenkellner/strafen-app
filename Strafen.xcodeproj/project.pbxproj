@@ -275,6 +275,7 @@
 		B0231D752542FF550030BADE /* SignInClubSelection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInClubSelection.swift; sourceTree = "<group>"; };
 		B026766C24BDD346005E79C1 /* AmountDisplay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmountDisplay.swift; sourceTree = "<group>"; };
 		B0280AB324FFB9D30049202D /* LatePaymentInterestChangerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LatePaymentInterestChangerView.swift; sourceTree = "<group>"; };
+		B0286A64265E5A46007BB002 /* Strafen.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = Strafen.entitlements; sourceTree = "<group>"; };
 		B02B891424BDFDA9004562B9 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		B02F5CC825FF9A5C00A99678 /* CheckTransactionsCall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckTransactionsCall.swift; sourceTree = "<group>"; };
 		B02F5CCC25FFCD1A00A99678 /* PaymentPayPalButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentPayPalButton.swift; sourceTree = "<group>"; };
@@ -334,7 +335,6 @@
 		B077B57624CAC652003844CE /* StrafenWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StrafenWidget.swift; sourceTree = "<group>"; };
 		B077B57924CAC655003844CE /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B077B57B24CAC655003844CE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		B077B58824CAC9E9003844CE /* Strafen.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Strafen.entitlements; sourceTree = "<group>"; };
 		B077B58924CACA78003844CE /* StrafenWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = StrafenWidgetExtension.entitlements; sourceTree = "<group>"; };
 		B077B59624CB0801003844CE /* WidgetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetView.swift; sourceTree = "<group>"; };
 		B0790D4B260662B400FEFC24 /* errorLadder.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = errorLadder.json; sourceTree = "<group>"; };
@@ -916,8 +916,8 @@
 				B0E0F82624A63E5800C82828 /* StrafenApp.swift */,
 				B0E0F82A24A63E5A00C82828 /* Assets.xcassets */,
 				B0E0F82F24A63E5A00C82828 /* Info.plist */,
-				B077B58824CAC9E9003844CE /* Strafen.entitlements */,
 				B03B195C259F861B00D44394 /* GoogleService-Info.plist */,
+				B0286A64265E5A46007BB002 /* Strafen.entitlements */,
 				B0C06D23261F01440034CFD6 /* KeysInfo.plist */,
 				B0E0F82C24A63E5A00C82828 /* Preview Content */,
 			);
@@ -1760,6 +1760,7 @@
 				OTHER_SWIFT_FLAGS = "$(inherited) -D COCOAPODS -DTARGET_MAIN_APP";
 				PRODUCT_BUNDLE_IDENTIFIER = stevenkellner.Strafen;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SHARED_MARKETING_VERSION = 12;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
@@ -1789,6 +1790,7 @@
 				OTHER_SWIFT_FLAGS = "$(inherited) -D COCOAPODS -DTARGET_MAIN_APP";
 				PRODUCT_BUNDLE_IDENTIFIER = stevenkellner.Strafen;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SHARED_MARKETING_VERSION = 12;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};

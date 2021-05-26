@@ -256,7 +256,7 @@ struct FineDetail: View {
                 fine.payed = payed
             } failedHandler: { _ in
                 connectionStateToUnpayed = .failed
-                errorMessages = .internalErrorSave
+                errorMessages = .internalErrorSave(code: 1)
             }
         }
         
@@ -278,7 +278,7 @@ struct FineDetail: View {
                 fine.payed = payed
             } failedHandler: { _ in
                 connectionStateToPayed = .failed
-                errorMessages = .internalErrorSave
+                errorMessages = .internalErrorSave(code: 2)
             }
         }
     }

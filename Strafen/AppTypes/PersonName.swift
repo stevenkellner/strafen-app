@@ -39,6 +39,11 @@ struct PersonName: Codable {
         formatter.style = .default
         return formatter.string(from: componets)
     }
+    
+    enum CodingKeys: String, CodingKey {
+        case firstName = "first"
+        case lastName = "last"
+    }
 }
 
 struct OptionalPersonName: Codable {

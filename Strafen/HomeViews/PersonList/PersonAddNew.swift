@@ -37,7 +37,7 @@ struct PersonAddNew: View {
         /// Checks if an error occurs while first name input
         @discardableResult mutating func evaluteFirstNameError() -> Bool {
             if firstName.isEmpty {
-                firstNameErrorMessages = .emptyField
+                firstNameErrorMessages = .emptyField(code: 20)
             } else {
                 firstNameErrorMessages = nil
                 return false
@@ -210,7 +210,7 @@ struct PersonAddNew: View {
             } failedHandler: { _ in
                 
                 // Error
-                personInputProperties.functionCallErrorMessages = .internalErrorSave
+                personInputProperties.functionCallErrorMessages = .internalErrorSave(code: 6)
                 personInputProperties.connectionState = .failed
                 personInputProperties.imageUploadProgess = nil
                 
@@ -239,7 +239,7 @@ struct PersonAddNew: View {
             presentationMode.wrappedValue.dismiss()
         } failedHandler: { _ in
             personInputProperties.connectionState = .failed
-            personInputProperties.functionCallErrorMessages = .internalErrorSave
+            personInputProperties.functionCallErrorMessages = .internalErrorSave(code: 6)
         }
 }
 }

@@ -72,7 +72,7 @@ struct FineEditor: View {
         /// Checks if an error occurs while reason input
         @discardableResult mutating func evaluteReasonError() -> Bool {
             if reason.isEmpty {
-                reasonErrorMessages = .emptyField
+                reasonErrorMessages = .emptyField(code: 13)
             } else {
                 reasonErrorMessages = nil
                 return false
@@ -85,7 +85,7 @@ struct FineEditor: View {
             amount = amountString.amountValue
             amountString = amount.stringValue
             if amount == .zero {
-                amountErrorMessages = .amountZero
+                amountErrorMessages = .amountZero(code: 1)
             } else {
                 amountErrorMessages = nil
                 return false
@@ -257,7 +257,7 @@ struct FineEditor: View {
             presentationMode.wrappedValue.dismiss()
         } failedHandler: { _ in
             fineInputProperties.connectionStateDelete = .failed
-            fineInputProperties.functionCallErrorMessages = .internalErrorDelete
+            fineInputProperties.functionCallErrorMessages = .internalErrorDelete(code: 1)
         }
     }
     
@@ -276,7 +276,7 @@ struct FineEditor: View {
             presentationMode.wrappedValue.dismiss()
         } failedHandler: { _ in
             fineInputProperties.connectionStateUpdate = .failed
-            fineInputProperties.functionCallErrorMessages = .internalErrorSave
+            fineInputProperties.functionCallErrorMessages = .internalErrorSave(code: 3)
         }
     }
     

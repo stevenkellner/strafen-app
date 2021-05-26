@@ -36,7 +36,7 @@ struct SignInNameInput: View {
         @discardableResult mutating func evaluteFirstNameError() -> Bool {
             if firstName.isEmpty {
                 Logging.shared.log(with: .debug, "First name textfield is empty.")
-                firstNameErrorMessages = .emptyField
+                firstNameErrorMessages = .emptyField(code: 5)
             } else {
                 firstNameErrorMessages = nil
                 return false

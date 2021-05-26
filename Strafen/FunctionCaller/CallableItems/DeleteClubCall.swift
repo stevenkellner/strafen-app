@@ -14,7 +14,7 @@ struct DeleteClubCall: FunctionCallable {
     let clubId: Club.ID
     
     /// Function name
-    let functionName: String = "deleteClub"
+    let functionName: String = "deleteTestClub"
     
     /// Parameters
     var parameters: Parameters {

@@ -24,7 +24,7 @@ struct SignInClubSelection: View {
         @discardableResult mutating func evaluateError() -> Bool {
             if clubIdentifier.isEmpty {
                 Logging.shared.log(with: .debug, "First name textfield is empty.")
-                clubIdentifierErrorMessages = .emptyField
+                clubIdentifierErrorMessages = .emptyField(code: 10)
             } else {
                 clubIdentifierErrorMessages = nil
                 return false
@@ -38,7 +38,7 @@ struct SignInClubSelection: View {
             // Get function error code
             guard let error = _error as NSError?, error.domain == FunctionsErrorDomain else {
                 Logging.shared.log(with: .error, "Unhandled error uccured: \(_error.localizedDescription)")
-                return clubIdentifierErrorMessages = .internalErrorSignIn
+                return clubIdentifierErrorMessages = .internalErrorSignIn(code: 7)
             }
             let errorCode = FunctionsErrorCode(rawValue: error.code)
             
@@ -48,7 +48,7 @@ struct SignInClubSelection: View {
                 clubIdentifierErrorMessages = .clubNotExists
             default:
                 Logging.shared.log(with: .error, "Unhandled error uccured: \(error.localizedDescription)")
-                clubIdentifierErrorMessages = .internalErrorSignIn
+                clubIdentifierErrorMessages = .internalErrorSignIn(code: 8)
             }
         }
     }

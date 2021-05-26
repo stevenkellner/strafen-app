@@ -50,7 +50,7 @@ struct PersonEditor: View {
         /// Checks if an error occurs while first name input
         @discardableResult mutating func evaluteFirstNameError() -> Bool {
             if firstName.isEmpty {
-                firstNameErrorMessages = .emptyField
+                firstNameErrorMessages = .emptyField(code: 19)
             } else {
                 firstNameErrorMessages = nil
                 return false
@@ -268,14 +268,14 @@ struct PersonEditor: View {
         } failedHandler: { error in
             personInputProperties.connectionStateDelete = .failed
             guard let error = error as NSError?, error.domain == FunctionsErrorDomain else {
-                return personInputProperties.functionCallErrorMessages = .internalErrorDelete
+                return personInputProperties.functionCallErrorMessages = .internalErrorDelete(code: 2)
             }
             let errorCode = FunctionsErrorCode(rawValue: error.code)
             switch errorCode {
             case .unavailable:
                 personInputProperties.functionCallErrorMessages = .personUndeletable
             default:
-                personInputProperties.functionCallErrorMessages = .internalErrorDelete
+                personInputProperties.functionCallErrorMessages = .internalErrorDelete(code: 3)
             }
         }
     }
@@ -339,7 +339,7 @@ struct PersonEditor: View {
             completionHandler()
         } failedHandler: { _ in
             personInputProperties.connectionStateConfirm = .failed
-            personInputProperties.functionCallErrorMessages = .internalErrorSave
+            personInputProperties.functionCallErrorMessages = .internalErrorSave(code: 4)
         }
 
     }
@@ -356,7 +356,7 @@ struct PersonEditor: View {
         } failedHandler: { _ in
             
             // Error
-            personInputProperties.functionCallErrorMessages = .internalErrorSave
+            personInputProperties.functionCallErrorMessages = .internalErrorSave(code: 5)
             personInputProperties.connectionStateConfirm = .failed
             personInputProperties.imageUploadProgess = nil
             

@@ -129,7 +129,7 @@ struct SettingsForceSignOut: View {
                                 return false
                             }
                             if personIds.isEmpty {
-                                functionCallErrorMessages = .noPersonsSelected
+                                functionCallErrorMessages = .noPersonsSelected(code: 2)
                                 return false
                             }
                             return true
@@ -153,7 +153,7 @@ struct SettingsForceSignOut: View {
     /// Handles cofirm button pressed
     func handleConfirm() {
         functionCallErrorMessages = nil
-        guard !personIds.isEmpty else { return functionCallErrorMessages = .noPersonsSelected }
+        guard !personIds.isEmpty else { return functionCallErrorMessages = .noPersonsSelected(code: 3) }
         guard connectionState != .loading,
               let clubId = Settings.shared.person?.clubProperties.id else { return }
         connectionState = .loading
@@ -167,7 +167,7 @@ struct SettingsForceSignOut: View {
                 dispatchGroup.leave()
             } failedHandler: { _ in
                 connectionState = .failed
-                functionCallErrorMessages = .internalErrorSave
+                functionCallErrorMessages = .internalErrorSave(code: 12)
             }
         }
         

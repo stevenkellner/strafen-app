@@ -193,28 +193,28 @@ struct ErrorMessageView: View {
 enum ErrorMessages {
     
     /// Textfield is empty
-    case emptyField
+    case emptyField(code: Int)
     
     /// Club doesn't exist
     case clubNotExists
     
     /// Internal error
-    case internalErrorSignIn
+    case internalErrorSignIn(code: Int)
     
     /// Invalid email
     case emailNotRegistered
     
     /// Internal error
-    case internalErrorLogIn
+    case internalErrorLogIn(code: Int)
     
     /// Password is incorrect
     case incorrectPassword
     
     /// Not signed in
-    case notSignedIn
+    case notSignedIn(code: Int)
     
     /// Invalid email
-    case invalidEmail
+    case invalidEmail(code: Int)
     
     /// Email is already signed in
     case alreadySignedIn
@@ -234,32 +234,32 @@ enum ErrorMessages {
     /// No digit in Password
     case noDigit
     
-    /// Passwword is too weak
+    /// Password is too weak
     case weakPassword
     
     /// Not same password
     case notSamePassword
     
     /// Club identifier already exists
-    case identifierAlreadyExists
+    case identifierAlreadyExists(code: Int)
     
     /// No region given
     case noRegionGiven
     
     /// Internal error
-    case internalErrorSave
+    case internalErrorSave(code: Int)
     
     /// Internal error
-    case internalErrorDelete
+    case internalErrorDelete(code: Int)
     
     /// Amount mustn't be zero
-    case amountZero
+    case amountZero(code: Int)
     
     /// Person is undeleteable
     case personUndeletable
     
     /// No persons are selected
-    case noPersonsSelected
+    case noPersonsSelected(code: Int)
     
     /// No reason given
     case noReasonGiven
@@ -300,24 +300,24 @@ enum ErrorMessages {
     /// CVV is invalid
     case invalidCvv
     
-    /// Message of the error
-    var message: String {
+    /// Raw message of the error
+    var rawMessage: String {
         switch self {
-        case .emptyField:
+        case .emptyField(code: _):
             return "Dieses Feld darf nicht leer sein!"
         case .clubNotExists:
             return "Es gibt keinen Verein mit dieser Kennung!"
-        case .internalErrorSignIn:
+        case .internalErrorSignIn(code: _):
             return "Es gab ein Problem beim Registrieren!"
         case .emailNotRegistered:
             return "Diese Email-Adresse ist nicht registriert!"
-        case .internalErrorLogIn:
+        case .internalErrorLogIn(code: _):
             return "Es gab ein Problem beim Anmelden!"
         case .incorrectPassword:
             return "Das eingegebene Passwort ist falsch!"
-        case .notSignedIn:
+        case .notSignedIn(code: _):
             return "Du bist noch nicht registriert!"
-        case .invalidEmail:
+        case .invalidEmail(code: _):
             return "Dies ist keine gültige Email!"
         case .alreadySignedIn:
             return "Diese Email ist bereits registriert!"
@@ -335,19 +335,19 @@ enum ErrorMessages {
             return "Das Passwort ist zu schwach!"
         case .notSamePassword:
             return "Passwörter stimmen nicht überein!"
-        case .identifierAlreadyExists:
+        case .identifierAlreadyExists(code: _):
             return "Vereinskennung ist bereits vergeben!"
         case .noRegionGiven:
             return "Keine Region angegeben!"
-        case .internalErrorSave:
+        case .internalErrorSave(code: _):
             return "Es gab ein Problem beim Speichern!"
-        case .internalErrorDelete:
+        case .internalErrorDelete(code: _):
             return "Es gab ein Problem beim Löschen!"
-        case .amountZero:
+        case .amountZero(code: _):
             return "Betrag darf nicht Null sein!"
         case .personUndeletable:
             return "Nicht löschbar, da sie bereits registriert ist!"
-        case .noPersonsSelected:
+        case .noPersonsSelected(code: _):
             return "Keine Person ausgewählt!"
         case .noReasonGiven:
             return "Keine Strafe angegeben!"
@@ -376,5 +376,99 @@ enum ErrorMessages {
         case .invalidCvv:
             return "CVV ist ungültig!"
         }
+    }
+    
+    /// Error code
+    var errorCode: Int {
+        switch self {
+        case .emptyField(code: _): return 1
+        case .internalErrorSignIn(code: _): return 2
+        case .internalErrorLogIn(code: _): return 3
+        case .identifierAlreadyExists(code: _): return 4
+        case .notSignedIn(code: _): return 5
+        case .invalidEmail(code: _): return 6
+        case .internalErrorSave(code: _): return 7
+        case .internalErrorDelete(code: _): return 8
+        case .noPersonsSelected(code: _): return 9
+        case .amountZero(code: _): return 10
+        case .alreadySignedIn: return 11
+        case .clubNotExists: return 12
+        case .incorrectPassword: return 13
+        case .noDigit: return 14
+        case .noLowerCharacter: return 15
+        case .noRegionGiven: return 16
+        case .noUpperCharacter: return 17
+        case .notEuro: return 18
+        case .notSamePassword: return 19
+        case .tooFewCharacters: return 20
+        case .weakPassword: return 21
+        case .emailNotRegistered: return 22
+        case .alreadySignedInApple: return 23
+        case .personUndeletable: return 24
+        case .noReasonGiven: return 25
+        case .noReasonSelected: return 26
+        case .futureDate: return 27
+        case .invalidNumberRange: return 28
+        case .rateIsZero: return 29
+        case .periodIsZero: return 30
+        case .noFinesSelected: return 31
+        case .internalError: return 32
+        case .invalidCreditCardNumber: return 33
+        case .invalidDateFormat: return 34
+        case .dateInPast: return 35
+        case .invalidCvv: return 36
+        }
+    }
+    
+    /// Sub error code
+    var errorSubCode: Int? {
+        switch self {
+        case .emptyField(code: let code),
+             .internalErrorSignIn(code: let code),
+             .internalErrorLogIn(code: let code),
+             .identifierAlreadyExists(code: let code),
+             .notSignedIn(code: let code),
+             .invalidEmail(code: let code),
+             .internalErrorSave(code: let code),
+             .internalErrorDelete(code: let code),
+             .noPersonsSelected(code: let code),
+             .amountZero(code: let code):
+            return code
+        case .alreadySignedIn,
+             .clubNotExists,
+             .incorrectPassword,
+             .noDigit,
+             .noLowerCharacter,
+             .noRegionGiven,
+             .noUpperCharacter,
+             .notEuro,
+             .notSamePassword,
+             .tooFewCharacters,
+             .weakPassword,
+             .emailNotRegistered,
+             .alreadySignedInApple,
+             .personUndeletable,
+             .noReasonGiven,
+             .noReasonSelected,
+             .futureDate,
+             .invalidNumberRange,
+             .rateIsZero,
+             .periodIsZero,
+             .noFinesSelected,
+             .internalError,
+             .invalidCreditCardNumber,
+             .invalidDateFormat,
+             .dateInPast,
+             .invalidCvv:
+            return nil
+        }
+    }
+    
+    /// Message of the error
+    var message: String {
+        if let errorSubCode = errorSubCode {
+            return "(\(errorCode).\(errorSubCode)) \(rawMessage)"
+        }
+        return "(\(errorCode)) \(rawMessage)"
     }
 }

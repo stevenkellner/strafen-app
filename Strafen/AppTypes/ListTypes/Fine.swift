@@ -98,7 +98,9 @@ extension Fine: ListType {
         Parameters(fineReason.callParameters) { parameters in
             parameters["itemId"] = id
             parameters["personId"] = assoiatedPersonId
-            parameters["payed"] = payed
+            parameters["payedState"] = payed.state
+            parameters["payedPayDate"] = payed.payDate
+            parameters["payedInApp"] = payed.payedInApp
             parameters["number"] = number
             parameters["date"] = date
             parameters["listType"] = "fine"
