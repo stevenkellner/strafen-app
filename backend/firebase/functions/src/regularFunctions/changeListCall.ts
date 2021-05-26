@@ -55,7 +55,10 @@ export const changeListCall = functions.region("europe-west1").https.onCall(asyn
     // Check prerequirements and get a reference to the item to change
     const parameterContainer = new ParameterContainer(data);
     await checkPrerequirements(parameterContainer, context.auth);
-    const path = getClubComponent(parameterContainer) + "/" + parameterContainer.getParameter<string>("clubId", "string").toUpperCase() + "/" + parameterContainer.getParameter<string>("listType", "string") + "s/" + parameterContainer.getParameter<string>("itemId", "string").toUpperCase();
+    let path = getClubComponent(parameterContainer) + "/" + parameterContainer.getParameter<string>("clubId", "string").toUpperCase() + "/" + parameterContainer.getParameter<string>("listType", "string") + "s/" + parameterContainer.getParameter<string>("itemId", "string").toUpperCase();
+    if (parameterContainer.getParameter<string>("changeType", "string") == "update" && parameterContainer.getParameter<string>("listType", "string") == "person") {
+        path = path + "/name";
+    }
     const ref = admin.database().ref(path);
 
     const changeType = parameterContainer.getParameter<string>("changeType", "string");
@@ -109,10 +112,8 @@ function getItem(parameterContainer: ParameterContainer): object {
     // Get person
     case "person":
         return {
-            name: {
-                first: parameterContainer.getParameter<string>("firstName", "string"),
-                last: parameterContainer.getOptionalParameter<string>("lastName", "string"),
-            },
+            first: parameterContainer.getParameter<string>("firstName", "string"),
+            last: parameterContainer.getOptionalParameter<string>("lastName", "string"),
         };
 
     // Get fine

@@ -31,9 +31,9 @@ struct LoginView: View {
         /// - Returns: result of this validation
         private mutating func validateEmail(setErrorMessage: Bool = true) -> ValidationResult {
             var errorMessage: ErrorMessages?
-            if self[.email].isEmpty {
+            if self[.email].trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
                 errorMessage = .emptyField(code: 1)
-            } else if !self[.email].isValidEmail {
+            } else if !self[.email].trimmingCharacters(in: .whitespacesAndNewlines).isValidEmail {
                 errorMessage = .invalidEmail
             } else {
                 if setErrorMessage { self[error: .email] = nil }
@@ -155,13 +155,13 @@ struct LoginView: View {
                                         .padding(.top, 15)
                                         .onTapGesture {
                                             guard inputProperties.validateTextField(.email) == .valid else { return resetPasswordMessage = .invalidEmail }
-                                            Auth.auth().sendPasswordReset(withEmail: inputProperties[.email], completion: nil)
+                                            Auth.auth().sendPasswordReset(withEmail: inputProperties[.email].trimmingCharacters(in: .whitespacesAndNewlines), completion: nil)
                                             resetPasswordMessage = .confirm
                                         }
                                         .alert(item: $resetPasswordMessage) { message in
                                             switch message {
                                             case .invalidEmail: return Alert(title: Text("Ungültige Email"), message: Text("Gebe eine gültige Email zum Zurücksetzen ein."), dismissButton: .default(Text("Verstanden")) { resetPasswordMessage = nil })
-                                            case .confirm: return Alert(title: Text("Passwort zurückgesetzt"), message: Text("Es wurde eine Email zum Zurücksetzen des Passworts an \(inputProperties[.email]) gesendet."), dismissButton: .default(Text("Verstanden")) { resetPasswordMessage = nil })
+                                            case .confirm: return Alert(title: Text("Passwort zurückgesetzt"), message: Text("Es wurde eine Email zum Zurücksetzen des Passworts an \(inputProperties[.email].trimmingCharacters(in: .whitespacesAndNewlines)) gesendet."), dismissButton: .default(Text("Verstanden")) { resetPasswordMessage = nil })
                                             }
                                         }
 
@@ -271,7 +271,7 @@ struct LoginView: View {
             emailInputActive = true
             return connectionState.failed()
         }
-        Auth.auth().signIn(withEmail: inputProperties[.email], password: inputProperties[.password]) { result, error in
+        Auth.auth().signIn(withEmail: inputProperties[.email].trimmingCharacters(in: .whitespacesAndNewlines), password: inputProperties[.password]) { result, error in
             if let error = error {
                 emailInputActive = true
                 connectionState.failed()

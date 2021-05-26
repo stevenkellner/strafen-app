@@ -32,7 +32,7 @@ struct SignInClubSelectionView: View {
         /// - Returns: result of this validation
         private mutating func validateClubIdentifier(setErrorMessage: Bool = true) -> ValidationResult {
             var errorMessage: ErrorMessages?
-            if self[.clubIdentifier].isEmpty {
+            if self[.clubIdentifier].trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
                 errorMessage = .emptyField(code: 7)
             } else {
                 if setErrorMessage { self[error: .clubIdentifier] = nil }
@@ -206,7 +206,7 @@ struct SignInClubSelectionView: View {
         guard inputProperties.wrappedValue.validateAllInputs() == .valid else {
             return inputProperties.wrappedValue.connectionState.failed()
         }
-        let callItem = FFGetClubIdCall(identifier: inputProperties.wrappedValue[.clubIdentifier])
+        let callItem = FFGetClubIdCall(identifier: inputProperties.wrappedValue[.clubIdentifier].trimmingCharacters(in: .whitespacesAndNewlines))
         FirebaseFunctionCaller.shared.call(callItem).then { clubId in
             inputProperties.wrappedValue.signInProperty = SignInProperty.UserIdNameClubId(oldSignInProperty, clubId: clubId)
             inputProperties.wrappedValue.connectionState.passed()

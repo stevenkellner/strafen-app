@@ -74,3 +74,4 @@ node_modules/
 /Strafen.xcworkspace
 /utils
 .vscode/
+*.icloud

@@ -32,7 +32,7 @@ struct SignInEmailView: View {
         /// - Returns: result of this validation
         private mutating func validateFirstName(setErrorMessage: Bool = true) -> ValidationResult {
             var errorMessage: ErrorMessages?
-            if self[.firstName].isEmpty {
+            if self[.firstName].trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
                 errorMessage = .emptyField(code: 3)
             } else {
                 if setErrorMessage { self[error: .firstName] = nil }
@@ -55,9 +55,9 @@ struct SignInEmailView: View {
         /// - Returns: result of this validation
         private mutating func validateEmail(setErrorMessage: Bool = true) -> ValidationResult {
             var errorMessage: ErrorMessages?
-            if self[.email].isEmpty {
+            if self[.email].trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
                 errorMessage = .emptyField(code: 4)
-            } else if !self[.email].isValidEmail {
+            } else if !self[.email].trimmingCharacters(in: .whitespacesAndNewlines).isValidEmail {
                 errorMessage = .invalidEmail
             } else {
                 if setErrorMessage { self[error: .email] = nil }
@@ -286,20 +286,20 @@ struct SignInEmailView: View {
             guard inputProperties.wrappedValue.validateTextFields([.firstName, .lastName]) == .valid else {
                 return inputProperties.wrappedValue.connectionState.failed()
             }
-            let name = PersonName(firstName: inputProperties.wrappedValue[.firstName], lastName: inputProperties.wrappedValue[.lastName])
+            let name = PersonName(firstName: inputProperties.wrappedValue[.firstName].trimmingCharacters(in: .whitespacesAndNewlines), lastName: inputProperties.wrappedValue[.lastName].trimmingCharacters(in: .whitespacesAndNewlines))
             inputProperties.wrappedValue.signInProperty = SignInProperty.UserIdName(userId: userId, name: name)
             inputProperties.wrappedValue.connectionState.passed()
         } else {
             guard inputProperties.wrappedValue.validateAllInputs() == .valid else {
                 return inputProperties.wrappedValue.connectionState.failed()
             }
-            Auth.auth().createUser(withEmail: inputProperties.wrappedValue[.email], password: inputProperties.wrappedValue[.password]) { result, error in
+            Auth.auth().createUser(withEmail: inputProperties.wrappedValue[.email].trimmingCharacters(in: .whitespacesAndNewlines), password: inputProperties.wrappedValue[.password]) { result, error in
                 if let error = error {
                     inputProperties.wrappedValue.evaluateErrorCode(of: error as NSError)
                     inputProperties.wrappedValue.connectionState.failed()
                 } else if let user = result?.user {
                     Auth.auth().currentUser?.sendEmailVerification { _ in }
-                    let name = PersonName(firstName: inputProperties.wrappedValue[.firstName], lastName: inputProperties.wrappedValue[.lastName])
+                    let name = PersonName(firstName: inputProperties.wrappedValue[.firstName].trimmingCharacters(in: .whitespacesAndNewlines), lastName: inputProperties.wrappedValue[.lastName].trimmingCharacters(in: .whitespacesAndNewlines))
                     inputProperties.wrappedValue.signInProperty = SignInProperty.UserIdName(userId: user.uid, name: name)
                     inputProperties.wrappedValue.connectionState.passed()
                 } else {
