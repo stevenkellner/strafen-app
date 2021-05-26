@@ -89,7 +89,7 @@ struct SignInView: View {
                                 signInGoogleController.handleGoogleSignIn { userId, personNameComponents in
                                     handleNextPage(userId: userId, name: personNameComponents, errorMessage: $googleErrorMessage)
                                 } onFailure: {
-                                    googleErrorMessage = .internalErrorSignIn
+                                    googleErrorMessage = .internalErrorSignIn(code: 1)
                                     connectionState.failed()
                                 }
 
@@ -108,7 +108,7 @@ struct SignInView: View {
                                 signInAppleController.handleAppleSignIn { userId, personNameComponents in
                                     handleNextPage(userId: userId, name: personNameComponents, errorMessage: $appleErrorMessage)
                                 } onFailure: {
-                                    appleErrorMessage = .internalErrorSignIn
+                                    appleErrorMessage = .internalErrorSignIn(code: 2)
                                     connectionState.failed()
                                 }
                             }
@@ -153,7 +153,7 @@ struct SignInView: View {
             }
             connectionState.passed()
         }.catch { _ in
-            errorMessage.wrappedValue = .internalErrorSignIn
+            errorMessage.wrappedValue = .internalErrorSignIn(code: 3)
             connectionState.failed()
         }
     }

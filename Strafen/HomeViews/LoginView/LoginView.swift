@@ -32,7 +32,7 @@ struct LoginView: View {
         private mutating func validateEmail(setErrorMessage: Bool = true) -> ValidationResult {
             var errorMessage: ErrorMessages?
             if self[.email].isEmpty {
-                errorMessage = .emptyField
+                errorMessage = .emptyField(code: 1)
             } else if !self[.email].isValidEmail {
                 errorMessage = .invalidEmail
             } else {
@@ -49,7 +49,7 @@ struct LoginView: View {
         private mutating func validatePassword(setErrorMessage: Bool = true) -> ValidationResult {
             var errorMessage: ErrorMessages?
             if self[.password].isEmpty {
-                errorMessage = .emptyField
+                errorMessage = .emptyField(code: 2)
             } else {
                 if setErrorMessage { self[error: .password] = nil }
                 return .valid
@@ -190,7 +190,7 @@ struct LoginView: View {
                                             getPersonProperties(userId: userId, errorMessage: $googleErrorMessage)
                                             connectionState.passed()
                                         } onFailure: {
-                                            googleErrorMessage = .internalErrorLogIn
+                                            googleErrorMessage = .internalErrorLogIn(code: 1)
                                             connectionState.failed()
                                         }
 
@@ -210,7 +210,7 @@ struct LoginView: View {
                                             getPersonProperties(userId: userId, errorMessage: $appleErrorMessage)
                                             connectionState.passed()
                                         } onFailure: {
-                                            appleErrorMessage = .internalErrorLogIn
+                                            appleErrorMessage = .internalErrorLogIn(code: 2)
                                             connectionState.failed()
                                         }
 
@@ -275,18 +275,18 @@ struct LoginView: View {
             if let error = error {
                 emailInputActive = true
                 connectionState.failed()
-                guard (error as NSError).domain == AuthErrorDomain else { return inputProperties[error: .email] = .internalErrorLogIn }
+                guard (error as NSError).domain == AuthErrorDomain else { return inputProperties[error: .email] = .internalErrorLogIn(code: 3) }
                 let errorCode = AuthErrorCode(rawValue: (error as NSError).code)
                 switch errorCode {
                 case .invalidEmail: inputProperties[error: .email] = .invalidEmail
                 case .wrongPassword: inputProperties[error: .email] = .incorrectPassword
-                default: inputProperties[error: .email] = .internalErrorLogIn
+                default: inputProperties[error: .email] = .internalErrorLogIn(code: 4)
                 }
             } else if let userId = result?.user.uid {
                 getPersonProperties(userId: userId, errorMessage: $inputProperties[error: .email], isEmail: true)
                 connectionState.passed()
             } else {
-                inputProperties[error: .email] = .internalErrorLogIn
+                inputProperties[error: .email] = .internalErrorLogIn(code: 5)
                 emailInputActive = true
                 connectionState.failed()
             }
@@ -306,11 +306,11 @@ struct LoginView: View {
         }.catch { error in
             if isEmail { emailInputActive = true }
             connectionState.failed()
-            guard (error as NSError).domain == FunctionsErrorDomain else { return errorMessage.wrappedValue = .internalErrorLogIn }
+            guard (error as NSError).domain == FunctionsErrorDomain else { return errorMessage.wrappedValue = .internalErrorLogIn(code: 6) }
             let errorCode = FunctionsErrorCode(rawValue: (error as NSError).code)
             switch errorCode {
             case .notFound: errorMessage.wrappedValue = .notSignedIn
-            default: errorMessage.wrappedValue = .internalErrorLogIn
+            default: errorMessage.wrappedValue = .internalErrorLogIn(code: 7)
             }
         }
     }
