@@ -35,8 +35,12 @@ extension InputPropertiesProtocol {
     /// - Parameters:
     ///   - textfield: textfield
     /// - Returns: input propertiy of textfield
-    public subscript(_ textField: TextFields) -> String {
-        get { inputProperties[textField, default: ""] }
+    public subscript(_ textField: TextFields, trimm trimmingCharacters: CharacterSet? = .whitespacesAndNewlines) -> String {
+        get {
+            let text = inputProperties[textField, default: ""]
+            guard let trimmingCharacters = trimmingCharacters else { return text }
+            return text.trimmingCharacters(in: trimmingCharacters)
+        }
         set { inputProperties[textField] = newValue }
     }
 

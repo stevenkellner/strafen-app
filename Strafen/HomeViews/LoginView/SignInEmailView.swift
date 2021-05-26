@@ -32,7 +32,7 @@ struct SignInEmailView: View {
         /// - Returns: result of this validation
         private mutating func validateFirstName(setErrorMessage: Bool = true) -> ValidationResult {
             var errorMessage: ErrorMessages?
-            if self[.firstName].trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            if self[.firstName].isEmpty {
                 errorMessage = .emptyField(code: 3)
             } else {
                 if setErrorMessage { self[error: .firstName] = nil }
@@ -55,9 +55,9 @@ struct SignInEmailView: View {
         /// - Returns: result of this validation
         private mutating func validateEmail(setErrorMessage: Bool = true) -> ValidationResult {
             var errorMessage: ErrorMessages?
-            if self[.email].trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            if self[.email].isEmpty {
                 errorMessage = .emptyField(code: 4)
-            } else if !self[.email].trimmingCharacters(in: .whitespacesAndNewlines).isValidEmail {
+            } else if !self[.email].isValidEmail {
                 errorMessage = .invalidEmail
             } else {
                 if setErrorMessage { self[error: .email] = nil }
@@ -75,15 +75,15 @@ struct SignInEmailView: View {
             let capitalPredicate = NSPredicate(format: "SELF MATCHES %@", ".*[A-Z]+.*")
             let lowerPredicate = NSPredicate(format: "SELF MATCHES %@", ".*[a-z]+.*")
             let digitPredicate = NSPredicate(format: "SELF MATCHES %@", ".*[0-9]+.*")
-            if self[.password].isEmpty {
+            if self[.password, trimm: nil].isEmpty {
                 errorMessage = .emptyField(code: 5)
-            } else if self[.password].count < 8 {
+            } else if self[.password, trimm: nil].count < 8 {
                 errorMessage = .tooFewCharacters
-            } else if !capitalPredicate.evaluate(with: self[.password]) {
+            } else if !capitalPredicate.evaluate(with: self[.password, trimm: nil]) {
                 errorMessage = .noUpperCharacter
-            } else if !lowerPredicate.evaluate(with: self[.password]) {
+            } else if !lowerPredicate.evaluate(with: self[.password, trimm: nil]) {
                 errorMessage = .noLowerCharacter
-            } else if !digitPredicate.evaluate(with: self[.password]) {
+            } else if !digitPredicate.evaluate(with: self[.password, trimm: nil]) {
                 errorMessage = .noDigit
             } else {
                 if setErrorMessage { self[error: .password] = nil }
@@ -98,9 +98,9 @@ struct SignInEmailView: View {
         /// - Returns: result of this validation
         private mutating func validateRepeatPassword(setErrorMessage: Bool = true) -> ValidationResult {
             var errorMessage: ErrorMessages?
-            if self[.repeatPassword].isEmpty {
+            if self[.repeatPassword, trimm: nil].isEmpty {
                 errorMessage = .emptyField(code: 6)
-            } else if self[.repeatPassword] != self[.password] {
+            } else if self[.repeatPassword, trimm: nil] != self[.password, trimm: nil] {
                 errorMessage = .notSamePassword
             } else {
                 if setErrorMessage { self[error: .repeatPassword] = nil }
@@ -286,20 +286,20 @@ struct SignInEmailView: View {
             guard inputProperties.wrappedValue.validateTextFields([.firstName, .lastName]) == .valid else {
                 return inputProperties.wrappedValue.connectionState.failed()
             }
-            let name = PersonName(firstName: inputProperties.wrappedValue[.firstName].trimmingCharacters(in: .whitespacesAndNewlines), lastName: inputProperties.wrappedValue[.lastName].trimmingCharacters(in: .whitespacesAndNewlines))
+            let name = PersonName(firstName: inputProperties.wrappedValue[.firstName], lastName: inputProperties.wrappedValue[.lastName])
             inputProperties.wrappedValue.signInProperty = SignInProperty.UserIdName(userId: userId, name: name)
             inputProperties.wrappedValue.connectionState.passed()
         } else {
             guard inputProperties.wrappedValue.validateAllInputs() == .valid else {
                 return inputProperties.wrappedValue.connectionState.failed()
             }
-            Auth.auth().createUser(withEmail: inputProperties.wrappedValue[.email].trimmingCharacters(in: .whitespacesAndNewlines), password: inputProperties.wrappedValue[.password]) { result, error in
+            Auth.auth().createUser(withEmail: inputProperties.wrappedValue[.email], password: inputProperties.wrappedValue[.password, trimm: nil]) { result, error in
                 if let error = error {
                     inputProperties.wrappedValue.evaluateErrorCode(of: error as NSError)
                     inputProperties.wrappedValue.connectionState.failed()
                 } else if let user = result?.user {
                     Auth.auth().currentUser?.sendEmailVerification { _ in }
-                    let name = PersonName(firstName: inputProperties.wrappedValue[.firstName].trimmingCharacters(in: .whitespacesAndNewlines), lastName: inputProperties.wrappedValue[.lastName].trimmingCharacters(in: .whitespacesAndNewlines))
+                    let name = PersonName(firstName: inputProperties.wrappedValue[.firstName], lastName: inputProperties.wrappedValue[.lastName])
                     inputProperties.wrappedValue.signInProperty = SignInProperty.UserIdName(userId: user.uid, name: name)
                     inputProperties.wrappedValue.connectionState.passed()
                 } else {

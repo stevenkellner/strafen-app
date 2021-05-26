@@ -159,7 +159,7 @@ enum ErrorMessages {
     /// Message of the error
     var message: String {
         if let errorSubCode = errorSubCode {
-            return "(\(errorCode).\(errorSubCode) \(rawMessage)"
+            return "(\(errorCode).\(errorSubCode)) \(rawMessage)"
         }
         return "(\(errorCode)) \(rawMessage)"
     }

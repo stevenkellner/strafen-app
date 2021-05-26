@@ -43,7 +43,7 @@ struct SignInClubInputView: View {
         /// - Returns: result of this validation
         private mutating func validateClubName(setErrorMessage: Bool = true) -> ValidationResult {
             var errorMessage: ErrorMessages?
-            if self[.clubName].trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            if self[.clubName].isEmpty {
                 errorMessage = .emptyField(code: 8)
             } else {
                 if setErrorMessage { self[error: .clubName] = nil }
@@ -58,7 +58,7 @@ struct SignInClubInputView: View {
         /// - Returns: result of this validation
         private mutating func validateClubIdentifier(setErrorMessage: Bool = true) -> ValidationResult {
             var errorMessage: ErrorMessages?
-            if self[.clubIdentifier].trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            if self[.clubIdentifier].isEmpty {
                 errorMessage = .emptyField(code: 9)
             } else {
                 if setErrorMessage { self[error: .clubIdentifier] = nil }
@@ -299,9 +299,9 @@ struct SignInClubInputView: View {
             signInProperty: oldSignInProperty,
             clubId: Club.ID(rawValue: UUID()),
             personId: FirebasePerson.ID(rawValue: UUID()),
-            clubName: inputProperties.wrappedValue[.clubName].trimmingCharacters(in: .whitespacesAndNewlines),
-            regionCode: inputProperties.wrappedValue.regionCode!.trimmingCharacters(in: .whitespacesAndNewlines),
-            clubIdentifier: inputProperties.wrappedValue[.clubIdentifier].trimmingCharacters(in: .whitespacesAndNewlines),
+            clubName: inputProperties.wrappedValue[.clubName],
+            regionCode: inputProperties.wrappedValue.regionCode!,
+            clubIdentifier: inputProperties.wrappedValue[.clubIdentifier],
             inAppPayment: inputProperties.wrappedValue.inAppPayment)
         FirebaseFunctionCaller.shared.call(callItem).then { _ in
             inputProperties.wrappedValue.connectionState.passed()
