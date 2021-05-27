@@ -12,6 +12,8 @@ import {changeFinePayedCall} from "./regularFunctions/changeFinePayedCall";
 import {getPersonPropertiesCall} from "./regularFunctions/getPersonPropertiesCall";
 import {existsPersonWithUserIdCall} from "./regularFunctions/existsPersonWithUserIdCall";
 
+import * as ri from "./resizeImage";
+
 import * as admin from "firebase-admin";
 
 admin.initializeApp();
@@ -30,6 +32,8 @@ export const changeList = changeListCall;
 export const changeFinePayed = changeFinePayedCall;
 export const getPersonProperties = getPersonPropertiesCall;
 export const existsPersonWithUserId = existsPersonWithUserIdCall;
+
+export const generateThumbsNew = ri.generateThumbs;
 
 export const newTestClub = tf.newTestClub;
 export const deleteTestClub = tf.deleteTestClub;

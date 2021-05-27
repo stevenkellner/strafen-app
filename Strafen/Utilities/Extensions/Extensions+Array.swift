@@ -17,6 +17,17 @@ extension Array {
         self = try map(transform)
     }
 
+    /// Map this array containing the results of mapping the given closure over the sequence’s elements.
+    /// - Parameter transform: A mapping closure. 
+    /// - Throws: Rethrows transform error.
+    mutating func mapped(_ transform: (inout Element) throws -> Void) rethrows {
+        self = try map {
+            var element = $0
+            try transform(&element)
+            return element
+        }
+    }
+
     /// Filter this array given result of closure over the sequence's elements.
     /// - Parameter isIncluded: A isIncluded closure.
     ///     It takes an element if this sequence and returns true if element should retain in this sequence.

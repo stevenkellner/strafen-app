@@ -80,7 +80,7 @@ struct ContentView: View {
                         } else if let personList = personList, let fineList = fineList, let reasonList = reasonList {
                             ZStack {
                                 switch homeTab.active {
-                                case .profileDetail: Text("ProfileDetail") // ProfileDetail() TODO
+                                case .profileDetail: ProfileDetail()
                                 case .personList: Text("PersonList") // PersonList() TODO
                                 case .reasonList: Text("ReasonList") // ReasonList() TODO
                                 case .addNewFine: Text("AddNewFine") // TODO

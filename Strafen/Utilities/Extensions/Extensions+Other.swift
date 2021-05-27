@@ -344,3 +344,14 @@ extension Text {
         self.init(NSLocalizedString(key, table: table, replaceDict: replaceDict, comment: comment))
     }
 }
+
+extension UIImage {
+
+    /// Initializes and returns the image object with the specified data.
+    /// - Parameter data: The data object containing the image data.
+
+    convenience init?(data: Data?) {
+        guard let data = data else { return nil }
+        self.init(data: data)
+    }
+}
