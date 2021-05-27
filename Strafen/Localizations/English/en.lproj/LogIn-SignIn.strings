@@ -1,0 +1,118 @@
+/* 
+  LogIn-SignIn.strings
+  Strafen
+
+  Created by Steven on 27.05.21.
+  
+*/
+
+// Header of log in views
+"log-in-header" = "Log In";
+
+// Header of sign in views
+"sign-in-header" = "Registering";
+
+// New club header
+"new-club-header" = "New Club";
+
+// Select person header
+"select-person-header" = "Selecting Person";
+
+// name text
+"name" = "Name";
+
+// first name text
+"first-name" = "First Name";
+
+// optional last name text
+"optional-last-name" = "Surname (optional)";
+
+// email text
+"email" = "E-mail";
+
+// password text
+"password" = "Password";
+
+// repeat password text
+"repeat-password" = "Repeat Password";
+
+// club identifier text
+"club-identifier" = "Club Identifier";
+
+// club name text
+"club-name" = "Club Name";
+
+// region text
+"region" = "Region";
+
+// in app payment text
+"in-app-payment" = "In App Payment";
+
+// Text of forgot password button
+"forget-password-button-text" = "Forgot Password";
+
+// Title of forgot password invalid email alert
+"forget-password-alert-invalid-email-title" = "Invalid E-mail";
+
+// Message of forgot password invalid email alert
+"forget-password-alert-invalid-email-message" = "Enter a valid email to reset.";
+
+// Title of forgot password confirm alert
+"forget-password-alert-confirm-title" = "Password reset";
+
+// Message of forgot password confirm alert
+"forget-password-alert-confirm-message" = "A password reset email was sent to $ {email}.";
+
+// Text of log in with email button
+"log-in-with-email-button-text" = "Sign in with E-mail";
+
+// Text of log in with apple button
+"log-in-with-apple-button-text" = "Sign in with Apple";
+
+// Text of log in with google button
+"log-in-with-google-button-text" = "Sign in with Google";
+
+// Text of sign in with email button
+"sign-in-with-email-button-text" = "Register with Email";
+
+// Text of sign in with apple button
+"sign-in-with-apple-button-text" = "Register with Apple";
+
+// Text of sign in with google button
+"sign-in-with-google-button-text" = "Register with Google";
+
+// Text of instead button
+"instead-button-text" = "Instead";
+
+// Text of sign in button
+"sign-in-button-text" = "Register";
+
+// Text of log in button
+"log-in-button-text" = "Log In";
+
+// Text of or button
+"or-button-text" = "or";
+
+// Text of create club button
+"create-club-button-text" = "Create Club";
+
+// Name is required message
+"name-is-required-message" = "Your name is required for registration.";
+
+// Club identifier from cashier message
+"club-identifier-from-cashier-message" = "You will get the identifier from your trainer or cashier.";
+
+// You cashier create club message
+"you-cashier-create-club-message" = "If you're the cashier:\nCreate a new club.";
+
+// In app payment description
+"in-app-payment-description" = "If active, your fellow players can pay the fines in the app and then you can have them paid out.";
+
+// Club identifier description
+"club-identifier-description" = "Use the unique identifier to add other players.";
+
+// Text of select region button
+"select-region-button-text" = "Select region";
+
+// Select name if available message
+"select-name-if-available-message" = "Select your name if it's there.";

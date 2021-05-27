@@ -1,0 +1,61 @@
+/* 
+  ErrorMessages.strings
+  Strafen
+
+  Created by Steven on 26.05.21.
+  
+*/
+
+// Textfield is empty
+"emptyField" = "This field can not be empty!";
+
+// Invalid email
+"invalidEmail" = "This is not a valid email!";
+
+// Less than 8 characters in password
+"tooFewCharacters" = "Password is too short!";
+
+// No upper character in password
+"noUpperCharacter" = "Must contain an uppercase letter!";
+
+// No lower character in password
+"noLowerCharacter" = "Must contain an lowercase letter!";
+
+// No digit in password
+"noDigit" = "Must contain a number!";
+
+// Not same password
+"notSamePassword" = "Passwords do not match!";
+
+// Internal error for sign in
+"internalErrorSignIn" = "There was a problem registering!";
+
+// Internal error for log in
+"internalErrorLogIn" = "There was a problem signing in!";
+
+// Email is already signed in
+"alreadySignedInEmail" = "This email is already registered!";
+
+// User is already signed in
+"alreadySignedIn" = "You're already registered!";
+
+// Password is too weak
+"weakPassword" = "The password is too weak!";
+
+// Club doesn't exist
+"clubNotExists" = "There is no club with this identifier!";
+
+// No region given
+"noRegionGiven" = "No region specified!";
+
+// In app payment currency isn't euro
+"notEuro" = "Only works in countries with euros!";
+
+/// Club identifier already exists
+"identifierAlreadyExists" = "Club identifier is already taken!";
+
+// Password is incorrect
+"incorrectPassword" = "The password you entered is incorrect!";
+
+// Not signed in
+"notSignedIn" = "You're not registered!";

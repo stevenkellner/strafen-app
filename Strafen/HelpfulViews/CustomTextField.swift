@@ -18,7 +18,7 @@ struct CustomTextField<InputProperties>: View where InputProperties: InputProper
     private let inputProperties: Binding<InputProperties>
 
     /// Placeholder of Text field
-    private var placeholder: String = "Placeholder"
+    private var placeholder: String = NSLocalizedString("textfield-placeholder", table: .otherTexts, comment: "Placeholder text of textfield")
 
     /// Handler execuded after keyboard dismisses
     private var completionHandler: (() -> Void)?
@@ -119,6 +119,19 @@ struct CustomTextField<InputProperties>: View where InputProperties: InputProper
         return textField
     }
 
+    /// Set localized placeholder
+    /// - Parameters:
+    ///   - key: key of localized string
+    ///   - table: table of localization
+    ///   - replaceDict: dictionary to replace for string interpolation   
+    ///   - comment: comment for localization
+    /// - Returns: modified textfield
+    public func placeholder(_ key: String, table: LocalizationTables, replaceDict: [String: String] = [:], comment: String) -> CustomTextField {
+        var textField = self
+        textField.placeholder = NSLocalizedString(key, table: table, replaceDict: replaceDict, comment: comment)
+        return textField
+    }
+
     /// Set keyboard type
     /// - Parameter keyboardType: keyboard type
     /// - Returns: modified textfield
@@ -189,7 +202,7 @@ struct CustomTextField<InputProperties>: View where InputProperties: InputProper
         }
 
         /// Placeholder
-        private var placeholder: String = "Placeholder"
+        private var placeholder: String = NSLocalizedString("textfield-placeholder", table: .otherTexts, comment: "Placeholder text of textfield")
 
         /// Inidcates whether textfield is secure
         private var isSecure: Bool = false

@@ -46,6 +46,16 @@ struct SingleButton: View {
         self.text = text
     }
 
+    /// Init with localized string
+    /// - Parameters:
+    ///   - key: key of lacalized string
+    ///   - table: table of localization
+    ///   - replaceDict: dictionary to replace for string interpolation   
+    ///   - comment: comment for localization
+    init(_ key: String, table: LocalizationTables, replaceDict: [String: String] = [:], comment: String) {
+        self.text = NSLocalizedString(key, table: table, replaceDict: replaceDict, comment: comment)
+    }
+
     var body: some View {
         SingleOutlinedContent {
             ZStack {
@@ -194,19 +204,19 @@ struct SingleButton: View {
     }
 
     /// Cancel button
-    static let cancel = SingleButton("Abbrechen")
+    static let cancel = SingleButton("cancel-button-text", table: .otherTexts, comment: "Text of cancel button")
         .fontSize(27)
         .leftSymbol(name: "chevron.left.2")
         .leftColor(.customRed)
 
     /// Confirm button
-    static let confirm = SingleButton("Bestätigen")
+    static let confirm = SingleButton("confirm-button-text", table: .otherTexts, comment: "Text of confirm button")
         .fontSize(27)
         .rightSymbol(name: "checkmark.seal")
         .rightColor(.customGreen)
 
     /// Continue button
-    static let `continue` = SingleButton("Weiter")
+    static let `continue` = SingleButton("continue-button-text", table: .otherTexts, comment: "Text of continue button")
         .fontSize(27)
         .rightSymbol(name: "chevron.right.2")
         .rightColor(.customGreen)

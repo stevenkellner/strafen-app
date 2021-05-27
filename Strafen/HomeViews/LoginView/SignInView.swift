@@ -58,7 +58,7 @@ struct SignInView: View {
             VStack(spacing: 0) {
 
                 // Header
-                Header("Registrieren")
+                Header("sign-in-header", table: .logInSignIn, comment: "Header of sign in views")
                     .padding(.top, 50)
 
                 Spacer()
@@ -66,7 +66,7 @@ struct SignInView: View {
                 VStack(spacing: 15) {
 
                     // Sign in with email button
-                    SingleButton("Mit E-Mail registrieren")
+                    SingleButton("sign-in-with-email-button-text", table: .logInSignIn, comment: "Text of sign in with email button")
                         .leftSymbol(name: "envelope")
                         .leftColor(.textColor)
                         .leftSymbolHeight(24)
@@ -81,7 +81,7 @@ struct SignInView: View {
 
                     // Sign in with google button
                     VStack(spacing: 5) {
-                        SingleButton("Mit Google registrieren")
+                        SingleButton("sign-in-with-google-button-text", table: .logInSignIn, comment: "Text of sign in with google button")
                             .leftSymbol(Image(uiImage: #imageLiteral(resourceName: "google-icon")))
                             .onClick {
                                 guard connectionState != .loading else { return }
@@ -99,7 +99,7 @@ struct SignInView: View {
 
                     // Sign in with apple button
                     VStack(spacing: 5) {
-                        SingleButton("Mit Apple registrieren")
+                        SingleButton("sign-in-with-apple-button-text", table: .logInSignIn, comment: "Text of sign in with apple button")
                             .leftSymbol(name: "applelogo")
                             .leftColor(.white)
                             .onClick {

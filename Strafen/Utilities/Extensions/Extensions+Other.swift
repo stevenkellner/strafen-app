@@ -297,3 +297,44 @@ extension FileManager {
         FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: "group.stevenkellner.Strafen.settings")!
     }
 }
+
+/// All available localization tables
+enum LocalizationTables: String {
+
+    /// Localization table for error messages
+    case errorMessages = "ErrorMessages"
+
+    /// Localization table for other texts
+    case otherTexts = "OtherTexts"
+
+    /// Localization table for log in and sign in views
+    case logInSignIn = "LogIn-SignIn"
+}
+
+/// Localized string of given table with given key
+/// - Parameters:
+///   - key: key of localized string
+///   - table: table of localization
+///   - replaceDict: dictionary to replace for string interpolation
+///   - comment: comment for localization
+/// - Returns: localized string
+func NSLocalizedString(_ key: String, table: LocalizationTables, replaceDict: [String: String] = [:], comment: String) -> String {
+    var rawString = NSLocalizedString(key, tableName: table.rawValue, value: "(Error L.1) This text isn't available in your language.", comment: comment)
+    for (key, value) in replaceDict {
+        rawString = rawString.replacingOccurrences(of: "${\(key)}", with: value)
+    }
+    return rawString
+}
+
+extension Text {
+
+    /// Init text with localized string
+    /// - Parameters:
+    ///   - key: key of lacalized string
+    ///   - table: table of localization
+    ///   - replaceDict: dictionary to replace for string interpolation   
+    ///   - comment: comment for localization
+    init(_ key: String, table: LocalizationTables, replaceDict: [String: String] = [:], comment: String) {
+        self.init(NSLocalizedString(key, table: table, replaceDict: replaceDict, comment: comment))
+    }
+}

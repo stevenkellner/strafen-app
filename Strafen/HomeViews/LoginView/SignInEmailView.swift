@@ -182,7 +182,7 @@ struct SignInEmailView: View {
                     .padding(.top, 50)
 
                 // Header
-                Header("Registrieren")
+                Header("sign-in-header", table: .logInSignIn, comment: "Header of sign in views")
                     .padding(.top, 10)
 
                 Spacer()
@@ -192,7 +192,7 @@ struct SignInEmailView: View {
                         VStack(spacing: 15) {
 
                             if signInProperties != nil {
-                                Text("Dein Name ist für die Registrierung erforderlich.")
+                                Text("name-is-required-message", table: .logInSignIn, comment: "Name is required message")
                                     .foregroundColor(.customRed)
                                     .font(.system(size: 24, weight: .regular))
                                     .multilineTextAlignment(.center)
@@ -202,18 +202,18 @@ struct SignInEmailView: View {
                             }
 
                             // Name
-                            TitledContent("Name") {
+                            TitledContent("name", table: .logInSignIn, comment: "name text") {
                                 VStack(spacing: 5) {
 
                                     // First name
                                     CustomTextField(.firstName, inputProperties: $inputProperties)
-                                        .placeholder("Vorname")
+                                        .placeholder("first-name", table: .logInSignIn, comment: "first name text")
                                         .defaultTextFieldSize
                                         .scrollViewProxy(proxy)
 
                                     // Last name
                                     CustomTextField(.lastName, inputProperties: $inputProperties)
-                                        .placeholder("Nachname (optional)")
+                                        .placeholder("optional-last-name", table: .logInSignIn, comment: "optional last name text")
                                         .defaultTextFieldSize
                                         .scrollViewProxy(proxy)
 
@@ -223,28 +223,28 @@ struct SignInEmailView: View {
                             if signInProperties == nil {
 
                                 // Email
-                                TitledContent("Email") {
+                                TitledContent("email", table: .logInSignIn, comment: "email text") {
                                     CustomTextField(.email, inputProperties: $inputProperties)
-                                        .placeholder("Email")
+                                        .placeholder("email", table: .logInSignIn, comment: "email text")
                                         .defaultTextFieldSize
                                         .scrollViewProxy(proxy)
 
                                 }
 
                                 // Password
-                                TitledContent("Passwort") {
+                                TitledContent("password", table: .logInSignIn, comment: "password text") {
                                     VStack(spacing: 5) {
 
                                         // Password
                                         CustomTextField(.password, inputProperties: $inputProperties)
-                                            .placeholder("Passwort")
+                                            .placeholder("password", table: .logInSignIn, comment: "password text")
                                             .defaultTextFieldSize
                                             .scrollViewProxy(proxy)
                                             .secure
 
                                         // Repeat password
                                         CustomTextField(.repeatPassword, inputProperties: $inputProperties)
-                                            .placeholder("Passwort Wiederholen")
+                                            .placeholder("repeat-password", table: .logInSignIn, comment: "repeat password text")
                                             .defaultTextFieldSize
                                             .scrollViewProxy(proxy)
                                             .secure

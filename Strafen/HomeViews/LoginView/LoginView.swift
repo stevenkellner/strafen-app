@@ -106,7 +106,7 @@ struct LoginView: View {
 
                     // Back Button
                     HStack(spacing: 0) {
-                        Text("Zurück")
+                        Text("back-button-text", tableName: "OtherTexts", comment: "Text of back button")
                             .font(.system(size: 24, weight: .light))
                             .foregroundColor(.textColor)
                             .lineLimit(1)
@@ -118,7 +118,7 @@ struct LoginView: View {
                         .animation(.default)
 
                     // Header
-                    Header("Anmelden")
+                    Header("log-in-header", table: .logInSignIn, comment: "Header of log in views")
                         .padding(.top, emailInputActive ? 10 : 50)
                         .animation(.default)
 
@@ -130,24 +130,25 @@ struct LoginView: View {
                                 VStack(spacing: 15) {
 
                                     // Email
-                                    TitledContent("Email") {
+                                    TitledContent("email", table: .logInSignIn, comment: "email text") {
                                         CustomTextField(.email, inputProperties: $inputProperties)
-                                            .placeholder("Email")
+                                            .placeholder("email", table: .logInSignIn, comment: "email text")
                                             .defaultTextFieldSize
                                             .scrollViewProxy(proxy)
                                     }
 
                                     // Password
-                                    TitledContent("Passwort") {
+                                    TitledContent("password", table: .logInSignIn, comment: "password text") {
                                         CustomTextField(.password, inputProperties: $inputProperties)
-                                            .placeholder("Passwort")
+                                            .placeholder("password", table: .logInSignIn, comment: "password text")
                                             .defaultTextFieldSize
                                             .scrollViewProxy(proxy)
                                             .secure
                                     }
 
+                                    // Forgot password button
                                     SingleOutlinedContent {
-                                        Text("Password vergessen")
+                                        Text("forget-password-button-text", table: .logInSignIn, comment: "Text of forgot password button")
                                             .foregroundColor(.textColor)
                                             .lineLimit(1)
                                             .font(.system(size: 15, weight: .thin))
@@ -160,8 +161,12 @@ struct LoginView: View {
                                         }
                                         .alert(item: $resetPasswordMessage) { message in
                                             switch message {
-                                            case .invalidEmail: return Alert(title: Text("Ungültige Email"), message: Text("Gebe eine gültige Email zum Zurücksetzen ein."), dismissButton: .default(Text("Verstanden")) { resetPasswordMessage = nil })
-                                            case .confirm: return Alert(title: Text("Passwort zurückgesetzt"), message: Text("Es wurde eine Email zum Zurücksetzen des Passworts an \(inputProperties[.email]) gesendet."), dismissButton: .default(Text("Verstanden")) { resetPasswordMessage = nil })
+                                            case .invalidEmail: return Alert(title: Text("forget-password-alert-invalid-email-title", table: .logInSignIn, comment: "Title of forgot password invalid email alert"),
+                                                                             message: Text("forget-password-alert-invalid-email-message", table: .logInSignIn, comment: "Messages of forgot password invalid email alert"),
+                                                                             dismissButton: .default(Text("understood-button-text", table: .otherTexts, comment: "Text of understood button")) { resetPasswordMessage = nil })
+                                            case .confirm: return Alert(title: Text("forget-password-alert-confirm-title", table: .logInSignIn, comment: "Title of forgot password confirm alert"),
+                                                                        message: Text("forget-password-alert-confirm-message", table: .logInSignIn, replaceDict: ["email": inputProperties[.email]], comment: "Messages of forgot password confirm alert"),
+                                                                        dismissButton: .default(Text("understood-button-text", table: .otherTexts, comment: "Text of understood button")) { resetPasswordMessage = nil })
                                             }
                                         }
 
@@ -173,7 +178,7 @@ struct LoginView: View {
                         VStack(spacing: 15) {
 
                             // Log in with email button
-                            SingleButton("Mit E-Mail anmelden")
+                            SingleButton("log-in-with-email-button-text", table: .logInSignIn, comment: "Text of log in with email button")
                                 .leftSymbol(name: "envelope")
                                 .leftColor(.textColor)
                                 .leftSymbolHeight(24)
@@ -181,7 +186,7 @@ struct LoginView: View {
 
                             // Log in with google button
                             VStack(spacing: 5) {
-                                SingleButton("Mit Google anmelden")
+                                SingleButton("log-in-with-google-button-text", table: .logInSignIn, comment: "Text of log in with google button")
                                     .leftSymbol(Image(uiImage: #imageLiteral(resourceName: "google-icon")))
                                     .onClick {
                                         guard connectionState.restart() == .passed else { return }
@@ -200,7 +205,7 @@ struct LoginView: View {
 
                             // Log in with apple button
                             VStack(spacing: 5) {
-                                SingleButton("Mit Apple anmelden")
+                                SingleButton("log-in-with-apple-button-text", table: .logInSignIn, comment: "Text of log in with apple button")
                                     .leftSymbol(name: "applelogo")
                                     .leftColor(.white)
                                     .onClick {
@@ -221,14 +226,14 @@ struct LoginView: View {
                             // Sign in button
                             HStack(spacing: 10) {
 
-                                Text("Stattdessen")
+                                Text("instead-button-text", table: .logInSignIn, comment: "Text of instead button")
                                     .foregroundColor(.white)
                                     .lineLimit(1)
                                     .font(.system(size: 20, weight: .thin))
 
                                 NavigationLink(destination: SignInView()) {
                                     SingleOutlinedContent {
-                                        Text("Registrieren")
+                                        Text("sign-in-button-text", table: .logInSignIn, comment: "Text of sign in button")
                                             .foregroundColor(.textColor)
                                             .lineLimit(1)
                                             .font(.system(size: 20, weight: .thin))
@@ -242,7 +247,7 @@ struct LoginView: View {
                     Spacer()
 
                     // Log in button
-                    SingleButton("Anmelden")
+                    SingleButton("log-in-button-text", table: .logInSignIn, comment: "Text of log in button")
                         .fontSize(27)
                         .rightSymbol(name: "arrow.uturn.right")
                         .rightColor(.customGreen)

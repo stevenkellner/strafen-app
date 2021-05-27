@@ -161,7 +161,7 @@ struct SignInClubInputView: View {
                     .padding(.top, 50)
 
                 // Header
-                Header("Neuer Verein")
+                Header("new-club-header", table: .logInSignIn, comment: "New club header")
                     .padding(.top, 10)
 
                 Spacer()
@@ -172,9 +172,9 @@ struct SignInClubInputView: View {
 
                             // Club name
 
-                            TitledContent("Vereinsname") {
+                            TitledContent("club-name", table: .logInSignIn, comment: "club name text") {
                                 CustomTextField(.clubName, inputProperties: $inputProperties)
-                                    .placeholder("Vereinsname")
+                                    .placeholder("club-name", table: .logInSignIn, comment: "club name text")
                                     .defaultTextFieldSize
                                     .scrollViewProxy(proxy)
 
@@ -182,7 +182,7 @@ struct SignInClubInputView: View {
 
                             // Region code
                             VStack(spacing: 5) {
-                                TitledContent("Region") {
+                                TitledContent("region", table: .logInSignIn, comment: "region text") {
                                     RegionInput(inputProperties: $inputProperties)
                                 }
                                 ErrorMessageView($inputProperties.regionCodeErrorMessage)
@@ -191,15 +191,15 @@ struct SignInClubInputView: View {
                             // Aktivate in app payment
                             VStack(spacing: 5) {
                                 VStack(spacing: 5) {
-                                    TitledContent("In App Payment") {
-                                        CustomToggle("In App Payment", isOn: $inputProperties.inAppPayment)
+                                    TitledContent("in-app-payment", table: .logInSignIn, comment: "in app payment text") {
+                                        CustomToggle("in-app-payment", table: .logInSignIn, comment: "in app payment text", isOn: $inputProperties.inAppPayment)
                                             .fieldSize(width: UIScreen.main.bounds.width * 0.95, height: 55)
                                             .errorMessage($inputProperties.inAppPaymentErrorMessage)
                                     }
                                     ErrorMessageView($inputProperties.inAppPaymentErrorMessage)
                                 }
 
-                                Text("Wenn aktiv können deine Mitspieler die Strafen in der App zahlen und du sie dann auszahlen lassen.")
+                                Text("in-app-payment-description", table: .logInSignIn, comment: "In app payment description")
                                     .foregroundColor(.white)
                                     .font(.system(size: 24, weight: .thin))
                                     .multilineTextAlignment(.center)
@@ -209,15 +209,15 @@ struct SignInClubInputView: View {
 
                             // Club identifier
                             VStack(spacing: 5) {
-                                TitledContent("Vereinskennung") {
+                                TitledContent("club-identifier", table: .logInSignIn, comment: "club identifier text") {
                                     CustomTextField(.clubIdentifier, inputProperties: $inputProperties)
-                                        .placeholder("Vereinskennung")
+                                        .placeholder("club-identifier", table: .logInSignIn, comment: "club identifier text")
                                         .defaultTextFieldSize
                                         .scrollViewProxy(proxy)
                                 }
 
                                 // Text
-                                Text("Benutze die eindeutige Kennung um andere Spieler hinzuzufügen.")
+                                Text("club-identifier-description", table: .logInSignIn, comment: "Club identifier description")
                                     .foregroundColor(.white)
                                     .font(.system(size: 24, weight: .thin))
                                     .multilineTextAlignment(.center)
@@ -325,7 +325,7 @@ struct SignInClubInputView: View {
         var body: some View {
             SingleOutlinedContent {
                 Picker({ () -> String in
-                    guard let regionCode = inputProperties.regionCode else { return "Region auswählen" }
+                    guard let regionCode = inputProperties.regionCode else { return NSLocalizedString("select-region-button-text", table: .logInSignIn, comment: "Text of select region button") }
                     return Locale.regionName(of: regionCode)
                 }(), selection: $inputProperties.regionCode) {
                     ForEach(Locale.availableRegionCodes, id: \.self) { regionCode in

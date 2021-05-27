@@ -66,44 +66,28 @@ enum ErrorMessages {
 
     /// Raw message of the error
     var rawMessage: String {
+        let localizationKey: String
         switch self {
-        case .emptyField(code: _):
-            return "Dieses Feld darf nicht leer sein!"
-        case .invalidEmail:
-            return "Dies ist keine gültige Email!"
-        case .tooFewCharacters:
-            return "Passwort ist zu kurz!"
-        case .noUpperCharacter:
-            return "Muss einen Großbuchstaben enthalten!"
-        case .noLowerCharacter:
-            return "Muss einen Kleinbuchstaben enthalten!"
-        case .noDigit:
-            return "Muss eine Zahl enthalten!"
-        case .notSamePassword:
-            return "Passwörter stimmen nicht überein!"
-        case .internalErrorSignIn(code: _):
-            return "Es gab ein Problem beim Registrieren!"
-        case .internalErrorLogIn(code: _):
-            return "Es gab ein Problem beim Anmelden!"
-        case .alreadySignedInEmail:
-            return "Diese Email ist bereits registriert!"
-        case .alreadySignedIn:
-            return "Du bist bereits registriert!"
-        case .weakPassword:
-            return "Das Passwort ist zu schwach!"
-        case .clubNotExists:
-            return "Es gibt keinen Verein mit dieser Kennung!"
-        case .noRegionGiven:
-            return "Keine Region angegeben!"
-        case .notEuro:
-            return "Funktioniert nur in Ländern mit Euro!"
-        case .identifierAlreadyExists(code: _):
-            return "Vereinskennung ist bereits vergeben!"
-        case .incorrectPassword:
-            return "Das eingegebene Passwort ist falsch!"
-        case .notSignedIn:
-            return "Du bist noch nicht registriert!"
+        case .emptyField(code: _): localizationKey = "emptyField"
+        case .invalidEmail: localizationKey = "invalidEmail"
+        case .tooFewCharacters: localizationKey = "tooFewCharacters"
+        case .noUpperCharacter: localizationKey = "noUpperCharacter"
+        case .noLowerCharacter: localizationKey = "noLowerCharacter"
+        case .noDigit: localizationKey = "noDigit"
+        case .notSamePassword: localizationKey = "notSamePassword"
+        case .internalErrorSignIn(code: _): localizationKey = "internalErrorSignIn"
+        case .internalErrorLogIn(code: _): localizationKey = "internalErrorLogIn"
+        case .alreadySignedInEmail: localizationKey = "alreadySignedInEmail"
+        case .alreadySignedIn: localizationKey = "alreadySignedIn"
+        case .weakPassword: localizationKey = "weakPassword"
+        case .clubNotExists: localizationKey = "clubNotExists"
+        case .noRegionGiven: localizationKey = "noRegionGiven"
+        case .notEuro: localizationKey = "notEuro"
+        case .identifierAlreadyExists(code: _): localizationKey = "identifierAlreadyExists"
+        case .incorrectPassword: localizationKey = "incorrectPassword"
+        case .notSignedIn: localizationKey = "notSignedIn"
         }
+        return NSLocalizedString(localizationKey, table: .errorMessages, comment: "Localizated error message")
     }
 
     /// Error code

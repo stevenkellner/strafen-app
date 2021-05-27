@@ -30,6 +30,18 @@ struct TitledContent<Content>: View where Content: View {
         self.content = content()
     }
 
+    /// Init with localized string
+    /// - Parameters:
+    ///   - key: key of localized string
+    ///   - table: table of localization
+    ///   - replaceDict: dictionary to replace for string interpolation   
+    ///   - comment: comment for localization
+    /// - Parameter content: content
+    init(_ key: String, table: LocalizationTables, replaceDict: [String: String] = [:], comment: String, @ViewBuilder content: () -> Content) {
+        self.title = NSLocalizedString(key, table: table, replaceDict: replaceDict, comment: comment)
+        self.content = content()
+    }
+
     var body: some View {
         VStack(spacing: 5) {
 

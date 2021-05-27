@@ -5,7 +5,7 @@
 //  Created by Steven on 25.05.21.
 //
 
-import Foundation
+import SwiftUI
 
 /// Contains all properies of the settings of the app of this device
 class Settings: ObservableObject {
@@ -76,7 +76,7 @@ extension Settings: Encodable {
 extension Settings {
 
     /// Properties of logged in person
-    struct Person: Codable {
+    class Person: ObservableObject, Codable {
 
         /// Properties of the club
         let club: Club
@@ -92,5 +92,13 @@ extension Settings {
 
         /// Indicates whether logged in person is cashier of the club
         let isCashier: Bool
+
+        init(club: Club, id: FirebasePerson.ID, name: PersonName, signInDate: Date, isCashier: Bool) { // swiftlint:disable:this identifier_name
+            self.club = club
+            self.id = id
+            self.name = name
+            self.signInDate = signInDate
+            self.isCashier = isCashier
+        }
     }
 }

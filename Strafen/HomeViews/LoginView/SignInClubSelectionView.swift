@@ -107,7 +107,7 @@ struct SignInClubSelectionView: View {
                     .padding(.top, 50)
 
                 // Header
-                Header("Registrieren")
+                Header("sign-in-header", table: .logInSignIn, comment: "Header of sign in views")
                     .padding(.top, 10)
 
                 Spacer()
@@ -115,14 +115,14 @@ struct SignInClubSelectionView: View {
                 VStack(spacing: 5) {
 
                     // Club identifer input
-                    TitledContent("Vereinskennung") {
+                    TitledContent("club-identifier", table: .logInSignIn, comment: "club identifier text") {
                         VStack(spacing: 5) {
 
                             HStack(spacing: 0) {
 
                                 // Textfield
                                 CustomTextField(.clubIdentifier, inputProperties: $inputProperties)
-                                    .placeholder("Vereinskennung")
+                                    .placeholder("club-identifier", table: .logInSignIn, comment: "club identifier text")
                                     .textFieldSize(width: UIScreen.main.bounds.width * 0.75, height: 50)
                                     .hideErrorMessage
 
@@ -149,7 +149,7 @@ struct SignInClubSelectionView: View {
                         }
                     }
 
-                    Text("Du bekommst die Kennung von deinem Trainer oder Kassier.")
+                    Text("club-identifier-from-cashier-message", table: .logInSignIn, comment: "Club identifier from cashier message")
                         .foregroundColor(.white)
                         .font(.system(size: 24, weight: .thin))
                         .multilineTextAlignment(.center)
@@ -157,19 +157,19 @@ struct SignInClubSelectionView: View {
                         .lineLimit(2)
 
                     // "or" Text
-                    Text("oder")
+                    Text("or-button-text", table: .logInSignIn, comment: "Text of or button")
                         .foregroundColor(.textColor)
                         .font(.system(size: 20, weight: .light))
                         .padding(15)
                         .lineLimit(2)
 
-                    SingleButton("Verein Erstellen")
+                    SingleButton("create-club-button-text", table: .logInSignIn, comment: "Text of create club button")
                         .fontSize(24)
                         .leftSymbol(name: "plus.square")
                         .leftColor(.customBlue)
                         .onClick { navigationLinkSignInClubInputViewActive = true }
 
-                    Text("Wenn du der Kassier bist:\nErstelle eine neuen Verein.")
+                    Text("you-cashier-create-club-message", table: .logInSignIn, comment: "You cashier create club message")
                         .foregroundColor(.white)
                         .font(.system(size: 24, weight: .thin))
                         .multilineTextAlignment(.center)

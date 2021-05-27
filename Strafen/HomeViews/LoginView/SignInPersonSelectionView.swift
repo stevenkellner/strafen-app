@@ -62,12 +62,12 @@ struct SignInPersonSelectionView: View {
                     .padding(.top, 50)
 
                 // Header
-                Header("Person Auswählen")
+                Header("select-person-header", table: .logInSignIn, comment: "Select person header")
                     .padding(.top, 10)
 
                 // Select person text
                 if inputProperties.fetchConnectionState != .failed && inputProperties.errorMessage == nil {
-                    Text("Wähle deinen Namen aus, wenn er vorhanden ist.")
+                    Text("select-name-if-available-message", table: .logInSignIn, comment: "Select name if available message")
                         .foregroundColor(.white)
                         .font(.system(size: 24, weight: .thin))
                         .multilineTextAlignment(.center)
@@ -91,13 +91,13 @@ struct SignInPersonSelectionView: View {
                         }.padding(.vertical, 10)
                     }
                 } else if inputProperties.fetchConnectionState == .failed {
-                    Text("Keine Internetverbindung")
+                    Text("no-connection-message", table: .otherTexts, comment: "No connection message")
                         .foregroundColor(.white)
                         .font(.system(size: 24, weight: .thin))
                         .multilineTextAlignment(.center)
                         .padding(.horizontal, 15)
                         .lineLimit(2)
-                    Text("Erneut versuchen")
+                    Text("try-again-message", table: .otherTexts, comment: "Erneut versuchen")
                         .foregroundColor(.customRed)
                         .font(.system(size: 24, weight: .light))
                         .multilineTextAlignment(.center)
@@ -118,7 +118,7 @@ struct SignInPersonSelectionView: View {
                 Spacer()
 
                 // Confirm button
-                SingleButton("Registrieren")
+                SingleButton("sign-in-button-text", table: .logInSignIn, comment: "Text of sign in button")
                     .fontSize(27)
                     .rightSymbol(name: "signpost.right")
                     .rightColor(.customGreen)

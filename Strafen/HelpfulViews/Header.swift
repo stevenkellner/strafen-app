@@ -25,6 +25,16 @@ struct Header: View {
         self.title = title
     }
 
+    /// Init header with localized string
+    /// - Parameters:
+    ///   - key: key of lacalized string
+    ///   - table: table of localization
+    ///   - replaceDict: dictionary to replace for string interpolation   
+    ///   - comment: comment for localization
+    init(_ key: String, table: LocalizationTables, replaceDict: [String: String] = [:], comment: String) {
+        self.title = NSLocalizedString(key, table: table, replaceDict: replaceDict, comment: comment)
+    }
+
     public var body: some View {
         VStack(spacing: 10) {
 

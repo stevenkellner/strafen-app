@@ -1,0 +1,43 @@
+/* 
+  OtherTexts.strings
+  Strafen
+
+  Created by Steven on 27.05.21.
+  
+*/
+
+// Text of back button
+"back-button-text" = "Zurück";
+
+// Placeholder text of textfield
+"textfield-placeholder" = "Platzhalter";
+
+// Toggle state `on`
+"toggle-state-on" = "AN";
+
+// Toggle state `off`
+"toggle-state-off" = "AUS";
+
+// Text of cancel button
+"cancel-button-text" = "Abbrechen";
+
+// Text of confirm button
+"confirm-button-text" = "Bestätigen";
+
+// Text of continue button
+"continue-button-text" = "Weiter";
+
+// Text of understood button
+"understood-button-text" = "Verstanden";
+
+// Region code
+"region-code" = "DE";
+
+// Language code
+"language-code" = "de";
+
+// No connection message
+"no-connection-message" = "Keine Internetverbindung";
+
+// Try again message
+"try-again-message" = "Erneut versuchen";

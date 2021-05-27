@@ -1,0 +1,61 @@
+/* 
+  ErrorMessages.strings
+  Strafen
+
+  Created by Steven on 26.05.21.
+  
+*/
+
+// Textfield is empty
+"emptyField" = "Dieses Feld darf nicht leer sein!";
+
+// Invalid email
+"invalidEmail" = "Dies ist keine gültige Email!";
+
+// Less than 8 characters in password
+"tooFewCharacters" = "Passwort ist zu kurz!";
+
+// No upper character in password
+"noUpperCharacter" = "Muss einen Großbuchstaben enthalten!";
+
+// No lower character in password
+"noLowerCharacter" = "Muss einen Kleinbuchstaben enthalten!";
+
+// No digit in password
+"noDigit" = "Muss eine Zahl enthalten!";
+
+// Not same password
+"notSamePassword" = "Passwörter stimmen nicht überein!";
+
+// Internal error for sign in
+"internalErrorSignIn" = "Es gab ein Problem beim Registrieren!";
+
+// Internal error for log in
+"internalErrorLogIn" = "Es gab ein Problem beim Anmelden!";
+
+// Email is already signed in
+"alreadySignedInEmail" = "Diese Email ist bereits registriert!";
+
+// User is already signed in
+"alreadySignedIn" = "Du bist bereits registriert!";
+
+// Password is too weak
+"weakPassword" = "Das Passwort ist zu schwach!";
+
+// Club doesn't exist
+"clubNotExists" = "Es gibt keinen Verein mit dieser Kennung!";
+
+// No region given
+"noRegionGiven" = "Keine Region angegeben!";
+
+// In app payment currency isn't euro
+"notEuro" = "Funktioniert nur in Ländern mit Euro!";
+
+/// Club identifier already exists
+"identifierAlreadyExists" = "Vereinskennung ist bereits vergeben!";
+
+// Password is incorrect
+"incorrectPassword" = "Das eingegebene Passwort ist falsch!";
+
+// Not signed in
+"notSignedIn" = "Du bist noch nicht registriert!";

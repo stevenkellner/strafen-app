@@ -57,6 +57,13 @@
 		B0720817264D89200084FDE6 /* ConnectionState.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0720816264D89200084FDE6 /* ConnectionState.swift */; };
 		B0720819264D8D580084FDE6 /* OperationResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0720818264D8D580084FDE6 /* OperationResult.swift */; };
 		B072081C264DA0270084FDE6 /* SignInProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = B072081B264DA0270084FDE6 /* SignInProperty.swift */; };
+		B0879188265ECE3C0065C5E7 /* DismissHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0879187265ECE3C0065C5E7 /* DismissHandler.swift */; };
+		B0879196265ED8550065C5E7 /* ErrorMessages.strings in Resources */ = {isa = PBXBuildFile; fileRef = B0879198265ED8550065C5E7 /* ErrorMessages.strings */; };
+		B087919C265EDC060065C5E7 /* ErrorMessages.strings in Resources */ = {isa = PBXBuildFile; fileRef = B087919E265EDC060065C5E7 /* ErrorMessages.strings */; };
+		B08791A1265F6F610065C5E7 /* OtherTexts.strings in Resources */ = {isa = PBXBuildFile; fileRef = B08791A3265F6F610065C5E7 /* OtherTexts.strings */; };
+		B08791AA265F73430065C5E7 /* OtherTexts.strings in Resources */ = {isa = PBXBuildFile; fileRef = B08791A8265F73430065C5E7 /* OtherTexts.strings */; };
+		B08791AF265F84480065C5E7 /* LogIn-SignIn.strings in Resources */ = {isa = PBXBuildFile; fileRef = B08791AD265F84480065C5E7 /* LogIn-SignIn.strings */; };
+		B08791B2265F84600065C5E7 /* LogIn-SignIn.strings in Resources */ = {isa = PBXBuildFile; fileRef = B08791B0265F84600065C5E7 /* LogIn-SignIn.strings */; };
 		B08DA658265405DA00FE0C52 /* SignInEmailViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B08DA657265405DA00FE0C52 /* SignInEmailViewTests.swift */; };
 		B08FC117265D31C600F63975 /* DecodableDefault.swift in Sources */ = {isa = PBXBuildFile; fileRef = B08FC116265D31C600F63975 /* DecodableDefault.swift */; };
 		B08FC119265D38C400F63975 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = B08FC118265D38C400F63975 /* Settings.swift */; };
@@ -162,6 +169,13 @@
 		B0720816264D89200084FDE6 /* ConnectionState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectionState.swift; sourceTree = "<group>"; };
 		B0720818264D8D580084FDE6 /* OperationResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OperationResult.swift; sourceTree = "<group>"; };
 		B072081B264DA0270084FDE6 /* SignInProperty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInProperty.swift; sourceTree = "<group>"; };
+		B0879187265ECE3C0065C5E7 /* DismissHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DismissHandler.swift; sourceTree = "<group>"; };
+		B0879197265ED8550065C5E7 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/ErrorMessages.strings; sourceTree = "<group>"; };
+		B087919D265EDC060065C5E7 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/ErrorMessages.strings; sourceTree = "<group>"; };
+		B08791A2265F6F610065C5E7 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/OtherTexts.strings; sourceTree = "<group>"; };
+		B08791A9265F73430065C5E7 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/OtherTexts.strings; sourceTree = "<group>"; };
+		B08791AE265F84480065C5E7 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = "de.lproj/LogIn-SignIn.strings"; sourceTree = "<group>"; };
+		B08791B1265F84600065C5E7 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = "en.lproj/LogIn-SignIn.strings"; sourceTree = "<group>"; };
 		B08DA657265405DA00FE0C52 /* SignInEmailViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInEmailViewTests.swift; sourceTree = "<group>"; };
 		B08FC116265D31C600F63975 /* DecodableDefault.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DecodableDefault.swift; sourceTree = "<group>"; };
 		B08FC118265D38C400F63975 /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
@@ -256,6 +270,7 @@
 				B021DF3D264918D300FD418F /* HelpfulViews */,
 				B0254E062641B54C0083752B /* FirebaseInterface */,
 				B0447C1E2641B90600148430 /* Utilities */,
+				B0879192265ED8190065C5E7 /* Localizations */,
 			);
 			path = Strafen;
 			sourceTree = "<group>";
@@ -375,6 +390,7 @@
 				B0447C192641B78100148430 /* AppDelegate.swift */,
 				B03986502652776F00C97DF2 /* Club.swift */,
 				B08FC116265D31C600F63975 /* DecodableDefault.swift */,
+				B0879187265ECE3C0065C5E7 /* DismissHandler.swift */,
 				B0AF0A992643303500DF4DC9 /* FineReason.swift */,
 				B0225D2C26525D8900D75CDA /* LatePaymentInterest.swift */,
 				B0E9C86726447AF100FB484E /* ListEnvironment.swift */,
@@ -414,6 +430,35 @@
 				B072080B264C56E40084FDE6 /* ValidationResult.swift */,
 			);
 			path = Enumerations;
+			sourceTree = "<group>";
+		};
+		B0879192265ED8190065C5E7 /* Localizations */ = {
+			isa = PBXGroup;
+			children = (
+				B0879199265EDBF50065C5E7 /* English */,
+				B0879193265ED82B0065C5E7 /* German */,
+			);
+			path = Localizations;
+			sourceTree = "<group>";
+		};
+		B0879193265ED82B0065C5E7 /* German */ = {
+			isa = PBXGroup;
+			children = (
+				B0879198265ED8550065C5E7 /* ErrorMessages.strings */,
+				B08791A3265F6F610065C5E7 /* OtherTexts.strings */,
+				B08791AD265F84480065C5E7 /* LogIn-SignIn.strings */,
+			);
+			path = German;
+			sourceTree = "<group>";
+		};
+		B0879199265EDBF50065C5E7 /* English */ = {
+			isa = PBXGroup;
+			children = (
+				B087919E265EDC060065C5E7 /* ErrorMessages.strings */,
+				B08791A8265F73430065C5E7 /* OtherTexts.strings */,
+				B08791B0265F84600065C5E7 /* LogIn-SignIn.strings */,
+			);
+			path = English;
 			sourceTree = "<group>";
 		};
 		B08DA6552654057400FE0C52 /* LoginViewTests */ = {
@@ -566,6 +611,7 @@
 			knownRegions = (
 				en,
 				Base,
+				de,
 			);
 			mainGroup = B01E96A22641AEF50034E3D1;
 			productRefGroup = B01E96AC2641AEF60034E3D1 /* Products */;
@@ -583,8 +629,14 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B0879196265ED8550065C5E7 /* ErrorMessages.strings in Resources */,
 				B0A761A12642E20C003B170F /* KeysInfo.plist in Resources */,
 				B01E96B62641AEF80034E3D1 /* Preview Assets.xcassets in Resources */,
+				B087919C265EDC060065C5E7 /* ErrorMessages.strings in Resources */,
+				B08791AA265F73430065C5E7 /* OtherTexts.strings in Resources */,
+				B08791AF265F84480065C5E7 /* LogIn-SignIn.strings in Resources */,
+				B08791B2265F84600065C5E7 /* LogIn-SignIn.strings in Resources */,
+				B08791A1265F6F610065C5E7 /* OtherTexts.strings in Resources */,
 				B01E96B32641AEF80034E3D1 /* Assets.xcassets in Resources */,
 				B0254E082641B6130083752B /* GoogleService-Info.plist in Resources */,
 			);
@@ -721,6 +773,7 @@
 				B0A4629B2649A1B90045D2BE /* BackButton.swift in Sources */,
 				B0AF0A9426432C9500DF4DC9 /* Amount.swift in Sources */,
 				B0A4629F2649A7070045D2BE /* CustomTextField.swift in Sources */,
+				B0879188265ECE3C0065C5E7 /* DismissHandler.swift in Sources */,
 				B0225D24265119D300D75CDA /* CustomToggle.swift in Sources */,
 				B0A46295264953270045D2BE /* Outline.swift in Sources */,
 				B0720817264D89200084FDE6 /* ConnectionState.swift in Sources */,
@@ -803,6 +856,57 @@
 			targetProxy = B0A761AD2642ECBC003B170F /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		B0879198265ED8550065C5E7 /* ErrorMessages.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				B0879197265ED8550065C5E7 /* de */,
+			);
+			name = ErrorMessages.strings;
+			sourceTree = "<group>";
+		};
+		B087919E265EDC060065C5E7 /* ErrorMessages.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				B087919D265EDC060065C5E7 /* en */,
+			);
+			name = ErrorMessages.strings;
+			sourceTree = "<group>";
+		};
+		B08791A3265F6F610065C5E7 /* OtherTexts.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				B08791A2265F6F610065C5E7 /* de */,
+			);
+			name = OtherTexts.strings;
+			sourceTree = "<group>";
+		};
+		B08791A8265F73430065C5E7 /* OtherTexts.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				B08791A9265F73430065C5E7 /* en */,
+			);
+			name = OtherTexts.strings;
+			sourceTree = "<group>";
+		};
+		B08791AD265F84480065C5E7 /* LogIn-SignIn.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				B08791AE265F84480065C5E7 /* de */,
+			);
+			name = "LogIn-SignIn.strings";
+			sourceTree = "<group>";
+		};
+		B08791B0265F84600065C5E7 /* LogIn-SignIn.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				B08791B1265F84600065C5E7 /* en */,
+			);
+			name = "LogIn-SignIn.strings";
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		B01E96B82641AEF80034E3D1 /* Debug */ = {
@@ -927,6 +1031,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_USE_OPTIMIZATION_PROFILE = YES;
 				CODE_SIGN_ENTITLEMENTS = Strafen/Controller/Strafen.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = "$(SHARED_MARKETING_VERSION)";
@@ -955,6 +1060,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_USE_OPTIMIZATION_PROFILE = YES;
 				CODE_SIGN_ENTITLEMENTS = Strafen/Controller/Strafen.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = "$(SHARED_MARKETING_VERSION)";
