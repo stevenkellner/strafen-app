@@ -15,8 +15,25 @@ import SwiftUI
 
     /// Init with list of a firebase list type
     /// - Parameter list: list of a firebase list type
-    init(list: [ListType]) {
+    init(_ list: [ListType]) {
         self.list = list
+    }
+
+    /// Init with list of a firebase list type and observes the list
+    /// - Parameters:
+    ///   - list: list of a firebase list type
+    ///   - clubId: id of club
+    init(_ list: [ListType], clubId: Club.ID) {
+        self.list = list
+        observeList(clubId: clubId)
+    }
+
+    /// Observes list on database
+    /// - Parameter clubId: id of club
+    func observeList(clubId: Club.ID) {
+        FirebaseObserver.shared.observeList(ListType.self, clubId: clubId) { changeList in
+            changeList(&self.list)
+        }
     }
 }
 

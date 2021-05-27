@@ -56,3 +56,6 @@
 
 // Tab bar settings
 "tab-bar-settings" = "Einstellungen";
+
+// No available view
+"no-available-view" = "Keine Seite verfügbar!";

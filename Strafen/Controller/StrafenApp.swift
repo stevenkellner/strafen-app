@@ -16,6 +16,7 @@ struct StrafenApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .environmentObject(HomeTab.shared)
         }
     }
 }

@@ -79,7 +79,7 @@ extension Settings {
     class Person: ObservableObject, Codable {
 
         /// Properties of the club
-        let club: Club
+        var club: Club
 
         /// Id of logged in person
         let id: FirebasePerson.ID // swiftlint:disable:this identifier_name
