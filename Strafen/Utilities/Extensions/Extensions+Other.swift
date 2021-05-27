@@ -195,6 +195,12 @@ extension Color {
 
     /// Yellow color
     static let customYellow = Color(red: 231, green: 197, blue: 5)
+
+    /// Tab bar color
+    static let tabBarColor = Color(red: 40, green: 40, blue: 40)
+
+    /// Tab bar border color
+    static let tabBarBorderColor = Color(red: 180, green: 180, blue: 180)
 }
 
 extension View {

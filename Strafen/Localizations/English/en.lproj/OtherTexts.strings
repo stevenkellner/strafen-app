@@ -41,3 +41,18 @@
 
 // Try again message
 "try-again-message" = "Try again";
+
+// Tab bar profile detail
+"tab-bar-profile-detail" = "Profile";
+
+// Tab bar person list
+"tab-bar-person-list" = "Persons";
+
+// Tab bar reason list
+"tab-bar-reason-list" = "Penalty Catalog";
+
+// Tab bar add new fine
+"tab-bar-add-new-fine" = "Fine";
+
+// Tab bar settings
+"tab-bar-settings" = "Settings";

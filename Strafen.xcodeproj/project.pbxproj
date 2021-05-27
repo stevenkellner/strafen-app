@@ -47,6 +47,8 @@
 		B04AD2AA26567464001A760F /* PersonRowImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B04AD2A926567464001A760F /* PersonRowImage.swift */; };
 		B04AD2AC26567CD6001A760F /* RandomInstanceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = B04AD2AB26567CD6001A760F /* RandomInstanceProtocol.swift */; };
 		B04AD2AE26569614001A760F /* SignInPersonSelectionViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B04AD2AD26569614001A760F /* SignInPersonSelectionViewTests.swift */; };
+		B050AC93265F9AAE000B3E84 /* HomeTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = B050AC92265F9AAE000B3E84 /* HomeTab.swift */; };
+		B050AC95265FA152000B3E84 /* TabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B050AC94265FA152000B3E84 /* TabBar.swift */; };
 		B066A2BF26492E2700AB2715 /* SignInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B066A2BE26492E2700AB2715 /* SignInView.swift */; };
 		B07148D5264DB45000C5F7EF /* SignInClubSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B07148D4264DB45000C5F7EF /* SignInClubSelectionView.swift */; };
 		B07148D9264E938800C5F7EF /* Importance.swift in Sources */ = {isa = PBXBuildFile; fileRef = B07148D8264E938800C5F7EF /* Importance.swift */; };
@@ -159,6 +161,8 @@
 		B04AD2A926567464001A760F /* PersonRowImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonRowImage.swift; sourceTree = "<group>"; };
 		B04AD2AB26567CD6001A760F /* RandomInstanceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RandomInstanceProtocol.swift; sourceTree = "<group>"; };
 		B04AD2AD26569614001A760F /* SignInPersonSelectionViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInPersonSelectionViewTests.swift; sourceTree = "<group>"; };
+		B050AC92265F9AAE000B3E84 /* HomeTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = HomeTab.swift; path = ../../../../../../../Applications/HomeTab.swift; sourceTree = "<group>"; };
+		B050AC94265FA152000B3E84 /* TabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBar.swift; sourceTree = "<group>"; };
 		B066A2BE26492E2700AB2715 /* SignInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInView.swift; sourceTree = "<group>"; };
 		B07148D4264DB45000C5F7EF /* SignInClubSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInClubSelectionView.swift; sourceTree = "<group>"; };
 		B07148D8264E938800C5F7EF /* Importance.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Importance.swift; sourceTree = "<group>"; };
@@ -312,6 +316,7 @@
 				B0A4629226494AB80045D2BE /* RoundedCorners.swift */,
 				B0A4629626497FD00045D2BE /* SingleButton.swift */,
 				B0A462A02649B3020045D2BE /* TitledContent.swift */,
+				B050AC94265FA152000B3E84 /* TabBar.swift */,
 			);
 			path = HelpfulViews;
 			sourceTree = "<group>";
@@ -392,6 +397,7 @@
 				B08FC116265D31C600F63975 /* DecodableDefault.swift */,
 				B0879187265ECE3C0065C5E7 /* DismissHandler.swift */,
 				B0AF0A992643303500DF4DC9 /* FineReason.swift */,
+				B050AC92265F9AAE000B3E84 /* HomeTab.swift */,
 				B0225D2C26525D8900D75CDA /* LatePaymentInterest.swift */,
 				B0E9C86726447AF100FB484E /* ListEnvironment.swift */,
 				B02221AD2641D6850005295B /* PersonName.swift */,
@@ -788,12 +794,14 @@
 				B0A4629726497FD00045D2BE /* SingleButton.swift in Sources */,
 				B07148D9264E938800C5F7EF /* Importance.swift in Sources */,
 				B0720814264D6B9C0084FDE6 /* TextFieldsProtocol.swift in Sources */,
+				B050AC93265F9AAE000B3E84 /* HomeTab.swift in Sources */,
 				B0A4629326494AB90045D2BE /* RoundedCorners.swift in Sources */,
 				B0225D2B26525C9A00D75CDA /* FFChangeLatePaymentInterestCall.swift in Sources */,
 				B02221B02641D73C0005295B /* FirebaseListType.swift in Sources */,
 				B0225D2626513C4900D75CDA /* FFExistsClubWithIdentifierCall.swift in Sources */,
 				B04AD2AC26567CD6001A760F /* RandomInstanceProtocol.swift in Sources */,
 				B0AF0A9C2643328800DF4DC9 /* Payed.swift in Sources */,
+				B050AC95265FA152000B3E84 /* TabBar.swift in Sources */,
 				B09CCE1826593E4C008C545A /* SignInAppleController.swift in Sources */,
 				B0225D312652619B00D75CDA /* FFChangeFinePayed.swift in Sources */,
 				B07148D5264DB45000C5F7EF /* SignInClubSelectionView.swift in Sources */,

@@ -20,9 +20,17 @@ struct ContentView: View {
 
                 VStack(spacing: 0) {
 
-                }.maxFrame
-                    .environmentObject(person)
+                    Text("asldkjf")
+                        .edgesIgnoringSafeArea(.all)
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+
+                    // Tab bar
+                    TabBar()
+                        .edgesIgnoringSafeArea([.horizontal, .top])
+
+                }.environmentObject(person)
                     .environmentObject(DismissHandler())
+                    .environmentObject(HomeTab.shared)
 
             } else {
 
