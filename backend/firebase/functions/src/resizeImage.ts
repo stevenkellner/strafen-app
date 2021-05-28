@@ -7,7 +7,7 @@ import {join, dirname} from "path";
 
 const firebaseStorage = new storage.Storage();
 
-export const generateThumbs = functions.region("europe-west1").storage .object().onFinalize(async (object) => {
+export const generateThumbs = functions.region("europe-west1").storage.object().onFinalize(async (object) => {
     const bucket = firebaseStorage.bucket(object.bucket);
     const filePath = object.name;
     if (filePath == null) {
@@ -23,7 +23,7 @@ export const generateThumbs = functions.region("europe-west1").storage .object()
     const tmpWorkingDir = join(tmpdir(), "thumbs");
     const tmpFilePath = join(tmpWorkingDir, "source.png");
 
-    if (fileName.includes("thumbs@") ||
+    if (fileName.includes("thumb@") ||
       object.contentType == null ||
       !object.contentType.includes("image") ||
       fileComponents[0] != "images" ||
@@ -66,5 +66,5 @@ export const generateThumbs = functions.region("europe-west1").storage .object()
     await Promise.all(uploadPromises);
 
     // 5. Cleanup remove the tmp/thumbs from the filesystem
-    return fs.remove(tmpWorkingDir);
+    await fs.remove(tmpWorkingDir);
 });

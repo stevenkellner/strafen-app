@@ -33,7 +33,7 @@ export const changeFinePayed = changeFinePayedCall;
 export const getPersonProperties = getPersonPropertiesCall;
 export const existsPersonWithUserId = existsPersonWithUserIdCall;
 
-export const generateThumbsNew = ri.generateThumbs;
+export const generateThumbs = ri.generateThumbs;
 
 export const newTestClub = tf.newTestClub;
 export const deleteTestClub = tf.deleteTestClub;
