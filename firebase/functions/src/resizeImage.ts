@@ -21,8 +21,8 @@ export const generateThumbs = functions.region("europe-west1").storage
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       const fileName = fileComponents.pop()!;
       const dirName = dirname(filePath);
-      const tmpWorkingDir = join(tmpdir(), "thumbs");
-      const tmpFilePath = join(tmpWorkingDir, "source.png");
+      const tmpWorkingDir = join(tmpdir(), "thumbs", fileComponents[2]);
+      const tmpFilePath = join(tmpWorkingDir, "source.jpeg");
 
       if (fileName.includes("thumb@") ||
       object.contentType == null ||
@@ -43,8 +43,8 @@ export const generateThumbs = functions.region("europe-west1").storage
 
       // 3. Resize the images and define an array of upload promises
       const sizes = [64, 128, 256];
-
-      const uploadPromises = sizes.map(async (size) => {
+      for (let index = 0; index < sizes.length; index++) {
+        const size = sizes[index];
         const thumbName = `thumb@${size}`;
         const thumbPath = join(tmpWorkingDir, thumbName);
 
@@ -55,16 +55,13 @@ export const generateThumbs = functions.region("europe-west1").storage
             .toFile(thumbPath);
 
         // Upload to GCS
-        return bucket.upload(thumbPath, {
+        await bucket.upload(thumbPath, {
           destination: join(dirName, thumbName),
           metadata: {
             contentType: object.contentType,
           },
         });
-      });
-
-      // 4. Run the upload operations
-      await Promise.all(uploadPromises);
+      }
 
       // 5. Cleanup remove the tmp/thumbs from the filesystem
       await fs.remove(tmpWorkingDir);
