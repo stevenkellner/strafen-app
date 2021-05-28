@@ -5,37 +5,36 @@ import * as fs from "fs-extra";
 import {tmpdir} from "os";
 import {join, dirname} from "path";
 
-const gcs = new storage.Storage();
+const firebaseStorage = new storage.Storage();
 
 export const generateThumbs = functions.region("europe-west1").storage
-    .object()
-    .onFinalize(async (object) => {
-      const bucket = gcs.bucket(object.bucket);
+    .object().onFinalize(async (object) => {
+      const bucket = firebaseStorage.bucket(object.bucket);
       const filePath = object.name;
       if (filePath == null) {
         return;
       }
-      const fileName = filePath.split("/").pop();
-      if (fileName == null) {
+      const fileComponents = filePath.split("/");
+      if (fileComponents.length != 4) {
         return;
       }
-      const bucketDir = dirname(filePath);
-
-      const workingDir = join(tmpdir(), "thumbs");
-      const tmpFilePath = join(workingDir, "source.png");
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      const fileName = fileComponents.pop()!;
+      const dirName = dirname(filePath);
+      const tmpWorkingDir = join(tmpdir(), "thumbs");
+      const tmpFilePath = join(tmpWorkingDir, "source.png");
 
       if (fileName.includes("thumb@") ||
-        object.contentType == null ||
-        !object.contentType.includes("image") ||
-        filePath.split("/").length < 2 ||
-        filePath.split("/")[0] != "images" ||
-        !(filePath.split("/")[1] == "person" ||
-        filePath.split("/")[1] == "club")) {
+      object.contentType == null ||
+      !object.contentType.includes("image") ||
+      fileComponents[0] != "images" ||
+      fileComponents[1] == "person" ||
+      fileComponents[1] == "club") {
         return;
       }
 
       // 1. Ensure thumbnail dir exists
-      await fs.ensureDir(workingDir);
+      await fs.ensureDir(tmpWorkingDir);
 
       // 2. Download Source File
       await bucket.file(filePath).download({
@@ -46,8 +45,8 @@ export const generateThumbs = functions.region("europe-west1").storage
       const sizes = [64, 128, 256];
 
       const uploadPromises = sizes.map(async (size) => {
-        const thumbName = `thumb@${size}_${fileName}`;
-        const thumbPath = join(workingDir, thumbName);
+        const thumbName = `thumb@${size}`;
+        const thumbPath = join(tmpWorkingDir, thumbName);
 
         // Resize source image
         await sharp(tmpFilePath)
@@ -57,7 +56,7 @@ export const generateThumbs = functions.region("europe-west1").storage
 
         // Upload to GCS
         return bucket.upload(thumbPath, {
-          destination: join(bucketDir, thumbName),
+          destination: join(dirName, thumbName),
           metadata: {
             contentType: object.contentType,
           },
@@ -68,5 +67,5 @@ export const generateThumbs = functions.region("europe-west1").storage
       await Promise.all(uploadPromises);
 
       // 5. Cleanup remove the tmp/thumbs from the filesystem
-      return fs.remove(workingDir);
+      await fs.remove(tmpWorkingDir);
     });

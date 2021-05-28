@@ -1,6 +1,5 @@
 import * as cf from "./callableFunctions";
 import * as ri from "./resizeImage";
-// import * as gtc from "./generateTestClub";
 
 export const newClub = cf.newClub;
 export const deleteClub = cf.deleteClub;
@@ -20,4 +19,3 @@ export const saveCreditCard = cf.saveCreditCard;
 
 export const generateThumbs = ri.generateThumbs;
 
-// export const generateTestClub = gtc.generateTestClub;
