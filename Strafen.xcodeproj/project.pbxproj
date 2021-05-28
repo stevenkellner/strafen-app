@@ -1760,7 +1760,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = "$(SHARED_CURRENT_PROJECT_VERSION)";
+				MARKETING_VERSION = 2.0;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D COCOAPODS -DTARGET_MAIN_APP";
 				PRODUCT_BUNDLE_IDENTIFIER = stevenkellner.Strafen;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1790,7 +1790,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = "$(SHARED_CURRENT_PROJECT_VERSION)";
+				MARKETING_VERSION = 2.0;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D COCOAPODS -DTARGET_MAIN_APP";
 				PRODUCT_BUNDLE_IDENTIFIER = stevenkellner.Strafen;
 				PRODUCT_NAME = "$(TARGET_NAME)";
