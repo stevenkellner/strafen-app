@@ -9,47 +9,53 @@ import FirebaseStorage
 
 /// Used to storage and fetch images from server
 class ImageStorage {
-    
+
     /// Shared instance for singelton
     static let shared = ImageStorage()
-    
+
     /// Private init for singleton
     private init() {}
-    
+
     /// Image type
     enum ImageType {
-        
+
         /// Club image
         case clubImage(clubId: Club.ID)
-        
+
         /// Person image
         case personImage(clubId: Club.ID, personId: Person.ID)
-        
+
         /// Url to image
         var url: URL {
             switch self {
             case .clubImage(clubId: let clubId):
-                let imageName = clubId.uuidString.uppercased()
-                return URL.clubImage(with: imageName)
+                return URL(string: "images")!
+                    .appendingPathComponent(clubId.uuidString.uppercased())
+                    .appendingPathComponent("original")
             case .personImage(clubId: let clubId, personId: let personId):
-                let imageName = personId.uuidString.uppercased()
-                return URL.personImage(with: imageName, clubId: clubId)
+                return URL(string: "images")!
+                    .appendingPathComponent(clubId.uuidString.uppercased())
+                    .appendingPathComponent(personId.uuidString.uppercased())
+                    .appendingPathComponent("original")
             }
         }
-        
+
         /// Url to image with image size
         func url(with imageSize: ImageSize) -> URL {
             switch self {
             case .clubImage(clubId: let clubId):
-                let imageName = imageSize.imageName(of: clubId.uuidString.uppercased())
-                return URL.clubImage(with: imageName)
+                return URL(string: "images")!
+                    .appendingPathComponent(clubId.uuidString.uppercased())
+                    .appendingPathComponent(imageSize.imageName)
             case .personImage(clubId: let clubId, personId: let personId):
-                let imageName = imageSize.imageName(of: personId.uuidString.uppercased())
-                return URL.personImage(with: imageName, clubId: clubId)
+                return URL(string: "images")!
+                    .appendingPathComponent(clubId.uuidString.uppercased())
+                    .appendingPathComponent(personId.uuidString.uppercased())
+                    .appendingPathComponent(imageSize.imageName)
             }
         }
     }
-    
+
     /// Size of downloaded image
     enum ImageSize: Int, CaseIterable, Comparable {
 
@@ -61,64 +67,64 @@ class ImageStorage {
 
         /// Big thumbnail
         case thumbBig = 2
-        
+
         /// Original size
         case original = 3
-        
+
         /// Image name
-        func imageName(of originalName: String) -> String {
+        var imageName: String {
             switch self {
             case .thumbsSmall:
-                return "thumb@64_\(originalName)"
+                return "thumb@64"
             case .thumbStandard:
-                return "thumb@128_\(originalName)"
+                return "thumb@128"
             case .thumbBig:
-                return "thumb@256_\(originalName)"
+                return "thumb@256"
             case .original:
-                return originalName
+                return "original"
             }
         }
-        
-        static func <(lhs: ImageSize, rhs: ImageSize) -> Bool {
+
+        static func < (lhs: ImageSize, rhs: ImageSize) -> Bool {
             lhs.rawValue < rhs.rawValue
         }
     }
 
     /// Storage bucket url
     let storageBucketUrl: String = "gs://strafen-app.appspot.com"
-    
+
     /// Compression quality
     let compressionQuality: CGFloat = 0.85
-    
+
     /// Error appears while storing an image
     enum StoreError: Error {
-        
+
         /// Couldn't get data from image
         case noImageData
     }
-    
+
     /// Cache of small / standard / big and original images
     struct ImageCache {
-        
+
         /// Small images
         var smallImages: DataCache<UUID, UIImage>
-        
+
         /// Standard images
         var standardImages: DataCache<UUID, UIImage>
-        
+
         /// Big images
         var bigImages: DataCache<UUID, UIImage>
-        
+
         /// Original images
         var originalImages: DataCache<UUID, UIImage>
-        
+
         init(maxSmall: Int, maxStandard: Int, maxBig: Int, maxOriginal: Int) {
             smallImages = DataCache(maxItems: maxSmall)
             standardImages = DataCache(maxItems: maxStandard)
             bigImages = DataCache(maxItems: maxBig)
             originalImages = DataCache(maxItems: maxOriginal)
         }
-        
+
         /// Clear all caches
         mutating func clearAll() {
             smallImages.clear()
@@ -126,7 +132,7 @@ class ImageStorage {
             bigImages.clear()
             originalImages.clear()
         }
-        
+
         /// Append image to all caches
         mutating func appendToAll(_ image: UIImage, with key: UUID) {
             smallImages[key] = image
@@ -134,15 +140,15 @@ class ImageStorage {
             bigImages[key] = image
             originalImages[key] = image
         }
-        
+
         /// Append image to all caches smaller or equal size than given image size
-        mutating func appentToAllSmaller(than imageSize: ImageSize, _ image: UIImage, with key: UUID) {
+        mutating func appendToAllSmaller(than imageSize: ImageSize, _ image: UIImage, with key: UUID) {
             if imageSize >= .original { originalImages[key] = image }
             if imageSize >= .thumbBig { bigImages[key] = image }
             if imageSize >= .thumbStandard { standardImages[key] = image }
             if imageSize >= .thumbsSmall { smallImages[key] = image }
         }
-        
+
         /// Delete from all
         mutating func deleteFromAll(with key: UUID) {
             smallImages[key] = nil
@@ -150,7 +156,7 @@ class ImageStorage {
             bigImages[key] = nil
             originalImages[key] = nil
         }
-        
+
         /// Get image
         func getImage(with key: UUID, imageSize: ImageSize) -> UIImage? {
             if imageSize <= .original, let image = originalImages[key] { return image}
@@ -160,13 +166,13 @@ class ImageStorage {
             return nil
         }
     }
-    
+
     /// Person image cache
     var personImageCache = ImageCache(maxSmall: 40, maxStandard: 20, maxBig: 10, maxOriginal: 1)
-    
+
     /// Club image cache
     var clubImageCache = ImageCache(maxSmall: 1, maxStandard: 1, maxBig: 1, maxOriginal: 1)
-    
+
     /// Store image on server
     func store(_ image: UIImage,
                of imageType: ImageType,
@@ -199,7 +205,7 @@ class ImageStorage {
             }
         }
     }
-    
+
     /// Store image on server
     func store(_ image: UIImage,
                of imageType: ImageType,
@@ -219,41 +225,21 @@ class ImageStorage {
             }
         }
     }
-    
-    /// Store image on server
-    func store(_ image: UIImage,
-               of imageType: ImageType,
-               taskStateHandler: ((TaskState) -> Void)? = nil,
-               progressChangeHandler: ((Double) -> Void)? = nil) {
-        store(image, of: imageType) { _ in
-            if let taskStateHandler = taskStateHandler {
-                taskStateHandler(.passed)
-            }
-        } failedHandler: { _ in
-            if let taskStateHandler = taskStateHandler {
-                taskStateHandler(.failed)
-            }
-        } progressChangeHandler: { progress in
-            if let progressChangeHandler = progressChangeHandler {
-                progressChangeHandler(progress)
-            }
-        }
-    }
-    
+
     /// Fetch image from server
     private func fetch(_ imageType: ImageType,
-               size imageSize: ImageSize,
-               handler completionHandler: @escaping (UIImage?) -> Void,
-               progressChangeHandler: ((Double) -> Void)? = nil) {
+                       size imageSize: ImageSize,
+                       handler completionHandler: @escaping (UIImage?) -> Void,
+                       progressChangeHandler: ((Double) -> Void)? = nil) {
         let maxSize: Int64 = 30 * 1024 * 1024 // 30 MB
         let downloadTask = Storage.storage(url: storageBucketUrl).reference(withPath: imageType.url(with: imageSize).path).getData(maxSize: maxSize) { [weak self] data, _ in
             let image = UIImage(data: data)
             if let image = image {
                 switch imageType {
                 case .clubImage(clubId: let key):
-                    self?.clubImageCache.appentToAllSmaller(than: imageSize, image, with: key.rawValue)
+                    self?.clubImageCache.appendToAllSmaller(than: imageSize, image, with: key.rawValue)
                 case .personImage(clubId: _, personId: let key):
-                    self?.personImageCache.appentToAllSmaller(than: imageSize, image, with: key.rawValue)
+                    self?.personImageCache.appendToAllSmaller(than: imageSize, image, with: key.rawValue)
                 }
             }
             completionHandler(image)
@@ -265,7 +251,7 @@ class ImageStorage {
             }
         }
     }
-    
+
     /// Get image from cache or from server
     func getImage(_ imageType: ImageType,
                   size imageSize: ImageSize,
@@ -279,7 +265,7 @@ class ImageStorage {
         }
         fetch(imageType, size: imageSize, handler: completionHandler, progressChangeHandler: progressChangeHandler)
     }
-    
+
     /// Delete image on server
     func delete(_ imageType: ImageType,
                 taskStateHandler: @escaping (TaskState) -> Void) {
@@ -309,7 +295,7 @@ class ImageStorage {
             }
         }
     }
-    
+
     /// Clear cache
     func clear() {
         personImageCache.clearAll()
@@ -319,26 +305,26 @@ class ImageStorage {
 
 /// A cache for any type
 struct DataCache<Key, DataType> where Key: Hashable {
-    
+
     /// Contains personId and associated image
     private struct Metadata<Key, DataType> where Key: Hashable {
-        
+
         /// Key
         let key: Key
-        
+
         /// Data
         var data: DataType
-        
+
         /// Time of adding
         let time: TimeInterval
     }
-    
+
     /// Maximum number of items in this cache
     private let maxItems: Int?
-    
+
     /// Data list
     private var dataList = [Metadata<Key, DataType>]()
-    
+
     init(maxItems: Int?) {
         if let maxItems = maxItems {
             self.maxItems = Swift.max(maxItems, 1)
@@ -346,7 +332,7 @@ struct DataCache<Key, DataType> where Key: Hashable {
             self.maxItems = nil
         }
     }
-    
+
     /// Get and set data to given key
     subscript(_ key: Key) -> DataType? {
         get {
@@ -361,29 +347,29 @@ struct DataCache<Key, DataType> where Key: Hashable {
             }
         }
     }
-    
+
     /// Append new data
     private mutating func append(_ data: DataType, with key: Key) {
         while let maxItems = maxItems, dataList.count >= maxItems { removeEarlist() }
         dataList.append(.init(key: key, data: data, time: Date().timeIntervalSince1970))
     }
-    
+
     /// Remove earlies data
     private mutating func removeEarlist() {
         guard let earliesMetadata = dataList.min(by: { $0.time < $1.time }) else { return }
         dataList.filtered { $0.key != earliesMetadata.key }
     }
-    
+
     /// Update data
     private mutating func update(_ data: DataType, with key: Key) {
         dataList.mapped { $0.data = $0.key == key ? data : $0.data }
     }
-    
+
     /// Delete data
     private mutating func delete(with key: Key) {
         dataList.removeAll(where: { $0.key == key })
     }
-    
+
     /// Clear cache
     mutating func clear() {
         dataList = []
