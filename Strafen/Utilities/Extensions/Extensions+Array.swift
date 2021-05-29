@@ -100,3 +100,71 @@ extension Array where Element: Hashable {
         Array(Set(self))
     }
 }
+
+extension Array where Element == FirebaseFine {
+
+    /// Sum of complete amount of all payed fines from person with given id
+    /// - Parameters:
+    ///   - personId: id of person of the fines
+    ///   - reasonList: list of all reason templates
+    /// - Returns: sum of complete amount
+    func payed(of personId: FirebasePerson.ID, with reasonList: [FirebaseReasonTemplate]) -> Amount {
+        filter {
+            $0.assoiatedPersonId == personId && $0.isPayed
+        }.reduce(into: .zero) { result, fine in
+            result += fine.completeAmount(with: reasonList)
+        }
+    }
+
+    /// Sum of complete amount of all unpayed fines from person with given id
+    /// - Parameters:
+    ///   - personId: id of person of the fines
+    ///   - reasonList: list of all reason templates
+    /// - Returns: sum of complete amount
+    func unpayed(of personId: FirebasePerson.ID, with reasonList: [FirebaseReasonTemplate]) -> Amount {
+        filter {
+            $0.assoiatedPersonId == personId && !$0.isPayed
+        }.reduce(into: .zero) { result, fine in
+            result += fine.completeAmount(with: reasonList)
+        }
+    }
+
+    /// Sum of complete amount of all unpayed fines with `.high` or `.medium` importances from person with given id
+    /// - Parameters:
+    ///   - personId: id of person of the fines
+    ///   - reasonList: list of all reason templates
+    /// - Returns: sum of complete amount
+    func medium(of personId: FirebasePerson.ID, with reasonList: [FirebaseReasonTemplate]) -> Amount {
+        filter {
+            $0.assoiatedPersonId == personId && !$0.isPayed && ($0.fineReason.importance(with: reasonList) == .high || $0.fineReason.importance(with: reasonList) == .medium)
+        }.reduce(into: .zero) { result, fine in
+            result += fine.completeAmount(with: reasonList)
+        }
+    }
+
+    /// Sum of complete amount of all unpayed fines with `.high` importances from person with given id
+    /// - Parameters:
+    ///   - personId: id of person of the fines
+    ///   - reasonList: list of all reason templates
+    /// - Returns: sum of complete amount
+    func high(of personId: FirebasePerson.ID, with reasonList: [FirebaseReasonTemplate]) -> Amount {
+        filter {
+            $0.assoiatedPersonId == personId && !$0.isPayed && $0.fineReason.importance(with: reasonList) == .high
+        }.reduce(into: .zero) { result, fine in
+            result += fine.completeAmount(with: reasonList)
+        }
+    }
+
+    /// Sum of complete amount of all fines from person with given id
+    /// - Parameters:
+    ///   - personId: id of person of the fines
+    ///   - reasonList: list of all reason templates
+    /// - Returns: sum of complete amount
+    func total(of personId: FirebasePerson.ID, with reasonList: [FirebaseReasonTemplate]) -> Amount {
+        filter {
+            $0.assoiatedPersonId == personId
+        }.reduce(into: .zero) { result, fine in
+            result += fine.completeAmount(with: reasonList)
+        }
+    }
+}

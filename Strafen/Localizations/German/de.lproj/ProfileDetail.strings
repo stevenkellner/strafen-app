@@ -1,0 +1,10 @@
+/* 
+  ProfileDetail.strings
+  Strafen
+
+  Created by Steven on 29.05.21.
+  
+*/
+
+// No fines message
+"no-fines-message" = "Du hast keine Strafen!";

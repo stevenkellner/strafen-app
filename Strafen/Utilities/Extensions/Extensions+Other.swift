@@ -215,9 +215,26 @@ extension View {
 
     /// Toggles given binding on tap gesture
     /// - Parameter binding: bool binding to toggle
+    ///   - animation: animation on value change
     /// - Returns: modified view
-    func toggleOnTapGesture(_ binding: Binding<Bool>) -> some View {
-        onTapGesture { binding.wrappedValue.toggle() }
+    func toggleOnTapGesture(_ binding: Binding<Bool>, animation: Animation? = nil) -> some View {
+        onTapGesture {
+            guard let animation = animation else { return binding.wrappedValue.toggle() }
+            withAnimation(animation) { binding.wrappedValue.toggle() }
+        }
+    }
+
+    /// Sets binding to given value on tap gesture
+    /// - Parameters:
+    ///   - valueBinding: value binding to set
+    ///   - newValue: new value
+    ///   - animation: animation on value change
+    /// - Returns: modified view
+    func setOnTapGesture<T>(_ valueBinding: Binding<T>, to newValue: T, animation: Animation? = nil) -> some View {
+        onTapGesture {
+            guard let animation = animation else { return valueBinding.wrappedValue = newValue }
+            withAnimation(animation) { valueBinding.wrappedValue = newValue }
+        }
     }
 }
 
@@ -315,6 +332,9 @@ enum LocalizationTables: String {
 
     /// Localization table for log in and sign in views
     case logInSignIn = "LogIn-SignIn"
+
+    /// Localization table for profile detail views
+    case profileDetail = "ProfileDetail"
 }
 
 /// Localized string of given table with given key
@@ -353,5 +373,50 @@ extension UIImage {
     convenience init?(data: Data?) {
         guard let data = data else { return nil }
         self.init(data: data)
+    }
+}
+
+extension Text {
+
+    /// Creates a text representing the given value.
+    public init<Subject>(describing instance: Subject) {
+        self.init(String(describing: instance))
+    }
+
+    /// Creates a text representing the given value.
+    public init<Subject>(describing instance: Subject) where Subject: CustomStringConvertible {
+        self.init(String(describing: instance))
+    }
+
+    /// Creates a text representing the given value.
+    public init<Subject>(describing instance: Subject) where Subject: TextOutputStreamable {
+        self.init(String(describing: instance))
+    }
+
+    /// Creates a text representing the given value.
+    public init<Subject>(describing instance: Subject) where Subject: CustomStringConvertible, Subject: TextOutputStreamable {
+        self.init(String(describing: instance))
+    }
+}
+
+extension View {
+
+    /// Positions this view within an invisible frame with the specified size.
+    /// - Parameters:
+    ///   - size: The size of this view
+    ///   - alignment: The alignment of this view inside the resulting view. alignment applies if this view is smaller than the size given by the resulting frame.
+    func frame(size: CGSize, alignment: Alignment = .center) -> some View {
+        frame(width: size.width, height: size.width, alignment: alignment)
+    }
+}
+
+extension Date {
+
+    /// Formatted with long style
+    var formattedLong: String {
+        let formatter = DateFormatter()
+        formatter.locale = Locale.current
+        formatter.dateStyle = .long
+        return formatter.string(from: self)
     }
 }

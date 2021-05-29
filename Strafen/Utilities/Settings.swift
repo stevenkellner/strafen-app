@@ -100,5 +100,10 @@ extension Settings {
             self.signInDate = signInDate
             self.isCashier = isCashier
         }
+
+        /// Person as firebase person with empty user id
+        var firebasePerson: FirebasePerson {
+            FirebasePerson(id: id, name: name, signInData: FirebasePerson.SignInData(isCashier: isCashier, userId: "", signInDate: signInDate))
+        }
     }
 }

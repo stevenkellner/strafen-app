@@ -59,3 +59,18 @@
 
 // No available view
 "no-available-view" = "Keine Seite verfügbar!";
+
+// Text of total amount sum
+"amount-sum-total-text" = "Gesamt";
+
+// Text of payed amount sum
+"amount-sum-payed-text" = "Bezahlt";
+
+// Text of amount sum with high importance
+"amount-sum-high-importance-text" = "Wichtigstes";
+
+// Text of amount sum with medium importance
+"amount-sum-medium-importance-text" = "Mittleres";
+
+// Text of amount sum with low importance
+"amount-sum-low-importance-text" = "Ausstehend";

@@ -21,6 +21,39 @@ struct LatePaymentInterest: Codable, Equatable {
 
         /// Year component
         case year
+
+        /// Same componets of Calender.Components
+        var dateComponentFlag: Calendar.Component {
+            switch self {
+            case .day:
+                return .day
+            case .month:
+                return .month
+            case .year:
+                return .year
+            }
+        }
+
+        /// Keypath from DateComponents to same component
+        var dateComponentKeyPath: KeyPath<DateComponents, Int?> {
+            switch self {
+            case .day:
+                return \.day
+            case .month:
+                return \.month
+            case .year:
+                return \.year
+            }
+        }
+
+        /// Number of date component between given dates
+        func numberBetweenDates(start startDate: Date, end endDate: Date) -> Int {
+            let calender = Calendar.current
+            let startDate = calender.startOfDay(for: startDate)
+            let endDate = calender.startOfDay(for: endDate)
+            let components = calender.dateComponents([dateComponentFlag], from: startDate, to: endDate)
+            return components[keyPath: dateComponentKeyPath] ?? 0
+        }
     }
 
     /// Contains value and unit of a time period

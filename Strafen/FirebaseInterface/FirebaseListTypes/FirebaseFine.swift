@@ -5,7 +5,7 @@
 //  Created by Steven on 05.05.21.
 //
 
-import Foundation
+import SwiftUI
 
 // swiftlint:disable identifier_name
 // swiftlint:disable type_name
@@ -115,5 +115,66 @@ extension FirebaseFine {
     /// - Returns: importance of this fine
     func importance(with reasonList: [FirebaseReasonTemplate]) -> Importance {
         fineReason.importance(with: reasonList)
+    }
+
+    /// `true` if payed state is `.payed(data: _, inApp: _)`, `false` otherwise
+    var isPayed: Bool {
+        if case .payed(date: _, inApp: _) = payed { return true }
+        return false
+    }
+
+    func amountTextColor(with reasonList: [FirebaseReasonTemplate]) -> Color {
+        isPayed ? .customGreen : fineReason.importance(with: reasonList).color
+    }
+
+    /// Complete amout of the fine: number times the amount plus late payment amount of the fine
+    /// - Parameters:
+    ///   - reasonList: list of all reason templates
+    /// - Returns: complete amount of the fine
+    func completeAmount(with reasonList: [FirebaseReasonTemplate]) -> Amount {
+        amount(with: reasonList) * number + latePaymentInterestAmount(with: reasonList)
+    }
+
+    /// Amount of late payment interest of this fine, zero if club has no late payment interest
+    /// - Parameter reasonList: list of all reason templates
+    /// - Returns: amount of late payment interest
+    func latePaymentInterestAmount(with reasonList: [FirebaseReasonTemplate]) -> Amount {
+        guard let interest = Settings.shared.latePaymentInterest else { return .zero }
+        return latePaymentInterestAmount(with: interest, reasonList: reasonList)
+    }
+
+    /// Amount of late payment interest of this fine
+    /// - Parameters:
+    ///   - latePaymentInterest: configuration of late payment interest
+    ///   - reasonList: list of all reason templates
+    /// - Returns: amount of late payment interest
+    func latePaymentInterestAmount(with latePaymentInterest: LatePaymentInterest, reasonList: [FirebaseReasonTemplate]) -> Amount {
+
+        // Get start date
+        let calender = Calendar.current
+        var startDate = calender.startOfDay(for: date)
+        startDate = calender.date(byAdding: latePaymentInterest.interestFreePeriod.unit.dateComponentFlag, value: latePaymentInterest.interestFreePeriod.value, to: startDate) ?? startDate
+
+        // Get end date
+        var endDate = Date()
+        if case .payed(date: let paymentDate, inApp: _) = payed {
+            endDate = paymentDate
+        }
+
+        // Return .zero if start date is greater than the end date
+        guard startDate <= endDate else { return .zero }
+
+        // Get number of components between start and end date
+        let numberBetweenDates = latePaymentInterest.interestPeriod.unit.numberBetweenDates(start: startDate, end: endDate) / latePaymentInterest.interestPeriod.value
+
+        // Original amount
+        let originalAmount = fineReason.amount(with: reasonList) * number
+
+        // Return late payment interest
+        if latePaymentInterest.compoundInterest {
+            return originalAmount * (pow(1 + latePaymentInterest.interestRate / 100, Double(numberBetweenDates)) - 1)
+        } else {
+            return originalAmount * (latePaymentInterest.interestRate / 100 * Double(numberBetweenDates))
+        }
     }
 }

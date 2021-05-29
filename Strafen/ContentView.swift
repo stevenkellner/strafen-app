@@ -95,7 +95,11 @@ struct ContentView: View {
                                 .environmentObject(ListEnvironment(fineList, clubId: person.club.id))
                                 .environmentObject(ListEnvironment(reasonList, clubId: person.club.id))
                         } else {
-                            Text("no-available-view", table: .otherTexts, comment: "No available view")
+                            ZStack {
+                                Color.backgroundGray
+                                Text("no-available-view", table: .otherTexts, comment: "No available view")
+                                    .foregroundColor(.textColor).font(.system(size: 25, weight: .thin)).lineLimit(2).multilineTextAlignment(.center).padding(.horizontal, 15)
+                            }
                         }
                     }.edgesIgnoringSafeArea(.all)
                         .frame(maxWidth: .infinity, maxHeight: .infinity)

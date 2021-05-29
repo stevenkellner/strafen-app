@@ -50,6 +50,9 @@
 		B050AC93265F9AAE000B3E84 /* HomeTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = B050AC92265F9AAE000B3E84 /* HomeTab.swift */; };
 		B050AC95265FA152000B3E84 /* TabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B050AC94265FA152000B3E84 /* TabBar.swift */; };
 		B050AC97265FBA01000B3E84 /* FirebaseAppSetup.swift in Sources */ = {isa = PBXBuildFile; fileRef = B050AC96265FBA01000B3E84 /* FirebaseAppSetup.swift */; };
+		B05CCFD42662990E00F13786 /* PersonDetailImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B05CCFD32662990E00F13786 /* PersonDetailImage.swift */; };
+		B05CCFD626629E4A00F13786 /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = B05CCFD526629E4A00F13786 /* ImagePicker.swift */; };
+		B05CCFD82662A23300F13786 /* FineListRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = B05CCFD72662A23300F13786 /* FineListRow.swift */; };
 		B066A2BF26492E2700AB2715 /* SignInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B066A2BE26492E2700AB2715 /* SignInView.swift */; };
 		B07148D5264DB45000C5F7EF /* SignInClubSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B07148D4264DB45000C5F7EF /* SignInClubSelectionView.swift */; };
 		B07148D9264E938800C5F7EF /* Importance.swift in Sources */ = {isa = PBXBuildFile; fileRef = B07148D8264E938800C5F7EF /* Importance.swift */; };
@@ -99,6 +102,8 @@
 		B0AF0AA02643FFDB00DF4DC9 /* FFDeleteTestClubPropertyCall.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0AF0A9F2643FFDB00DF4DC9 /* FFDeleteTestClubPropertyCall.swift */; };
 		B0AF0AA22644013400DF4DC9 /* FFNewTestClubPropertyCall.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0AF0AA12644013400DF4DC9 /* FFNewTestClubPropertyCall.swift */; };
 		B0AF0AA42644125400DF4DC9 /* TestClub.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0AF0AA32644125400DF4DC9 /* TestClub.swift */; };
+		B0B7B6AF26629192004044CB /* SingleAmountDisplay.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0B7B6AE26629192004044CB /* SingleAmountDisplay.swift */; };
+		B0B7B6B2266293DB004044CB /* ProfileDetail.strings in Resources */ = {isa = PBXBuildFile; fileRef = B0B7B6B4266293DB004044CB /* ProfileDetail.strings */; };
 		B0C2A4B02642918800250A8D /* Extensions+Array.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0C2A4AF2642918800250A8D /* Extensions+Array.swift */; };
 		B0D4B62D2642CD19003A720C /* FirebaseFunctionCaller.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0D4B62C2642CD19003A720C /* FirebaseFunctionCaller.swift */; };
 		B0E29C8E264C052400E4BA3B /* TextFieldFirstResponders.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E29C8D264C052400E4BA3B /* TextFieldFirstResponders.swift */; };
@@ -167,6 +172,9 @@
 		B050AC92265F9AAE000B3E84 /* HomeTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = HomeTab.swift; path = ../../../../../../../Applications/HomeTab.swift; sourceTree = "<group>"; };
 		B050AC94265FA152000B3E84 /* TabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBar.swift; sourceTree = "<group>"; };
 		B050AC96265FBA01000B3E84 /* FirebaseAppSetup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseAppSetup.swift; sourceTree = "<group>"; };
+		B05CCFD32662990E00F13786 /* PersonDetailImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonDetailImage.swift; sourceTree = "<group>"; };
+		B05CCFD526629E4A00F13786 /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
+		B05CCFD72662A23300F13786 /* FineListRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FineListRow.swift; sourceTree = "<group>"; };
 		B066A2BE26492E2700AB2715 /* SignInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInView.swift; sourceTree = "<group>"; };
 		B07148D4264DB45000C5F7EF /* SignInClubSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInClubSelectionView.swift; sourceTree = "<group>"; };
 		B07148D8264E938800C5F7EF /* Importance.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Importance.swift; sourceTree = "<group>"; };
@@ -219,6 +227,8 @@
 		B0AF0A9F2643FFDB00DF4DC9 /* FFDeleteTestClubPropertyCall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FFDeleteTestClubPropertyCall.swift; sourceTree = "<group>"; };
 		B0AF0AA12644013400DF4DC9 /* FFNewTestClubPropertyCall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FFNewTestClubPropertyCall.swift; sourceTree = "<group>"; };
 		B0AF0AA32644125400DF4DC9 /* TestClub.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestClub.swift; sourceTree = "<group>"; };
+		B0B7B6AE26629192004044CB /* SingleAmountDisplay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleAmountDisplay.swift; sourceTree = "<group>"; };
+		B0B7B6B3266293DB004044CB /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/ProfileDetail.strings; sourceTree = "<group>"; };
 		B0C2A4AF2642918800250A8D /* Extensions+Array.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extensions+Array.swift"; sourceTree = "<group>"; };
 		B0D4B62C2642CD19003A720C /* FirebaseFunctionCaller.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseFunctionCaller.swift; sourceTree = "<group>"; };
 		B0E29C8D264C052400E4BA3B /* TextFieldFirstResponders.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldFirstResponders.swift; sourceTree = "<group>"; };
@@ -317,9 +327,12 @@
 				B0A4629C2649A5600045D2BE /* EmptyNavigationLink.swift */,
 				B03697BA2650115B00DA938D /* ErrorMessageView.swift */,
 				B0A462902649412B0045D2BE /* Header.swift */,
+				B05CCFD526629E4A00F13786 /* ImagePicker.swift */,
 				B0A46294264953270045D2BE /* Outline.swift */,
+				B05CCFD32662990E00F13786 /* PersonDetailImage.swift */,
 				B04AD2A926567464001A760F /* PersonRowImage.swift */,
 				B0A4629226494AB80045D2BE /* RoundedCorners.swift */,
+				B0B7B6AE26629192004044CB /* SingleAmountDisplay.swift */,
 				B0A4629626497FD00045D2BE /* SingleButton.swift */,
 				B0A462A02649B3020045D2BE /* TitledContent.swift */,
 				B050AC94265FA152000B3E84 /* TabBar.swift */,
@@ -462,6 +475,7 @@
 				B0879198265ED8550065C5E7 /* ErrorMessages.strings */,
 				B08791A3265F6F610065C5E7 /* OtherTexts.strings */,
 				B08791AD265F84480065C5E7 /* LogIn-SignIn.strings */,
+				B0B7B6B4266293DB004044CB /* ProfileDetail.strings */,
 			);
 			path = German;
 			sourceTree = "<group>";
@@ -542,6 +556,7 @@
 			isa = PBXGroup;
 			children = (
 				B0EE4C93265FDD09001177E3 /* ProfileDetail.swift */,
+				B05CCFD72662A23300F13786 /* FineListRow.swift */,
 			);
 			path = ProfileDetail;
 			sourceTree = "<group>";
@@ -653,6 +668,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B0879196265ED8550065C5E7 /* ErrorMessages.strings in Resources */,
+				B0B7B6B2266293DB004044CB /* ProfileDetail.strings in Resources */,
 				B0A761A12642E20C003B170F /* KeysInfo.plist in Resources */,
 				B01E96B62641AEF80034E3D1 /* Preview Assets.xcassets in Resources */,
 				B087919C265EDC060065C5E7 /* ErrorMessages.strings in Resources */,
@@ -783,6 +799,7 @@
 				B03986512652776F00C97DF2 /* Club.swift in Sources */,
 				B0A7619C2642D366003B170F /* FirebaseCallParameters.swift in Sources */,
 				B0225D2D26525D8900D75CDA /* LatePaymentInterest.swift in Sources */,
+				B0B7B6AF26629192004044CB /* SingleAmountDisplay.swift in Sources */,
 				B0AF0A9626432CE100DF4DC9 /* PropertyWrapper.swift in Sources */,
 				B072080C264C56E40084FDE6 /* ValidationResult.swift in Sources */,
 				B0225D2F2652600E00D75CDA /* FFRegisterPersonCall.swift in Sources */,
@@ -814,11 +831,13 @@
 				B0720814264D6B9C0084FDE6 /* TextFieldsProtocol.swift in Sources */,
 				B050AC93265F9AAE000B3E84 /* HomeTab.swift in Sources */,
 				B0A4629326494AB90045D2BE /* RoundedCorners.swift in Sources */,
+				B05CCFD82662A23300F13786 /* FineListRow.swift in Sources */,
 				B0225D2B26525C9A00D75CDA /* FFChangeLatePaymentInterestCall.swift in Sources */,
 				B02221B02641D73C0005295B /* FirebaseListType.swift in Sources */,
 				B0225D2626513C4900D75CDA /* FFExistsClubWithIdentifierCall.swift in Sources */,
 				B04AD2AC26567CD6001A760F /* RandomInstanceProtocol.swift in Sources */,
 				B0AF0A9C2643328800DF4DC9 /* Payed.swift in Sources */,
+				B05CCFD42662990E00F13786 /* PersonDetailImage.swift in Sources */,
 				B050AC95265FA152000B3E84 /* TabBar.swift in Sources */,
 				B09CCE1826593E4C008C545A /* SignInAppleController.swift in Sources */,
 				B0225D312652619B00D75CDA /* FFChangeFinePayed.swift in Sources */,
@@ -848,6 +867,7 @@
 				B021DF43264920EA00FD418F /* LoginView.swift in Sources */,
 				B0AF0A9A2643303500DF4DC9 /* FineReason.swift in Sources */,
 				B02221AC2641D5570005295B /* FirebasePerson.swift in Sources */,
+				B05CCFD626629E4A00F13786 /* ImagePicker.swift in Sources */,
 				B0AF0A9826432F1E00DF4DC9 /* FirebaseFine.swift in Sources */,
 				B072080E264C56FB0084FDE6 /* ErrorMessages.swift in Sources */,
 				B08FC117265D31C600F63975 /* DecodableDefault.swift in Sources */,
@@ -932,6 +952,14 @@
 				B08791B1265F84600065C5E7 /* en */,
 			);
 			name = "LogIn-SignIn.strings";
+			sourceTree = "<group>";
+		};
+		B0B7B6B4266293DB004044CB /* ProfileDetail.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				B0B7B6B3266293DB004044CB /* de */,
+			);
+			name = ProfileDetail.strings;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */

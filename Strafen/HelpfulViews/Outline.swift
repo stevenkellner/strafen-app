@@ -195,6 +195,9 @@ struct SplitedOutlinedContent<LeftContent, RightContent>: View where LeftContent
     /// Cornder radius of the right outline
     private var rightCornerRadius: CGFloat?
 
+    /// Percentage of width of left outline
+    @Clamping(0.0...1.0) private var leftWidthPercentage: CGFloat = 0.5
+
     /// Init with corner set and content
     /// - Parameters:
     ///   - cornerSet: corner set
@@ -223,7 +226,7 @@ struct SplitedOutlinedContent<LeftContent, RightContent>: View where LeftContent
                     // Content
                     leftContent
 
-                }.frame(width: geometry.size.width / 2, height: geometry.size.height)
+                }.frame(width: geometry.size.width * leftWidthPercentage, height: geometry.size.height)
 
                 // Right outlined content
                 ZStack {
@@ -238,7 +241,7 @@ struct SplitedOutlinedContent<LeftContent, RightContent>: View where LeftContent
                     // Content
                     rightContent
 
-                }.frame(width: geometry.size.width / 2, height: geometry.size.height)
+                }.frame(width: geometry.size.width  * (1 - leftWidthPercentage), height: geometry.size.height)
 
             }
         }.shadow(color: .black.opacity(0.25), radius: 10)
@@ -313,6 +316,15 @@ struct SplitedOutlinedContent<LeftContent, RightContent>: View where LeftContent
     func rightRadius(_ radius: CGFloat?) -> SplitedOutlinedContent {
         var outline = self
         outline.rightCornerRadius = radius
+        return outline
+    }
+
+    /// Set left width percentage of the outline  (between 0 and 1)
+    /// - Parameter percentage: width percentage of left outline (between 0 and 1)
+    /// - Returns: modified outline
+    func leftWidthPercentage(_ percentage: CGFloat) -> SplitedOutlinedContent {
+        var outline = self
+        outline.leftWidthPercentage = percentage
         return outline
     }
 }

@@ -5,7 +5,7 @@
 //  Created by Steven on 05.05.21.
 //
 
-import Foundation
+import SwiftUI
 
 /// Different importances (high / medium / low)
 enum Importance: Int {
@@ -18,6 +18,18 @@ enum Importance: Int {
 
     /// Low importance
     case low = 0
+
+    /// Color of the imporance in the UI
+    var color: Color {
+        switch self {
+        case .high:
+            return .customRed
+        case .medium:
+            return .customOrange
+        case .low:
+            return .customYellow
+        }
+    }
 }
 
 extension Importance: Decodable {
