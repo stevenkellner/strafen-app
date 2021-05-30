@@ -24,3 +24,29 @@ class DismissHandler: ObservableObject {
         handler?()
     }
 }
+
+struct SetDismissHandlerViewModifier: ViewModifier {
+
+    /// Handler to dimiss from a subview to the previous view.
+    @EnvironmentObject var dismissHandler: DismissHandler
+
+    /// Presentation mode
+    @Environment(\.presentationMode) var presentationMode
+
+    func body(content: Content) -> some View {
+        content
+            .onAppear {
+                dismissHandler.setHandler {
+                    presentationMode.wrappedValue.dismiss()
+                }
+            }
+    }
+}
+
+extension View {
+
+    /// Set dismiss handler
+    var dismissHandler: some View {
+        ModifiedContent(content: self, modifier: SetDismissHandlerViewModifier())
+    }
+}

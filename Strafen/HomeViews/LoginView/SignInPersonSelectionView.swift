@@ -97,7 +97,7 @@ struct SignInPersonSelectionView: View {
                         .multilineTextAlignment(.center)
                         .padding(.horizontal, 15)
                         .lineLimit(2)
-                    Text("try-again-message", table: .otherTexts, comment: "Erneut versuchen")
+                    Text("try-again-message", table: .otherTexts, comment: "Try again message")
                         .foregroundColor(.customRed)
                         .font(.system(size: 24, weight: .light))
                         .multilineTextAlignment(.center)

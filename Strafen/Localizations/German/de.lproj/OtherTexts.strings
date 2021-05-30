@@ -30,6 +30,12 @@
 // Text of understood button
 "understood-button-text" = "Verstanden";
 
+// Text of edit button
+"edit-button-text" = "Bearbeiten";
+
+// Text for loading
+"loading-text" = "Laden";
+
 // Region code
 "region-code" = "DE";
 

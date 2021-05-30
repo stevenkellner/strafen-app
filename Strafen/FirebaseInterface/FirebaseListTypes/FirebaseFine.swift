@@ -123,6 +123,11 @@ extension FirebaseFine {
         return false
     }
 
+    /// `true` if payed state is `.settled`, `false` otherwise
+    var isSettled: Bool {
+        payed == .settled
+    }
+
     func amountTextColor(with reasonList: [FirebaseReasonTemplate]) -> Color {
         isPayed ? .customGreen : fineReason.importance(with: reasonList).color
     }

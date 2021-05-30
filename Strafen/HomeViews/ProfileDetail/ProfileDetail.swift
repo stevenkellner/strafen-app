@@ -121,7 +121,7 @@ struct ProfileDetail: View {
 
                 // Edit button
                 SingleOutlinedContent {
-                    Text("Bearbeiten")
+                    Text("edit-button-text", table: .otherTexts, comment: "Text of edit button")
                         .foregroundColor(.textColor)
                         .font(.system(size: 20, weight: .thin))
                         .lineLimit(1)

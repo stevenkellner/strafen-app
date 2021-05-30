@@ -195,6 +195,12 @@ struct SplitedOutlinedContent<LeftContent, RightContent>: View where LeftContent
     /// Cornder radius of the right outline
     private var rightCornerRadius: CGFloat?
 
+    /// Handles tap gesture on the left outline
+    private var leftTapGestureHandler: (() -> Void)?
+
+    /// Handles tap gesture on the right outline
+    private var rightTapGestureHandler: (() -> Void)?
+
     /// Percentage of width of left outline
     @Clamping(0.0...1.0) private var leftWidthPercentage: CGFloat = 0.5
 
@@ -227,6 +233,7 @@ struct SplitedOutlinedContent<LeftContent, RightContent>: View where LeftContent
                     leftContent
 
                 }.frame(width: geometry.size.width * leftWidthPercentage, height: geometry.size.height)
+                    .onTapGesture { leftTapGestureHandler?() }
 
                 // Right outlined content
                 ZStack {
@@ -242,6 +249,7 @@ struct SplitedOutlinedContent<LeftContent, RightContent>: View where LeftContent
                     rightContent
 
                 }.frame(width: geometry.size.width  * (1 - leftWidthPercentage), height: geometry.size.height)
+                    .onTapGesture { rightTapGestureHandler?() }
 
             }
         }.shadow(color: .black.opacity(0.25), radius: 10)
@@ -325,6 +333,24 @@ struct SplitedOutlinedContent<LeftContent, RightContent>: View where LeftContent
     func leftWidthPercentage(_ percentage: CGFloat) -> SplitedOutlinedContent {
         var outline = self
         outline.leftWidthPercentage = percentage
+        return outline
+    }
+
+    /// Set left tap gesture handler
+    /// - Parameter handler: handles tap gesture on the left outline
+    /// - Returns: modified outline
+    func onLeftTapGesture(_ handler: @escaping () -> Void) -> SplitedOutlinedContent {
+        var outline = self
+        outline.leftTapGestureHandler = handler
+        return outline
+    }
+
+    /// Set right tap gesture handler
+    /// - Parameter handler: handles tap gesture on the right outline
+    /// - Returns: modified outline
+    func onRightTapGesture(_ handler: @escaping () -> Void) -> SplitedOutlinedContent {
+        var outline = self
+        outline.rightTapGestureHandler = handler
         return outline
     }
 }

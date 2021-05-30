@@ -37,6 +37,9 @@ enum ErrorMessages {
     /// Internal error for log in
     case internalErrorLogIn(code: Int)
 
+    /// Internal error for save
+    case internalErrorSave(code: Int)
+
     /// Email is already signed in
     case alreadySignedInEmail
 
@@ -77,6 +80,7 @@ enum ErrorMessages {
         case .notSamePassword: localizationKey = "notSamePassword"
         case .internalErrorSignIn(code: _): localizationKey = "internalErrorSignIn"
         case .internalErrorLogIn(code: _): localizationKey = "internalErrorLogIn"
+        case .internalErrorSave(code: _): localizationKey = "internalErrorSave"
         case .alreadySignedInEmail: localizationKey = "alreadySignedInEmail"
         case .alreadySignedIn: localizationKey = "alreadySignedIn"
         case .weakPassword: localizationKey = "weakPassword"
@@ -111,6 +115,7 @@ enum ErrorMessages {
         case .identifierAlreadyExists(code: _): return 16
         case .incorrectPassword: return 17
         case .notSignedIn: return 18
+        case .internalErrorSave(code: _): return 19
         }
     }
 
@@ -120,7 +125,8 @@ enum ErrorMessages {
         case .emptyField(code: let code),
              .internalErrorSignIn(code: let code),
              .internalErrorLogIn(code: let code),
-             .identifierAlreadyExists(code: let code):
+             .identifierAlreadyExists(code: let code),
+             .internalErrorSave(code: let code):
             return code
         case .alreadySignedIn,
              .alreadySignedInEmail,

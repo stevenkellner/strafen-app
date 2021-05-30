@@ -8,3 +8,15 @@
 
 // No fines message
 "no-fines-message" = "Du hast keine Strafen!";
+
+// Fine detail view fine of text
+"fine-detail-fine-of-text" = "Strafe von:";
+
+// Fine detail unknown person name
+"fine-detail-unknown-person-name" = "Unbekannt";
+
+// Fine detail payment in process
+"fine-detail-payment-in-process" = "Zahlung wird bearbeitet";
+
+// Fine detail payed in app
+"fine-detail-payed-in-app" = "InApp bezahlt";

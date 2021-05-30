@@ -31,9 +31,9 @@ struct FineListRow: View {
         ZStack {
 
             // Navigation Link
-//            EmptyNavigationLink(isActive: $isNavigationLinkActive) { TODO
-//                FineDetail(fine: fine, dismissHandler: $dismissHandler)
-//            }
+            EmptyNavigationLink(isActive: $isNavigationLinkActive) {
+                FineDetail(fine: fine)
+            }
 
             if currentLargeFine == fine.id {
 

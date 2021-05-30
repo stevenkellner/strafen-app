@@ -16,16 +16,16 @@ struct ContentView: View {
     /// Active home tab
     @EnvironmentObject var homeTab: HomeTab
 
-    /// <#Description#>
+    /// Used to setup app with firebase
     @ObservedObject var appSetup = FirebaseAppSetup.shared
 
-    /// <#Description#>
+    /// Person list
     @State var personList: [FirebasePerson]?
 
-    /// <#Description#>
+    /// Fine list
     @State var fineList: [FirebaseFine]?
 
-    /// <#Description#>
+    /// Reason list
     @State var reasonList: [FirebaseReasonTemplate]?
 
     var body: some View {
@@ -50,19 +50,19 @@ struct ContentView: View {
                         } else if appSetup.connectionState == .loading || appSetup.connectionState == .notStarted {
                             ZStack {
                                 Color.backgroundGray
-                                ProgressView("Laden")
+                                ProgressView(NSLocalizedString("loading-text", table: .otherTexts, comment: "Text for loading"))
                             }
                         } else if appSetup.connectionState == .failed {
                             ZStack {
                                 Color.backgroundGray
                                 VStack(spacing: 30) {
                                     Spacer()
-                                    Text("Keine Internetverbindung")
+                                    Text("no-connection-message", table: .otherTexts, comment: "No connection message")
                                         .foregroundColor(.textColor)
                                         .font(.system(size: 25, weight: .thin))
                                         .lineLimit(2)
                                         .padding(.horizontal, 15)
-                                    Text("Erneut versuchen")
+                                    Text("try-again-message", table: .otherTexts, comment: "Try again message")
                                         .foregroundColor(.customRed)
                                         .font(.system(size: 25, weight: .light))
                                         .lineLimit(2)

@@ -73,6 +73,7 @@
 		B08DA658265405DA00FE0C52 /* SignInEmailViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B08DA657265405DA00FE0C52 /* SignInEmailViewTests.swift */; };
 		B08FC117265D31C600F63975 /* DecodableDefault.swift in Sources */ = {isa = PBXBuildFile; fileRef = B08FC116265D31C600F63975 /* DecodableDefault.swift */; };
 		B08FC119265D38C400F63975 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = B08FC118265D38C400F63975 /* Settings.swift */; };
+		B090FDE626637D89005700A8 /* FineDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = B090FDE526637D89005700A8 /* FineDetail.swift */; };
 		B09CCE1826593E4C008C545A /* SignInAppleController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B09CCE1726593E4C008C545A /* SignInAppleController.swift */; };
 		B09CCE1A26593E5C008C545A /* SignInGoogleController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B09CCE1926593E5C008C545A /* SignInGoogleController.swift */; };
 		B0A462912649412C0045D2BE /* Header.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0A462902649412B0045D2BE /* Header.swift */; };
@@ -195,6 +196,7 @@
 		B08DA657265405DA00FE0C52 /* SignInEmailViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInEmailViewTests.swift; sourceTree = "<group>"; };
 		B08FC116265D31C600F63975 /* DecodableDefault.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DecodableDefault.swift; sourceTree = "<group>"; };
 		B08FC118265D38C400F63975 /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
+		B090FDE526637D89005700A8 /* FineDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FineDetail.swift; sourceTree = "<group>"; };
 		B09CCE1726593E4C008C545A /* SignInAppleController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInAppleController.swift; sourceTree = "<group>"; };
 		B09CCE1926593E5C008C545A /* SignInGoogleController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInGoogleController.swift; sourceTree = "<group>"; };
 		B0A462902649412B0045D2BE /* Header.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Header.swift; sourceTree = "<group>"; };
@@ -557,6 +559,7 @@
 			children = (
 				B0EE4C93265FDD09001177E3 /* ProfileDetail.swift */,
 				B05CCFD72662A23300F13786 /* FineListRow.swift */,
+				B090FDE526637D89005700A8 /* FineDetail.swift */,
 			);
 			path = ProfileDetail;
 			sourceTree = "<group>";
@@ -804,6 +807,7 @@
 				B072080C264C56E40084FDE6 /* ValidationResult.swift in Sources */,
 				B0225D2F2652600E00D75CDA /* FFRegisterPersonCall.swift in Sources */,
 				B03697BD265028F500DA938D /* FFGetClubIdCall.swift in Sources */,
+				B090FDE626637D89005700A8 /* FineDetail.swift in Sources */,
 				B0225D3726526B3800D75CDA /* FFGetPersonPropertiesCall.swift in Sources */,
 				B0225D35265269C400D75CDA /* FFForceSignOutCall.swift in Sources */,
 				B050AC97265FBA01000B3E84 /* FirebaseAppSetup.swift in Sources */,

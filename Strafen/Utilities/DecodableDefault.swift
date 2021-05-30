@@ -95,7 +95,7 @@ extension DecodableDefault {
     /// For Array is default value `[]`
     typealias EmptyList<T> = Wrapper<Sources.EmptyList<T>> where T: Decodable & ExpressibleByArrayLiteral
 
-    /// For Dicctionary is default value `[:]`
+    /// For Dictionary is default value `[:]`
     typealias EmptyDict<T> = Wrapper<Sources.EmptyDict<T>> where T: Decodable & ExpressibleByDictionaryLiteral
 }
 
