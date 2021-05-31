@@ -81,7 +81,7 @@ struct ContentView: View {
                             ZStack {
                                 switch homeTab.active {
                                 case .profileDetail: ProfileDetail()
-                                case .personList: Text("PersonList") // PersonList() TODO
+                                case .personList: PersonList()
                                 case .reasonList: Text("ReasonList") // ReasonList() TODO
                                 case .addNewFine: Text("AddNewFine") // TODO
 //                                    ZStack {
@@ -110,6 +110,7 @@ struct ContentView: View {
 
                 }.environmentObject(person)
                     .environmentObject(DismissHandler())
+                    .ignoresSafeArea(.keyboard)
                     .onAppear {
                         appSetup.setup { personList, fineList, reasonList in
                             self.personList = personList

@@ -86,3 +86,6 @@
 
 // Text of amount sum with low importance
 "amount-sum-low-importance-text" = "All Pending";
+
+// Search bar text
+"search-bar-text" = "Search";

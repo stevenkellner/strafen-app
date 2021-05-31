@@ -66,6 +66,10 @@
 		B0726AEF2664191600ABFEAD /* LottieAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0726AEE2664191600ABFEAD /* LottieAnimation.swift */; };
 		B0726AF12664242400ABFEAD /* DeleteAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0726AF02664242400ABFEAD /* DeleteAlert.swift */; };
 		B0726AF32664C5CC00ABFEAD /* FineEditorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0726AF22664C5CC00ABFEAD /* FineEditorTests.swift */; };
+		B0726AF62664F62500ABFEAD /* PersonList.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0726AF52664F62500ABFEAD /* PersonList.swift */; };
+		B0726AF82664F7BC00ABFEAD /* PersonList.strings in Resources */ = {isa = PBXBuildFile; fileRef = B0726AF72664F7BC00ABFEAD /* PersonList.strings */; };
+		B0726AFA2664FB0200ABFEAD /* SearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0726AF92664FB0200ABFEAD /* SearchBar.swift */; };
+		B0726AFC266526A100ABFEAD /* AddNewListItemButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0726AFB266526A100ABFEAD /* AddNewListItemButton.swift */; };
 		B0879188265ECE3C0065C5E7 /* DismissHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0879187265ECE3C0065C5E7 /* DismissHandler.swift */; };
 		B0879196265ED8550065C5E7 /* ErrorMessages.strings in Resources */ = {isa = PBXBuildFile; fileRef = B0879198265ED8550065C5E7 /* ErrorMessages.strings */; };
 		B087919C265EDC060065C5E7 /* ErrorMessages.strings in Resources */ = {isa = PBXBuildFile; fileRef = B087919E265EDC060065C5E7 /* ErrorMessages.strings */; };
@@ -202,6 +206,10 @@
 		B0726AEE2664191600ABFEAD /* LottieAnimation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LottieAnimation.swift; sourceTree = "<group>"; };
 		B0726AF02664242400ABFEAD /* DeleteAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteAlert.swift; sourceTree = "<group>"; };
 		B0726AF22664C5CC00ABFEAD /* FineEditorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FineEditorTests.swift; sourceTree = "<group>"; };
+		B0726AF52664F62500ABFEAD /* PersonList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonList.swift; sourceTree = "<group>"; };
+		B0726AF72664F7BC00ABFEAD /* PersonList.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = PersonList.strings; sourceTree = "<group>"; };
+		B0726AF92664FB0200ABFEAD /* SearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBar.swift; sourceTree = "<group>"; };
+		B0726AFB266526A100ABFEAD /* AddNewListItemButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewListItemButton.swift; sourceTree = "<group>"; };
 		B0879187265ECE3C0065C5E7 /* DismissHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DismissHandler.swift; sourceTree = "<group>"; };
 		B0879197265ED8550065C5E7 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/ErrorMessages.strings; sourceTree = "<group>"; };
 		B087919D265EDC060065C5E7 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/ErrorMessages.strings; sourceTree = "<group>"; };
@@ -362,6 +370,7 @@
 				B0726AEE2664191600ABFEAD /* LottieAnimation.swift */,
 				B05CCFD32662990E00F13786 /* PersonDetailImage.swift */,
 				B04AD2A926567464001A760F /* PersonRowImage.swift */,
+				B0726AF92664FB0200ABFEAD /* SearchBar.swift */,
 				B0B7B6AE26629192004044CB /* SingleAmountDisplay.swift */,
 				B0A462A02649B3020045D2BE /* TitledContent.swift */,
 				B050AC94265FA152000B3E84 /* TabBar.swift */,
@@ -376,6 +385,7 @@
 			children = (
 				B021DF412649195000FD418F /* LoginView */,
 				B0EE4C92265FDCEF001177E3 /* ProfileDetail */,
+				B0726AF42664F60D00ABFEAD /* PersonList */,
 			);
 			path = HomeViews;
 			sourceTree = "<group>";
@@ -491,6 +501,14 @@
 			path = Enumerations;
 			sourceTree = "<group>";
 		};
+		B0726AF42664F60D00ABFEAD /* PersonList */ = {
+			isa = PBXGroup;
+			children = (
+				B0726AF52664F62500ABFEAD /* PersonList.swift */,
+			);
+			path = PersonList;
+			sourceTree = "<group>";
+		};
 		B0879192265ED8190065C5E7 /* Localizations */ = {
 			isa = PBXGroup;
 			children = (
@@ -507,6 +525,7 @@
 				B08791A3265F6F610065C5E7 /* OtherTexts.strings */,
 				B08791AD265F84480065C5E7 /* LogIn-SignIn.strings */,
 				B0B7B6B4266293DB004044CB /* ProfileDetail.strings */,
+				B0726AF72664F7BC00ABFEAD /* PersonList.strings */,
 			);
 			path = German;
 			sourceTree = "<group>";
@@ -558,6 +577,7 @@
 		B090FDF626640BF1005700A8 /* Button */ = {
 			isa = PBXGroup;
 			children = (
+				B0726AFB266526A100ABFEAD /* AddNewListItemButton.swift */,
 				B090FDF726640C03005700A8 /* BackAndEditButton.swift */,
 				B0A4629A2649A1B90045D2BE /* BackButton.swift */,
 				B0A4629626497FD00045D2BE /* SingleButton.swift */,
@@ -738,6 +758,7 @@
 				B0A761A12642E20C003B170F /* KeysInfo.plist in Resources */,
 				B01E96B62641AEF80034E3D1 /* Preview Assets.xcassets in Resources */,
 				B090FDFD26641622005700A8 /* lottie-delete-trash.json in Resources */,
+				B0726AF82664F7BC00ABFEAD /* PersonList.strings in Resources */,
 				B087919C265EDC060065C5E7 /* ErrorMessages.strings in Resources */,
 				B08791AA265F73430065C5E7 /* OtherTexts.strings in Resources */,
 				B08791AF265F84480065C5E7 /* LogIn-SignIn.strings in Resources */,
@@ -869,6 +890,7 @@
 				B0225D2D26525D8900D75CDA /* LatePaymentInterest.swift in Sources */,
 				B0B7B6AF26629192004044CB /* SingleAmountDisplay.swift in Sources */,
 				B0AF0A9626432CE100DF4DC9 /* PropertyWrapper.swift in Sources */,
+				B0726AF62664F62500ABFEAD /* PersonList.swift in Sources */,
 				B072080C264C56E40084FDE6 /* ValidationResult.swift in Sources */,
 				B0225D2F2652600E00D75CDA /* FFRegisterPersonCall.swift in Sources */,
 				B03697BD265028F500DA938D /* FFGetClubIdCall.swift in Sources */,
@@ -880,6 +902,7 @@
 				B0225D35265269C400D75CDA /* FFForceSignOutCall.swift in Sources */,
 				B050AC97265FBA01000B3E84 /* FirebaseAppSetup.swift in Sources */,
 				B0AF0A9E2643CE2500DF4DC9 /* FirebaseTransaction.swift in Sources */,
+				B0726AFC266526A100ABFEAD /* AddNewListItemButton.swift in Sources */,
 				B0A46299264989E90045D2BE /* SignInEmailView.swift in Sources */,
 				B02FC7C0265446A700A99207 /* SignInPersonSelectionView.swift in Sources */,
 				B0447C1A2641B78100148430 /* AppDelegate.swift in Sources */,
@@ -944,6 +967,7 @@
 				B021DF43264920EA00FD418F /* LoginView.swift in Sources */,
 				B0AF0A9A2643303500DF4DC9 /* FineReason.swift in Sources */,
 				B02221AC2641D5570005295B /* FirebasePerson.swift in Sources */,
+				B0726AFA2664FB0200ABFEAD /* SearchBar.swift in Sources */,
 				B05CCFD626629E4A00F13786 /* ImagePicker.swift in Sources */,
 				B0AF0A9826432F1E00DF4DC9 /* FirebaseFine.swift in Sources */,
 				B072080E264C56FB0084FDE6 /* ErrorMessages.swift in Sources */,

@@ -1,0 +1,16 @@
+/* 
+  PersonList.strings
+  Strafen
+
+  Created by Steven on 31.05.21.
+  
+*/
+
+// Person list header text
+"person-list-header-text" = "Alle Personen";
+
+// Person list empty list cashier
+"person-list-empty-list-cashier" = "Du hast noch keine Person erstellt!";
+
+// Person list empty list
+"person-list-empty-list" = "Es sind keine Personen registriert!";

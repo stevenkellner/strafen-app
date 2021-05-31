@@ -39,8 +39,11 @@ struct PersonRowImage: View {
             }
         }.clipShape(WavyCircleShape(number: number, amplitute: amplitute, offset: offset))
             .overlay(WavyCircleShape(number: number, amplitute: amplitute, offset: offset).stroke(Color.textColor, lineWidth: 1).frame(width: 36, height: 36))
-            .animation(.linear(duration: 15).repeatForever(autoreverses: false))
-            .onAppear { offset = .radians(-2 * .pi) }
+            .onAppear {
+                withAnimation(.linear(duration: 15).repeatForever(autoreverses: false)) {
+                    offset = .radians(-2 * .pi)
+                }
+            }
     }
 
     /// Shape of wavy circle

@@ -335,6 +335,9 @@ enum LocalizationTables: String {
 
     /// Localization table for profile detail views
     case profileDetail = "ProfileDetail"
+
+    /// Localization table for person list views
+    case personList = "PersonList"
 }
 
 /// Localized string of given table with given key

@@ -39,7 +39,7 @@ class FirebaseAppSetup: ObservableObject {
         guard let person = Settings.shared.person else {
             return self.connectionState.failed()
         }
-        HomeTab.shared.active = .profileDetail
+        HomeTab.shared.active = .personList
 
             // Fetch lists from database
         self.fetchLists(clubId: person.club.id).then(in: .main) { _ in
