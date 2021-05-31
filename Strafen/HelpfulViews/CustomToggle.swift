@@ -60,7 +60,7 @@ struct CustomToggle: View {
 
                     // Toggle
                     HStack(spacing: 0) {
-                        SplitedOutlinedContent {
+                        SplittedOutlinedContent {
                             Text("toggle-state-off", tableName: "OtherTexts", comment: "Toggle state `off`")
                                 .foregroundColor(boolToToggle ? .customRed : .textColor)
                                 .font(.system(size: 16, weight: .light))

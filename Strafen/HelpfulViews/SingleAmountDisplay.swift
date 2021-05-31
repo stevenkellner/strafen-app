@@ -82,7 +82,7 @@ struct SingleAmountDisplay: View {
     @EnvironmentObject var reasonListEnvironment: ListEnvironment<FirebaseReasonTemplate>
 
     var body: some View {
-        SplitedOutlinedContent {
+        SplittedOutlinedContent {
             Text("\(displayType.text):")
                 .foregroundColor(.textColor)
                 .font(.system(size: 16, weight: .thin))

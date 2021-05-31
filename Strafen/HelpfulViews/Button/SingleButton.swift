@@ -16,6 +16,9 @@ struct SingleButton: View {
     /// Font size
     private var fontSize: CGFloat = 24
 
+    /// Text color
+    private var textColor: Color?
+
     /// Image of the left symbol
     private var leftImage: Image?
 
@@ -40,6 +43,9 @@ struct SingleButton: View {
     /// Connection state
     private var connectionState: Binding<ConnectionState>?
 
+    /// Size of the button
+    private var size: (width: CGFloat?, height: CGFloat?)?
+
     /// Init with text of the button
     /// - Parameter text: text of the button
     init(_ text: String) {
@@ -63,12 +69,12 @@ struct SingleButton: View {
                 // Text
                 Text(text)
                     .font(.system(size: fontSize, weight: .light))
-                    .foregroundColor(.textColor)
+                    .foregroundColor(textColor ?? .textColor)
                     .lineLimit(1)
                     .padding(.horizontal, 15)
 
                 // Symbol
-                if leftImage != nil || rightImage != nil {
+                if leftImage != nil || rightImage != nil || connectionState?.wrappedValue == .loading {
                     HStack(spacing: 0) {
 
                         // Left symbol
@@ -100,7 +106,7 @@ struct SingleButton: View {
                 }
 
             }
-        }.frame(width: UIScreen.main.bounds.width * 0.95, height: 55)
+        }.frame(width: size?.width ?? UIScreen.main.bounds.width * 0.95, height: size?.height ?? 55)
             .onTapGesture { buttonHandler?() }
     }
 
@@ -110,6 +116,15 @@ struct SingleButton: View {
     public func fontSize(_ size: CGFloat) -> SingleButton {
         var button = self
         button.fontSize = size
+        return button
+    }
+
+    /// Sets color of the text
+    /// - Parameter color: color of the text
+    /// - Returns: modified single button
+    public func textColor(_ color: Color) -> SingleButton {
+        var button = self
+        button.textColor = color
         return button
     }
 
@@ -200,6 +215,25 @@ struct SingleButton: View {
     public func connectionState(_ connectionState: Binding<ConnectionState>) -> SingleButton {
         var button = self
         button.connectionState = connectionState
+        return button
+    }
+
+    /// Set size
+    /// - Parameter size: size
+    /// - Returns: modified single button
+    func size(_ size: CGSize) -> SingleButton {
+        var button = self
+        button.size = (width: size.width, height: size.height)
+        return button
+    }
+
+    /// Set width and height
+    /// - Parameter width: width
+    /// - Parameter height: height
+    /// - Returns: modified single button
+    func size(width: CGFloat? = nil, height: CGFloat? = nil) -> SingleButton {
+        var button = self
+        button.size = (width: width, height: height)
         return button
     }
 

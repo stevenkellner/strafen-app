@@ -11,12 +11,20 @@ target 'Strafen' do
   pod 'Firebase/Storage'
   pod 'CodableFirebase'
   
+  # Sign in with google
   pod 'GoogleSignIn'
 
   # Hydra
   pod 'HydraAsync'
   
+  # Introspect
   pod 'Introspect'
+  
+  # Lottie
+  pod 'lottie-ios'
+  
+  # ToastUI
+  pod 'ToastUI'
 
   target 'StrafenTests' do
     inherit! :search_paths

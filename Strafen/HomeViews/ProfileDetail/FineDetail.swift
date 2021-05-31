@@ -32,7 +32,7 @@ struct FineDetail: View {
 
                     // Back / edit button
                     BackAndEditButton {
-                        Text("Edit") // TODO
+                        FineEditor(fine: fine)
                     }
 
                     // Fine of text
@@ -185,7 +185,7 @@ struct FineDetail: View {
                 ZStack {
 
                     // Outlines
-                    SplitedOutlinedContent {
+                    SplittedOutlinedContent {
                         if connectionStateToUnpayed == .loading { ProgressView() }
                     } rightContent: {
                         if connectionStateToPayed == .loading { ProgressView() }

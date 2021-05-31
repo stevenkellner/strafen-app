@@ -20,3 +20,27 @@
 
 // Fine detail payed in app
 "fine-detail-payed-in-app" = "InApp bezahlt";
+
+// Fine editor header text
+"fine-editor-header-text" = "Strafe Ändern";
+
+// Fine editor importance title
+"fine-editor-importance-title" = "Wichtigkeit";
+
+// Fine editor reason text
+"fine-editor-reason-text" = "Grund";
+
+// Fine editor date text
+"fine-editor-date-text" = "Datum";
+
+// Fine editor amount text
+"fine-editor-amount-text" = "Betrag";
+
+// Fine editor number text
+"fine-editor-number-text" = "Anzahl";
+
+// Fine editor delete message
+"fine-editor-delete-message" = "Möchtest du die Strafe wirklich löschen?";
+
+// Fine editor delete no return
+"fine-editor-delete-no-return" = "Du kannst diese Aktion nicht widerrufen.";

@@ -200,3 +200,79 @@ extension Amount: FirebaseParameterable {
         doubleValue
     }
 }
+
+/// Used to parse string to amount
+struct AmountParser {
+
+    /// Parses string to amount
+    /// - Parameter amountString: string to parse
+    /// - Returns: parsed amount
+    static func fromString(_ amountString: String) -> Amount {
+
+        var commaPassed = false
+        var newString = ""
+
+        // Filter all invalid characters out
+        let validCharacters = (0..<10).map { Character(String($0)) }.appending(",")
+        for char in amountString where validCharacters.contains(char) {
+            if char == "," && commaPassed {
+                continue
+            } else if char == "," && !commaPassed {
+                commaPassed = true
+            }
+            newString.append(char)
+        }
+
+        // String is empty
+        guard !newString.isEmpty else { return .zero }
+
+        // No subunit value
+        if !commaPassed {
+            guard let value = Int(newString) else { return .zero }
+            return Amount(value, subUnit: .zero)
+        }
+
+        // String contains only a comma
+        guard newString.count != 1 else { return .zero }
+
+        // Get value and subunit value
+        var componentsIterator = newString.components(separatedBy: ",").makeIterator()
+        guard let valueString = componentsIterator.next(),
+              let value = valueString.isEmpty ? .zero : Int(valueString),
+              let subUnitString = componentsIterator.next() else { return .zero }
+
+        // Empty subunit string
+        guard !subUnitString.isEmpty else { return Amount(value, subUnit: .zero) }
+
+        // Only decimal digit
+        if subUnitString.count == 1 {
+            guard let subUnitValue = Int(subUnitString) else { return .zero }
+            return Amount(value, subUnit: subUnitValue * 10)
+
+        }
+
+        // Both digits
+        if subUnitString.count == 2 {
+            guard let subUnitValue = Int(subUnitString) else { return .zero }
+            return Amount(value, subUnit: subUnitValue)
+        }
+
+        // More than two digit
+        var subUnitIterator = subUnitString.makeIterator()
+        guard let tenthCharacter = subUnitIterator.next(),
+              let hundredthCharacter = subUnitIterator.next(),
+              let thousandthCharacter = subUnitIterator.next(),
+              let tenth = Int(String(tenthCharacter)),
+              let hundredth = Int(String(hundredthCharacter)),
+              let thousandth = Int(String(thousandthCharacter))
+              else { return .zero }
+        let decimal = tenth * 10 + hundredth
+        if thousandth >= 5 {
+            if decimal == 99 {
+                return Amount(value + 1, subUnit: .zero)
+            }
+            return Amount(value, subUnit: decimal + 1)
+        }
+        return Amount(value, subUnit: decimal)
+    }
+}

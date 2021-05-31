@@ -63,6 +63,8 @@
 		B0720817264D89200084FDE6 /* ConnectionState.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0720816264D89200084FDE6 /* ConnectionState.swift */; };
 		B0720819264D8D580084FDE6 /* OperationResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0720818264D8D580084FDE6 /* OperationResult.swift */; };
 		B072081C264DA0270084FDE6 /* SignInProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = B072081B264DA0270084FDE6 /* SignInProperty.swift */; };
+		B0726AEF2664191600ABFEAD /* LottieAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0726AEE2664191600ABFEAD /* LottieAnimation.swift */; };
+		B0726AF12664242400ABFEAD /* DeleteAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0726AF02664242400ABFEAD /* DeleteAlert.swift */; };
 		B0879188265ECE3C0065C5E7 /* DismissHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0879187265ECE3C0065C5E7 /* DismissHandler.swift */; };
 		B0879196265ED8550065C5E7 /* ErrorMessages.strings in Resources */ = {isa = PBXBuildFile; fileRef = B0879198265ED8550065C5E7 /* ErrorMessages.strings */; };
 		B087919C265EDC060065C5E7 /* ErrorMessages.strings in Resources */ = {isa = PBXBuildFile; fileRef = B087919E265EDC060065C5E7 /* ErrorMessages.strings */; };
@@ -74,6 +76,16 @@
 		B08FC117265D31C600F63975 /* DecodableDefault.swift in Sources */ = {isa = PBXBuildFile; fileRef = B08FC116265D31C600F63975 /* DecodableDefault.swift */; };
 		B08FC119265D38C400F63975 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = B08FC118265D38C400F63975 /* Settings.swift */; };
 		B090FDE626637D89005700A8 /* FineDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = B090FDE526637D89005700A8 /* FineDetail.swift */; };
+		B090FDE82663A5EB005700A8 /* FineEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = B090FDE72663A5EB005700A8 /* FineEditor.swift */; };
+		B090FDEA2663C79F005700A8 /* ImportanceChanger.swift in Sources */ = {isa = PBXBuildFile; fileRef = B090FDE92663C79F005700A8 /* ImportanceChanger.swift */; };
+		B090FDEC2663E523005700A8 /* DateChanger.swift in Sources */ = {isa = PBXBuildFile; fileRef = B090FDEB2663E523005700A8 /* DateChanger.swift */; };
+		B090FDEF26640B33005700A8 /* Indicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B090FDEE26640B33005700A8 /* Indicator.swift */; };
+		B090FDF126640B3D005700A8 /* SheetBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B090FDF026640B3D005700A8 /* SheetBar.swift */; };
+		B090FDF326640B48005700A8 /* SingleOutlinedContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = B090FDF226640B48005700A8 /* SingleOutlinedContent.swift */; };
+		B090FDF526640B55005700A8 /* SplittedOutlinedContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = B090FDF426640B55005700A8 /* SplittedOutlinedContent.swift */; };
+		B090FDF826640C03005700A8 /* BackAndEditButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B090FDF726640C03005700A8 /* BackAndEditButton.swift */; };
+		B090FDFA26640C45005700A8 /* SplittedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B090FDF926640C45005700A8 /* SplittedButton.swift */; };
+		B090FDFD26641622005700A8 /* lottie-delete-trash.json in Resources */ = {isa = PBXBuildFile; fileRef = B090FDFC26641622005700A8 /* lottie-delete-trash.json */; };
 		B09CCE1826593E4C008C545A /* SignInAppleController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B09CCE1726593E4C008C545A /* SignInAppleController.swift */; };
 		B09CCE1A26593E5C008C545A /* SignInGoogleController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B09CCE1926593E5C008C545A /* SignInGoogleController.swift */; };
 		B0A462912649412C0045D2BE /* Header.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0A462902649412B0045D2BE /* Header.swift */; };
@@ -186,6 +198,8 @@
 		B0720816264D89200084FDE6 /* ConnectionState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectionState.swift; sourceTree = "<group>"; };
 		B0720818264D8D580084FDE6 /* OperationResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OperationResult.swift; sourceTree = "<group>"; };
 		B072081B264DA0270084FDE6 /* SignInProperty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInProperty.swift; sourceTree = "<group>"; };
+		B0726AEE2664191600ABFEAD /* LottieAnimation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LottieAnimation.swift; sourceTree = "<group>"; };
+		B0726AF02664242400ABFEAD /* DeleteAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteAlert.swift; sourceTree = "<group>"; };
 		B0879187265ECE3C0065C5E7 /* DismissHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DismissHandler.swift; sourceTree = "<group>"; };
 		B0879197265ED8550065C5E7 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/ErrorMessages.strings; sourceTree = "<group>"; };
 		B087919D265EDC060065C5E7 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/ErrorMessages.strings; sourceTree = "<group>"; };
@@ -197,6 +211,16 @@
 		B08FC116265D31C600F63975 /* DecodableDefault.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DecodableDefault.swift; sourceTree = "<group>"; };
 		B08FC118265D38C400F63975 /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		B090FDE526637D89005700A8 /* FineDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FineDetail.swift; sourceTree = "<group>"; };
+		B090FDE72663A5EB005700A8 /* FineEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FineEditor.swift; sourceTree = "<group>"; };
+		B090FDE92663C79F005700A8 /* ImportanceChanger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportanceChanger.swift; sourceTree = "<group>"; };
+		B090FDEB2663E523005700A8 /* DateChanger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateChanger.swift; sourceTree = "<group>"; };
+		B090FDEE26640B33005700A8 /* Indicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Indicator.swift; sourceTree = "<group>"; };
+		B090FDF026640B3D005700A8 /* SheetBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetBar.swift; sourceTree = "<group>"; };
+		B090FDF226640B48005700A8 /* SingleOutlinedContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleOutlinedContent.swift; sourceTree = "<group>"; };
+		B090FDF426640B55005700A8 /* SplittedOutlinedContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplittedOutlinedContent.swift; sourceTree = "<group>"; };
+		B090FDF726640C03005700A8 /* BackAndEditButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackAndEditButton.swift; sourceTree = "<group>"; };
+		B090FDF926640C45005700A8 /* SplittedButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplittedButton.swift; sourceTree = "<group>"; };
+		B090FDFC26641622005700A8 /* lottie-delete-trash.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "lottie-delete-trash.json"; sourceTree = "<group>"; };
 		B09CCE1726593E4C008C545A /* SignInAppleController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInAppleController.swift; sourceTree = "<group>"; };
 		B09CCE1926593E5C008C545A /* SignInGoogleController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInGoogleController.swift; sourceTree = "<group>"; };
 		B0A462902649412B0045D2BE /* Header.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Header.swift; sourceTree = "<group>"; };
@@ -292,6 +316,7 @@
 				B021DF3D264918D300FD418F /* HelpfulViews */,
 				B0254E062641B54C0083752B /* FirebaseInterface */,
 				B0447C1E2641B90600148430 /* Utilities */,
+				B090FDFB2664160A005700A8 /* LottieAnimations */,
 				B0879192265ED8190065C5E7 /* Localizations */,
 			);
 			path = Strafen;
@@ -322,22 +347,24 @@
 		B021DF3D264918D300FD418F /* HelpfulViews */ = {
 			isa = PBXGroup;
 			children = (
-				B0A4629A2649A1B90045D2BE /* BackButton.swift */,
 				B021DF3E264918E400FD418F /* BackgroundWave.swift */,
 				B0A4629E2649A7070045D2BE /* CustomTextField.swift */,
 				B0225D23265119D300D75CDA /* CustomToggle.swift */,
+				B090FDEB2663E523005700A8 /* DateChanger.swift */,
+				B0726AF02664242400ABFEAD /* DeleteAlert.swift */,
 				B0A4629C2649A5600045D2BE /* EmptyNavigationLink.swift */,
 				B03697BA2650115B00DA938D /* ErrorMessageView.swift */,
 				B0A462902649412B0045D2BE /* Header.swift */,
 				B05CCFD526629E4A00F13786 /* ImagePicker.swift */,
-				B0A46294264953270045D2BE /* Outline.swift */,
+				B090FDE92663C79F005700A8 /* ImportanceChanger.swift */,
+				B0726AEE2664191600ABFEAD /* LottieAnimation.swift */,
 				B05CCFD32662990E00F13786 /* PersonDetailImage.swift */,
 				B04AD2A926567464001A760F /* PersonRowImage.swift */,
-				B0A4629226494AB80045D2BE /* RoundedCorners.swift */,
 				B0B7B6AE26629192004044CB /* SingleAmountDisplay.swift */,
-				B0A4629626497FD00045D2BE /* SingleButton.swift */,
 				B0A462A02649B3020045D2BE /* TitledContent.swift */,
 				B050AC94265FA152000B3E84 /* TabBar.swift */,
+				B090FDF626640BF1005700A8 /* Button */,
+				B090FDED26640B20005700A8 /* Outline */,
 			);
 			path = HelpfulViews;
 			sourceTree = "<group>";
@@ -513,6 +540,38 @@
 			path = FirebaseTests;
 			sourceTree = "<group>";
 		};
+		B090FDED26640B20005700A8 /* Outline */ = {
+			isa = PBXGroup;
+			children = (
+				B090FDEE26640B33005700A8 /* Indicator.swift */,
+				B0A46294264953270045D2BE /* Outline.swift */,
+				B0A4629226494AB80045D2BE /* RoundedCorners.swift */,
+				B090FDF026640B3D005700A8 /* SheetBar.swift */,
+				B090FDF226640B48005700A8 /* SingleOutlinedContent.swift */,
+				B090FDF426640B55005700A8 /* SplittedOutlinedContent.swift */,
+			);
+			path = Outline;
+			sourceTree = "<group>";
+		};
+		B090FDF626640BF1005700A8 /* Button */ = {
+			isa = PBXGroup;
+			children = (
+				B090FDF726640C03005700A8 /* BackAndEditButton.swift */,
+				B0A4629A2649A1B90045D2BE /* BackButton.swift */,
+				B0A4629626497FD00045D2BE /* SingleButton.swift */,
+				B090FDF926640C45005700A8 /* SplittedButton.swift */,
+			);
+			path = Button;
+			sourceTree = "<group>";
+		};
+		B090FDFB2664160A005700A8 /* LottieAnimations */ = {
+			isa = PBXGroup;
+			children = (
+				B090FDFC26641622005700A8 /* lottie-delete-trash.json */,
+			);
+			path = LottieAnimations;
+			sourceTree = "<group>";
+		};
 		B0A7619D2642DB86003B170F /* FFCallables */ = {
 			isa = PBXGroup;
 			children = (
@@ -560,6 +619,7 @@
 				B0EE4C93265FDD09001177E3 /* ProfileDetail.swift */,
 				B05CCFD72662A23300F13786 /* FineListRow.swift */,
 				B090FDE526637D89005700A8 /* FineDetail.swift */,
+				B090FDE72663A5EB005700A8 /* FineEditor.swift */,
 			);
 			path = ProfileDetail;
 			sourceTree = "<group>";
@@ -674,6 +734,7 @@
 				B0B7B6B2266293DB004044CB /* ProfileDetail.strings in Resources */,
 				B0A761A12642E20C003B170F /* KeysInfo.plist in Resources */,
 				B01E96B62641AEF80034E3D1 /* Preview Assets.xcassets in Resources */,
+				B090FDFD26641622005700A8 /* lottie-delete-trash.json in Resources */,
 				B087919C265EDC060065C5E7 /* ErrorMessages.strings in Resources */,
 				B08791AA265F73430065C5E7 /* OtherTexts.strings in Resources */,
 				B08791AF265F84480065C5E7 /* LogIn-SignIn.strings in Resources */,
@@ -801,14 +862,18 @@
 				B02221AE2641D6850005295B /* PersonName.swift in Sources */,
 				B03986512652776F00C97DF2 /* Club.swift in Sources */,
 				B0A7619C2642D366003B170F /* FirebaseCallParameters.swift in Sources */,
+				B090FDEF26640B33005700A8 /* Indicator.swift in Sources */,
 				B0225D2D26525D8900D75CDA /* LatePaymentInterest.swift in Sources */,
 				B0B7B6AF26629192004044CB /* SingleAmountDisplay.swift in Sources */,
 				B0AF0A9626432CE100DF4DC9 /* PropertyWrapper.swift in Sources */,
 				B072080C264C56E40084FDE6 /* ValidationResult.swift in Sources */,
 				B0225D2F2652600E00D75CDA /* FFRegisterPersonCall.swift in Sources */,
 				B03697BD265028F500DA938D /* FFGetClubIdCall.swift in Sources */,
+				B090FDFA26640C45005700A8 /* SplittedButton.swift in Sources */,
 				B090FDE626637D89005700A8 /* FineDetail.swift in Sources */,
+				B090FDEC2663E523005700A8 /* DateChanger.swift in Sources */,
 				B0225D3726526B3800D75CDA /* FFGetPersonPropertiesCall.swift in Sources */,
+				B0726AEF2664191600ABFEAD /* LottieAnimation.swift in Sources */,
 				B0225D35265269C400D75CDA /* FFForceSignOutCall.swift in Sources */,
 				B050AC97265FBA01000B3E84 /* FirebaseAppSetup.swift in Sources */,
 				B0AF0A9E2643CE2500DF4DC9 /* FirebaseTransaction.swift in Sources */,
@@ -821,6 +886,7 @@
 				B0879188265ECE3C0065C5E7 /* DismissHandler.swift in Sources */,
 				B0225D24265119D300D75CDA /* CustomToggle.swift in Sources */,
 				B0A46295264953270045D2BE /* Outline.swift in Sources */,
+				B090FDF326640B48005700A8 /* SingleOutlinedContent.swift in Sources */,
 				B0720817264D89200084FDE6 /* ConnectionState.swift in Sources */,
 				B0D4B62D2642CD19003A720C /* FirebaseFunctionCaller.swift in Sources */,
 				B0EE60ED2641E07000D3B2D2 /* FirebaseObserver.swift in Sources */,
@@ -832,6 +898,7 @@
 				B0720810264D282B0084FDE6 /* InputPropertiesProtocol.swift in Sources */,
 				B0A4629726497FD00045D2BE /* SingleButton.swift in Sources */,
 				B07148D9264E938800C5F7EF /* Importance.swift in Sources */,
+				B090FDEA2663C79F005700A8 /* ImportanceChanger.swift in Sources */,
 				B0720814264D6B9C0084FDE6 /* TextFieldsProtocol.swift in Sources */,
 				B050AC93265F9AAE000B3E84 /* HomeTab.swift in Sources */,
 				B0A4629326494AB90045D2BE /* RoundedCorners.swift in Sources */,
@@ -858,10 +925,13 @@
 				B01E96AF2641AEF60034E3D1 /* StrafenApp.swift in Sources */,
 				B0EE4C96265FE6CE001177E3 /* FirebaseImageStorage.swift in Sources */,
 				B0E9C86826447AF100FB484E /* ListEnvironment.swift in Sources */,
+				B090FDF826640C03005700A8 /* BackAndEditButton.swift in Sources */,
 				B0E29C8E264C052400E4BA3B /* TextFieldFirstResponders.swift in Sources */,
 				B0A4629D2649A5600045D2BE /* EmptyNavigationLink.swift in Sources */,
 				B08FC119265D38C400F63975 /* Settings.swift in Sources */,
 				B02221A92641D4FE0005295B /* FirebaseDecoder.swift in Sources */,
+				B0726AF12664242400ABFEAD /* DeleteAlert.swift in Sources */,
+				B090FDF526640B55005700A8 /* SplittedOutlinedContent.swift in Sources */,
 				B02221A72641BEFC0005295B /* Tagged.swift in Sources */,
 				B066A2BF26492E2700AB2715 /* SignInView.swift in Sources */,
 				B0225D3926526C3E00D75CDA /* FFExistsPersonWithUserIdCall.swift in Sources */,
@@ -874,7 +944,9 @@
 				B05CCFD626629E4A00F13786 /* ImagePicker.swift in Sources */,
 				B0AF0A9826432F1E00DF4DC9 /* FirebaseFine.swift in Sources */,
 				B072080E264C56FB0084FDE6 /* ErrorMessages.swift in Sources */,
+				B090FDE82663A5EB005700A8 /* FineEditor.swift in Sources */,
 				B08FC117265D31C600F63975 /* DecodableDefault.swift in Sources */,
+				B090FDF126640B3D005700A8 /* SheetBar.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -69,7 +69,7 @@ struct FineListRow: View {
 
         var body: some View {
             GeometryReader { geometry in
-                SplitedOutlinedContent {
+                SplittedOutlinedContent {
 
                     // Left outline
                     Text(describing: fine.completeAmount(with: reasonListEnvironment.list))
@@ -130,7 +130,7 @@ struct FineListRow: View {
             VStack(spacing: 0) {
 
                 // Top row
-                SplitedOutlinedContent(.top) {
+                SplittedOutlinedContent(.top) {
 
                     // Left outline
                     Text(describing: fine.completeAmount(with: reasonListEnvironment.list))

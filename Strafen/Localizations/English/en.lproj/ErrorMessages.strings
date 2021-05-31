@@ -62,3 +62,15 @@
 
 // Internal error for save
 "internalErrorSave" = "There was a problem saving!";
+
+// Amount can't be zero
+"amountZero" = "Amount can't be zero!";
+
+// Future date
+"futureDate" = "Date can't be in the future!";
+
+// Invalid number range
+"invalidNumberRange" = "Number must be between 1 and 99!";
+
+// Internal error for delete
+"internalErrorDelete" = "There was a problem deleting!";

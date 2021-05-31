@@ -33,6 +33,12 @@
 // Text of edit button
 "edit-button-text" = "Bearbeiten";
 
+// Text for done button
+"done-button-text" = "Fertig";
+
+// Text of delete button
+"delete-button-text" = "Löschen";
+
 // Text for loading
 "loading-text" = "Laden";
 

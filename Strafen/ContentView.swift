@@ -97,8 +97,8 @@ struct ContentView: View {
                         } else {
                             ZStack {
                                 Color.backgroundGray
-                                Text("no-available-view", table: .otherTexts, comment: "No available view")
-                                    .foregroundColor(.textColor).font(.system(size: 25, weight: .thin)).lineLimit(2).multilineTextAlignment(.center).padding(.horizontal, 15)
+//                                Text("no-available-view", table: .otherTexts, comment: "No available view")
+//                                    .foregroundColor(.textColor).font(.system(size: 25, weight: .thin)).lineLimit(2).multilineTextAlignment(.center).padding(.horizontal, 15)
                             }
                         }
                     }.edgesIgnoringSafeArea(.all)

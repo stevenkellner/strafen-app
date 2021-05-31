@@ -420,3 +420,28 @@ extension Date {
         return formatter.string(from: self)
     }
 }
+
+/// Applies tap handler only if not nil
+struct OptionalTapGesture: ViewModifier {
+
+    /// Tap handler to execute on tap
+    let tapHandler: (() -> Void)?
+
+    func body(content: Content) -> some View {
+        if let tapHandler = tapHandler {
+            content.onTapGesture(perform: tapHandler)
+        } else {
+            content
+        }
+    }
+}
+
+extension View {
+
+    /// Applies tap handler only if not nil
+    /// - Parameter tapHandler: tap handler to execute on tap
+    /// - Returns: modified view
+    func optionalTapGesture(perform tapHandler: (() -> Void)?) -> some View {
+        ModifiedContent(content: self, modifier: OptionalTapGesture(tapHandler: tapHandler))
+    }
+}

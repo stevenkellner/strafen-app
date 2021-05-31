@@ -1,166 +1,14 @@
 //
-//  Outline.swift
+//  SplittedOutlinedContent.swift
 //  Strafen
 //
-//  Created by Steven on 10.05.21.
+//  Created by Steven on 30.05.21.
 //
 
 import SwiftUI
 
-/// Outline for Row, Text or TextField
-struct Outline: View {
-
-    /// Set of rounded corners
-    let cornerSet: RoundedCorners.CornerSet
-
-    /// Cornder radius
-    private var cornerRadius: CGFloat?
-
-    /// Fill Color of the Outline
-    private var fillColor: Color?
-
-    /// Stroke Color of the outline
-    private var strokeColor: Color?
-
-    /// Line width of the outline
-    private var lineWidth: CGFloat?
-
-    /// Init with corner set
-    /// - Parameter cornerSet: corner set
-    init(_ cornerSet: RoundedCorners.CornerSet = .all) {
-        self.cornerSet = cornerSet
-    }
-
-    var body: some View {
-        RoundedCorners(cornerSet)
-            .radius(cornerRadius ?? 5)
-            .lineWidth(lineWidth)
-            .fillColor(fillColor ?? .fieldGray)
-            .strokeColor(strokeColor ?? .clear)
-    }
-
-    /// Set fill color of the outline
-    /// - Parameter fillColor: fill color of the outline
-    /// - Returns: modified outline
-    func fillColor(_ fillColor: Color?) -> Outline {
-        var outline = self
-        outline.fillColor = fillColor
-        return outline
-    }
-
-    /// Set stroke color of the outline
-    /// - Parameter strokeColor: stroke color of the outline
-    /// - Returns: modified outline
-    func strokeColor(_ strokeColor: Color?) -> Outline {
-        var outline = self
-        outline.strokeColor = strokeColor
-        return outline
-    }
-
-    /// Set line width of the outline
-    /// - Parameter lineWidth: line width of the outline
-    /// - Returns: modified outline
-    func lineWidth(_ lineWidth: CGFloat?) -> Outline {
-        var outline = self
-        outline.lineWidth = lineWidth
-        return outline
-    }
-
-    /// Set corner radius of the outline
-    /// - Parameter radius: corner radius of the outline
-    /// - Returns: modified outline
-    func radius(_ radius: CGFloat?) -> Outline {
-        var outline = self
-        outline.cornerRadius = radius
-        return outline
-    }
-}
-
-/// Single content with default outline
-struct SingleOutlinedContent<Content>: View where Content: View {
-
-    /// Set of rounded corners
-    let cornerSet: RoundedCorners.CornerSet
-
-    /// Content
-    let content: Content
-
-    /// Fill Color of the Outline
-    private var fillColor: Color?
-
-    /// Stroke Color of the outline
-    private var strokeColor: Color?
-
-    /// Line width of the outline
-    private var lineWidth: CGFloat?
-
-    /// Cornder radius
-    private var cornerRadius: CGFloat?
-
-    /// Init with corner set and content
-    /// - Parameters:
-    ///   - cornerSet: corner set
-    ///   - content: content
-    init(_ cornerSet: RoundedCorners.CornerSet = .all, @ViewBuilder content: () -> Content) {
-        self.cornerSet = cornerSet
-        self.content = content()
-    }
-
-    var body: some View {
-        ZStack {
-
-            // Outline
-            Outline(cornerSet)
-                .fillColor(fillColor)
-                .strokeColor(strokeColor)
-                .lineWidth(lineWidth)
-                .radius(cornerRadius)
-                .shadow(color: .black.opacity(0.25), radius: 10)
-
-            // Content
-            content
-
-        }
-    }
-
-    /// Set fill color of the outline
-    /// - Parameter fillColor: fill color of the outline
-    /// - Returns: modified outline
-    func fillColor(_ fillColor: Color?) -> SingleOutlinedContent {
-        var outline = self
-        outline.fillColor = fillColor
-        return outline
-    }
-
-    /// Set stroke color of the outline
-    /// - Parameter strokeColor: stroke color of the outline
-    /// - Returns: modified outline
-    func strokeColor(_ strokeColor: Color?) -> SingleOutlinedContent {
-        var outline = self
-        outline.strokeColor = strokeColor
-        return outline
-    }
-
-    /// Set line width of the outline
-    /// - Parameter lineWidth: line width of the outline
-    /// - Returns: modified outline
-    func lineWidth(_ lineWidth: CGFloat?) -> SingleOutlinedContent {
-        var outline = self
-        outline.lineWidth = lineWidth
-        return outline
-    }
-
-    /// Set corner radius of the outline
-    /// - Parameter radius: corner radius of the outline
-    /// - Returns: modified outline
-    func radius(_ radius: CGFloat?) -> SingleOutlinedContent {
-        var outline = self
-        outline.cornerRadius = radius
-        return outline
-    }
-}
-
-struct SplitedOutlinedContent<LeftContent, RightContent>: View where LeftContent: View, RightContent: View {
+/// Splitted content with default outline
+struct SplittedOutlinedContent<LeftContent, RightContent>: View where LeftContent: View, RightContent: View {
 
     /// Set of rounded corners
     let cornerSet: RoundedCorners.CornerSet
@@ -217,7 +65,7 @@ struct SplitedOutlinedContent<LeftContent, RightContent>: View where LeftContent
 
     var body: some View {
         GeometryReader { geometry in
-            HStack(spacing: (leftLineWidth ?? 0) + (rightLineWidth ?? 0)) {
+            HStack(spacing: 0) {
 
                 // Left outlined content
                 ZStack {
@@ -233,7 +81,7 @@ struct SplitedOutlinedContent<LeftContent, RightContent>: View where LeftContent
                     leftContent
 
                 }.frame(width: geometry.size.width * leftWidthPercentage, height: geometry.size.height)
-                    .onTapGesture { leftTapGestureHandler?() }
+                    .optionalTapGesture(perform: leftTapGestureHandler)
 
                 // Right outlined content
                 ZStack {
@@ -249,7 +97,7 @@ struct SplitedOutlinedContent<LeftContent, RightContent>: View where LeftContent
                     rightContent
 
                 }.frame(width: geometry.size.width  * (1 - leftWidthPercentage), height: geometry.size.height)
-                    .onTapGesture { rightTapGestureHandler?() }
+                    .optionalTapGesture(perform: rightTapGestureHandler)
 
             }
         }.shadow(color: .black.opacity(0.25), radius: 10)
@@ -258,7 +106,7 @@ struct SplitedOutlinedContent<LeftContent, RightContent>: View where LeftContent
     /// Set fill color of the left outline
     /// - Parameter fillColor: fill color of the left outline
     /// - Returns: modified outline
-    func leftFillColor(_ fillColor: Color?) -> SplitedOutlinedContent {
+    func leftFillColor(_ fillColor: Color?) -> SplittedOutlinedContent {
         var outline = self
         outline.leftFillColor = fillColor
         return outline
@@ -267,7 +115,7 @@ struct SplitedOutlinedContent<LeftContent, RightContent>: View where LeftContent
     /// Set fill color of the right outline
     /// - Parameter fillColor: fill color of the right outline
     /// - Returns: modified outline
-    func rightFillColor(_ fillColor: Color?) -> SplitedOutlinedContent {
+    func rightFillColor(_ fillColor: Color?) -> SplittedOutlinedContent {
         var outline = self
         outline.rightFillColor = fillColor
         return outline
@@ -276,7 +124,7 @@ struct SplitedOutlinedContent<LeftContent, RightContent>: View where LeftContent
     /// Set stroke color of the left outline
     /// - Parameter strokeColor: stroke color of the left outline
     /// - Returns: modified outline
-    func leftStrokeColor(_ strokeColor: Color?) -> SplitedOutlinedContent {
+    func leftStrokeColor(_ strokeColor: Color?) -> SplittedOutlinedContent {
         var outline = self
         outline.leftStrokeColor = strokeColor
         return outline
@@ -285,8 +133,18 @@ struct SplitedOutlinedContent<LeftContent, RightContent>: View where LeftContent
     /// Set stroke color of the right outline
     /// - Parameter strokeColor: stroke color of the right outline
     /// - Returns: modified outline
-    func rightStrokeColor(_ strokeColor: Color?) -> SplitedOutlinedContent {
+    func rightStrokeColor(_ strokeColor: Color?) -> SplittedOutlinedContent {
         var outline = self
+        outline.rightStrokeColor = strokeColor
+        return outline
+    }
+
+    /// Set stroke color of the left and right outline
+    /// - Parameter strokeColor: stroke color of the left and right outline
+    /// - Returns: modified outline
+    func strokeColor(_ strokeColor: Color?) -> SplittedOutlinedContent {
+        var outline = self
+        outline.leftStrokeColor = strokeColor
         outline.rightStrokeColor = strokeColor
         return outline
     }
@@ -294,7 +152,7 @@ struct SplitedOutlinedContent<LeftContent, RightContent>: View where LeftContent
     /// Set line width of the left outline
     /// - Parameter lineWidth: line width of the left outline
     /// - Returns: modified outline
-    func leftLineWidth(_ lineWidth: CGFloat?) -> SplitedOutlinedContent {
+    func leftLineWidth(_ lineWidth: CGFloat?) -> SplittedOutlinedContent {
         var outline = self
         outline.leftLineWidth = lineWidth
         return outline
@@ -303,8 +161,18 @@ struct SplitedOutlinedContent<LeftContent, RightContent>: View where LeftContent
     /// Set line width of the right outline
     /// - Parameter lineWidth: line width of the right outline
     /// - Returns: modified outline
-    func rightLineWidth(_ lineWidth: CGFloat?) -> SplitedOutlinedContent {
+    func rightLineWidth(_ lineWidth: CGFloat?) -> SplittedOutlinedContent {
         var outline = self
+        outline.rightLineWidth = lineWidth
+        return outline
+    }
+
+    /// Set line width of the left and right outline
+    /// - Parameter lineWidth: line width of the left and right outline
+    /// - Returns: modified outline
+    func lineWidth(_ lineWidth: CGFloat?) -> SplittedOutlinedContent {
+        var outline = self
+        outline.leftLineWidth = lineWidth
         outline.rightLineWidth = lineWidth
         return outline
     }
@@ -312,7 +180,7 @@ struct SplitedOutlinedContent<LeftContent, RightContent>: View where LeftContent
     /// Set corner radius of the left outline
     /// - Parameter radius: corner radius of the left outline
     /// - Returns: modified outline
-    func leftRadius(_ radius: CGFloat?) -> SplitedOutlinedContent {
+    func leftRadius(_ radius: CGFloat?) -> SplittedOutlinedContent {
         var outline = self
         outline.leftCornerRadius = radius
         return outline
@@ -321,7 +189,7 @@ struct SplitedOutlinedContent<LeftContent, RightContent>: View where LeftContent
     /// Set corner radius of the right outline
     /// - Parameter radius: corner radius of the right outline
     /// - Returns: modified outline
-    func rightRadius(_ radius: CGFloat?) -> SplitedOutlinedContent {
+    func rightRadius(_ radius: CGFloat?) -> SplittedOutlinedContent {
         var outline = self
         outline.rightCornerRadius = radius
         return outline
@@ -330,7 +198,7 @@ struct SplitedOutlinedContent<LeftContent, RightContent>: View where LeftContent
     /// Set left width percentage of the outline  (between 0 and 1)
     /// - Parameter percentage: width percentage of left outline (between 0 and 1)
     /// - Returns: modified outline
-    func leftWidthPercentage(_ percentage: CGFloat) -> SplitedOutlinedContent {
+    func leftWidthPercentage(_ percentage: CGFloat) -> SplittedOutlinedContent {
         var outline = self
         outline.leftWidthPercentage = percentage
         return outline
@@ -339,7 +207,7 @@ struct SplitedOutlinedContent<LeftContent, RightContent>: View where LeftContent
     /// Set left tap gesture handler
     /// - Parameter handler: handles tap gesture on the left outline
     /// - Returns: modified outline
-    func onLeftTapGesture(_ handler: @escaping () -> Void) -> SplitedOutlinedContent {
+    func onLeftTapGesture(_ handler: @escaping () -> Void) -> SplittedOutlinedContent {
         var outline = self
         outline.leftTapGestureHandler = handler
         return outline
@@ -348,7 +216,7 @@ struct SplitedOutlinedContent<LeftContent, RightContent>: View where LeftContent
     /// Set right tap gesture handler
     /// - Parameter handler: handles tap gesture on the right outline
     /// - Returns: modified outline
-    func onRightTapGesture(_ handler: @escaping () -> Void) -> SplitedOutlinedContent {
+    func onRightTapGesture(_ handler: @escaping () -> Void) -> SplittedOutlinedContent {
         var outline = self
         outline.rightTapGestureHandler = handler
         return outline

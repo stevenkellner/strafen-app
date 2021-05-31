@@ -20,6 +20,9 @@ struct CustomTextField<InputProperties>: View where InputProperties: InputProper
     /// Placeholder of Text field
     private var placeholder: String = NSLocalizedString("textfield-placeholder", table: .otherTexts, comment: "Placeholder text of textfield")
 
+    /// Handler executed after textfield is focused
+    private var focusedHandler: (() -> Void)?
+
     /// Handler execuded after keyboard dismisses
     private var completionHandler: (() -> Void)?
 
@@ -56,15 +59,19 @@ struct CustomTextField<InputProperties>: View where InputProperties: InputProper
                 UICustomTextField(text: inputProperties[textField])
                     .placeholder(placeholder)
                     .secure(isSecure)
+                    .keyboardType(keyboardType)
                     .color(inputProperties.wrappedValue[error: textField].map { _ in .customRed } ?? .textColor)
-                    .onFocus { scrollViewProxy?.scrollTo(textField, anchor: UnitPoint(x: 0.5, y: 0.1)) }
+                    .onFocus {
+                        focusedHandler?()
+                        scrollViewProxy?.scrollTo(textField, anchor: UnitPoint(x: 0.5, y: 0.1))
+                    }
                     .onCompletion {
                         _ = inputProperties.wrappedValue.validateTextField(textField)
                         completionHandler?()
                         if let nextTextField = inputProperties.wrappedValue.nextTextField(after: textField) {
                             inputProperties.wrappedValue.firstResponders.becomeFirstResponder(nextTextField)
                         }
-                    }
+                    }.padding(.horizontal, 10)
 
             }.strokeColor(inputProperties.wrappedValue[error: textField].map { _ in .customRed })
                 .lineWidth(inputProperties.wrappedValue[error: textField].map { _ in 2 })
@@ -173,6 +180,15 @@ struct CustomTextField<InputProperties>: View where InputProperties: InputProper
         return textField
     }
 
+    /// Set focused handler
+    /// - Parameter handler: focused handler
+    /// - Returns: modified textfield
+    public func onFocus(_ handler: @escaping () -> Void) -> CustomTextField {
+        var textField = self
+        textField.focusedHandler = handler
+        return textField
+    }
+
     /// Sets show error message
     /// - Parameter show: indicates wheater error messge is shown
     /// - Returns: modified textfield
@@ -215,6 +231,9 @@ struct CustomTextField<InputProperties>: View where InputProperties: InputProper
 
         /// Handler execuded when textfield is focues
         private var focusedHandler: (() -> Void)?
+
+        /// Keyboard type
+        private var keyboardType: UIKeyboardType = .default
 
         /// UISecureField Coordinator
         class Coordinator: NSObject, UITextFieldDelegate {
@@ -280,6 +299,8 @@ struct CustomTextField<InputProperties>: View where InputProperties: InputProper
             textField.clearButtonMode = .whileEditing
             textField.font = .systemFont(ofSize: 20, weight: .regular)
             textField.textColor = UIColor(color)
+            textField.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+            textField.keyboardType = keyboardType
             return textField
         }
 
@@ -343,6 +364,15 @@ struct CustomTextField<InputProperties>: View where InputProperties: InputProper
         public func onFocus(_ handler: @escaping () -> Void) -> UICustomTextField {
             var textField = self
             textField.focusedHandler = handler
+            return textField
+        }
+
+        /// Set keyboard type
+        /// - Parameter keyboardType: keyboard type
+        /// - Returns: modified textfield
+        public func keyboardType(_ keyboardType: UIKeyboardType) -> UICustomTextField {
+            var textField = self
+            textField.keyboardType = keyboardType
             return textField
         }
     }

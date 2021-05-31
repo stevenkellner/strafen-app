@@ -93,6 +93,17 @@ extension Array where Element: Comparable {
     }
 }
 
+extension Array {
+
+    /// Returns array with new element appended
+    /// - Parameter newElement: element to append
+    func appending(_ newElement: Element) -> [Element] {
+        var list = self
+        list.append(newElement)
+        return list
+    }
+}
+
 extension Array where Element: Hashable {
 
     /// Contains only unique elements
