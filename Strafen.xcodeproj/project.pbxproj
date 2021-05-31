@@ -65,6 +65,7 @@
 		B072081C264DA0270084FDE6 /* SignInProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = B072081B264DA0270084FDE6 /* SignInProperty.swift */; };
 		B0726AEF2664191600ABFEAD /* LottieAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0726AEE2664191600ABFEAD /* LottieAnimation.swift */; };
 		B0726AF12664242400ABFEAD /* DeleteAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0726AF02664242400ABFEAD /* DeleteAlert.swift */; };
+		B0726AF32664C5CC00ABFEAD /* FineEditorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0726AF22664C5CC00ABFEAD /* FineEditorTests.swift */; };
 		B0879188265ECE3C0065C5E7 /* DismissHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0879187265ECE3C0065C5E7 /* DismissHandler.swift */; };
 		B0879196265ED8550065C5E7 /* ErrorMessages.strings in Resources */ = {isa = PBXBuildFile; fileRef = B0879198265ED8550065C5E7 /* ErrorMessages.strings */; };
 		B087919C265EDC060065C5E7 /* ErrorMessages.strings in Resources */ = {isa = PBXBuildFile; fileRef = B087919E265EDC060065C5E7 /* ErrorMessages.strings */; };
@@ -200,6 +201,7 @@
 		B072081B264DA0270084FDE6 /* SignInProperty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInProperty.swift; sourceTree = "<group>"; };
 		B0726AEE2664191600ABFEAD /* LottieAnimation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LottieAnimation.swift; sourceTree = "<group>"; };
 		B0726AF02664242400ABFEAD /* DeleteAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteAlert.swift; sourceTree = "<group>"; };
+		B0726AF22664C5CC00ABFEAD /* FineEditorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FineEditorTests.swift; sourceTree = "<group>"; };
 		B0879187265ECE3C0065C5E7 /* DismissHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DismissHandler.swift; sourceTree = "<group>"; };
 		B0879197265ED8550065C5E7 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/ErrorMessages.strings; sourceTree = "<group>"; };
 		B087919D265EDC060065C5E7 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/ErrorMessages.strings; sourceTree = "<group>"; };
@@ -594,6 +596,7 @@
 			isa = PBXGroup;
 			children = (
 				B0A761AC2642ECBC003B170F /* Info.plist */,
+				B0726AF22664C5CC00ABFEAD /* FineEditorTests.swift */,
 				B08DA6562654057D00FE0C52 /* FirebaseTests */,
 				B08DA6552654057400FE0C52 /* LoginViewTests */,
 				B0AF0A8826430AF300DF4DC9 /* FFCallables */,
@@ -960,6 +963,7 @@
 				B039864E26526F3500C97DF2 /* FunctionCallerTestProperty.swift in Sources */,
 				B0311305264427EB00E65025 /* FirebaseObserverTests.swift in Sources */,
 				B02FC7BE265423B700A99207 /* SignInClubInputViewTests.swift in Sources */,
+				B0726AF32664C5CC00ABFEAD /* FineEditorTests.swift in Sources */,
 				B02FC7BC2654156D00A99207 /* SignInClubSelectionTests.swift in Sources */,
 				B08DA658265405DA00FE0C52 /* SignInEmailViewTests.swift in Sources */,
 				B0AF0AA42644125400DF4DC9 /* TestClub.swift in Sources */,

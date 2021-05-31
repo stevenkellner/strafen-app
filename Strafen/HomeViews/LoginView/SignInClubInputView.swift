@@ -44,7 +44,7 @@ struct SignInClubInputView: View {
         private mutating func validateClubName(setErrorMessage: Bool = true) -> ValidationResult {
             var errorMessage: ErrorMessages?
             if self[.clubName].isEmpty {
-                errorMessage = .emptyField(code: 8)
+                errorMessage = .emptyField
             } else {
                 if setErrorMessage { self[error: .clubName] = nil }
                 return .valid
@@ -59,7 +59,7 @@ struct SignInClubInputView: View {
         private mutating func validateClubIdentifier(setErrorMessage: Bool = true) -> ValidationResult {
             var errorMessage: ErrorMessages?
             if self[.clubIdentifier].isEmpty {
-                errorMessage = .emptyField(code: 9)
+                errorMessage = .emptyField
             } else {
                 if setErrorMessage { self[error: .clubIdentifier] = nil }
                 return .valid
@@ -120,13 +120,13 @@ struct SignInClubInputView: View {
         /// Evaluates auth error and sets associated error messages
         /// - Parameter error: auth error
         mutating func evaluateErrorCode(of error: NSError) {
-            guard error.domain == FunctionsErrorDomain else { return self[error: .clubName] = .internalErrorSignIn(code: 9) }
+            guard error.domain == FunctionsErrorDomain else { return self[error: .clubName] = .internalErrorSignIn }
             let errorCode = FunctionsErrorCode(rawValue: error.code)
             switch errorCode {
             case .alreadyExists:
-                self[error: .clubIdentifier] = .identifierAlreadyExists(code: 1)
+                self[error: .clubIdentifier] = .identifierAlreadyExists
             default:
-                self[error: .clubName] = .internalErrorSignIn(code: 10)
+                self[error: .clubName] = .internalErrorSignIn
             }
         }
     }
@@ -276,14 +276,14 @@ struct SignInClubInputView: View {
         let callItem = FFExistsClubWithIdentifierCall(identifier: inputProperties.wrappedValue[.clubIdentifier])
         FirebaseFunctionCaller.shared.call(callItem).then { clubExists in
             if clubExists {
-                inputProperties.wrappedValue[error: .clubIdentifier] = .identifierAlreadyExists(code: 2)
+                inputProperties.wrappedValue[error: .clubIdentifier] = .identifierAlreadyExists
                 inputProperties.wrappedValue.connectionState.failed()
                 failureHandler()
             } else {
                 successHandler()
             }
         }.catch { _ in
-            inputProperties.wrappedValue[error: .clubName] = .internalErrorSignIn(code: 11)
+            inputProperties.wrappedValue[error: .clubName] = .internalErrorSignIn
             inputProperties.wrappedValue.connectionState.failed()
             failureHandler()
         }

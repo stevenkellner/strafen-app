@@ -220,7 +220,7 @@ struct FineDetail: View {
                 fineListEnvironment.changeListItemInout(fine.id) { $0.payed = .unpayed }
                 connectionStateToUnpayed.passed()
             }.catch { _ in
-                errorMessages = .internalErrorSave(code: 1)
+                errorMessages = .internalErrorSave
                 connectionStateToUnpayed.failed()
             }
         }
@@ -239,7 +239,7 @@ struct FineDetail: View {
                 fineListEnvironment.changeListItemInout(fine.id) { $0.payed = payedState }
                 connectionStateToPayed.passed()
             }.catch { _ in
-                errorMessages = .internalErrorSave(code: 1)
+                errorMessages = .internalErrorSave
                 connectionStateToPayed.failed()
             }
         }

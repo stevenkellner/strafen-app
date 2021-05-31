@@ -11,7 +11,7 @@ import Foundation
 enum ErrorMessages {
 
     /// Textfield is empty
-    case emptyField(code: Int)
+    case emptyField
 
     /// Invalid email
     case invalidEmail
@@ -32,13 +32,13 @@ enum ErrorMessages {
     case notSamePassword
 
     /// Internal error for sign in
-    case internalErrorSignIn(code: Int)
+    case internalErrorSignIn
 
     /// Internal error for log in
-    case internalErrorLogIn(code: Int)
+    case internalErrorLogIn
 
     /// Internal error for save
-    case internalErrorSave(code: Int)
+    case internalErrorSave
 
     /// Email is already signed in
     case alreadySignedInEmail
@@ -59,7 +59,7 @@ enum ErrorMessages {
     case notEuro
 
     /// Club identifier already exists
-    case identifierAlreadyExists(code: Int)
+    case identifierAlreadyExists
 
     /// Password is incorrect
     case incorrectPassword
@@ -77,35 +77,35 @@ enum ErrorMessages {
     case invalidNumberRange
 
     /// Internal error delete
-    case internalErrorDelete(code: Int)
+    case internalErrorDelete
 
     /// Raw message of the error
     var rawMessage: String {
         let localizationKey: String
         switch self {
-        case .emptyField(code: _): localizationKey = "emptyField"
+        case .emptyField: localizationKey = "emptyField"
         case .invalidEmail: localizationKey = "invalidEmail"
         case .tooFewCharacters: localizationKey = "tooFewCharacters"
         case .noUpperCharacter: localizationKey = "noUpperCharacter"
         case .noLowerCharacter: localizationKey = "noLowerCharacter"
         case .noDigit: localizationKey = "noDigit"
         case .notSamePassword: localizationKey = "notSamePassword"
-        case .internalErrorSignIn(code: _): localizationKey = "internalErrorSignIn"
-        case .internalErrorLogIn(code: _): localizationKey = "internalErrorLogIn"
-        case .internalErrorSave(code: _): localizationKey = "internalErrorSave"
+        case .internalErrorSignIn: localizationKey = "internalErrorSignIn"
+        case .internalErrorLogIn: localizationKey = "internalErrorLogIn"
+        case .internalErrorSave: localizationKey = "internalErrorSave"
         case .alreadySignedInEmail: localizationKey = "alreadySignedInEmail"
         case .alreadySignedIn: localizationKey = "alreadySignedIn"
         case .weakPassword: localizationKey = "weakPassword"
         case .clubNotExists: localizationKey = "clubNotExists"
         case .noRegionGiven: localizationKey = "noRegionGiven"
         case .notEuro: localizationKey = "notEuro"
-        case .identifierAlreadyExists(code: _): localizationKey = "identifierAlreadyExists"
+        case .identifierAlreadyExists: localizationKey = "identifierAlreadyExists"
         case .incorrectPassword: localizationKey = "incorrectPassword"
         case .notSignedIn: localizationKey = "notSignedIn"
         case .amountZero: localizationKey = "amountZero"
         case .futureDate: localizationKey = "futureDate"
         case .invalidNumberRange: localizationKey = "invalidNumberRange"
-        case .internalErrorDelete(code: _): localizationKey = "internalErrorDelete"
+        case .internalErrorDelete: localizationKey = "internalErrorDelete"
         }
         return NSLocalizedString(localizationKey, table: .errorMessages, comment: "Localizated error message")
     }
@@ -113,68 +113,33 @@ enum ErrorMessages {
     /// Error code
     var errorCode: Int {
         switch self {
-        case .emptyField(code: _): return 1
+        case .emptyField: return 1
         case .invalidEmail: return 2
         case .tooFewCharacters: return 3
         case .noUpperCharacter: return 4
         case .noLowerCharacter: return 5
         case .noDigit: return 6
         case .notSamePassword: return 7
-        case .internalErrorSignIn(code: _): return 8
-        case .internalErrorLogIn(code: _): return 9
+        case .internalErrorSignIn: return 8
+        case .internalErrorLogIn: return 9
         case .alreadySignedInEmail: return 10
         case .alreadySignedIn: return 11
         case .weakPassword: return 12
         case .clubNotExists: return 13
         case .noRegionGiven: return 14
         case .notEuro: return 15
-        case .identifierAlreadyExists(code: _): return 16
+        case .identifierAlreadyExists: return 16
         case .incorrectPassword: return 17
         case .notSignedIn: return 18
-        case .internalErrorSave(code: _): return 19
+        case .internalErrorSave: return 19
         case .amountZero: return 20
         case .futureDate: return 21
         case .invalidNumberRange: return 22
         case .internalErrorDelete: return 23
         }
     }
-
-    /// Sub error code
-    var errorSubCode: Int? {
-        switch self {
-        case .emptyField(code: let code),
-             .internalErrorSignIn(code: let code),
-             .internalErrorLogIn(code: let code),
-             .identifierAlreadyExists(code: let code),
-             .internalErrorSave(code: let code),
-             .internalErrorDelete(code: let code):
-            return code
-        case .alreadySignedIn,
-             .alreadySignedInEmail,
-             .clubNotExists,
-             .incorrectPassword,
-             .invalidEmail,
-             .noDigit,
-             .noLowerCharacter,
-             .noRegionGiven,
-             .noUpperCharacter,
-             .notEuro,
-             .notSamePassword,
-             .notSignedIn,
-             .tooFewCharacters,
-             .weakPassword,
-             .amountZero,
-             .invalidNumberRange,
-             .futureDate:
-            return nil
-        }
-    }
-
     /// Message of the error
     var message: String {
-        if let errorSubCode = errorSubCode {
-            return "(\(errorCode).\(errorSubCode)) \(rawMessage)"
-        }
-        return "(\(errorCode)) \(rawMessage)"
+        "(\(errorCode)) \(rawMessage)"
     }
 }

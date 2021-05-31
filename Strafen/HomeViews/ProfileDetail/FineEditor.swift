@@ -117,7 +117,7 @@ struct FineEditor: View {
         private mutating func validateReason(setErrorMessage: Bool = true) -> ValidationResult {
             var errorMessage: ErrorMessages?
             if self[.reason].isEmpty {
-                errorMessage = .emptyField(code: 10)
+                errorMessage = .emptyField
             } else {
                 if setErrorMessage { self[error: .reason] = nil }
                 return .valid
@@ -133,7 +133,7 @@ struct FineEditor: View {
             amount = AmountParser.fromString(self[.amount])
             var errorMessage: ErrorMessages?
             if self[.amount].isEmpty {
-                errorMessage = .emptyField(code: 11)
+                errorMessage = .emptyField
             } else if amount == .zero {
                 errorMessage = .amountZero
             } else {
@@ -340,44 +340,70 @@ struct FineEditor: View {
 
     /// Handles fine delete
     func handleFineDelete() {
-        guard person.isCashier else { return }
-        guard inputProperties.connectionStateUpdate != .loading,
-              inputProperties.connectionStateDelete.restart() == .passed else { return }
-        inputProperties.resetErrorMessages()
-
-        let callItem = FFChangeListCall<FirebaseFine>(clubId: person.club.id, id: fine.id)
-        FirebaseFunctionCaller.shared.call(callItem).then { _ in
-            presentationMode.wrappedValue.dismiss()
-            inputProperties.connectionStateDelete.passed()
-        }.catch { _ in
-            inputProperties.functionCallErrorMessage = .internalErrorDelete(code: 1)
-            inputProperties.connectionStateDelete.failed()
-        }
+        Self.handleFineDelete(fine: fine,
+                              person: person,
+                              inputProperties: $inputProperties,
+                              presentationMode: presentationMode)
     }
 
     /// Handles fine update
     func handleFineUpdate() {
+        Self.handleFineUpdate(person: person,
+                              inputProperties: $inputProperties,
+                              reasonList: reasonListEnvironment.list,
+                              presentationMode: presentationMode)
+    }
+
+    /// Handles fine delete
+    static func handleFineDelete(fine: FirebaseFine,
+                                 person: Settings.Person,
+                                 inputProperties: Binding<InputProperties>,
+                                 presentationMode: Binding<PresentationMode>? = nil,
+                                 onCompletion completionHandler: (() -> Void)? = nil) {
+
         guard person.isCashier else { return }
-        guard inputProperties.connectionStateDelete != .loading,
-              inputProperties.connectionStateUpdate.restart() == .passed else { return }
-        inputProperties.functionCallErrorMessage = nil
-        guard inputProperties.validateAllInputs() == .valid else {
-            return inputProperties.connectionStateUpdate.failed()
+        guard inputProperties.wrappedValue.connectionStateUpdate != .loading,
+              inputProperties.wrappedValue.connectionStateDelete.restart() == .passed else { return }
+        inputProperties.wrappedValue.resetErrorMessages()
+
+        let callItem = FFChangeListCall<FirebaseFine>(clubId: person.club.id, id: fine.id)
+        FirebaseFunctionCaller.shared.call(callItem).then { _ in
+            presentationMode?.wrappedValue.dismiss()
+            inputProperties.wrappedValue.connectionStateDelete.passed()
+        }.catch { _ in
+            inputProperties.wrappedValue.functionCallErrorMessage = .internalErrorDelete
+            inputProperties.wrappedValue.connectionStateDelete.failed()
+        }.always { completionHandler?() }
+    }
+
+    /// Handles fine update
+    static func handleFineUpdate(person: Settings.Person,
+                                 inputProperties: Binding<InputProperties>,
+                                 reasonList: [FirebaseReasonTemplate],
+                                 presentationMode: Binding<PresentationMode>? = nil,
+                                 onCompletion completionHandler: (() -> Void)? = nil) {
+
+        guard person.isCashier else { return }
+        guard inputProperties.wrappedValue.connectionStateDelete != .loading,
+              inputProperties.wrappedValue.connectionStateUpdate.restart() == .passed else { return }
+        inputProperties.wrappedValue.functionCallErrorMessage = nil
+        guard inputProperties.wrappedValue.validateAllInputs() == .valid else {
+            return inputProperties.wrappedValue.connectionStateUpdate.failed()
         }
-        guard inputProperties.hasFineChanged(with: reasonListEnvironment.list) else {
-            return presentationMode.wrappedValue.dismiss()
+        guard inputProperties.wrappedValue.hasFineChanged(with: reasonList),
+              let updatedFine = inputProperties.wrappedValue.updatedFine(with: reasonList) else {
+            inputProperties.wrappedValue.connectionStateUpdate.passed()
+            presentationMode?.wrappedValue.dismiss()
+            return
         }
 
-        guard let updatedFine = inputProperties.updatedFine(with: reasonListEnvironment.list) else {
-            return presentationMode.wrappedValue.dismiss()
-        }
         let callItem = FFChangeListCall(clubId: person.club.id, item: updatedFine)
         FirebaseFunctionCaller.shared.call(callItem).then { _ in
-            presentationMode.wrappedValue.dismiss()
-            inputProperties.connectionStateUpdate.passed()
+            presentationMode?.wrappedValue.dismiss()
+            inputProperties.wrappedValue.connectionStateUpdate.passed()
         }.catch { _ in
-            inputProperties.functionCallErrorMessage = .internalErrorSave(code: 3)
-            inputProperties.connectionStateUpdate.failed()
-        }
+            inputProperties.wrappedValue.functionCallErrorMessage = .internalErrorSave
+            inputProperties.wrappedValue.connectionStateUpdate.failed()
+        }.always { completionHandler?() }
     }
 }

@@ -180,7 +180,7 @@ struct SignInPersonSelectionView: View {
             let club = Club(id: signInProperty.clubId, name: clubProperties.clubName, identifier: clubProperties.clubIdentifier, regionCode: clubProperties.regionCode, inAppPaymentActive: clubProperties.inAppPaymentActive)
             Settings.shared.person = Settings.Person(club: club, id: personId, name: signInProperty.name, signInDate: callItem.signInDate, isCashier: false)
         }.catch { _ in
-            inputProperty.wrappedValue.errorMessage = .internalErrorSignIn(code: 12)
+            inputProperty.wrappedValue.errorMessage = .internalErrorSignIn
             inputProperty.wrappedValue.registerConnectionState.failed()
         }.always {
             completionHandler?()

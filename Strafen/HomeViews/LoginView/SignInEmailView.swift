@@ -33,7 +33,7 @@ struct SignInEmailView: View {
         private mutating func validateFirstName(setErrorMessage: Bool = true) -> ValidationResult {
             var errorMessage: ErrorMessages?
             if self[.firstName].isEmpty {
-                errorMessage = .emptyField(code: 3)
+                errorMessage = .emptyField
             } else {
                 if setErrorMessage { self[error: .firstName] = nil }
                 return .valid
@@ -56,7 +56,7 @@ struct SignInEmailView: View {
         private mutating func validateEmail(setErrorMessage: Bool = true) -> ValidationResult {
             var errorMessage: ErrorMessages?
             if self[.email].isEmpty {
-                errorMessage = .emptyField(code: 4)
+                errorMessage = .emptyField
             } else if !self[.email].isValidEmail {
                 errorMessage = .invalidEmail
             } else {
@@ -76,7 +76,7 @@ struct SignInEmailView: View {
             let lowerPredicate = NSPredicate(format: "SELF MATCHES %@", ".*[a-z]+.*")
             let digitPredicate = NSPredicate(format: "SELF MATCHES %@", ".*[0-9]+.*")
             if self[.password, trimm: nil].isEmpty {
-                errorMessage = .emptyField(code: 5)
+                errorMessage = .emptyField
             } else if self[.password, trimm: nil].count < 8 {
                 errorMessage = .tooFewCharacters
             } else if !capitalPredicate.evaluate(with: self[.password, trimm: nil]) {
@@ -99,7 +99,7 @@ struct SignInEmailView: View {
         private mutating func validateRepeatPassword(setErrorMessage: Bool = true) -> ValidationResult {
             var errorMessage: ErrorMessages?
             if self[.repeatPassword, trimm: nil].isEmpty {
-                errorMessage = .emptyField(code: 6)
+                errorMessage = .emptyField
             } else if self[.repeatPassword, trimm: nil] != self[.password, trimm: nil] {
                 errorMessage = .notSamePassword
             } else {
@@ -129,7 +129,7 @@ struct SignInEmailView: View {
         /// Evaluates auth error and sets associated error messages
         /// - Parameter error: auth error
         mutating func evaluateErrorCode(of error: NSError) {
-            guard error.domain == AuthErrorDomain else { return self[error: .email] = .internalErrorSignIn(code: 4) }
+            guard error.domain == AuthErrorDomain else { return self[error: .email] = .internalErrorSignIn }
             let errorCode = AuthErrorCode(rawValue: error.code)
             switch errorCode {
             case .invalidEmail:
@@ -139,7 +139,7 @@ struct SignInEmailView: View {
             case .weakPassword:
                 self[error: .password] = .weakPassword
             default:
-                self[error: .email] = .internalErrorSignIn(code: 5)
+                self[error: .email] = .internalErrorSignIn
             }
         }
     }
@@ -303,7 +303,7 @@ struct SignInEmailView: View {
                     inputProperties.wrappedValue.signInProperty = SignInProperty.UserIdName(userId: user.uid, name: name)
                     inputProperties.wrappedValue.connectionState.passed()
                 } else {
-                    inputProperties.wrappedValue[error: .email] = .internalErrorSignIn(code: 6)
+                    inputProperties.wrappedValue[error: .email] = .internalErrorSignIn
                     inputProperties.wrappedValue.connectionState.failed()
                 }
                 completionHandler?()

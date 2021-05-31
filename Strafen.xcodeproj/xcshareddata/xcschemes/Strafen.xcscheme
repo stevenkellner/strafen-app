@@ -40,6 +40,9 @@
             </BuildableReference>
             <SkippedTests>
                <Test
+                  Identifier = "FineEditorTests">
+               </Test>
+               <Test
                   Identifier = "FirebaseFetcherTests">
                </Test>
                <Test

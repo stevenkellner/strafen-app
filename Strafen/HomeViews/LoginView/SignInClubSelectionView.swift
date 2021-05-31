@@ -33,7 +33,7 @@ struct SignInClubSelectionView: View {
         private mutating func validateClubIdentifier(setErrorMessage: Bool = true) -> ValidationResult {
             var errorMessage: ErrorMessages?
             if self[.clubIdentifier].isEmpty {
-                errorMessage = .emptyField(code: 7)
+                errorMessage = .emptyField
             } else {
                 if setErrorMessage { self[error: .clubIdentifier] = nil }
                 return .valid
@@ -57,13 +57,13 @@ struct SignInClubSelectionView: View {
         /// Evaluates auth error and sets associated error messages
         /// - Parameter error: auth error
         mutating func evaluateErrorCode(of error: NSError) {
-            guard error.domain == FunctionsErrorDomain else { return self[error: .clubIdentifier] = .internalErrorSignIn(code: 7) }
+            guard error.domain == FunctionsErrorDomain else { return self[error: .clubIdentifier] = .internalErrorSignIn }
             let errorCode = FunctionsErrorCode(rawValue: error.code)
             switch errorCode {
             case .notFound:
                 self[error: .clubIdentifier] = .clubNotExists
             default:
-                self[error: .clubIdentifier] = .internalErrorSignIn(code: 8)
+                self[error: .clubIdentifier] = .internalErrorSignIn
             }
         }
     }
