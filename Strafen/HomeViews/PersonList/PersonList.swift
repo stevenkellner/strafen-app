@@ -82,7 +82,7 @@ struct PersonList: View {
 
                 // Add new person button
                 AddNewListItemButton(isListEmpty: personListEnvironment.list.isEmpty) {
-                    Text("Add New Person") // TODO
+                    PersonAddNew()
                 }
 
             }.maxFrame

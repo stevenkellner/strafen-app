@@ -262,4 +262,13 @@ struct SplittedButton: View {
         .leftColor(.customRed)
         .rightColor(.customGreen)
         .leftTextColor(.customRed)
+
+    /// Cancel and confirm button
+    static let cancelConfirm = SplittedButton(left: NSLocalizedString("cancel-button-text", table: .otherTexts, comment: "Text of cancel button"), right: NSLocalizedString("confirm-button-text", table: .otherTexts, comment: "Text of confirm button"))
+        .fontSize(24)
+        .leftSymbol(name: "chevron.left.2")
+        .rightSymbol(name: "checkmark.seal")
+        .leftColor(.customRed)
+        .rightColor(.customGreen)
+        .leftTextColor(.customRed)
 }

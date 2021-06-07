@@ -14,3 +14,18 @@
 
 // Person list empty list
 "person-list-empty-list" = "Es sind keine Personen registriert!";
+
+// Person add new header text
+"person-add-new-header-text" = "Person Hinzufügen";
+
+// Person add new upload image text
+"person-add-new-upload-image-text" = "Bild hochladen";
+
+// Person add new name text
+"person-add-new-name" = "Name";
+
+// Person add new first name text
+"person-add-new-first-name" = "Vorname";
+
+// Person add new optional last name text
+"person-add-new-optional-last-name" = "Nachname (optional)";

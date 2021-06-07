@@ -123,6 +123,8 @@
 		B0B7B6AF26629192004044CB /* SingleAmountDisplay.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0B7B6AE26629192004044CB /* SingleAmountDisplay.swift */; };
 		B0B7B6B2266293DB004044CB /* ProfileDetail.strings in Resources */ = {isa = PBXBuildFile; fileRef = B0B7B6B4266293DB004044CB /* ProfileDetail.strings */; };
 		B0C2A4B02642918800250A8D /* Extensions+Array.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0C2A4AF2642918800250A8D /* Extensions+Array.swift */; };
+		B0C58D3B266CCB9200FA19B1 /* PersonAddNew.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0C58D3A266CCB9200FA19B1 /* PersonAddNew.swift */; };
+		B0C58D3D266E3F6500FA19B1 /* ImageSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0C58D3C266E3F6500FA19B1 /* ImageSelector.swift */; };
 		B0D4B62D2642CD19003A720C /* FirebaseFunctionCaller.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0D4B62C2642CD19003A720C /* FirebaseFunctionCaller.swift */; };
 		B0E29C8E264C052400E4BA3B /* TextFieldFirstResponders.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E29C8D264C052400E4BA3B /* TextFieldFirstResponders.swift */; };
 		B0E9C86826447AF100FB484E /* ListEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E9C86726447AF100FB484E /* ListEnvironment.swift */; };
@@ -266,6 +268,8 @@
 		B0B7B6AE26629192004044CB /* SingleAmountDisplay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleAmountDisplay.swift; sourceTree = "<group>"; };
 		B0B7B6B3266293DB004044CB /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/ProfileDetail.strings; sourceTree = "<group>"; };
 		B0C2A4AF2642918800250A8D /* Extensions+Array.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extensions+Array.swift"; sourceTree = "<group>"; };
+		B0C58D3A266CCB9200FA19B1 /* PersonAddNew.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonAddNew.swift; sourceTree = "<group>"; };
+		B0C58D3C266E3F6500FA19B1 /* ImageSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageSelector.swift; sourceTree = "<group>"; };
 		B0D4B62C2642CD19003A720C /* FirebaseFunctionCaller.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseFunctionCaller.swift; sourceTree = "<group>"; };
 		B0E29C8D264C052400E4BA3B /* TextFieldFirstResponders.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldFirstResponders.swift; sourceTree = "<group>"; };
 		B0E9C86726447AF100FB484E /* ListEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListEnvironment.swift; sourceTree = "<group>"; };
@@ -366,6 +370,7 @@
 				B03697BA2650115B00DA938D /* ErrorMessageView.swift */,
 				B0A462902649412B0045D2BE /* Header.swift */,
 				B05CCFD526629E4A00F13786 /* ImagePicker.swift */,
+				B0C58D3C266E3F6500FA19B1 /* ImageSelector.swift */,
 				B090FDE92663C79F005700A8 /* ImportanceChanger.swift */,
 				B0726AEE2664191600ABFEAD /* LottieAnimation.swift */,
 				B05CCFD32662990E00F13786 /* PersonDetailImage.swift */,
@@ -505,6 +510,7 @@
 			isa = PBXGroup;
 			children = (
 				B0726AF52664F62500ABFEAD /* PersonList.swift */,
+				B0C58D3A266CCB9200FA19B1 /* PersonAddNew.swift */,
 			);
 			path = PersonList;
 			sourceTree = "<group>";
@@ -898,11 +904,13 @@
 				B090FDE626637D89005700A8 /* FineDetail.swift in Sources */,
 				B090FDEC2663E523005700A8 /* DateChanger.swift in Sources */,
 				B0225D3726526B3800D75CDA /* FFGetPersonPropertiesCall.swift in Sources */,
+				B0C58D3B266CCB9200FA19B1 /* PersonAddNew.swift in Sources */,
 				B0726AEF2664191600ABFEAD /* LottieAnimation.swift in Sources */,
 				B0225D35265269C400D75CDA /* FFForceSignOutCall.swift in Sources */,
 				B050AC97265FBA01000B3E84 /* FirebaseAppSetup.swift in Sources */,
 				B0AF0A9E2643CE2500DF4DC9 /* FirebaseTransaction.swift in Sources */,
 				B0726AFC266526A100ABFEAD /* AddNewListItemButton.swift in Sources */,
+				B0C58D3D266E3F6500FA19B1 /* ImageSelector.swift in Sources */,
 				B0A46299264989E90045D2BE /* SignInEmailView.swift in Sources */,
 				B02FC7C0265446A700A99207 /* SignInPersonSelectionView.swift in Sources */,
 				B0447C1A2641B78100148430 /* AppDelegate.swift in Sources */,
