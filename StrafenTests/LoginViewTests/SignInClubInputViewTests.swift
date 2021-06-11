@@ -13,29 +13,30 @@ import FirebaseAuth
 
 class SignInClubInputViewTests: XCTestCase {
 
-    override func setUpWithError() throws {
+    @MainActor override func setUpWithError() throws {
         continueAfterFailure = false
         FirebaseFetcher.shared.level = .testing
         FirebaseFunctionCaller.shared.level = .testing
 
         // Sign test user in
-        let signInError: Error? = try waitExpectation { handler in
-            Auth.auth().signIn(withEmail: "app.demo@web.de", password: "Demopw12") { _, error in
-                handler(error)
+        waitExpectation { handler in
+            async {
+                try await Auth.auth().signIn(withEmail: "app.demo@web.de", password: "Demopw12")
+                handler()
             }
         }
-        XCTAssertNil(signInError)
+        try Task.checkCancellation()
     }
 
     /// Tests with no club name
-    func testNoClubName() {
+    func testNoClubName() async {
         var inputProperties = SignInClubInputView.InputProperties()
         inputProperties.inputProperties = [.clubIdentifier: "ClubIdentifier"]
         inputProperties.regionCode = "DE"
         inputProperties.inAppPayment = false
         let inputBinding = Binding<SignInClubInputView.InputProperties> { inputProperties } set: { inputProperties = $0 }
         let oldSignInProperty = SignInProperty.UserIdName(userId: "UserId", name: PersonName(firstName: "FirstName"))
-        SignInClubInputView.handleConfirmButtonPress(oldSignInProperty: oldSignInProperty, inputProperties: inputBinding)
+        await SignInClubInputView.handleConfirmButtonPress(oldSignInProperty: oldSignInProperty, inputProperties: inputBinding)
         XCTAssertEqual(inputProperties.connectionState, .failed)
         XCTAssertEqual(inputProperties.errorMessages, [.clubName: .emptyField])
         XCTAssertNil(inputProperties.regionCodeErrorMessage)
@@ -43,14 +44,14 @@ class SignInClubInputViewTests: XCTestCase {
     }
 
     /// Tests with no club identifer
-    func testNoClubIdentifier() {
+    func testNoClubIdentifier() async {
         var inputProperties = SignInClubInputView.InputProperties()
         inputProperties.inputProperties = [.clubName: "clubName"]
         inputProperties.regionCode = "DE"
         inputProperties.inAppPayment = false
         let inputBinding = Binding<SignInClubInputView.InputProperties> { inputProperties } set: { inputProperties = $0 }
         let oldSignInProperty = SignInProperty.UserIdName(userId: "UserId", name: PersonName(firstName: "FirstName"))
-        SignInClubInputView.handleConfirmButtonPress(oldSignInProperty: oldSignInProperty, inputProperties: inputBinding)
+        await SignInClubInputView.handleConfirmButtonPress(oldSignInProperty: oldSignInProperty, inputProperties: inputBinding)
         XCTAssertEqual(inputProperties.connectionState, .failed)
         XCTAssertEqual(inputProperties.errorMessages, [.clubIdentifier: .emptyField])
         XCTAssertNil(inputProperties.regionCodeErrorMessage)
@@ -58,14 +59,14 @@ class SignInClubInputViewTests: XCTestCase {
     }
 
     /// Tests with no region code
-    func testNoRegionCode() {
+    func testNoRegionCode() async {
         var inputProperties = SignInClubInputView.InputProperties()
         inputProperties.inputProperties = [.clubName: "clubName", .clubIdentifier: "ClubIdentifier"]
         inputProperties.regionCode = nil
         inputProperties.inAppPayment = true
         let inputBinding = Binding<SignInClubInputView.InputProperties> { inputProperties } set: { inputProperties = $0 }
         let oldSignInProperty = SignInProperty.UserIdName(userId: "UserId", name: PersonName(firstName: "FirstName"))
-        SignInClubInputView.handleConfirmButtonPress(oldSignInProperty: oldSignInProperty, inputProperties: inputBinding)
+        await SignInClubInputView.handleConfirmButtonPress(oldSignInProperty: oldSignInProperty, inputProperties: inputBinding)
         XCTAssertEqual(inputProperties.connectionState, .failed)
         XCTAssertEqual(inputProperties.errorMessages, [:])
         XCTAssertEqual(inputProperties.regionCodeErrorMessage, .noRegionGiven)
@@ -73,14 +74,14 @@ class SignInClubInputViewTests: XCTestCase {
     }
 
     /// Tests with not euro
-    func testNotEuro() {
+    func testNotEuro() async {
         var inputProperties = SignInClubInputView.InputProperties()
         inputProperties.inputProperties = [.clubName: "clubName", .clubIdentifier: "ClubIdentifier"]
         inputProperties.regionCode = "US"
         inputProperties.inAppPayment = true
         let inputBinding = Binding<SignInClubInputView.InputProperties> { inputProperties } set: { inputProperties = $0 }
         let oldSignInProperty = SignInProperty.UserIdName(userId: "UserId", name: PersonName(firstName: "FirstName"))
-        SignInClubInputView.handleConfirmButtonPress(oldSignInProperty: oldSignInProperty, inputProperties: inputBinding)
+        await SignInClubInputView.handleConfirmButtonPress(oldSignInProperty: oldSignInProperty, inputProperties: inputBinding)
         XCTAssertEqual(inputProperties.connectionState, .failed)
         XCTAssertEqual(inputProperties.errorMessages, [:])
         XCTAssertNil(inputProperties.regionCodeErrorMessage)
@@ -88,15 +89,12 @@ class SignInClubInputViewTests: XCTestCase {
     }
 
     /// Tests with already existing identifier
-    func testIdentiferExists() throws {
+    func testIdentiferExists() async throws {
         let clubId = Club.ID(rawValue: UUID(uuidString: "fb3f6718-8cc5-4d2e-aca1-398a39fc1be7")!)
 
         // Create club
-        let createClubResult: Result<HTTPSCallableResult, Error> = try waitExpectation { handler in
-            let callItem = FFNewTestClubCall(clubId: clubId, testClubType: .fetcherTestClub)
-            FirebaseFunctionCaller.shared.call(callItem).thenResult(handler)
-        }
-        _ = try createClubResult.get()
+        let callItem1 = FFNewTestClubCall(clubId: clubId, testClubType: .fetcherTestClub)
+        try await FirebaseFunctionCaller.shared.call(callItem1)
 
         // Test with already existing identifier
         var inputProperties = SignInClubInputView.InputProperties()
@@ -105,9 +103,7 @@ class SignInClubInputViewTests: XCTestCase {
         inputProperties.inAppPayment = false
         let inputBinding = Binding<SignInClubInputView.InputProperties> { inputProperties } set: { inputProperties = $0 }
         let oldSignInProperty = SignInProperty.UserIdName(userId: "UserId", name: PersonName(firstName: "FirstName"))
-        let fetchedClubId: Club.ID? = try waitExpectation { handler in
-            SignInClubInputView.handleConfirmButtonPress(oldSignInProperty: oldSignInProperty, inputProperties: inputBinding, onCompletion: handler)
-        }
+        let fetchedClubId = await SignInClubInputView.handleConfirmButtonPress(oldSignInProperty: oldSignInProperty, inputProperties: inputBinding)
         XCTAssertEqual(inputProperties.connectionState, .failed)
         XCTAssertEqual(inputProperties.errorMessages, [.clubIdentifier: .identifierAlreadyExists])
         XCTAssertNil(inputProperties.regionCodeErrorMessage)
@@ -115,24 +111,19 @@ class SignInClubInputViewTests: XCTestCase {
         XCTAssertNil(fetchedClubId)
 
         // Delete club again
-        let deleteClubResult: Result<HTTPSCallableResult, Error> = try waitExpectation { handler in
-            let callItem = FFDeleteTestClubCall(clubId: clubId)
-            FirebaseFunctionCaller.shared.call(callItem).thenResult(handler)
-        }
-        _ = try deleteClubResult.get()
+        let callItem2 = FFDeleteTestClubCall(clubId: clubId)
+        try await FirebaseFunctionCaller.shared.call(callItem2)
     }
 
     /// Tests creation of new club
-    func testCreateClub() throws {
+    func testCreateClub() async throws {
         var inputProperties = SignInClubInputView.InputProperties()
         inputProperties.inputProperties = [.clubName: "clubName", .clubIdentifier: "ClubIdentifier"]
         inputProperties.regionCode = "DE"
         inputProperties.inAppPayment = false
         let inputBinding = Binding<SignInClubInputView.InputProperties> { inputProperties } set: { inputProperties = $0 }
         let oldSignInProperty = SignInProperty.UserIdName(userId: "UserId", name: PersonName(firstName: "FirstName"))
-        let clubId: Club.ID? = try waitExpectation { handler in
-            SignInClubInputView.handleConfirmButtonPress(oldSignInProperty: oldSignInProperty, inputProperties: inputBinding, onCompletion: handler)
-        }
+        let clubId = await SignInClubInputView.handleConfirmButtonPress(oldSignInProperty: oldSignInProperty, inputProperties: inputBinding)
         XCTAssertEqual(inputProperties.connectionState, .passed)
         XCTAssertEqual(inputProperties.errorMessages, [:])
         XCTAssertNil(inputProperties.regionCodeErrorMessage)
@@ -145,10 +136,7 @@ class SignInClubInputViewTests: XCTestCase {
         XCTAssertEqual(Settings.shared.person?.club, Club(id: clubId!, name: "clubName", identifier: "ClubIdentifier", regionCode: "DE", inAppPaymentActive: false))
 
         // Delete club again
-        let deleteClubResult: Result<HTTPSCallableResult, Error> = try waitExpectation { handler in
-            let callItem = FFDeleteTestClubCall(clubId: clubId!)
-            FirebaseFunctionCaller.shared.call(callItem).thenResult(handler)
-        }
-        _ = try deleteClubResult.get()
+        let callItem = FFDeleteTestClubCall(clubId: clubId!)
+        try await FirebaseFunctionCaller.shared.call(callItem)
     }
 }

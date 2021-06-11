@@ -6,7 +6,6 @@
 //
 
 import XCTest
-import Hydra
 @testable import Strafen
 
 extension XCTestCase {
@@ -44,10 +43,43 @@ extension XCTestCase {
     ///   - timeout: time to wait for task
     ///   - description: expectation description
     ///   - handler: handles task return
+    /// - Throws: TimeoutError or rethrowed error
+    /// - Returns: return value of the task
+    func waitExpectation<ReturnValue>(timeout: TimeInterval = 30, description: String = "expecation", _ handler: (@escaping (ReturnValue) -> Void) async throws -> Void) async throws -> ReturnValue {
+        let expectation = self.expectation(description: description)
+        var result: ReturnValue?
+        try await handler { value in
+            if result == nil {
+                result = value
+                expectation.fulfill()
+            }
+        }
+        waitForExpectations(timeout: timeout)
+        guard let unwrappedResult = result else { throw TimeoutError.dataTaskExpired }
+        return unwrappedResult
+    }
+
+    /// Wait for synchronous tasks
+    /// - Parameters:
+    ///   - timeout: time to wait for task
+    ///   - description: expectation description
+    ///   - handler: handles task return
     /// - Throws: rethrows error
     func waitExpectation(timeout: TimeInterval = 30, description: String = "expecation", _ handler: (@escaping () -> Void) throws -> Void) rethrows {
         let expectation = self.expectation(description: description)
         try handler { expectation.fulfill() }
+        waitForExpectations(timeout: timeout)
+    }
+
+    /// Wait for synchronous tasks
+    /// - Parameters:
+    ///   - timeout: time to wait for task
+    ///   - description: expectation description
+    ///   - handler: handles task return
+    /// - Throws: rethrows error
+    func waitExpectation(timeout: TimeInterval = 30, description: String = "expecation", _ handler: (@escaping () -> Void) async throws -> Void) async rethrows {
+        let expectation = self.expectation(description: description)
+        try await handler { expectation.fulfill() }
         waitForExpectations(timeout: timeout)
     }
 
@@ -91,32 +123,13 @@ extension FirebaseFetcher {
     /// Fetches a testable club from firebase database
     /// - Parameter clubId: id of the club
     /// - Returns: promise of the club
-    func fetchClub(_ clubId: Club.ID) -> Promise<TestClub> {
-        let properties = fetch(TestClub.Properties.self, url: nil, clubId: clubId)
-        let persons = fetchList(FirebasePerson.self, clubId: clubId)
-        let fines = fetchList(FirebaseFine.self, clubId: clubId)
-        let reasons = fetchList(FirebaseReasonTemplate.self, clubId: clubId)
-        let transactions = fetchList(FirebaseTransaction.self, clubId: clubId)
-        return zip(a: properties, b: persons, c: fines, d: reasons, e: transactions).then { properties, persons, fines, reasons, transactions in
-            return TestClub(properties: properties, persons: persons, fines: fines, reasons: reasons, transactions: transactions)
-        }
-    }
-}
-
-/// Join two promises and return a tuple with the results of both (promises will be resolved in parallel in `background` QoS queue).
-/// Rejects as soon one promise reject.
-///
-/// - Parameters:
-///   - context: context queue to report the result (if not specified `background` queue is used instead)
-///   - a: promise a
-///   - b: promise b
-///   - c: promsie c
-///   - d: promise d
-///   - e: promise e
-/// - Returns: joined promise of type Promise<(A,B)>
-public func zip<A, B, C, D, E>(in context: Context? = nil, a promiseA: Promise<A>, b promiseB: Promise<B>, c promiseC: Promise<C>, d promiseD: Promise<D>, e promiseE: Promise<E>) -> Promise<(A, B, C, D, E)> { // swiftlint:disable:this large_tuple
-    zip(in: context, zip(in: context, a: promiseA, b: promiseB, c: promiseC, d: promiseD), promiseE).then { tuple, promiseE in
-        return (tuple.0, tuple.1, tuple.2, tuple.3, promiseE)
+    func fetchClub(_ clubId: Club.ID) async throws -> TestClub {
+        async let properties = fetch(TestClub.Properties.self, url: nil, clubId: clubId)
+        async let persons = fetchList(FirebasePerson.self, clubId: clubId)
+        async let fines = fetchList(FirebaseFine.self, clubId: clubId)
+        async let reasons = fetchList(FirebaseReasonTemplate.self, clubId: clubId)
+        async let transactions = fetchList(FirebaseTransaction.self, clubId: clubId)
+        return try await TestClub(properties: properties, persons: persons, fines: fines, reasons: reasons, transactions: transactions)
     }
 }
 
