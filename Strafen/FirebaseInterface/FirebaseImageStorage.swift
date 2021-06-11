@@ -8,7 +8,7 @@
 import FirebaseStorage
 
 /// Used to storage and fetch images from server
-class FirebaseImageStorage {
+@MainActor class FirebaseImageStorage {
 
     /// Shared instance for singelton
     static let shared = FirebaseImageStorage()
@@ -91,16 +91,22 @@ class FirebaseImageStorage {
     }
 
     /// Storage bucket url
-    let storageBucketUrl: String = "gs://strafen-app.appspot.com"
+    static let storageBucketUrl: String = "gs://strafen-app.appspot.com"
 
     /// Compression quality
-    let compressionQuality: CGFloat = 0.85
+    static let compressionQuality: CGFloat = 0.85
 
     /// Error appears while storing an image
     enum StoreError: Error {
 
         /// Couldn't get data from image
         case noImageData
+
+        /// Internal error on image storage
+        case onStore
+
+        /// Internal error on image fetching
+        case onFetch
     }
 
     /// Cache of small / standard / big and original images
@@ -134,6 +140,9 @@ class FirebaseImageStorage {
         }
 
         /// Append image to all caches
+        /// - Parameters:
+        ///   - image: image to append to all caches
+        ///   - key: key of the image to append
         mutating func appendToAll(_ image: UIImage, with key: UUID) {
             smallImages[key] = image
             standardImages[key] = image
@@ -142,6 +151,10 @@ class FirebaseImageStorage {
         }
 
         /// Append image to all caches smaller or equal size than given image size
+        /// - Parameters:
+        ///   - imageSize: image size
+        ///   - image: image to append to caches
+        ///   - key: key of the image to append
         mutating func appendToAllSmaller(than imageSize: ImageSize, _ image: UIImage, with key: UUID) {
             if imageSize >= .original { originalImages[key] = image }
             if imageSize >= .thumbBig { bigImages[key] = image }
@@ -149,7 +162,8 @@ class FirebaseImageStorage {
             if imageSize >= .thumbsSmall { smallImages[key] = image }
         }
 
-        /// Delete from all
+        /// Delete image with given key from all caches
+        /// - Parameter key: key of image to delete from caches
         mutating func deleteFromAll(with key: UUID) {
             smallImages[key] = nil
             standardImages[key] = nil
@@ -157,7 +171,14 @@ class FirebaseImageStorage {
             originalImages[key] = nil
         }
 
-        /// Get image
+        /// Get image with given key and size
+        ///
+        /// If image with given size doen't exist in cache, but the image with greater size,
+        /// this image is returned
+        /// - Parameters:
+        ///   - key: key of image to get
+        ///   - imageSize: size of image to get
+        /// - Returns: image from cache or nil if there are no image with given key in cache
         func getImage(with key: UUID, imageSize: ImageSize) -> UIImage? {
             if imageSize <= .original, let image = originalImages[key] { return image}
             if imageSize <= .thumbBig, let image = bigImages[key] { return image }
@@ -173,19 +194,25 @@ class FirebaseImageStorage {
     /// Club image cache
     var clubImageCache = ImageCache(maxSmall: 1, maxStandard: 1, maxBig: 1, maxOriginal: 1)
 
-    /// Store image on server
-    func store(_ image: UIImage,
-               of imageType: ImageType,
-               handler completionHandler: @escaping (Result<StorageMetadata, Error>) -> Void,
-               progressChangeHandler: ((Double) -> Void)? = nil) {
-        guard let imageData = image.jpegData(compressionQuality: compressionQuality) else {
-            return completionHandler(.failure(StoreError.noImageData))
-        }
+    /// Stores image on server
+    /// - Parameters:
+    ///   - image: image to store on server
+    ///   - imageType: type of image to store
+    ///   - progressChangeHandler: handles store progress changes
+    /// - Returns: metadata of stored image
+    @discardableResult func store(_ image: UIImage, of imageType: ImageType, progress progressChangeHandler: ((Double) -> Void)? = nil) async throws -> StorageMetadata {
+        guard let imageData = image.jpegData(compressionQuality: Self.compressionQuality) else { throw StoreError.noImageData }
         let metadata = StorageMetadata()
         metadata.contentType = "image/jpeg"
-        let uploadTask = Storage.storage(url: storageBucketUrl).reference(withPath: imageType.url.path).putData(imageData, metadata: metadata) { [weak self] metadata, error in
+        let dispatchGroup = DispatchGroup()
+        dispatchGroup.enter()
+        var storageResult: Result<StorageMetadata, Error>?
+
+        // Store image
+        let uploadTask = Storage.storage(url: Self.storageBucketUrl).reference(withPath: imageType.url.path).putData(imageData, metadata: metadata) { [weak self] metadata, error in
             if let metadata = metadata {
-                completionHandler(.success(metadata))
+                storageResult = .success(metadata)
+                dispatchGroup.leave()
                 switch imageType {
                 case .clubImage(clubId: let key):
                     self?.clubImageCache.appendToAll(image, with: key.rawValue)
@@ -193,107 +220,130 @@ class FirebaseImageStorage {
                     self?.personImageCache.appendToAll(image, with: key.rawValue)
                 }
             } else if let error = error {
-                completionHandler(.failure(error))
+                 storageResult = .failure(error)
+                dispatchGroup.leave()
             } else {
-                fatalError("Storage call returns no metadata and no error.")
+                storageResult = .failure(StoreError.onStore)
+                dispatchGroup.leave()
             }
         }
+
+        // Observe progress change
         if let progressChangeHandler = progressChangeHandler {
             uploadTask.observe(.progress) { snapshot in
                 let progress = Double(snapshot.progress!.completedUnitCount) / Double(snapshot.progress!.totalUnitCount)
                 progressChangeHandler(progress)
             }
         }
-    }
 
-    /// Store image on server
-    func store(_ image: UIImage,
-               of imageType: ImageType,
-               passedHandler: @escaping (StorageMetadata) -> Void,
-               failedHandler: @escaping (Error) -> Void,
-               progressChangeHandler: ((Double) -> Void)? = nil) {
-        store(image, of: imageType) { (result: Result<StorageMetadata, Error>) in
-            switch result {
-            case .success(let metadata):
-                passedHandler(metadata)
-            case .failure(let error):
-                failedHandler(error)
-            }
-        } progressChangeHandler: { progress in
-            if let progressChangeHandler = progressChangeHandler {
-                progressChangeHandler(progress)
+        // Return metadata
+        return try await withCheckedThrowingContinuation { continuation in
+            dispatchGroup.notify(queue: .main) {
+                progressChangeHandler?(1.0)
+                guard let metadataResult = storageResult else {
+                    return continuation.resume(throwing: StoreError.onStore)
+                }
+                continuation.resume(with: metadataResult)
             }
         }
     }
 
     /// Fetch image from server
-    private func fetch(_ imageType: ImageType,
-                       size imageSize: ImageSize,
-                       handler completionHandler: @escaping (UIImage?) -> Void,
-                       progressChangeHandler: ((Double) -> Void)? = nil) {
+    /// - Parameters:
+    ///   - imageType: type of image to fetch
+    ///   - imageSize: size of image to fetch
+    ///   - progressChangeHandler: handles fetch progress changes
+    /// - Returns: fetched image
+    private func fetch(_ imageType: ImageType, size imageSize: ImageSize, progress progressChangeHandler: ((Double) -> Void)? = nil) async throws -> UIImage {
         let maxSize: Int64 = 30 * 1024 * 1024 // 30 MB
-        let downloadTask = Storage.storage(url: storageBucketUrl).reference(withPath: imageType.url(with: imageSize).path).getData(maxSize: maxSize) { [weak self] data, _ in
+        let dispatchGroup = DispatchGroup()
+        dispatchGroup.enter()
+        var fetchResult: Result<UIImage, Error>?
+
+        // Fetch image
+        let downloadTask = Storage.storage(url: Self.storageBucketUrl).reference(withPath: imageType.url(with: imageSize).path).getData(maxSize: maxSize) { [weak self] data, _ in
             let image = UIImage(data: data)
             if let image = image {
+                fetchResult = .success(image)
                 switch imageType {
                 case .clubImage(clubId: let key):
                     self?.clubImageCache.appendToAllSmaller(than: imageSize, image, with: key.rawValue)
                 case .personImage(clubId: _, personId: let key):
                     self?.personImageCache.appendToAllSmaller(than: imageSize, image, with: key.rawValue)
                 }
+            } else {
+                fetchResult = .failure(StoreError.onFetch)
             }
-            completionHandler(image)
+            dispatchGroup.leave()
         }
+
+        // Observe progress change
         if let progressChangeHandler = progressChangeHandler {
             downloadTask.observe(.progress) { snapshot in
                 let progress = Double(snapshot.progress!.completedUnitCount) / Double(snapshot.progress!.totalUnitCount)
                 progressChangeHandler(progress)
             }
         }
+
+        // Return image
+        return try await withCheckedThrowingContinuation { continuation in
+            dispatchGroup.notify(queue: .main) {
+                progressChangeHandler?(1.0)
+                guard let imageResult = fetchResult else {
+                    return continuation.resume(throwing: StoreError.onStore)
+                }
+                continuation.resume(with: imageResult)
+            }
+        }
     }
 
-    /// Get image from cache or from server
-    func getImage(_ imageType: ImageType,
-                  size imageSize: ImageSize,
-                  handler completionHandler: @escaping (UIImage?) -> Void,
-                  progressChangeHandler: ((Double) -> Void)? = nil) {
+    /// Get image from cache or server
+    /// - Parameters:
+    ///   - imageType: type of image to get
+    ///   - imageSize: size of image to get
+    ///   - progressChangeHandler: handles get progress changes
+    /// - Returns: cached or fetched image
+    func getImage(_ imageType: ImageType, size imageSize: ImageSize, progress progressChangeHandler: ((Double) -> Void)? = nil) async throws -> UIImage {
         switch imageType {
         case .clubImage(clubId: let key):
-            if let image = clubImageCache.getImage(with: key.rawValue, imageSize: imageSize) { return completionHandler(image) }
+            if let image = clubImageCache.getImage(with: key.rawValue, imageSize: imageSize) { return image }
         case .personImage(clubId: _, personId: let key):
-            if let image = personImageCache.getImage(with: key.rawValue, imageSize: imageSize) { return completionHandler(image) }
+            if let image = personImageCache.getImage(with: key.rawValue, imageSize: imageSize) { return image }
         }
-        fetch(imageType, size: imageSize, handler: completionHandler, progressChangeHandler: progressChangeHandler)
+        return try await fetch(imageType, size: imageSize, progress: progressChangeHandler)
     }
 
-    /// Delete image on server
-    func delete(_ imageType: ImageType,
-                taskStateHandler: @escaping (OperationResult) -> Void) {
-        var taskState: OperationResult = .passed
-        let dispatchGroup = DispatchGroup()
-        for imageSize in ImageSize.allCases {
-            dispatchGroup.enter()
-            Storage.storage(url: storageBucketUrl).reference(withPath: imageType.url(with: imageSize).path).delete { error in
-                if let error = error as NSError?, error.domain == StorageErrorDomain {
-                    let errorCode = StorageErrorCode(rawValue: error.code)
-                    if errorCode != .objectNotFound {
-                        taskState = .failed
+    /// Deletes image with given type
+    /// - Parameter imageType: type of image to delete
+    /// - Returns: result of delete operation
+    @discardableResult func delete(_ imageType: ImageType) async -> OperationResult {
+
+        // Delete images on server
+        let result = await withTaskGroup(of: OperationResult.self, returning: OperationResult.self) { group in
+            for imageSize in ImageSize.allCases {
+                group.async {
+                    do {
+                        try await Storage.storage(url: Self.storageBucketUrl).reference(withPath: imageType.url(with: imageSize).path).delete()
+                    } catch {
+                        guard let error = error as NSError?, error.domain == StorageErrorDomain else { return .passed }
+                        guard StorageErrorCode(rawValue: error.code) == .objectNotFound else { return .failed }
                     }
-                }
-                dispatchGroup.leave()
-            }
-        }
-        dispatchGroup.notify(queue: .main) { [weak self] in
-            taskStateHandler(taskState)
-            if taskState == .passed {
-                switch imageType {
-                case .clubImage(clubId: let key):
-                    self?.clubImageCache.deleteFromAll(with: key.rawValue)
-                case .personImage(clubId: _, personId: let key):
-                    self?.personImageCache.deleteFromAll(with: key.rawValue)
+                    return .passed
                 }
             }
+            return await group.contains(.failed) ? .failed : .passed
         }
+
+        // Delete image in cache
+        guard result == .passed else { return .failed }
+        switch imageType {
+        case .clubImage(clubId: let key):
+            clubImageCache.deleteFromAll(with: key.rawValue)
+        case .personImage(clubId: _, personId: let key):
+            personImageCache.deleteFromAll(with: key.rawValue)
+        }
+
+        return .passed
     }
 
     /// Clear cache
@@ -325,6 +375,10 @@ struct DataCache<Key, DataType> where Key: Hashable {
     /// Data list
     private var dataList = [Metadata<Key, DataType>]()
 
+    /// Init data cache with number of max items
+    ///
+    /// Cache has no limit if maxItems is nil
+    /// - Parameter maxItems: number of max items in data cache
     init(maxItems: Int?) {
         if let maxItems = maxItems {
             self.maxItems = Swift.max(maxItems, 1)
@@ -348,24 +402,31 @@ struct DataCache<Key, DataType> where Key: Hashable {
         }
     }
 
-    /// Append new data
+    /// Append new data to cache
+    /// - Parameters:
+    ///   - data: data to append to cache
+    ///   - key: key of the data to append to cache
     private mutating func append(_ data: DataType, with key: Key) {
         while let maxItems = maxItems, dataList.count >= maxItems { removeEarlist() }
         dataList.append(.init(key: key, data: data, time: Date().timeIntervalSince1970))
     }
 
-    /// Remove earlies data
+    /// Remove earlies data from cache
     private mutating func removeEarlist() {
         guard let earliesMetadata = dataList.min(by: { $0.time < $1.time }) else { return }
         dataList.filtered { $0.key != earliesMetadata.key }
     }
 
-    /// Update data
+    /// Update data with given key in cache
+    /// - Parameters:
+    ///   - data: new data to update
+    ///   - key: key of the data to update
     private mutating func update(_ data: DataType, with key: Key) {
         dataList.mapped { $0.data = $0.key == key ? data : $0.data }
     }
 
-    /// Delete data
+    /// Delete data with given key from cache
+    /// - Parameter key: key of data to delete from cache
     private mutating func delete(with key: Key) {
         dataList.removeAll(where: { $0.key == key })
     }

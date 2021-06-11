@@ -7,10 +7,9 @@
 
 import Foundation
 import FirebaseDatabase
-import Hydra
 
 /// Fetches data from firebase database
-struct FirebaseFetcher {
+@MainActor struct FirebaseFetcher {
 
     /// Level of a firebase database fetch
     public var level: FirebaseDatabaseLevel = .defaultValue
@@ -33,17 +32,18 @@ struct FirebaseFetcher {
     ///   - type: Type of fetched value
     ///   - urlFromClub: Url from club to value in firebase database
     ///   - clubId: id of club to fetch from
-    /// - Returns: Promise of retrieved value
-    func fetch<T>(_ type: T.Type, url urlFromClub: URL?, clubId: Club.ID) -> Promise<T> where T: Decodable {
-        Promise<T>(in: .main) { resolve, reject, _ in
-            let url = URL(string: level.clubComponent)!
-                .appendingPathComponent(clubId.uuidString)
-                .appendingUrl(urlFromClub)
+    /// - Returns: Retrieved value
+    func fetch<T>(_ type: T.Type, url urlFromClub: URL?, clubId: Club.ID) async throws -> T where T: Decodable {
+        let url = URL(string: level.clubComponent)!
+            .appendingPathComponent(clubId.uuidString)
+            .appendingUrl(urlFromClub)
+        return try await withCheckedThrowingContinuation { contination in
             Database.database().reference(withPath: url.path).observeSingleEvent(of: .value) { snapshot in
-                guard snapshot.exists(), let data = snapshot.value else { return reject(FetchError.noData) }
-                do {
-                    resolve(try FirebaseDecoder.shared.decodeOrThrow(type, data))
-                } catch { reject(error) }
+                guard snapshot.exists(), let data = snapshot.value else {
+                    return contination.resume(throwing: FetchError.noData)
+                }
+                let decodedResult = FirebaseDecoder.shared.decodeResult(type, data)
+                contination.resume(with: decodedResult)
             }
         }
     }
@@ -52,17 +52,18 @@ struct FirebaseFetcher {
     /// - Parameter type: Type of the list element
     /// - Parameters:
     ///   - clubId: id of club to fetch from
-    /// - Returns: Promise of retrieved list
-    func fetchList<ListType>(_ type: ListType.Type, clubId: Club.ID) -> Promise<[ListType]> where ListType: FirebaseListType {
-        Promise<[ListType]>(in: .main) { resolve, reject, _ in
-            let url = URL(string: level.clubComponent)!
-                .appendingPathComponent(clubId.uuidString)
-                .appendingUrl(ListType.urlFromClub)
+    /// - Returns: Retrieved list
+    func fetchList<ListType>(_ type: ListType.Type, clubId: Club.ID) async throws -> [ListType] where ListType: FirebaseListType {
+        let url = URL(string: level.clubComponent)!
+            .appendingPathComponent(clubId.uuidString)
+            .appendingUrl(ListType.urlFromClub)
+        return try await withCheckedThrowingContinuation { contination in
             Database.database().reference(withPath: url.path).observeSingleEvent(of: .value) { snapshot in
-                guard snapshot.exists(), let data = snapshot.value else { return resolve([]) }
-                do {
-                    resolve(try FirebaseDecoder.shared.decodeListOrThrow(ListType.self, data))
-                } catch { reject(error) }
+                guard snapshot.exists(), let data = snapshot.value else {
+                    return contination.resume(returning: [])
+                }
+                let decodedResult = FirebaseDecoder.shared.decodeListResult(type, data)
+                contination.resume(with: decodedResult)
             }
         }
     }

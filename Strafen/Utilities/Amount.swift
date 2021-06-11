@@ -207,7 +207,7 @@ struct AmountParser {
     /// Parses string to amount
     /// - Parameter amountString: string to parse
     /// - Returns: parsed amount
-    static func fromString(_ amountString: String) -> Amount {
+    static func fromString(_ amountString: String) -> Amount { // swiftlint:disable:this cyclomatic_complexity
 
         var commaPassed = false
         var newString = ""

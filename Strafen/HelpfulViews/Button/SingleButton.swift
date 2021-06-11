@@ -209,6 +209,15 @@ struct SingleButton: View {
         return button
     }
 
+    /// Sets button handler
+    /// - Parameter buttonHandler: button handler
+    /// - Returns: modified single button
+    public func onClick(perform buttonHandler: @escaping () async -> Void) -> SingleButton {
+        var button = self
+        button.buttonHandler = { async { await buttonHandler() } }
+        return button
+    }
+
     /// Sets connection state
     /// - Parameter connectionState: connection state
     /// - Returns: modified single button

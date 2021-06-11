@@ -6,23 +6,39 @@
 //
 
 import SwiftUI
-import Hydra
 import FirebaseAuth
 
 /// Used to setup app with firebase
 class FirebaseAppSetup: ObservableObject {
+
+    /// Error occured while setup app
+    enum SetupError: Error {
+
+        /// Connection state is loading
+        case stillLoading
+
+        /// No person is logged in
+        case noPersonLoggedIn
+    }
+
+    /// Contains person, fine and reason template lists
+    struct AllLists {
+
+        /// Person list
+        let personList: [FirebasePerson]
+
+        /// Fine list
+        let fineList: [FirebaseFine]
+
+        /// Reason list
+        let reasonList: [FirebaseReasonTemplate]
+    }
 
     /// Shared instace for singleton
     static let shared = FirebaseAppSetup()
 
     /// Private init for singleton
     private init() {}
-
-    var personList: [FirebasePerson]?
-
-    var fineList: [FirebaseFine]?
-
-    var reasonList: [FirebaseReasonTemplate]?
 
     /// Connection state for list fetching
     @Published var connectionState: ConnectionState = .notStarted
@@ -34,40 +50,35 @@ class FirebaseAppSetup: ObservableObject {
     @Published var emailNotVerificated = false
 
     /// Setup app with firebase
-    func setup(handler completionHandler: @escaping ([FirebasePerson], [FirebaseFine], [FirebaseReasonTemplate]) -> Void) {
-        guard self.connectionState.restart() == .passed else { return }
-        guard let person = Settings.shared.person else {
-            return self.connectionState.failed()
-        }
-        HomeTab.shared.active = .personList
+    /// - Returns: person, fine and reason template lists
+    func setup() async throws -> AllLists {
+        guard connectionState.restart() == .passed else { throw SetupError.stillLoading }
+        do {
+            guard let person = Settings.shared.person else {
+                throw SetupError.noPersonLoggedIn
+            }
+            HomeTab.shared.active = .personList
 
             // Fetch lists from database
-        self.fetchLists(clubId: person.club.id).then(in: .main) { _ in
+            let allLists = try await fetchLists(clubId: person.club.id)
 
             // Check person properties
-            self.checkPersonProperties(person: person).then(in: .main) { _ in
-                guard let personList = self.personList,
-                      let fineList = self.fineList,
-                      let reasonList = self.reasonList else {
-                    return self.connectionState.failed()
-                }
-                completionHandler(personList, fineList, reasonList)
-            }
+            try await checkPersonProperties(person: person, allLists: allLists)
+
+            return allLists
+        } catch {
+            connectionState.failed()
+            throw error
         }
     }
 
     /// Fetches lists from database
-    private func fetchLists(clubId: Club.ID) -> Promise<Void> {
-        let personListPromise = FirebaseFetcher.shared.fetchList(FirebasePerson.self, clubId: clubId)
-        let fineListPromise = FirebaseFetcher.shared.fetchList(FirebaseFine.self, clubId: clubId)
-        let reasonListPromise = FirebaseFetcher.shared.fetchList(FirebaseReasonTemplate.self, clubId: clubId)
-        return zip(a: personListPromise, b: fineListPromise, c: reasonListPromise).then(in: .main) { [weak self] personList, fineList, reasonList in
-            self?.personList = personList
-            self?.fineList = fineList
-            self?.reasonList = reasonList
-        }.catch(in: .main) { [weak self] _ in
-            self?.connectionState.failed()
-        }
+    /// - Parameter clubId: Id of club of logged in person
+    private func fetchLists(clubId: Club.ID) async throws -> AllLists {
+        async let personList = FirebaseFetcher.shared.fetchList(FirebasePerson.self, clubId: clubId)
+        async let fineList = FirebaseFetcher.shared.fetchList(FirebaseFine.self, clubId: clubId)
+        async let reasonList = FirebaseFetcher.shared.fetchList(FirebaseReasonTemplate.self, clubId: clubId)
+        return try await AllLists(personList: personList, fineList: fineList, reasonList: reasonList)
     }
 
     /// Check if properties of logged in person is valid
@@ -77,50 +88,45 @@ class FirebaseAppSetup: ObservableObject {
     ///     - Check if email is verificated
     ///     - Set late payment interest
     ///     - Set region code
-    ///
-    /// - Parameter loggedInPerson: logged in person
-    private func checkPersonProperties(person loggedInPerson: Settings.Person) -> Promise<Void> {
+    /// - Parameters:
+    ///   - loggedInPerson: Logged in person
+    ///   - allLists: person, fine and reason template lists
+    private func checkPersonProperties(person loggedInPerson: Settings.Person, allLists: AllLists) async throws {
 
         // Check if person is forced sign out by the cashier
-        guard let person = personList?.first(where: { $0.id == loggedInPerson.id }),
+        guard let person = allLists.personList.first(where: { $0.id == loggedInPerson.id }),
               let signInData = person.signInData else {
-            try? Auth.auth().signOut()
-            forceSignedOut = true
-            return Promise.init(resolved: ())
-        }
+                  try Auth.auth().signOut()
+                  return forceSignedOut = true
+              }
 
         // Check if email is verificated
         guard let user = Auth.auth().currentUser else {
-            forceSignedOut = true
-            return Promise.init(resolved: ())
+            return forceSignedOut = true
         }
-        if user.email != nil && !user.isEmailVerified {
+        if user.email != nil, !user.isEmailVerified {
             let monthSinceSignIn = Calendar.current.dateComponents([.month], from: signInData.signInDate, to: Date()).month!
             if monthSinceSignIn >= 1 {
-                emailNotVerificated = true
-                return Promise.init(resolved: ())
+                return emailNotVerificated = true
             }
         }
 
-        // Get late payment interest
-        let latePaymentInterestPromise = FirebaseFetcher.shared.fetch(LatePaymentInterest.self, url: URL(string: "latePaymentInterest"), clubId: loggedInPerson.club.id).thenResult(in: .main) { result in
-            Settings.shared.latePaymentInterest = try? result.get()
-        }
+        await withThrowingTaskGroup(of: Void.self) { group in
 
-        // Get in app payment active
-        let inAppPaymentActivePromise = FirebaseFetcher.shared.fetch(Bool.self, url: URL(string: "inAppPaymentActive"), clubId: loggedInPerson.club.id).thenResult(in: .main) { result in
-            Settings.shared.person?.club.inAppPaymentActive = (try? result.get()) ?? false
-        }
+            // Get late payment interest
+            group.async {
+                Settings.shared.latePaymentInterest = try await FirebaseFetcher.shared.fetch(LatePaymentInterest.self, url: URL(string: "latePaymentInterest"), clubId: loggedInPerson.club.id)
+            }
 
-        // Get region code
-        let regionCodePromise = FirebaseFetcher.shared.fetch(String.self, url: URL(string: "regionCode"), clubId: loggedInPerson.club.id).then(in: .main) { regionCode in
-            Settings.shared.person?.club.regionCode = regionCode
-        }
+            // Get in app payment active
+            group.async {
+                Settings.shared.person?.club.inAppPaymentActive = (try? await FirebaseFetcher.shared.fetch(Bool.self, url: URL(string: "inAppPaymentActive"), clubId: loggedInPerson.club.id)) ?? false
+            }
 
-        return zip(a: latePaymentInterestPromise, b: inAppPaymentActivePromise, c: regionCodePromise).then(in: .main) { [weak self] _, _, _ in
-            self?.connectionState.passed()
-        }.catch(in: .main) { [weak self] _ in
-            self?.connectionState.failed()
+            // Get region code
+            group.async {
+                Settings.shared.person?.club.regionCode = try await FirebaseFetcher.shared.fetch(String.self, url: URL(string: "regionCode"), clubId: loggedInPerson.club.id)
+            }
         }
     }
 }

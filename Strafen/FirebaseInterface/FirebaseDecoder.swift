@@ -43,6 +43,17 @@ struct FirebaseDecoder {
     }
 
     /// Decodes given type from firebase database data and given key.
+    /// Returns `.failure(_)` if data can not be decoded.
+    /// - Parameters:
+    ///   - type: Type to decode to
+    ///   - data: Data to decode from
+    ///   - key: Key of the data
+    /// - Returns: Result of decoded data of given type or `.failure(_)` if data can not be decoded.
+    func decodeResult<T>(_ type: T.Type, _ data: Any, key: String) -> Result<T, Error> where T: Decodable {
+        Result { try decodeOrThrow(type, data, key: key) }
+    }
+
+    /// Decodes given type from firebase database data and given key.
     /// Returns nil if data can not be decoded.
     /// - Parameters:
     ///   - type: Type to decode to
@@ -63,6 +74,16 @@ struct FirebaseDecoder {
     func decodeOrThrow<T>(_ type: T.Type, _ data: Any) throws -> T where T: Decodable {
         let decoder = CodableFirebase.FirebaseDecoder()
         return try decoder.decode(type, from: data)
+    }
+
+    /// Decodes given type from firebase database data.
+    /// Returns `.failure(_)` if data can not be decoded.
+    /// - Parameters:
+    ///   - type: Type to decode to
+    ///   - data: Data to decode from
+    /// - Returns: Result of decoded data of given type orr`.failure(_)` if data can not be decoded.
+    func decodeResult<T>(_ type: T.Type, _ data: Any) -> Result<T, Error> where T: Decodable {
+        Result { try decodeOrThrow(type, data) }
     }
 
     /// Decodes given type from firebase database data.
@@ -90,6 +111,16 @@ struct FirebaseDecoder {
     }
 
     /// Decodes array of given type from firebase database data.
+    /// Returns `.failure(_)` if data can not be decoded.
+    /// - Parameters:
+    ///   - type: Element type to decode to
+    ///   - data: Data to decode from
+    /// - Returns: Result of decoded data of array of given type or `.failure(_)` if data can not be decoded.
+    func decodeListResult<T>(_ type: T.Type, _ data: Any) -> Result<[T], Error> where T: Decodable {
+        Result { try decodeListOrThrow(type, data) }
+    }
+
+    /// Decodes array of given type from firebase database data.
     /// Returns nil if data can not be decoded.
     /// - Parameters:
     ///   - type: Element type to decode to
@@ -111,6 +142,16 @@ struct FirebaseDecoder {
         return try list.map { value in
             try decodeOrThrow(type, value)
         }
+    }
+
+    /// Decodes array of given unkeyed type from firebase database data.
+    /// Returns `.failure(_)` if data can not be decoded.
+    /// - Parameters:
+    ///   - type: Element type to decode to
+    ///   - data: Data to decode from
+    /// - Returns: Result of decoded data of array of given primitive type or `.failure(_)` if data can not be decoded.
+    func decodeUnkeyedListResult<T>(_ type: T.Type, _ data: Any) -> Result<[T], Error> where T: Decodable {
+        Result { try decodeUnkeyedListOrThrow(type, data) }
     }
 
     /// Decodes array of given unkeyed type from firebase database data.

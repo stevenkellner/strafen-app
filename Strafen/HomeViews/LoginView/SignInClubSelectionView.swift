@@ -193,28 +193,27 @@ struct SignInClubSelectionView: View {
     }
 
     /// Handles the click on the continue button
-    func handleContinueButtonPress() {
-        Self.handleContinueButtonPress(oldSignInProperty: oldSignInProperty, inputProperties: $inputProperties)
+    func handleContinueButtonPress() async {
+        await Self.handleContinueButtonPress(oldSignInProperty: oldSignInProperty, inputProperties: $inputProperties)
     }
 
     /// Handles the click on the continue button
     /// - Parameter oldSignInProperty: sign in property with userId and name
     /// - Parameter inputProperties: binding of the input properties
     /// - Parameter completionHandler: handler executed after function call was made
-    static func handleContinueButtonPress(oldSignInProperty: SignInProperty.UserIdName, inputProperties: Binding<InputProperties>, onCompletion completionHandler: (() -> Void)? = nil) {
+    static func handleContinueButtonPress(oldSignInProperty: SignInProperty.UserIdName, inputProperties: Binding<InputProperties>) async {
         guard inputProperties.wrappedValue.connectionState.restart() == .passed else { return }
         guard inputProperties.wrappedValue.validateAllInputs() == .valid else {
             return inputProperties.wrappedValue.connectionState.failed()
         }
-        let callItem = FFGetClubIdCall(identifier: inputProperties.wrappedValue[.clubIdentifier])
-        FirebaseFunctionCaller.shared.call(callItem).then { clubId in
+        do {
+            let callItem = FFGetClubIdCall(identifier: inputProperties.wrappedValue[.clubIdentifier])
+            let clubId = try await FirebaseFunctionCaller.shared.call(callItem)
             inputProperties.wrappedValue.signInProperty = SignInProperty.UserIdNameClubId(oldSignInProperty, clubId: clubId)
             inputProperties.wrappedValue.connectionState.passed()
-        }.catch { error in
+        } catch {
             inputProperties.wrappedValue.evaluateErrorCode(of: error as NSError)
             inputProperties.wrappedValue.connectionState.failed()
-        }.always {
-            completionHandler?()
         }
     }
 }
