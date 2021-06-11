@@ -8,14 +8,23 @@
 import XCTest
 import SwiftUI
 import FirebaseFunctions
+import FirebaseAuth
 @testable import Strafen
 
 class SignInClubInputViewTests: XCTestCase {
 
-    override func setUp() {
+    override func setUpWithError() throws {
         continueAfterFailure = false
         FirebaseFetcher.shared.level = .testing
         FirebaseFunctionCaller.shared.level = .testing
+
+        // Sign test user in
+        let signInError: Error? = try waitExpectation { handler in
+            Auth.auth().signIn(withEmail: "app.demo@web.de", password: "Demopw12") { _, error in
+                handler(error)
+            }
+        }
+        XCTAssertNil(signInError)
     }
 
     /// Tests with no club name
@@ -129,7 +138,11 @@ class SignInClubInputViewTests: XCTestCase {
         XCTAssertNil(inputProperties.regionCodeErrorMessage)
         XCTAssertNil(inputProperties.inAppPaymentErrorMessage)
         XCTAssertNotNil(clubId)
-        // TODO check settings
+
+        // Check settings
+        XCTAssertEqual(Settings.shared.person?.name, oldSignInProperty.name)
+        XCTAssertEqual(Settings.shared.person?.isCashier, true)
+        XCTAssertEqual(Settings.shared.person?.club, Club(id: clubId!, name: "clubName", identifier: "ClubIdentifier", regionCode: "DE", inAppPaymentActive: false))
 
         // Delete club again
         let deleteClubResult: Result<HTTPSCallableResult, Error> = try waitExpectation { handler in

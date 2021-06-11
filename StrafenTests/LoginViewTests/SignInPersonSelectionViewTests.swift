@@ -7,6 +7,7 @@
 
 import XCTest
 import FirebaseFunctions
+import FirebaseAuth
 import SwiftUI
 @testable import Strafen
 
@@ -19,6 +20,14 @@ class SignInPersonSelectionViewTests: XCTestCase {
         FirebaseFetcher.shared.level = .testing
         FirebaseObserver.shared.level = .testing
         FirebaseFunctionCaller.shared.level = .testing
+
+        // Sign test user in
+        let signInError: Error? = try waitExpectation { handler in
+            Auth.auth().signIn(withEmail: "app.demo@web.de", password: "Demopw12") { _, error in
+                handler(error)
+            }
+        }
+        XCTAssertNil(signInError)
 
         let createClubResult: Result<HTTPSCallableResult, Error> = try waitExpectation { handler in
             let callItem = FFNewTestClubCall(clubId: clubId, testClubType: .fetcherTestClub)
@@ -48,8 +57,6 @@ class SignInPersonSelectionViewTests: XCTestCase {
         }
         XCTAssertNil(inputProperties.errorMessage)
 
-        // TODO check settings
-
         let personListResult: Result<[FirebasePerson], Error> = try waitExpectation { handler in
             FirebaseFetcher.shared.fetchList(FirebasePerson.self, clubId: clubId).thenResult(handler)
         }
@@ -63,6 +70,12 @@ class SignInPersonSelectionViewTests: XCTestCase {
             FirebaseFetcher.shared.fetch(String.self, url: url, clubId: clubId).thenResult(handler)
         }
         XCTAssertEqual(try personUserIdResult.get(), person.id.uuidString)
+
+        // Check settings
+        XCTAssertEqual(Settings.shared.person?.id, person.id)
+        XCTAssertEqual(Settings.shared.person?.name, signInProperty.name)
+        XCTAssertEqual(Settings.shared.person?.isCashier, false)
+        XCTAssertEqual(Settings.shared.person?.club, TestClub.fetcherTestClub.properties.club(with: clubId))
     }
 
     /// Tests without selected person
@@ -75,8 +88,6 @@ class SignInPersonSelectionViewTests: XCTestCase {
             SignInPersonSelectionView.handleRegisterButtonPress(signInProperty: signInProperty, inputProperty: inputBinding, onCompletion: handler)
         }
         XCTAssertNil(inputProperties.errorMessage)
-
-        // TODO check settings
 
         let personUserIdResult: Result<String, Error> = try waitExpectation { handler in
             let url = URL(string: "personUserIds/userId2")!
@@ -91,5 +102,11 @@ class SignInPersonSelectionViewTests: XCTestCase {
         XCTAssertEqual(fetchedPerson?.name, PersonName(firstName: "firstName2"))
         XCTAssertEqual(fetchedPerson?.signInData?.userId, "userId2")
         XCTAssertEqual(fetchedPerson?.signInData?.isCashier, false)
+
+        // Check settings
+        XCTAssertEqual(Settings.shared.person?.id.uuidString, personId)
+        XCTAssertEqual(Settings.shared.person?.name, signInProperty.name)
+        XCTAssertEqual(Settings.shared.person?.isCashier, false)
+        XCTAssertEqual(Settings.shared.person?.club, TestClub.fetcherTestClub.properties.club(with: clubId))
     }
 }

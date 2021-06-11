@@ -8,14 +8,23 @@
 import XCTest
 import SwiftUI
 import FirebaseFunctions
+import FirebaseAuth
 @testable import Strafen
 
 class SignInClubSelectionTests: XCTestCase {
 
-    override func setUp() {
+    override func setUpWithError() throws {
         continueAfterFailure = false
         FirebaseFetcher.shared.level = .testing
         FirebaseFunctionCaller.shared.level = .testing
+
+        // Sign test user in
+        let signInError: Error? = try waitExpectation { handler in
+            Auth.auth().signIn(withEmail: "app.demo@web.de", password: "Demopw12") { _, error in
+                handler(error)
+            }
+        }
+        XCTAssertNil(signInError)
     }
 
     /// Tests with no identifier

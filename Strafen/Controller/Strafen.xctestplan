@@ -1,0 +1,33 @@
+{
+  "configurations" : [
+    {
+      "id" : "3830F04F-6D7F-4D7E-935D-C2A8A57CF9E2",
+      "name" : "Configuration 1",
+      "options" : {
+        "language" : "de",
+        "region" : "DE",
+        "testExecutionOrdering" : "random",
+        "testRepetitionMode" : "retryOnFailure",
+        "uiTestingScreenshotsLifetime" : "keepAlways",
+        "userAttachmentLifetime" : "keepAlways"
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "targetForVariableExpansion" : {
+      "containerPath" : "container:Strafen.xcodeproj",
+      "identifier" : "B01E96AA2641AEF50034E3D1",
+      "name" : "Strafen"
+    }
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:Strafen.xcodeproj",
+        "identifier" : "B0A761A72642ECBC003B170F",
+        "name" : "StrafenTests"
+      }
+    }
+  ],
+  "version" : 1
+}
