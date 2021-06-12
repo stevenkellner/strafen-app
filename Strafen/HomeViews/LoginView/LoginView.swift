@@ -154,11 +154,7 @@ struct LoginView: View {
                                             .font(.system(size: 15, weight: .thin))
                                     }.frame(width: 200, height: 35)
                                         .padding(.top, 15)
-                                        .onTapGesture {
-                                            guard inputProperties.validateTextField(.email) == .valid else { return resetPasswordMessage = .invalidEmail }
-                                            Auth.auth().sendPasswordReset(withEmail: inputProperties[.email], completion: nil)
-                                            resetPasswordMessage = .confirm
-                                        }
+                                        .onTapGesture(perform: handleForgotPasswordButtonPress)
                                         .alert(item: $resetPasswordMessage) { message in
                                             switch message {
                                             case .invalidEmail: return Alert(title: Text("forget-password-alert-invalid-email-title", table: .logInSignIn, comment: "Title of forgot password invalid email alert"),
@@ -188,18 +184,7 @@ struct LoginView: View {
                             VStack(spacing: 5) {
                                 SingleButton("log-in-with-google-button-text", table: .logInSignIn, comment: "Text of log in with google button")
                                     .leftSymbol(Image(uiImage: #imageLiteral(resourceName: "google-icon")))
-                                    .onClick {
-                                        guard connectionState.restart() == .passed else { return }
-                                        clearErrorMessages()
-                                        signInGoogleController.handleGoogleSignIn { userId, _ in
-                                            getPersonProperties(userId: userId, errorMessage: $googleErrorMessage)
-                                            connectionState.passed()
-                                        } onFailure: {
-                                            googleErrorMessage = .internalErrorLogIn
-                                            connectionState.failed()
-                                        }
-
-                                    }
+                                    .onClick(perform: handleLogInGoogleButtonPress)
                                 ErrorMessageView($googleErrorMessage)
                             }
 
@@ -208,18 +193,7 @@ struct LoginView: View {
                                 SingleButton("log-in-with-apple-button-text", table: .logInSignIn, comment: "Text of log in with apple button")
                                     .leftSymbol(name: "applelogo")
                                     .leftColor(.white)
-                                    .onClick {
-                                        guard connectionState.restart() == .passed else { return }
-                                        clearErrorMessages()
-                                        signInAppleController.handleAppleSignIn { userId, _ in
-                                            getPersonProperties(userId: userId, errorMessage: $appleErrorMessage)
-                                            connectionState.passed()
-                                        } onFailure: {
-                                            appleErrorMessage = .internalErrorLogIn
-                                            connectionState.failed()
-                                        }
-
-                                    }
+                                    .onClick(perform: handleLogInAppleButtonPress)
                                 ErrorMessageView($appleErrorMessage)
                             }
 
@@ -268,32 +242,66 @@ struct LoginView: View {
         inputProperties.errorMessages = [:]
     }
 
+    /// Handles forgot password button press
+    func handleForgotPasswordButtonPress() {
+        guard inputProperties.validateTextField(.email) == .valid else { return resetPasswordMessage = .invalidEmail }
+        Auth.auth().sendPasswordReset(withEmail: inputProperties[.email], completion: nil)
+        resetPasswordMessage = .confirm
+    }
+
+    /// Handles log in with google button press
+    func handleLogInGoogleButtonPress() {
+        guard connectionState.restart() == .passed else { return }
+        clearErrorMessages()
+        signInGoogleController.handleGoogleSignIn { userId, _ in
+            async {
+                await getPersonProperties(userId: userId, errorMessage: $googleErrorMessage)
+            }
+            connectionState.passed()
+        } onFailure: {
+            googleErrorMessage = .internalErrorLogIn
+            connectionState.failed()
+        }
+    }
+
+    /// Handles log in with apple button press
+    func handleLogInAppleButtonPress() {
+        guard connectionState.restart() == .passed else { return }
+        clearErrorMessages()
+        signInAppleController.handleAppleSignIn { userId, _ in
+            async {
+                await getPersonProperties(userId: userId, errorMessage: $appleErrorMessage)
+            }
+            connectionState.passed()
+        } onFailure: {
+            appleErrorMessage = .internalErrorLogIn
+            connectionState.failed()
+        }
+    }
+
     /// Handles log in button press tp log in with email
-    func handleLogInButtonPress() {
+    func handleLogInButtonPress() async {
         guard connectionState.restart() == .passed else { return }
         clearErrorMessages()
         guard inputProperties.validateAllInputs() == .valid else {
             emailInputActive = true
             return connectionState.failed()
         }
-        Auth.auth().signIn(withEmail: inputProperties[.email], password: inputProperties[.password, trimm: nil]) { result, error in
-            if let error = error {
-                emailInputActive = true
-                connectionState.failed()
-                guard (error as NSError).domain == AuthErrorDomain else { return inputProperties[error: .email] = .internalErrorLogIn }
-                let errorCode = AuthErrorCode(rawValue: (error as NSError).code)
-                switch errorCode {
-                case .invalidEmail: inputProperties[error: .email] = .invalidEmail
-                case .wrongPassword: inputProperties[error: .email] = .incorrectPassword
-                default: inputProperties[error: .email] = .internalErrorLogIn
-                }
-            } else if let userId = result?.user.uid {
-                getPersonProperties(userId: userId, errorMessage: $inputProperties[error: .email], isEmail: true)
-                connectionState.passed()
-            } else {
-                inputProperties[error: .email] = .internalErrorLogIn
-                emailInputActive = true
-                connectionState.failed()
+        do {
+            let result = try await Auth.auth().signIn(withEmail: inputProperties[.email], password: inputProperties[.password, trimm: nil])
+            async {
+                await getPersonProperties(userId: result.user.uid, errorMessage: $inputProperties[error: .email], isEmail: true)
+            }
+            connectionState.passed()
+        } catch {
+            emailInputActive = true
+            connectionState.failed()
+            guard (error as NSError).domain == AuthErrorDomain else { return inputProperties[error: .email] = .internalErrorLogIn }
+            let errorCode = AuthErrorCode(rawValue: (error as NSError).code)
+            switch errorCode {
+            case .invalidEmail: inputProperties[error: .email] = .invalidEmail
+            case .wrongPassword: inputProperties[error: .email] = .incorrectPassword
+            default: inputProperties[error: .email] = .internalErrorLogIn
             }
         }
     }
@@ -303,12 +311,13 @@ struct LoginView: View {
     ///   - userId: id of signed in user
     ///   - errorMessage: error message of log in method
     ///   - isEmail: true if log in with email
-    func getPersonProperties(userId: String, errorMessage: Binding<ErrorMessages?>, isEmail: Bool = false) {
-        let callItem = FFGetPersonPropertiesCall(userId: userId)
-        FirebaseFunctionCaller.shared.call(callItem).then { personProperties in
+    func getPersonProperties(userId: String, errorMessage: Binding<ErrorMessages?>, isEmail: Bool = false) async {
+        do {
+            let callItem = FFGetPersonPropertiesCall(userId: userId)
+            let personProperties = try await FirebaseFunctionCaller.shared.call(callItem)
             Settings.shared.person = personProperties.settingsPerson
             connectionState.passed()
-        }.catch { error in
+        } catch {
             if isEmail { emailInputActive = true }
             connectionState.failed()
             guard (error as NSError).domain == FunctionsErrorDomain else { return errorMessage.wrappedValue = .internalErrorLogIn }

@@ -86,7 +86,7 @@ struct SignInPersonSelectionView: View {
                     ScrollView(showsIndicators: false) {
                         LazyVStack(spacing: 15) {
                             ForEach(personList.sortedForList) { person in
-                                PersonListRow(person, selected: $inputProperties.selectedPersonId)
+                                PersonListRow(person, clubId: signInProperty.clubId, selected: $inputProperties.selectedPersonId)
                             }
                         }.padding(.vertical, 10)
                     }
@@ -109,7 +109,7 @@ struct SignInPersonSelectionView: View {
                     ScrollView(showsIndicators: false) {
                         LazyVStack(spacing: 15) {
                             ForEach([FirebasePerson].randomList(of: 5)) { person in
-                                PersonListRow(person, selected: $inputProperties.selectedPersonId, placeholder: true)
+                                PersonListRow(person, clubId: signInProperty.clubId, selected: $inputProperties.selectedPersonId, placeholder: true)
                             }
                         }.padding(.vertical, 10)
                     }
@@ -140,8 +140,8 @@ struct SignInPersonSelectionView: View {
     }
 
     /// Handles register button press
-    func handleRegisterButtonPress() {
-        Self.handleRegisterButtonPress(signInProperty: signInProperty, inputProperty: $inputProperties)
+    func handleRegisterButtonPress() async {
+        await Self.handleRegisterButtonPress(signInProperty: signInProperty, inputProperty: $inputProperties)
     }
 
     /// Fetches person list of selected club
@@ -151,11 +151,14 @@ struct SignInPersonSelectionView: View {
     static func fetchPersonList(signInProperty: SignInProperty.UserIdNameClubId, inputProperty: Binding<InputProperties>) {
         guard inputProperty.wrappedValue.fetchConnectionState.restart() == .passed else { return }
         inputProperty.wrappedValue.removeObserver?()
-        FirebaseFetcher.shared.fetchList(FirebasePerson.self, clubId: signInProperty.clubId).then { personList in
-            inputProperty.wrappedValue.personList = personList
-            inputProperty.wrappedValue.fetchConnectionState.passed()
-        }.catch { _ in
-            inputProperty.wrappedValue.fetchConnectionState.failed()
+        async {
+            do {
+                let personList: [FirebasePerson] = try await FirebaseFetcher.shared.fetchList(clubId: signInProperty.clubId)
+                inputProperty.wrappedValue.personList = personList
+                inputProperty.wrappedValue.fetchConnectionState.passed()
+            } catch {
+                inputProperty.wrappedValue.fetchConnectionState.failed()
+            }
         }
         inputProperty.wrappedValue.removeObserver = FirebaseObserver.shared.observeList(FirebasePerson.self, clubId: signInProperty.clubId) { updatePersonList in
             guard var personList = inputProperty.wrappedValue.personList else { return }
@@ -168,22 +171,20 @@ struct SignInPersonSelectionView: View {
     /// - Parameters:
     ///   - signInProperty: sign in property with user id, name and club id
     ///   - inputProperty: binding of input property
-    static func handleRegisterButtonPress(signInProperty: SignInProperty.UserIdNameClubId, inputProperty: Binding<InputProperties>, onCompletion completionHandler: (() -> Void)? = nil) {
+    static func handleRegisterButtonPress(signInProperty: SignInProperty.UserIdNameClubId, inputProperty: Binding<InputProperties>) async {
         guard inputProperty.wrappedValue.registerConnectionState.restart() == .passed,
               inputProperty.wrappedValue.personList != nil else { return }
         inputProperty.wrappedValue.errorMessage = nil
-
-        let personId = inputProperty.wrappedValue.selectedPersonId ?? FirebasePerson.ID(rawValue: UUID())
-        let callItem = FFRegisterPersonCall(signInProperty: signInProperty, personId: personId)
-        FirebaseFunctionCaller.shared.call(callItem).then { clubProperties in
+        do {
+            let personId = inputProperty.wrappedValue.selectedPersonId ?? FirebasePerson.ID(rawValue: UUID())
+            let callItem = FFRegisterPersonCall(signInProperty: signInProperty, personId: personId)
+            let clubProperties = try await FirebaseFunctionCaller.shared.call(callItem)
             inputProperty.wrappedValue.registerConnectionState.passed()
             let club = Club(id: signInProperty.clubId, name: clubProperties.clubName, identifier: clubProperties.clubIdentifier, regionCode: clubProperties.regionCode, inAppPaymentActive: clubProperties.inAppPaymentActive)
             Settings.shared.person = Settings.Person(club: club, id: personId, name: signInProperty.name, signInDate: callItem.signInDate, isCashier: false)
-        }.catch { _ in
+        } catch {
             inputProperty.wrappedValue.errorMessage = .internalErrorSignIn
             inputProperty.wrappedValue.registerConnectionState.failed()
-        }.always {
-            completionHandler?()
         }
     }
 
@@ -194,6 +195,9 @@ struct SignInPersonSelectionView: View {
 
         /// Person of this row
         let person: FirebasePerson
+
+        /// Club id
+        let clubId: Club.ID
 
         /// Id of selected person
         @Binding var selectedPersonId: FirebasePerson.ID?
@@ -206,8 +210,9 @@ struct SignInPersonSelectionView: View {
         ///   - person: person of the row
         ///   - selectedPersonId: selected person id
         ///   - placeholder: indicates whether the row is a placeholder
-        init(_ person: FirebasePerson, selected selectedPersonId: Binding<FirebasePerson.ID?>, placeholder: Bool = false) {
+        init(_ person: FirebasePerson, clubId: Club.ID, selected selectedPersonId: Binding<FirebasePerson.ID?>, placeholder: Bool = false) {
             self.person = person
+            self.clubId = clubId
             self._selectedPersonId = selectedPersonId
             self.isPlaceholder = placeholder
         }
@@ -236,7 +241,12 @@ struct SignInPersonSelectionView: View {
         /// Fetch person image
         func fetchPersonImage() {
             guard !isPlaceholder else { return }
-            // TODO fetch person images
+            async {
+                do {
+                    let imageType = FirebaseImageStorage.ImageType(id: person.id, clubId: clubId)
+                    image = try await FirebaseImageStorage.shared.getImage(imageType, size: .thumbsSmall)
+                } catch {}
+            }
         }
 
         /// Handle tap

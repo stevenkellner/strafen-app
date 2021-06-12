@@ -208,37 +208,37 @@ struct FineDetail: View {
         }
 
         /// Handles save to unpayed
-        func handleSaveToUnpayed() {
+        func handleSaveToUnpayed() async {
             guard person.isCashier else { return }
             guard connectionStateToPayed != .loading,
                   connectionStateToUnpayed.restart() == .passed else { return }
             guard fine.isPayed && !fine.isSettled && !fine.payed.payedInApp else { return }
             errorMessages = nil
-
-            let callItem = FFChangeFinePayed(clubId: person.club.id, fineId: fine.id, newState: .unpayed)
-            FirebaseFunctionCaller.shared.call(callItem).then { _ in
+            do {
+                let callItem = FFChangeFinePayed(clubId: person.club.id, fineId: fine.id, newState: .unpayed)
+                try await FirebaseFunctionCaller.shared.call(callItem)
                 fineListEnvironment.changeListItemInout(fine.id) { $0.payed = .unpayed }
                 connectionStateToUnpayed.passed()
-            }.catch { _ in
+            } catch {
                 errorMessages = .internalErrorSave
                 connectionStateToUnpayed.failed()
             }
         }
 
         /// Handles save to payed
-        func handleSaveToPayed() {
+        func handleSaveToPayed() async {
             guard person.isCashier else { return }
             guard connectionStateToUnpayed != .loading,
                   connectionStateToPayed.restart() == .passed else { return }
             guard !fine.isPayed && !fine.isSettled && !fine.payed.payedInApp else { return }
             errorMessages = nil
-
-            let payedState: Payed = .payed(date: Date(), inApp: false)
-            let callItem = FFChangeFinePayed(clubId: person.club.id, fineId: fine.id, newState: payedState)
-            FirebaseFunctionCaller.shared.call(callItem).then { _ in
+            do {
+                let payedState: Payed = .payed(date: Date(), inApp: false)
+                let callItem = FFChangeFinePayed(clubId: person.club.id, fineId: fine.id, newState: payedState)
+                try await FirebaseFunctionCaller.shared.call(callItem)
                 fineListEnvironment.changeListItemInout(fine.id) { $0.payed = payedState }
                 connectionStateToPayed.passed()
-            }.catch { _ in
+            } catch {
                 errorMessages = .internalErrorSave
                 connectionStateToPayed.failed()
             }

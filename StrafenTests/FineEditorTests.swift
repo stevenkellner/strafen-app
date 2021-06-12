@@ -15,37 +15,39 @@ class FineEditorTests: XCTestCase {
 
     let clubId = Club.ID(rawValue: UUID(uuidString: "65d13ed5-f1bc-4a7b-898c-850c88f54765")!)
 
-    override func setUpWithError() throws {
+    @MainActor override func setUpWithError() throws {
         continueAfterFailure = false
         FirebaseFetcher.shared.level = .testing
-        FirebaseObserver.shared.level = .testing
         FirebaseFunctionCaller.shared.level = .testing
 
-        // Sign test user in
-        let signInError: Error? = try waitExpectation { handler in
-            Auth.auth().signIn(withEmail: "app.demo@web.de", password: "Demopw12") { _, error in
-                handler(error)
+        waitExpectation { handler in
+            async {
+
+                // Sign test user in
+                try await Auth.auth().signIn(withEmail: "app.demo@web.de", password: "Demopw12")
+
+                let callItem = FFNewTestClubCall(clubId: clubId, testClubType: .fetcherTestClub)
+                try await FirebaseFunctionCaller.shared.call(callItem)
+
+                handler()
             }
         }
-        XCTAssertNil(signInError)
-
-        let createClubResult: Result<HTTPSCallableResult, Error> = try waitExpectation { handler in
-            let callItem = FFNewTestClubCall(clubId: clubId, testClubType: .fetcherTestClub)
-            FirebaseFunctionCaller.shared.call(callItem).thenResult(handler)
-        }
-        _ = try createClubResult.get()
+        try Task.checkCancellation()
     }
 
     override func tearDownWithError() throws {
-        let deleteClubResult: Result<HTTPSCallableResult, Error> = try waitExpectation { handler in
-            let callItem = FFDeleteTestClubCall(clubId: clubId)
-            FirebaseFunctionCaller.shared.call(callItem).thenResult(handler)
+        waitExpectation { handler in
+            async {
+                let callItem = FFDeleteTestClubCall(clubId: clubId)
+                try await FirebaseFunctionCaller.shared.call(callItem)
+                handler()
+            }
         }
-        _ = try deleteClubResult.get()
+        try Task.checkCancellation()
     }
 
     /// Tests update with future date
-    func testUpdateFutureDate() {
+    func testUpdateFutureDate() async {
         let personId = TestClub.fetcherTestClub.persons.first { $0.signInData != nil }!.id
         let settingsClub = Club(id: clubId, name: "ClubName", identifier: "ClubIdentifier", regionCode: "DE", inAppPaymentActive: true)
         let settingsPerson = Settings.Person(club: settingsClub, id: personId, name: PersonName(firstName: "FirstName"), signInDate: Date(), isCashier: true)
@@ -56,7 +58,7 @@ class FineEditorTests: XCTestCase {
         let fine = FirebaseFine(id: fineId, assoiatedPersonId: personId, date: date, payed: .unpayed, number: 1, fineReason: fineReason)
         inputProperties.setProperties(of: fine, with: TestClub.fetcherTestClub.reasons)
         let inputBinding = Binding<FineEditor.InputProperties> { inputProperties} set: { inputProperties = $0 }
-        FineEditor.handleFineUpdate(person: settingsPerson, inputProperties: inputBinding, reasonList: TestClub.fetcherTestClub.reasons)
+        await FineEditor.handleFineUpdate(person: settingsPerson, inputProperties: inputBinding, reasonList: TestClub.fetcherTestClub.reasons)
         XCTAssertEqual(inputProperties.connectionStateDelete, .notStarted)
         XCTAssertEqual(inputProperties.connectionStateUpdate, .failed)
         XCTAssertEqual(inputProperties.errorMessages, [:])
@@ -66,7 +68,7 @@ class FineEditorTests: XCTestCase {
     }
 
     /// Tests update with too small number
-    func testUpdateNumberTooSmall() {
+    func testUpdateNumberTooSmall() async {
         let personId = TestClub.fetcherTestClub.persons.first { $0.signInData != nil }!.id
         let settingsClub = Club(id: clubId, name: "ClubName", identifier: "ClubIdentifier", regionCode: "DE", inAppPaymentActive: true)
         let settingsPerson = Settings.Person(club: settingsClub, id: personId, name: PersonName(firstName: "FirstName"), signInDate: Date(), isCashier: true)
@@ -77,7 +79,7 @@ class FineEditorTests: XCTestCase {
         let fine = FirebaseFine(id: fineId, assoiatedPersonId: personId, date: date, payed: .unpayed, number: -1, fineReason: fineReason)
         inputProperties.setProperties(of: fine, with: TestClub.fetcherTestClub.reasons)
         let inputBinding = Binding<FineEditor.InputProperties> { inputProperties} set: { inputProperties = $0 }
-        FineEditor.handleFineUpdate(person: settingsPerson, inputProperties: inputBinding, reasonList: TestClub.fetcherTestClub.reasons)
+        await FineEditor.handleFineUpdate(person: settingsPerson, inputProperties: inputBinding, reasonList: TestClub.fetcherTestClub.reasons)
         XCTAssertEqual(inputProperties.connectionStateDelete, .notStarted)
         XCTAssertEqual(inputProperties.connectionStateUpdate, .failed)
         XCTAssertEqual(inputProperties.errorMessages, [:])
@@ -87,7 +89,7 @@ class FineEditorTests: XCTestCase {
     }
 
     /// Tests update with too large number
-    func testUpdateNumberTooLarge() {
+    func testUpdateNumberTooLarge() async {
         let personId = TestClub.fetcherTestClub.persons.first { $0.signInData != nil }!.id
         let settingsClub = Club(id: clubId, name: "ClubName", identifier: "ClubIdentifier", regionCode: "DE", inAppPaymentActive: true)
         let settingsPerson = Settings.Person(club: settingsClub, id: personId, name: PersonName(firstName: "FirstName"), signInDate: Date(), isCashier: true)
@@ -98,7 +100,7 @@ class FineEditorTests: XCTestCase {
         let fine = FirebaseFine(id: fineId, assoiatedPersonId: personId, date: date, payed: .unpayed, number: 120, fineReason: fineReason)
         inputProperties.setProperties(of: fine, with: TestClub.fetcherTestClub.reasons)
         let inputBinding = Binding<FineEditor.InputProperties> { inputProperties} set: { inputProperties = $0 }
-        FineEditor.handleFineUpdate(person: settingsPerson, inputProperties: inputBinding, reasonList: TestClub.fetcherTestClub.reasons)
+        await FineEditor.handleFineUpdate(person: settingsPerson, inputProperties: inputBinding, reasonList: TestClub.fetcherTestClub.reasons)
         XCTAssertEqual(inputProperties.connectionStateDelete, .notStarted)
         XCTAssertEqual(inputProperties.connectionStateUpdate, .failed)
         XCTAssertEqual(inputProperties.errorMessages, [:])
@@ -108,7 +110,7 @@ class FineEditorTests: XCTestCase {
     }
 
     /// Tests update with empty reason
-    func testUpdateEmptyReason() {
+    func testUpdateEmptyReason() async {
         let personId = TestClub.fetcherTestClub.persons.first { $0.signInData != nil }!.id
         let settingsClub = Club(id: clubId, name: "ClubName", identifier: "ClubIdentifier", regionCode: "DE", inAppPaymentActive: true)
         let settingsPerson = Settings.Person(club: settingsClub, id: personId, name: PersonName(firstName: "FirstName"), signInDate: Date(), isCashier: true)
@@ -120,7 +122,7 @@ class FineEditorTests: XCTestCase {
         inputProperties.setProperties(of: fine, with: TestClub.fetcherTestClub.reasons)
         inputProperties[.reason] = ""
         let inputBinding = Binding<FineEditor.InputProperties> { inputProperties} set: { inputProperties = $0 }
-        FineEditor.handleFineUpdate(person: settingsPerson, inputProperties: inputBinding, reasonList: TestClub.fetcherTestClub.reasons)
+        await FineEditor.handleFineUpdate(person: settingsPerson, inputProperties: inputBinding, reasonList: TestClub.fetcherTestClub.reasons)
         XCTAssertEqual(inputProperties.connectionStateDelete, .notStarted)
         XCTAssertEqual(inputProperties.connectionStateUpdate, .failed)
         XCTAssertEqual(inputProperties.errorMessages, [.reason: .emptyField])
@@ -130,7 +132,7 @@ class FineEditorTests: XCTestCase {
     }
 
     /// Tests update with empty amount
-    func testUpdateEmptyAmount() {
+    func testUpdateEmptyAmount() async {
         let personId = TestClub.fetcherTestClub.persons.first { $0.signInData != nil }!.id
         let settingsClub = Club(id: clubId, name: "ClubName", identifier: "ClubIdentifier", regionCode: "DE", inAppPaymentActive: true)
         let settingsPerson = Settings.Person(club: settingsClub, id: personId, name: PersonName(firstName: "FirstName"), signInDate: Date(), isCashier: true)
@@ -142,7 +144,7 @@ class FineEditorTests: XCTestCase {
         inputProperties.setProperties(of: fine, with: TestClub.fetcherTestClub.reasons)
         inputProperties[.amount] = ""
         let inputBinding = Binding<FineEditor.InputProperties> { inputProperties} set: { inputProperties = $0 }
-        FineEditor.handleFineUpdate(person: settingsPerson, inputProperties: inputBinding, reasonList: TestClub.fetcherTestClub.reasons)
+        await FineEditor.handleFineUpdate(person: settingsPerson, inputProperties: inputBinding, reasonList: TestClub.fetcherTestClub.reasons)
         XCTAssertEqual(inputProperties.connectionStateDelete, .notStarted)
         XCTAssertEqual(inputProperties.connectionStateUpdate, .failed)
         XCTAssertEqual(inputProperties.errorMessages, [.amount: .emptyField])
@@ -152,7 +154,7 @@ class FineEditorTests: XCTestCase {
     }
 
     /// Tests update with amount zero
-    func testUpdateAmountZero() {
+    func testUpdateAmountZero() async {
         let personId = TestClub.fetcherTestClub.persons.first { $0.signInData != nil }!.id
         let settingsClub = Club(id: clubId, name: "ClubName", identifier: "ClubIdentifier", regionCode: "DE", inAppPaymentActive: true)
         let settingsPerson = Settings.Person(club: settingsClub, id: personId, name: PersonName(firstName: "FirstName"), signInDate: Date(), isCashier: true)
@@ -164,7 +166,7 @@ class FineEditorTests: XCTestCase {
         inputProperties.setProperties(of: fine, with: TestClub.fetcherTestClub.reasons)
         inputProperties[.amount] = "0"
         let inputBinding = Binding<FineEditor.InputProperties> { inputProperties} set: { inputProperties = $0 }
-        FineEditor.handleFineUpdate(person: settingsPerson, inputProperties: inputBinding, reasonList: TestClub.fetcherTestClub.reasons)
+        await FineEditor.handleFineUpdate(person: settingsPerson, inputProperties: inputBinding, reasonList: TestClub.fetcherTestClub.reasons)
         XCTAssertEqual(inputProperties.connectionStateDelete, .notStarted)
         XCTAssertEqual(inputProperties.connectionStateUpdate, .failed)
         XCTAssertEqual(inputProperties.errorMessages, [.amount: .amountZero])
@@ -174,7 +176,7 @@ class FineEditorTests: XCTestCase {
     }
 
     /// Tests update with same fine
-    func testUpdateSameFine() {
+    func testUpdateSameFine() async {
         let personId = TestClub.fetcherTestClub.persons.first { $0.signInData != nil }!.id
         let settingsClub = Club(id: clubId, name: "ClubName", identifier: "ClubIdentifier", regionCode: "DE", inAppPaymentActive: true)
         let settingsPerson = Settings.Person(club: settingsClub, id: personId, name: PersonName(firstName: "FirstName"), signInDate: Date(), isCashier: true)
@@ -185,7 +187,7 @@ class FineEditorTests: XCTestCase {
         let fine = FirebaseFine(id: fineId, assoiatedPersonId: personId, date: date, payed: .unpayed, number: 1, fineReason: fineReason)
         inputProperties.setProperties(of: fine, with: TestClub.fetcherTestClub.reasons)
         let inputBinding = Binding<FineEditor.InputProperties> { inputProperties} set: { inputProperties = $0 }
-        FineEditor.handleFineUpdate(person: settingsPerson, inputProperties: inputBinding, reasonList: TestClub.fetcherTestClub.reasons)
+        await FineEditor.handleFineUpdate(person: settingsPerson, inputProperties: inputBinding, reasonList: TestClub.fetcherTestClub.reasons)
         XCTAssertEqual(inputProperties.connectionStateDelete, .notStarted)
         XCTAssertEqual(inputProperties.connectionStateUpdate, .passed)
         XCTAssertEqual(inputProperties.errorMessages, [:])
@@ -195,7 +197,7 @@ class FineEditorTests: XCTestCase {
     }
 
     /// Tests update
-    func testUpdate() throws {
+    func testUpdate() async throws {
         let personId = TestClub.fetcherTestClub.persons.first { $0.signInData != nil }!.id
         let settingsClub = Club(id: clubId, name: "ClubName", identifier: "ClubIdentifier", regionCode: "DE", inAppPaymentActive: true)
         let settingsPerson = Settings.Person(club: settingsClub, id: personId, name: PersonName(firstName: "FirstName"), signInDate: Date(), isCashier: true)
@@ -208,9 +210,7 @@ class FineEditorTests: XCTestCase {
         inputProperties.number = 8
         inputProperties.importance = .low
         let inputBinding = Binding<FineEditor.InputProperties> { inputProperties} set: { inputProperties = $0 }
-        waitExpectation { handler in
-            FineEditor.handleFineUpdate(person: settingsPerson, inputProperties: inputBinding, reasonList: TestClub.fetcherTestClub.reasons, onCompletion: handler)
-        }
+        await FineEditor.handleFineUpdate(person: settingsPerson, inputProperties: inputBinding, reasonList: TestClub.fetcherTestClub.reasons)
         XCTAssertEqual(inputProperties.connectionStateDelete, .notStarted)
         XCTAssertEqual(inputProperties.connectionStateUpdate, .passed)
         XCTAssertEqual(inputProperties.errorMessages, [:])
@@ -218,10 +218,8 @@ class FineEditorTests: XCTestCase {
         XCTAssertNil(inputProperties.dateErrorMessages)
         XCTAssertNil(inputProperties.numberErrorMessages)
 
-        let fineListResult: Result<[FirebaseFine], Error> = try waitExpectation { handler in
-            FirebaseFetcher.shared.fetchList(FirebaseFine.self, clubId: clubId).thenResult(handler)
-        }
-        let fetchedFine = try fineListResult.get().first { $0.id == fine.id }
+        let fineList = try await FirebaseFetcher.shared.fetchList(FirebaseFine.self, clubId: clubId)
+        let fetchedFine = fineList.first { $0.id == fine.id }
         XCTAssertNotNil(fetchedFine)
         XCTAssertEqual(fetchedFine?.reason(with: TestClub.fetcherTestClub.reasons), "Reason_1")
         XCTAssertEqual(fetchedFine?.amount(with: TestClub.fetcherTestClub.reasons), Amount(10, subUnit: 21))
@@ -231,16 +229,14 @@ class FineEditorTests: XCTestCase {
     }
 
     /// Tests delete
-    func testDelete() throws {
+    func testDelete() async throws {
         let personId = TestClub.fetcherTestClub.persons.first { $0.signInData != nil }!.id
         let settingsClub = Club(id: clubId, name: "ClubName", identifier: "ClubIdentifier", regionCode: "DE", inAppPaymentActive: true)
         let settingsPerson = Settings.Person(club: settingsClub, id: personId, name: PersonName(firstName: "FirstName"), signInDate: Date(), isCashier: true)
         let fine = TestClub.fetcherTestClub.fines.first!
         var inputProperties = FineEditor.InputProperties()
         let inputBinding = Binding<FineEditor.InputProperties> { inputProperties} set: { inputProperties = $0 }
-        waitExpectation { handler in
-            FineEditor.handleFineDelete(fine: fine, person: settingsPerson, inputProperties: inputBinding, onCompletion: handler)
-        }
+        await FineEditor.handleFineDelete(fine: fine, person: settingsPerson, inputProperties: inputBinding)
         XCTAssertEqual(inputProperties.connectionStateDelete, .passed)
         XCTAssertEqual(inputProperties.connectionStateUpdate, .notStarted)
         XCTAssertEqual(inputProperties.errorMessages, [:])
@@ -248,10 +244,8 @@ class FineEditorTests: XCTestCase {
         XCTAssertNil(inputProperties.dateErrorMessages)
         XCTAssertNil(inputProperties.numberErrorMessages)
 
-        let fineListResult: Result<[FirebaseFine], Error> = try waitExpectation { handler in
-            FirebaseFetcher.shared.fetchList(FirebaseFine.self, clubId: clubId).thenResult(handler)
-        }
-        let fetchedFine = try fineListResult.get().first { $0.id == fine.id }
+        let fineList = try await FirebaseFetcher.shared.fetchList(FirebaseFine.self, clubId: clubId)
+        let fetchedFine = fineList.first { $0.id == fine.id }
         XCTAssertNil(fetchedFine)
     }
 }

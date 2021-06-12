@@ -213,12 +213,30 @@ struct SplittedOutlinedContent<LeftContent, RightContent>: View where LeftConten
         return outline
     }
 
+    /// Set left tap gesture handler
+    /// - Parameter handler: handles tap gesture on the left outline
+    /// - Returns: modified outline
+    func onLeftTapGesture(_ handler: @escaping () async -> Void) -> SplittedOutlinedContent {
+        var outline = self
+        outline.leftTapGestureHandler = { async { await handler() } }
+        return outline
+    }
+
     /// Set right tap gesture handler
     /// - Parameter handler: handles tap gesture on the right outline
     /// - Returns: modified outline
     func onRightTapGesture(_ handler: @escaping () -> Void) -> SplittedOutlinedContent {
         var outline = self
         outline.rightTapGestureHandler = handler
+        return outline
+    }
+
+    /// Set right tap gesture handler
+    /// - Parameter handler: handles tap gesture on the right outline
+    /// - Returns: modified outline
+    func onRightTapGesture(_ handler: @escaping () async -> Void) -> SplittedOutlinedContent {
+        var outline = self
+        outline.rightTapGestureHandler = { async { await handler() } }
         return outline
     }
 }

@@ -7,10 +7,9 @@
 
 import Foundation
 import FirebaseDatabase
-import Hydra
 
 /// Fetches data from firebase database
-struct FirebaseFetcher {
+@MainActor struct FirebaseFetcher {
 
     /// Level of a firebase database fetch
     public var level: FirebaseDatabaseLevel = .defaultValue
@@ -26,44 +25,62 @@ struct FirebaseFetcher {
 
         /// No data exists in retrieving snapshot
         case noData
+
+        /// Path couldn't be converted to an url
+        case invalidPath
+    }
+
+    /// Fetches data from firebase database
+    /// - Parameters:
+    ///   - urlFromClub: url from club to value in firebase database
+    ///   - clubId: id of club to fetch from
+    /// - Returns: Retrived data
+    private func fetch(url urlFromClub: URL?, clubId: Club.ID) async throws -> Any {
+        let url = URL(string: level.clubComponent)!
+            .appendingPathComponent(clubId.uuidString)
+            .appendingUrl(urlFromClub)
+        return try await withCheckedThrowingContinuation { contination in
+            Database.database().reference(withPath: url.path).observeSingleEvent(of: .value) { snapshot in
+                guard snapshot.exists(), let data = snapshot.value else {
+                    return contination.resume(throwing: FetchError.noData)
+                }
+                contination.resume(returning: data)
+            }
+        }
     }
 
     /// Fetches given type from firebase database
     /// - Parameters:
-    ///   - type: Type of fetched value
-    ///   - urlFromClub: Url from club to value in firebase database
+    ///   - type: type of fetched value
+    ///   - urlFromClub: url from club to value in firebase database
     ///   - clubId: id of club to fetch from
-    /// - Returns: Promise of retrieved value
-    func fetch<T>(_ type: T.Type, url urlFromClub: URL?, clubId: Club.ID) -> Promise<T> where T: Decodable {
-        Promise<T>(in: .main) { resolve, reject, _ in
-            let url = URL(string: level.clubComponent)!
-                .appendingPathComponent(clubId.uuidString)
-                .appendingUrl(urlFromClub)
-            Database.database().reference(withPath: url.path).observeSingleEvent(of: .value) { snapshot in
-                guard snapshot.exists(), let data = snapshot.value else { return reject(FetchError.noData) }
-                do {
-                    resolve(try FirebaseDecoder.shared.decodeOrThrow(type, data))
-                } catch { reject(error) }
-            }
-        }
+    /// - Returns: Retrieved value
+    func fetch<T>(_ type: T.Type = T.self, url urlFromClub: URL?, clubId: Club.ID) async throws -> T where T: Decodable {
+        let data = try await fetch(url: urlFromClub, clubId: clubId)
+        return try FirebaseDecoder.shared.decodeOrThrow(type, data)
+    }
+
+    /// Fetches given type from firebase database
+    /// - Parameters:
+    ///   - type: type of fetched value
+    ///   - pathFromClub: path from club to value in firebase database
+    ///   - clubId: id of club to fetch from
+    /// - Returns: Retrieved value
+    func fetch<T>(_ type: T.Type = T.self, path pathFromClub: String, clubId: Club.ID) async throws -> T where T: Decodable {
+        guard let urlFromClub = URL(string: pathFromClub) else { throw FetchError.invalidPath }
+        let data = try await fetch(url: urlFromClub, clubId: clubId)
+        return try FirebaseDecoder.shared.decodeOrThrow(type, data)
     }
 
     /// Fetches a list from firebase database
-    /// - Parameter type: Type of the list element
     /// - Parameters:
+    ///   - type: type of the list element
     ///   - clubId: id of club to fetch from
-    /// - Returns: Promise of retrieved list
-    func fetchList<ListType>(_ type: ListType.Type, clubId: Club.ID) -> Promise<[ListType]> where ListType: FirebaseListType {
-        Promise<[ListType]>(in: .main) { resolve, reject, _ in
-            let url = URL(string: level.clubComponent)!
-                .appendingPathComponent(clubId.uuidString)
-                .appendingUrl(ListType.urlFromClub)
-            Database.database().reference(withPath: url.path).observeSingleEvent(of: .value) { snapshot in
-                guard snapshot.exists(), let data = snapshot.value else { return resolve([]) }
-                do {
-                    resolve(try FirebaseDecoder.shared.decodeListOrThrow(ListType.self, data))
-                } catch { reject(error) }
-            }
-        }
+    /// - Returns: Retrieved list
+    func fetchList<ListType>(_ type: ListType.Type = ListType.self, clubId: Club.ID) async throws -> [ListType] where ListType: FirebaseListType {
+        do {
+            let data = try await fetch(url: ListType.urlFromClub, clubId: clubId)
+            return try FirebaseDecoder.shared.decodeListOrThrow(type, data)
+        } catch FetchError.noData { return [] }
     }
 }

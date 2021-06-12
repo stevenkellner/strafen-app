@@ -68,10 +68,11 @@ struct ContentView: View {
                                         .lineLimit(2)
                                         .padding(.horizontal, 15)
                                         .onTapGesture {
-                                            appSetup.setup { personList, fineList, reasonList in
-                                                self.personList = personList
-                                                self.fineList = fineList
-                                                self.reasonList = reasonList
+                                            async {
+                                                guard let appLists = try? await appSetup.setup() else { return }
+                                                self.personList = appLists.personList
+                                                self.fineList = appLists.fineList
+                                                self.reasonList = appLists.reasonList
                                             }
                                         }
                                     Spacer()
@@ -111,12 +112,11 @@ struct ContentView: View {
                 }.environmentObject(person)
                     .environmentObject(DismissHandler())
                     .ignoresSafeArea(.keyboard)
-                    .onAppear {
-                        appSetup.setup { personList, fineList, reasonList in
-                            self.personList = personList
-                            self.fineList = fineList
-                            self.reasonList = reasonList
-                        }
+                    .task {
+                        guard let appLists = try? await appSetup.setup() else { return }
+                        self.personList = appLists.personList
+                        self.fineList = appLists.fineList
+                        self.reasonList = appLists.reasonList
                     }
 
             } else {
@@ -127,7 +127,7 @@ struct ContentView: View {
             }
 
         }.onAppear {
-            UIApplication.shared.windows.first!.overrideUserInterfaceStyle = .dark
+            UIApplication.shared.windows.first?.overrideUserInterfaceStyle = .dark
         }
     }
 }

@@ -131,6 +131,19 @@ struct SignInClubInputView: View {
         }
     }
 
+    /// Inidcathes whether club identifer exists
+    enum ExistsClubIdentifier {
+
+        /// Club identifer exists
+        case exist
+
+        /// Club identifier doesn't exists
+        case notExists
+
+        /// An internal erro roccured
+        case internalError
+    }
+
     // MARK: properties
 
     /// Sign in property with userId and name
@@ -246,46 +259,40 @@ struct SignInClubInputView: View {
     // MARK: handle cofirm button press
 
     /// Handles the click on the confirm button
-    func handleConfirmButtonPress() {
-        Self.handleConfirmButtonPress(oldSignInProperty: oldSignInProperty, inputProperties: $inputProperties)
+    func handleConfirmButtonPress() async {
+        await Self.handleConfirmButtonPress(oldSignInProperty: oldSignInProperty, inputProperties: $inputProperties)
     }
 
     /// Handles the click on the confirm button
     /// - Parameter oldSignInProperty: sign in property with userId and name
     /// - Parameter inputProperties: binding of the input properties
     /// - Parameter level: level of function call
-    /// - Parameter completionHandler: handler executed after club was created or a error occured at this
-    static func handleConfirmButtonPress(oldSignInProperty: SignInProperty.UserIdName, inputProperties: Binding<InputProperties>, onCompletion completionHandler: ((Club.ID?) -> Void)? = nil) {
-        guard inputProperties.wrappedValue.connectionState.restart() == .passed else { return }
+    @discardableResult static func handleConfirmButtonPress(oldSignInProperty: SignInProperty.UserIdName, inputProperties: Binding<InputProperties>) async -> Club.ID? {
+        guard inputProperties.wrappedValue.connectionState.restart() == .passed else { return nil }
         guard inputProperties.wrappedValue.validateAllInputs() == .valid else {
-            return inputProperties.wrappedValue.connectionState.failed()
+            inputProperties.wrappedValue.connectionState.failed()
+            return nil
         }
-        checkClubIdentifierExists(inputProperties: inputProperties) {
-            createNewClub(oldSignInProperty: oldSignInProperty, inputProperties: inputProperties, onCompletion: completionHandler)
-        } onFailure: {
-            completionHandler?(nil)
-        }
+        guard await existsClubIdentifier(inputProperties: inputProperties) == .notExists else { return nil }
+        return await createNewClub(oldSignInProperty: oldSignInProperty, inputProperties: inputProperties)
     }
 
     /// Checks if club with identifier already exists
     /// - Parameters:
     ///   - inputProperties: binding of the input properties
-    ///   - successHandler: executed if no club with identifier exists
-    ///   - failureHandler: executed if a error occured
-    static func checkClubIdentifierExists(inputProperties: Binding<InputProperties>, handler successHandler: @escaping () -> Void, onFailure failureHandler: @escaping () -> Void) {
-        let callItem = FFExistsClubWithIdentifierCall(identifier: inputProperties.wrappedValue[.clubIdentifier])
-        FirebaseFunctionCaller.shared.call(callItem).then { clubExists in
+    static func existsClubIdentifier(inputProperties: Binding<InputProperties>) async -> ExistsClubIdentifier {
+        do {
+            let callItem = FFExistsClubWithIdentifierCall(identifier: inputProperties.wrappedValue[.clubIdentifier])
+            let clubExists = try await FirebaseFunctionCaller.shared.call(callItem)
             if clubExists {
                 inputProperties.wrappedValue[error: .clubIdentifier] = .identifierAlreadyExists
                 inputProperties.wrappedValue.connectionState.failed()
-                failureHandler()
-            } else {
-                successHandler()
             }
-        }.catch { _ in
+            return clubExists ? .exist : .notExists
+        } catch {
             inputProperties.wrappedValue[error: .clubName] = .internalErrorSignIn
             inputProperties.wrappedValue.connectionState.failed()
-            failureHandler()
+            return .internalError
         }
     }
 
@@ -293,25 +300,25 @@ struct SignInClubInputView: View {
     /// - Parameters:
     ///   - oldSignInProperty: sign in property with userId and name
     ///   - inputProperties: binding of the input properties
-    ///   - completionHandler: handler executed after club was created
-    static func createNewClub(oldSignInProperty: SignInProperty.UserIdName, inputProperties: Binding<InputProperties>, onCompletion completionHandler: ((Club.ID?) -> Void)?) {
-        let callItem = FFNewClubCall(
-            signInProperty: oldSignInProperty,
-            clubId: Club.ID(rawValue: UUID()),
-            personId: FirebasePerson.ID(rawValue: UUID()),
-            clubName: inputProperties.wrappedValue[.clubName],
-            regionCode: inputProperties.wrappedValue.regionCode!,
-            clubIdentifier: inputProperties.wrappedValue[.clubIdentifier],
-            inAppPayment: inputProperties.wrappedValue.inAppPayment)
-        FirebaseFunctionCaller.shared.call(callItem).then { _ in
+    static func createNewClub(oldSignInProperty: SignInProperty.UserIdName, inputProperties: Binding<InputProperties>) async -> Club.ID {
+        let clubId = Club.ID(rawValue: UUID())
+        do {
+            let callItem = FFNewClubCall(
+                signInProperty: oldSignInProperty,
+                clubId: clubId,
+                personId: FirebasePerson.ID(rawValue: UUID()),
+                clubName: inputProperties.wrappedValue[.clubName],
+                regionCode: inputProperties.wrappedValue.regionCode!,
+                clubIdentifier: inputProperties.wrappedValue[.clubIdentifier],
+                inAppPayment: inputProperties.wrappedValue.inAppPayment)
+            try await FirebaseFunctionCaller.shared.call(callItem)
             inputProperties.wrappedValue.connectionState.passed()
             Settings.shared.person = callItem.settingPerson
-        }.catch { error in
+        } catch {
             inputProperties.wrappedValue.evaluateErrorCode(of: error as NSError)
             inputProperties.wrappedValue.connectionState.failed()
-        }.always {
-            completionHandler?(callItem.clubId)
         }
+        return clubId
     }
 
     // MARK: region nput

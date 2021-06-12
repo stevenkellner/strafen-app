@@ -15,32 +15,34 @@ class FirebaseFunctionCallerTests: XCTestCase {
 
     // MARK: set up
     /// Create a test club
-    override func setUpWithError() throws {
+    @MainActor override func setUpWithError() throws {
         continueAfterFailure = false
         FirebaseFunctionCaller.shared.level = .testing
         FirebaseFetcher.shared.level = .testing
 
-        // Sign test user in
-        let signInError: Error? = try waitExpectation { handler in
-            Auth.auth().signIn(withEmail: "app.demo@web.de", password: "Demopw12") { _, error in
-                handler(error)
+        waitExpectation { handler in
+            async {
+
+                // Sign test user in
+                try await Auth.auth().signIn(withEmail: "app.demo@web.de", password: "Demopw12")
+
+                // Create test club
+                try await _setUpCreateClub()
+
+                // Check if club is created
+                try await _setUpCheckClubPropertries()
+                try await _setUpCheckPersonList()
+                try await _setUpCheckReasonList()
+                try await _setUpCheckFineList()
+
+                handler()
             }
         }
-        XCTAssertNil(signInError)
-
-        // Create test club
-        try _setUpCreateClub()
-
-        // Check if club is created
-        try _setUpCheckClubPropertries()
-        try _setUpCheckPersonList()
-        try _setUpCheckReasonList()
-        try _setUpCheckFineList()
-
+        try Task.checkCancellation()
     }
 
     /// Create test club
-    private func _setUpCreateClub() throws {
+    private func _setUpCreateClub() async throws {
 
         // Call Item for creating test club
         let clubId = TestProperty.shared.testClub.id
@@ -52,28 +54,20 @@ class FirebaseFunctionCallerTests: XCTestCase {
         let callItem = FFNewClubCall(signInProperty: signInProperty, clubId: clubId, personId: personId, clubName: clubName, regionCode: regionCode, clubIdentifier: clubIdentifier, inAppPayment: true)
 
         // Function call to create test club
-        let result: Result<HTTPSCallableResult, Error> = try waitExpectation { handler in
-            FirebaseFunctionCaller.shared.call(callItem).thenResult(handler)
-        }
-        _ = try result.get()
+        try await FirebaseFunctionCaller.shared.call(callItem)
     }
 
     /// Check properties of test club
-    private func _setUpCheckClubPropertries() throws {
+    private func _setUpCheckClubPropertries() async throws {
         let clubId = TestProperty.shared.testClub.id
-        let clubResult: Result<TestClub.Properties, Error> = try waitExpectation { handler in
-            FirebaseFetcher.shared.fetch(TestClub.Properties.self, url: nil, clubId: clubId).thenResult(handler)
-        }
-        XCTAssertEqual(try clubResult.get().club(with: clubId), TestProperty.shared.testClub.club)
+        let club = try await FirebaseFetcher.shared.fetch(TestClub.Properties.self, url: nil, clubId: clubId)
+        XCTAssertEqual(club.club(with: clubId), TestProperty.shared.testClub.club)
     }
 
     /// Check person list of test club
-    private func _setUpCheckPersonList() throws {
+    private func _setUpCheckPersonList() async throws {
         let clubId = TestProperty.shared.testClub.id
-        let personListResult: Result<[FirebasePerson], Error> = try waitExpectation { handler in
-            FirebaseFetcher.shared.fetchList(FirebasePerson.self, clubId: clubId).thenResult(handler)
-        }
-        let personList = try personListResult.get()
+        let personList = try await FirebaseFetcher.shared.fetchList(FirebasePerson.self, clubId: clubId)
         XCTAssertEqual(personList.count, 1)
         XCTAssertEqual(personList.first!.id, TestProperty.shared.testPersonFirst.id)
         XCTAssertEqual(personList.first!.name, TestProperty.shared.testPersonFirst.name)
@@ -82,52 +76,53 @@ class FirebaseFunctionCallerTests: XCTestCase {
     }
 
     /// Check reason list of test club
-    private func _setUpCheckReasonList() throws {
+    private func _setUpCheckReasonList() async throws {
         let clubId = TestProperty.shared.testClub.id
-        let reasonListResult: Result<[FirebaseReasonTemplate], Error> = try waitExpectation { handler in
-            FirebaseFetcher.shared.fetchList(FirebaseReasonTemplate.self, clubId: clubId).thenResult(handler)
-        }
-        XCTAssertEqual(try reasonListResult.get(), [])
+        let reasonList = try await FirebaseFetcher.shared.fetchList(FirebaseReasonTemplate.self, clubId: clubId)
+        XCTAssertEqual(reasonList, [])
     }
 
     /// Check fine list of test club
-    private func _setUpCheckFineList() throws {
+    private func _setUpCheckFineList() async throws {
         let clubId = TestProperty.shared.testClub.id
-        let fineListResult: Result<[FirebaseFine], Error> = try waitExpectation { handler in
-            FirebaseFetcher.shared.fetchList(FirebaseFine.self, clubId: clubId).thenResult(handler)
-        }
-        XCTAssertEqual(try fineListResult.get(), [])
+        let fineList = try await FirebaseFetcher.shared.fetchList(FirebaseFine.self, clubId: clubId)
+        XCTAssertEqual(fineList, [])
     }
 
     // MARK: tear down
     /// Delete test club and all associated data
     override func tearDownWithError() throws {
+        waitExpectation { handler in
+            async {
 
-        // Delete test club
-        try _tearDownDeleteClub()
+                // Delete test club
+                try await _tearDownDeleteClub()
 
-        // Check if test club is deleted
-        try _tearDownCheckClub()
+                // Check if test club is deleted
+                try await _tearDownCheckClub()
 
+                handler()
+            }
+        }
+        try Task.checkCancellation()
     }
 
     /// Delete test club
-    private func _tearDownDeleteClub() throws {
+    private func _tearDownDeleteClub() async throws {
         let clubId = TestProperty.shared.testClub.id
-        let result: Result<HTTPSCallableResult, Error> = try waitExpectation { handler in
-            let callItem = FFDeleteTestClubCall(clubId: clubId)
-            FirebaseFunctionCaller.shared.call(callItem).thenResult(handler)
-        }
-        _ = try result.get()
+        let callItem = FFDeleteTestClubCall(clubId: clubId)
+        try await FirebaseFunctionCaller.shared.call(callItem)
     }
 
     /// Check if test club is deleted
-    private func _tearDownCheckClub() throws {
-        let clubId = TestProperty.shared.testClub.id
-        let result: Result<TestClub.Properties, Error> = try waitExpectation { handler in
-            FirebaseFetcher.shared.fetch(TestClub.Properties.self, url: nil, clubId: clubId).thenResult(handler)
+    private func _tearDownCheckClub() async throws {
+        do {
+            let clubId = TestProperty.shared.testClub.id
+            _ = try await FirebaseFetcher.shared.fetch(TestClub.Properties.self, url: nil, clubId: clubId)
+            XCTFail() // swiftlint:disable:this xctfail_message
+        } catch {
+            XCTAssertEqual(error as? FirebaseFetcher.FetchError, .noData)
         }
-        XCTAssertEqual(result.error as? FirebaseFetcher.FetchError, .noData)
     }
 }
 
@@ -136,59 +131,48 @@ class FirebaseFunctionCallerTests: XCTestCase {
 extension FirebaseFunctionCallerTests {
 
     /// Test new club call
-    func testNewClubCall() throws {
+    func testNewClubCall() async throws {
 
         // Check identifier, name and region code of test club
-        try _testNewClubCallCheckIdentiferNameRegionCode()
+        try await _testNewClubCallCheckIdentiferNameRegionCode()
 
         // Create new club with already existing identifier
-        try _testNewClubCallExistingIdentifier()
+        try await _testNewClubCallExistingIdentifier()
 
         // Create new club with same id but different identifier
-        try _testNewClubCallSameId()
+        try await _testNewClubCallSameId()
 
         // Delete club and check if it's deleted
-        try _testNewClubCallDeleteClub()
+        try await _testNewClubCallDeleteClub()
 
         // Create club with person with only first name
-        try _testNewClubCallPersonName()
+        try await _testNewClubCallPersonName()
     }
 
     /// Check identifier, name and region code of test club
-    private func _testNewClubCallCheckIdentiferNameRegionCode() throws {
+    private func _testNewClubCallCheckIdentiferNameRegionCode() async throws {
         let clubId = TestProperty.shared.testClub.id
 
         // Check identifier
-        let identifierResult: Result<String, Error> = try waitExpectation { handler in
-            let url = URL(string: "identifier")!
-            FirebaseFetcher.shared.fetch(String.self, url: url, clubId: clubId).thenResult(handler)
-        }
-        XCTAssertEqual(try identifierResult.get(), TestProperty.shared.testClub.identifier)
+        let identifier = try await FirebaseFetcher.shared.fetch(String.self, url: URL(string: "identifier")!, clubId: clubId)
+        XCTAssertEqual(identifier, TestProperty.shared.testClub.identifier)
 
         // Check name
-        let nameResult: Result<String, Error> = try waitExpectation { handler in
-            let url = URL(string: "name")!
-            FirebaseFetcher.shared.fetch(String.self, url: url, clubId: clubId).thenResult(handler)
-        }
-        XCTAssertEqual(try nameResult.get(), TestProperty.shared.testClub.name)
+        let name = try await FirebaseFetcher.shared.fetch(String.self, url: URL(string: "name")!, clubId: clubId)
+        XCTAssertEqual(name, TestProperty.shared.testClub.name)
 
         // Check region code
-        let regionCodeResult: Result<String, Error> = try waitExpectation { handler in
-            let url = URL(string: "regionCode")!
-            FirebaseFetcher.shared.fetch(String.self, url: url, clubId: clubId).thenResult(handler)
-        }
-        XCTAssertEqual(try regionCodeResult.get(), TestProperty.shared.testClub.regionCode)
+        let regionCode = try await FirebaseFetcher.shared.fetch(String.self, url: URL(string: "regionCode")!, clubId: clubId)
+        XCTAssertEqual(regionCode, TestProperty.shared.testClub.regionCode)
 
         // Check person user ids
-        let personIdResult: Result<String, Error> = try waitExpectation { handler in
-            let url = URL(string: "personUserIds/\(TestProperty.shared.testPersonFirst.userId)")!
-            FirebaseFetcher.shared.fetch(String.self, url: url, clubId: clubId).thenResult(handler)
-        }
-        XCTAssertEqual(try personIdResult.get(), TestProperty.shared.testPersonFirst.id.uuidString)
+        let url = URL(string: "personUserIds/\(TestProperty.shared.testPersonFirst.userId)")!
+        let personId = try await FirebaseFetcher.shared.fetch(String.self, url: url, clubId: clubId)
+        XCTAssertEqual(personId, TestProperty.shared.testPersonFirst.id.uuidString)
     }
 
     /// Create new club with already existing identifier
-    private func _testNewClubCallExistingIdentifier() throws {
+    private func _testNewClubCallExistingIdentifier() async throws {
 
         // Call item
         let clubId = TestProperty.shared.testClub.id
@@ -200,18 +184,18 @@ extension FirebaseFunctionCallerTests {
         let callItem = FFNewClubCall(signInProperty: signInProperty, clubId: clubId, personId: personId, clubName: clubName, regionCode: regionCode, clubIdentifier: clubIdentifier, inAppPayment: true)
 
         // Call function
-        let errorCode: FunctionsErrorCode? = try waitExpectation { handler in
-            FirebaseFunctionCaller.shared.call(callItem).thenResult { result in
-                guard let error = result.error as NSError?, error.domain == FunctionsErrorDomain else { return handler(nil) }
-                let errorCode = FunctionsErrorCode(rawValue: error.code)
-                handler(errorCode)
-            }
+        do {
+            try await FirebaseFunctionCaller.shared.call(callItem)
+            XCTFail() // swiftlint:disable:this xctfail_message
+        } catch {
+            guard let error = error as NSError?, error.domain == FunctionsErrorDomain else { return }
+            let errorCode = FunctionsErrorCode(rawValue: error.code)
+            XCTAssertEqual(errorCode, .alreadyExists)
         }
-        XCTAssertEqual(errorCode, .alreadyExists)
     }
 
     /// Create new club with same id but different identifier
-    private func _testNewClubCallSameId() throws {
+    private func _testNewClubCallSameId() async throws {
 
         // Call item
         let clubId = TestProperty.shared.testClub.id
@@ -223,38 +207,27 @@ extension FirebaseFunctionCallerTests {
         let callItem = FFNewClubCall(signInProperty: signInProperty, clubId: clubId, personId: personId, clubName: clubName, regionCode: regionCode, clubIdentifier: clubIdentifier, inAppPayment: true)
 
         // Call function
-        let error: Error? = try waitExpectation { handler in
-            FirebaseFunctionCaller.shared.call(callItem).thenResult { result in
-                handler(result.error)
-            }
-        }
-        XCTAssertNil(error)
-        let identifierAfterSameIdResult: Result<String, Error> = try waitExpectation { handler in
-            let url = URL(string: "identifier")!
-            FirebaseFetcher.shared.fetch(String.self, url: url, clubId: clubId).thenResult(handler)
-        }
-        XCTAssertEqual(try identifierAfterSameIdResult.get(), TestProperty.shared.testClub.identifier)
+        try await FirebaseFunctionCaller.shared.call(callItem)
+        let identifierAfterSameId = try await FirebaseFetcher.shared.fetch(String.self, url: URL(string: "identifier")!, clubId: clubId)
+        XCTAssertEqual(identifierAfterSameId, TestProperty.shared.testClub.identifier)
     }
 
     /// Delete club and check if it's deleted
-    private func _testNewClubCallDeleteClub() throws {
+    private func _testNewClubCallDeleteClub() async throws {
         let clubId = TestProperty.shared.testClub.id
         let callItem = FFDeleteTestClubCall(clubId: clubId)
-        let error: Error? = try waitExpectation { handler in
-            FirebaseFunctionCaller.shared.call(callItem).thenResult { result in
-                handler(result.error)
-            }
-        }
-        XCTAssertNil(error)
+        try await FirebaseFunctionCaller.shared.call(callItem)
 
-        let result: Result<TestClub.Properties, Error> = try waitExpectation { handler in
-            FirebaseFetcher.shared.fetch(TestClub.Properties.self, url: nil, clubId: clubId).thenResult(handler)
+        do {
+            _ = try await FirebaseFetcher.shared.fetch(TestClub.Properties.self, url: nil, clubId: clubId)
+            XCTFail() // swiftlint:disable:this xctfail_message
+        } catch {
+            XCTAssertEqual(error as? FirebaseFetcher.FetchError, .noData)
         }
-        XCTAssertEqual(result.error as? FirebaseFetcher.FetchError, .noData)
     }
 
     /// Create club with person with only first name
-    private func _testNewClubCallPersonName() throws {
+    private func _testNewClubCallPersonName() async throws {
 
         // Call item
         let clubId = TestProperty.shared.testClub.id
@@ -266,18 +239,10 @@ extension FirebaseFunctionCallerTests {
         let callItem = FFNewClubCall(signInProperty: signInProperty, clubId: clubId, personId: personId, clubName: clubName, regionCode: regionCode, clubIdentifier: clubIdentifier, inAppPayment: true)
 
         // Call function
-        let error: Error? = try waitExpectation { handler in
-            FirebaseFunctionCaller.shared.call(callItem).thenResult { result in
-                handler(result.error)
-            }
-        }
-        XCTAssertNil(error)
+        try await FirebaseFunctionCaller.shared.call(callItem)
 
         // Check person
-        let personListResult: Result<[FirebasePerson], Error> = try waitExpectation { handler in
-            FirebaseFetcher.shared.fetchList(FirebasePerson.self, clubId: clubId).thenResult(handler)
-        }
-        let personList = try personListResult.get()
+        let personList = try await FirebaseFetcher.shared.fetchList(FirebasePerson.self, clubId: clubId)
         XCTAssertEqual(personList.count, 1)
         XCTAssertEqual(personList.first!.id, TestProperty.shared.testPersonSecond.id)
         XCTAssertEqual(personList.first!.name, TestProperty.shared.testPersonSecond.name)
@@ -291,69 +256,61 @@ extension FirebaseFunctionCallerTests {
 extension FirebaseFunctionCallerTests {
 
     /// Test late payment interest change
-    func testLatePaymentInterest() throws {
+    func testLatePaymentInterest() async throws {
 
         // Set late payment interest
-        try _testLatePaymentInterestSet()
+        try await _testLatePaymentInterestSet()
 
         // Update late payment interest
-        try _testLatePaymentInterestUpdate()
+        try await _testLatePaymentInterestUpdate()
 
         // Remove late payment interest
-        try _testLatePaymentInterestRemove()
+        try await _testLatePaymentInterestRemove()
 
         // Remove late payment interest again
-        try _testLatePaymentInterestRemove()
+        try await _testLatePaymentInterestRemove()
 
     }
 
     /// Set late payment interest and check it
-    private func _testLatePaymentInterestSet(_ _latePaymentInterest: LatePaymentInterest? = nil) throws {
+    private func _testLatePaymentInterestSet(_ _latePaymentInterest: LatePaymentInterest? = nil) async throws {
 
         // Call item
         let clubId = TestProperty.shared.testClub.id
-        let latePaymentInterest = _latePaymentInterest ?? TestProperty.shared.testLatePaymentInterestFirst.latePaymentInterest
-        let callItem = FFChangeLatePaymentInterestCall(clubId: clubId, interest: latePaymentInterest)
+        let latePaymentInterest1 = _latePaymentInterest ?? TestProperty.shared.testLatePaymentInterestFirst.latePaymentInterest
+        let callItem = FFChangeLatePaymentInterestCall(clubId: clubId, interest: latePaymentInterest1)
 
         // Call function
-        let result: Result<HTTPSCallableResult, Error> = try waitExpectation { handler in
-            FirebaseFunctionCaller.shared.call(callItem).thenResult(handler)
-        }
-        XCTAssertNil(result.error)
+        try await FirebaseFunctionCaller.shared.call(callItem)
 
         // Check late payment interest
-        let latePaymentInterestResult: Result<LatePaymentInterest, Error> = try waitExpectation { handler in
-            let url = URL(string: "latePaymentInterest")!
-            FirebaseFetcher.shared.fetch(LatePaymentInterest.self, url: url, clubId: clubId).thenResult(handler)
-        }
-        XCTAssertEqual(try latePaymentInterestResult.get(), latePaymentInterest)
+        let latePaymentInterest2 = try await FirebaseFetcher.shared.fetch(LatePaymentInterest.self, url: URL(string: "latePaymentInterest")!, clubId: clubId)
+        XCTAssertEqual(latePaymentInterest2, latePaymentInterest1)
     }
 
     /// Update late payment interest and check it
-    private func _testLatePaymentInterestUpdate() throws {
+    private func _testLatePaymentInterestUpdate() async throws {
         let latePaymentInterest = TestProperty.shared.testLatePaymentInterestSecond.latePaymentInterest
-        try _testLatePaymentInterestSet(latePaymentInterest)
+        try await _testLatePaymentInterestSet(latePaymentInterest)
     }
 
     /// Remove late payment interest and check it
-    private func _testLatePaymentInterestRemove() throws {
+    private func _testLatePaymentInterestRemove() async throws {
 
         // Call item
         let clubId = TestProperty.shared.testClub.id
         let callItem = FFChangeLatePaymentInterestCall(clubId: clubId)
 
         // Call function
-        let result: Result<HTTPSCallableResult, Error> = try waitExpectation { handler in
-            FirebaseFunctionCaller.shared.call(callItem).thenResult(handler)
-        }
-        XCTAssertNil(result.error)
+        try await FirebaseFunctionCaller.shared.call(callItem)
 
         // Check late payment interest
-        let latePaymentInterestResult: Result<LatePaymentInterest, Error> = try waitExpectation { handler in
-            let url = URL(string: "latePaymentInterest")!
-            FirebaseFetcher.shared.fetch(LatePaymentInterest.self, url: url, clubId: clubId).thenResult(handler)
+        do {
+            _ = try await FirebaseFetcher.shared.fetch(LatePaymentInterest.self, url: URL(string: "latePaymentInterest")!, clubId: clubId)
+            XCTFail() // swiftlint:disable:this xctfail_message
+        } catch {
+            XCTAssertEqual(error as? FirebaseFetcher.FetchError, .noData)
         }
-        XCTAssertEqual(latePaymentInterestResult.error as? FirebaseFetcher.FetchError, .noData)
     }
 }
 
@@ -362,17 +319,17 @@ extension FirebaseFunctionCallerTests {
 extension FirebaseFunctionCallerTests {
 
     /// Test register person
-    func testRegisterPerson() throws {
+    func testRegisterPerson() async throws {
 
         // Register person
-        try _testRegisterPerson(TestProperty.shared.testPersonFirst.name)
+        try await _testRegisterPerson(TestProperty.shared.testPersonFirst.name)
 
         // Register person with same id, but only first name
-        try _testRegisterPerson(TestProperty.shared.testPersonSecond.name)
+        try await _testRegisterPerson(TestProperty.shared.testPersonSecond.name)
     }
 
     /// Register person and check it
-    private func _testRegisterPerson(_ personName: PersonName) throws {
+    private func _testRegisterPerson(_ personName: PersonName) async throws {
 
         // Call item
         let clubId = TestProperty.shared.testClub.id
@@ -382,29 +339,23 @@ extension FirebaseFunctionCallerTests {
         let callItem = FFRegisterPersonCall(signInProperty: signInProperty, personId: personId)
 
         // Call function
-        let callResult: Result<FFRegisterPersonCall.CallResult, Error> = try waitExpectation { handler in
-            FirebaseFunctionCaller.shared.call(callItem).thenResult(handler)
-        }
-        XCTAssertEqual(try callResult.get().clubIdentifier, TestProperty.shared.testClub.identifier)
-        XCTAssertEqual(try callResult.get().clubName, TestProperty.shared.testClub.name)
-        XCTAssertEqual(try callResult.get().regionCode, TestProperty.shared.testClub.regionCode)
-        XCTAssertEqual(try callResult.get().inAppPaymentActive, true)
+        let callResult = try await FirebaseFunctionCaller.shared.call(callItem)
+        XCTAssertEqual(callResult.clubIdentifier, TestProperty.shared.testClub.identifier)
+        XCTAssertEqual(callResult.clubName, TestProperty.shared.testClub.name)
+        XCTAssertEqual(callResult.regionCode, TestProperty.shared.testClub.regionCode)
+        XCTAssertEqual(callResult.inAppPaymentActive, true)
 
         // Check person properties
-        let personListResult: Result<[FirebasePerson], Error> = try waitExpectation { handler in
-            FirebaseFetcher.shared.fetchList(FirebasePerson.self, clubId: clubId).thenResult(handler)
-        }
-        let person = try personListResult.get().first { $0.id == personId }
+        let personList = try await FirebaseFetcher.shared.fetchList(FirebasePerson.self, clubId: clubId)
+        let person = personList.first { $0.id == personId }
         XCTAssertEqual(person?.name, personName)
         XCTAssertEqual(person?.signInData?.isCashier, false)
         XCTAssertEqual(person?.signInData?.userId, userId)
 
         // Check person user ids
-        let userIdResult: Result<String, Error> = try waitExpectation { handler in
-            let url = URL(string: "personUserIds/\(TestProperty.shared.testPersonSecond.userId)")!
-            FirebaseFetcher.shared.fetch(String.self, url: url, clubId: clubId).thenResult(handler)
-        }
-        XCTAssertEqual(try userIdResult.get(), TestProperty.shared.testPersonSecond.id.uuidString)
+        let url = URL(string: "personUserIds/\(TestProperty.shared.testPersonSecond.userId)")!
+        let userId2 = try await FirebaseFetcher.shared.fetch(String.self, url: url, clubId: clubId)
+        XCTAssertEqual(userId2, TestProperty.shared.testPersonSecond.id.uuidString)
     }
 }
 
@@ -413,7 +364,7 @@ extension FirebaseFunctionCallerTests {
 extension FirebaseFunctionCallerTests {
 
     /// Test force sign out
-    func testForceSignOut() throws {
+    func testForceSignOut() async throws {
 
         // Call item
         let personId = TestProperty.shared.testPersonFirst.id
@@ -421,17 +372,15 @@ extension FirebaseFunctionCallerTests {
         let callItem = FFForceSignOutCall(clubId: clubId, personId: personId)
 
         // Call function
-        let result: Result<HTTPSCallableResult, Error> = try waitExpectation { handler in
-            FirebaseFunctionCaller.shared.call(callItem).thenResult(handler)
-        }
-        XCTAssertNil(result.error)
+        try await FirebaseFunctionCaller.shared.call(callItem)
 
         // Check sign in data
-        let signInDataResult: Result<FirebasePerson.SignInData, Error> = try waitExpectation { handler in
-            let url = URL(string: "persons/\(personId)/signInData")!
-            FirebaseFetcher.shared.fetch(FirebasePerson.SignInData.self, url: url, clubId: clubId).thenResult(handler)
+        do {
+            _ = try await FirebaseFetcher.shared.fetch(FirebasePerson.SignInData.self, url: URL(string: "persons/\(personId)/signInData")!, clubId: clubId)
+            XCTFail() // swiftlint:disable:this xctfail_message
+        } catch {
+            XCTAssertEqual(error as? FirebaseFetcher.FetchError, .noData)
         }
-        XCTAssertEqual(signInDataResult.error as? FirebaseFetcher.FetchError, .noData)
     }
 }
 
@@ -440,32 +389,32 @@ extension FirebaseFunctionCallerTests {
 extension FirebaseFunctionCallerTests {
 
     /// Test change list person
-    func testChangeListPerson() throws {
+    func testChangeListPerson() async throws {
 
         // Set person
-        try _testChangeListPersonSet()
+        try await _testChangeListPersonSet()
 
         // Update person
-        try _testChangeListPersonUpdate()
+        try await _testChangeListPersonUpdate()
 
         // Delete person
-        try _testChangeListPersonDelete()
+        try  await _testChangeListPersonDelete()
 
         // Delete person again
-        try _testChangeListPersonDelete()
+        try await _testChangeListPersonDelete()
 
         // Delete registered person
-        try _testChangeListPersonDeleteRegistered()
+        try await _testChangeListPersonDeleteRegistered()
 
         // Set person with only first name
-        try _testChangeListPersonFirstName()
+        try await _testChangeListPersonFirstName()
 
         // Update not existing person
-        try _testChangeListPersonUpdate()
+        try await _testChangeListPersonUpdate()
     }
 
     /// Set person and check it
-    func _testChangeListPersonSet() throws {
+    func _testChangeListPersonSet() async throws {
 
         // Call item
         let clubId = TestProperty.shared.testClub.id
@@ -473,22 +422,17 @@ extension FirebaseFunctionCallerTests {
         let callItem = FFChangeListCall(clubId: clubId, item: person)
 
         // Call function
-        let result: Result<HTTPSCallableResult, Error> = try waitExpectation { handler in
-            FirebaseFunctionCaller.shared.call(callItem).thenResult(handler)
-        }
-        XCTAssertNil(result.error)
+        try await FirebaseFunctionCaller.shared.call(callItem)
 
         // Check person
-        let personListResult: Result<[FirebasePerson], Error> = try waitExpectation { handler in
-            FirebaseFetcher.shared.fetchList(FirebasePerson.self, clubId: clubId).thenResult(handler)
-        }
-        let fetchedPerson = try personListResult.get().first { $0.id == person.id }
+        let personList = try await FirebaseFetcher.shared.fetchList(FirebasePerson.self, clubId: clubId)
+        let fetchedPerson = personList.first { $0.id == person.id }
         XCTAssertEqual(fetchedPerson?.name, person.name)
         XCTAssertNil(fetchedPerson?.signInData)
     }
 
     /// Update person and check if
-    func _testChangeListPersonUpdate() throws {
+    func _testChangeListPersonUpdate() async throws {
 
         // Call item
         let clubId = TestProperty.shared.testClub.id
@@ -498,22 +442,17 @@ extension FirebaseFunctionCallerTests {
         let callItem = FFChangeListCall(clubId: clubId, item: person)
 
         // Call function
-        let result: Result<HTTPSCallableResult, Error> = try waitExpectation { handler in
-            FirebaseFunctionCaller.shared.call(callItem).thenResult(handler)
-        }
-        XCTAssertNil(result.error)
+        try await FirebaseFunctionCaller.shared.call(callItem)
 
         // Check person
-        let personListResult: Result<[FirebasePerson], Error> = try waitExpectation { handler in
-            FirebaseFetcher.shared.fetchList(FirebasePerson.self, clubId: clubId).thenResult(handler)
-        }
-        let fetchedPerson = try personListResult.get().first { $0.id == person.id }
+        let personList = try await FirebaseFetcher.shared.fetchList(FirebasePerson.self, clubId: clubId)
+        let fetchedPerson = personList.first { $0.id == person.id }
         XCTAssertEqual(fetchedPerson?.name, person.name)
         XCTAssertNil(fetchedPerson?.signInData)
     }
 
     /// Delete person
-    func _testChangeListPersonDelete() throws {
+    func _testChangeListPersonDelete() async throws {
 
         // Call item
         let clubId = TestProperty.shared.testClub.id
@@ -521,21 +460,16 @@ extension FirebaseFunctionCallerTests {
         let callItem = FFChangeListCall<FirebasePerson>(clubId: clubId, id: person.id)
 
         // Call function
-        let result: Result<HTTPSCallableResult, Error> = try waitExpectation { handler in
-            FirebaseFunctionCaller.shared.call(callItem).thenResult(handler)
-        }
-        XCTAssertNil(result.error)
+        try await FirebaseFunctionCaller.shared.call(callItem)
 
         // Check person
-        let personListResult: Result<[FirebasePerson], Error> = try waitExpectation { handler in
-            FirebaseFetcher.shared.fetchList(FirebasePerson.self, clubId: clubId).thenResult(handler)
-        }
-        let fetchedPerson = try personListResult.get().first { $0.id == person.id }
+        let personList = try await FirebaseFetcher.shared.fetchList(FirebasePerson.self, clubId: clubId)
+        let fetchedPerson = personList.first { $0.id == person.id }
         XCTAssertNil(fetchedPerson)
     }
 
     /// Try delete registered person
-    func _testChangeListPersonDeleteRegistered() throws {
+    func _testChangeListPersonDeleteRegistered() async throws {
 
         // Call item
         let clubId = TestProperty.shared.testClub.id
@@ -543,26 +477,25 @@ extension FirebaseFunctionCallerTests {
         let callItem = FFChangeListCall<FirebasePerson>(clubId: clubId, id: person.id)
 
         // Call function
-        let result: Result<HTTPSCallableResult, Error> = try waitExpectation { handler in
-            FirebaseFunctionCaller.shared.call(callItem).thenResult(handler)
+        do {
+            try await FirebaseFunctionCaller.shared.call(callItem)
+            XCTFail() // swiftlint:disable:this xctfail_message
+        } catch {
+            XCTAssertEqual((error as NSError?)?.domain, FunctionsErrorDomain)
+            let errorCode = FunctionsErrorCode(rawValue: (error as NSError?)!.code)
+            XCTAssertEqual(errorCode, .unavailable)
         }
-        let error = result.error as NSError?
-        XCTAssertEqual(error?.domain, FunctionsErrorDomain)
-        let errorCode = FunctionsErrorCode(rawValue: error!.code)
-        XCTAssertEqual(errorCode, .unavailable)
 
         // Check person
-        let personListResult: Result<[FirebasePerson], Error> = try waitExpectation { handler in
-            FirebaseFetcher.shared.fetchList(FirebasePerson.self, clubId: clubId).thenResult(handler)
-        }
-        let fetchedPerson = try personListResult.get().first { $0.id == person.id }
+        let personList = try await FirebaseFetcher.shared.fetchList(FirebasePerson.self, clubId: clubId)
+        let fetchedPerson = personList.first { $0.id == person.id }
         XCTAssertEqual(fetchedPerson?.name, person.name)
         XCTAssertEqual(fetchedPerson?.signInData?.userId, TestProperty.shared.testPersonFirst.userId)
         XCTAssertEqual(fetchedPerson?.signInData?.isCashier, true)
     }
 
     /// Set person with only first name and check it
-    func _testChangeListPersonFirstName() throws {
+    func _testChangeListPersonFirstName() async throws {
 
         // Call item
         let clubId = TestProperty.shared.testClub.id
@@ -570,16 +503,11 @@ extension FirebaseFunctionCallerTests {
         let callItem = FFChangeListCall(clubId: clubId, item: person)
 
         // Call function
-        let result: Result<HTTPSCallableResult, Error> = try waitExpectation { handler in
-            FirebaseFunctionCaller.shared.call(callItem).thenResult(handler)
-        }
-        XCTAssertNil(result.error)
+        try await FirebaseFunctionCaller.shared.call(callItem)
 
         // Check person
-        let personListResult: Result<[FirebasePerson], Error> = try waitExpectation { handler in
-            FirebaseFetcher.shared.fetchList(FirebasePerson.self, clubId: clubId).thenResult(handler)
-        }
-        let fetchedPerson = try personListResult.get().first { $0.id == person.id }
+        let personList = try await FirebaseFetcher.shared.fetchList(FirebasePerson.self, clubId: clubId)
+        let fetchedPerson = personList.first { $0.id == person.id }
         XCTAssertEqual(fetchedPerson?.name, person.name)
         XCTAssertNil(fetchedPerson?.signInData)
     }
@@ -590,26 +518,26 @@ extension FirebaseFunctionCallerTests {
 extension FirebaseFunctionCallerTests {
 
     /// Test change list reason
-    func testChangeListReason() throws {
+    func testChangeListReason() async throws {
 
         // Set reason
-        try _testChangeListReasonSet()
+        try await _testChangeListReasonSet()
 
         // Update reason
-        try _testChangeListReasonUpdate()
+        try await _testChangeListReasonUpdate()
 
         // Delete reason
-        try _testChangeListReasonDelete()
+        try await _testChangeListReasonDelete()
 
         // Delete reason again
-        try _testChangeListReasonDelete()
+        try await _testChangeListReasonDelete()
 
         // Update not existing reason
-        try _testChangeListReasonUpdate()
+        try await _testChangeListReasonUpdate()
     }
 
     /// Set reason and check it
-    func _testChangeListReasonSet() throws {
+    func _testChangeListReasonSet() async throws {
 
         // Call item
         let clubId = TestProperty.shared.testClub.id
@@ -617,21 +545,16 @@ extension FirebaseFunctionCallerTests {
         let callItem = FFChangeListCall(clubId: clubId, item: reason)
 
         // Call function
-        let result: Result<HTTPSCallableResult, Error> = try waitExpectation { handler in
-            FirebaseFunctionCaller.shared.call(callItem).thenResult(handler)
-        }
-        XCTAssertNil(result.error)
+        try await FirebaseFunctionCaller.shared.call(callItem)
 
         // Check reason
-        let reasonListResult: Result<[FirebaseReasonTemplate], Error> = try waitExpectation { handler in
-            FirebaseFetcher.shared.fetchList(FirebaseReasonTemplate.self, clubId: clubId).thenResult(handler)
-        }
-        let fetchedReason = try reasonListResult.get().first { $0.id == reason.id }
+        let reasonList = try await FirebaseFetcher.shared.fetchList(FirebaseReasonTemplate.self, clubId: clubId)
+        let fetchedReason = reasonList.first { $0.id == reason.id }
         XCTAssertEqual(fetchedReason, reason)
     }
 
     /// Update reason and check if
-    func _testChangeListReasonUpdate() throws {
+    func _testChangeListReasonUpdate() async throws {
 
         // Call item
         let clubId = TestProperty.shared.testClub.id
@@ -639,21 +562,16 @@ extension FirebaseFunctionCallerTests {
         let callItem = FFChangeListCall(clubId: clubId, item: reason)
 
         // Call function
-        let result: Result<HTTPSCallableResult, Error> = try waitExpectation { handler in
-            FirebaseFunctionCaller.shared.call(callItem).thenResult(handler)
-        }
-        XCTAssertNil(result.error)
+        try await FirebaseFunctionCaller.shared.call(callItem)
 
         // Check reason
-        let reaspnListResult: Result<[FirebaseReasonTemplate], Error> = try waitExpectation { handler in
-            FirebaseFetcher.shared.fetchList(FirebaseReasonTemplate.self, clubId: clubId).thenResult(handler)
-        }
-        let fetchedReason = try reaspnListResult.get().first { $0.id == reason.id }
+        let reasonList = try await FirebaseFetcher.shared.fetchList(FirebaseReasonTemplate.self, clubId: clubId)
+        let fetchedReason = reasonList.first { $0.id == reason.id }
         XCTAssertEqual(fetchedReason, reason)
     }
 
     /// Delete reason
-    func _testChangeListReasonDelete() throws {
+    func _testChangeListReasonDelete() async throws {
 
         // Call item
         let clubId = TestProperty.shared.testClub.id
@@ -661,16 +579,11 @@ extension FirebaseFunctionCallerTests {
         let callItem = FFChangeListCall<FirebaseReasonTemplate>(clubId: clubId, id: reason.id)
 
         // Call function
-        let result: Result<HTTPSCallableResult, Error> = try waitExpectation { handler in
-            FirebaseFunctionCaller.shared.call(callItem).thenResult(handler)
-        }
-        XCTAssertNil(result.error)
+        try await FirebaseFunctionCaller.shared.call(callItem)
 
         // Check reason
-        let reasonListResult: Result<[FirebaseReasonTemplate], Error> = try waitExpectation { handler in
-            FirebaseFetcher.shared.fetchList(FirebaseReasonTemplate.self, clubId: clubId).thenResult(handler)
-        }
-        let fetchedReason = try reasonListResult.get().first { $0.id == reason.id }
+        let reasonList = try await FirebaseFetcher.shared.fetchList(FirebaseReasonTemplate.self, clubId: clubId)
+        let fetchedReason = reasonList.first { $0.id == reason.id }
         XCTAssertNil(fetchedReason)
     }
 }
@@ -680,29 +593,29 @@ extension FirebaseFunctionCallerTests {
 extension FirebaseFunctionCallerTests {
 
     /// Test change list fine
-    func testChangeListFine() throws {
+    func testChangeListFine() async throws {
 
         // Set fine with template id
-        try _testChangeListFineSet()
+        try await _testChangeListFineSet()
 
         // Update fine with reason, importance and amount
-        try _testChangeListFineUpdateCustomReason()
+        try await _testChangeListFineUpdateCustomReason()
 
         // Delete fine
-        try _testChangeListFineDelete()
+        try await _testChangeListFineDelete()
 
         // Delete fine again
-        try _testChangeListFineDelete()
+        try await _testChangeListFineDelete()
 
         // Update not exsisting fine with reason, importance and amount
-        try _testChangeListFineUpdateCustomReason()
+        try await _testChangeListFineUpdateCustomReason()
 
         // Update fine with template id
-        try _testChangeListFineUpdateTemplateReason()
+        try await _testChangeListFineUpdateTemplateReason()
     }
 
     /// Set fine and check it
-    func _testChangeListFineSet() throws {
+    func _testChangeListFineSet() async throws {
 
         // Call item
         let clubId = TestProperty.shared.testClub.id
@@ -710,21 +623,16 @@ extension FirebaseFunctionCallerTests {
         let callItem = FFChangeListCall(clubId: clubId, item: fine)
 
         // Call function
-        let result: Result<HTTPSCallableResult, Error> = try waitExpectation { handler in
-            FirebaseFunctionCaller.shared.call(callItem).thenResult(handler)
-        }
-        XCTAssertNil(result.error)
+        try await FirebaseFunctionCaller.shared.call(callItem)
 
         // Check fine
-        let fineListResult: Result<[FirebaseFine], Error> = try waitExpectation { handler in
-            FirebaseFetcher.shared.fetchList(FirebaseFine.self, clubId: clubId).thenResult(handler)
-        }
-        let fetchedFine = try fineListResult.get().first { $0.id == fine.id }
+        let fineList = try await FirebaseFetcher.shared.fetchList(FirebaseFine.self, clubId: clubId)
+        let fetchedFine = fineList.first { $0.id == fine.id }
         XCTAssertEqual(fetchedFine, fine)
     }
 
     /// Update fine with custom reason and check if
-    func _testChangeListFineUpdateCustomReason() throws {
+    func _testChangeListFineUpdateCustomReason() async throws {
 
         // Call item
         let clubId = TestProperty.shared.testClub.id
@@ -732,21 +640,16 @@ extension FirebaseFunctionCallerTests {
         let callItem = FFChangeListCall(clubId: clubId, item: fine)
 
         // Call function
-        let result: Result<HTTPSCallableResult, Error> = try waitExpectation { handler in
-            FirebaseFunctionCaller.shared.call(callItem).thenResult(handler)
-        }
-        XCTAssertNil(result.error)
+        try await FirebaseFunctionCaller.shared.call(callItem)
 
         // Check fine
-        let fineListResult: Result<[FirebaseFine], Error> = try waitExpectation { handler in
-            FirebaseFetcher.shared.fetchList(FirebaseFine.self, clubId: clubId).thenResult(handler)
-        }
-        let fetchedFine = try fineListResult.get().first { $0.id == fine.id }
+        let fineList = try await FirebaseFetcher.shared.fetchList(FirebaseFine.self, clubId: clubId)
+        let fetchedFine = fineList.first { $0.id == fine.id }
         XCTAssertEqual(fetchedFine, fine)
     }
 
     /// Delete fine
-    func _testChangeListFineDelete() throws {
+    func _testChangeListFineDelete() async throws {
 
         // Call item
         let clubId = TestProperty.shared.testClub.id
@@ -754,21 +657,16 @@ extension FirebaseFunctionCallerTests {
         let callItem = FFChangeListCall<FirebaseFine>(clubId: clubId, id: fine.id)
 
         // Call function
-        let result: Result<HTTPSCallableResult, Error> = try waitExpectation { handler in
-            FirebaseFunctionCaller.shared.call(callItem).thenResult(handler)
-        }
-        XCTAssertNil(result.error)
+        try await FirebaseFunctionCaller.shared.call(callItem)
 
         // Check fine
-        let fineListResult: Result<[FirebaseFine], Error> = try waitExpectation { handler in
-            FirebaseFetcher.shared.fetchList(FirebaseFine.self, clubId: clubId).thenResult(handler)
-        }
-        let fetchedFine = try fineListResult.get().first { $0.id == fine.id }
+        let fineList = try await FirebaseFetcher.shared.fetchList(FirebaseFine.self, clubId: clubId)
+        let fetchedFine = fineList.first { $0.id == fine.id }
         XCTAssertNil(fetchedFine)
     }
 
     /// Update fine with template reason and check if
-    func _testChangeListFineUpdateTemplateReason() throws {
+    func _testChangeListFineUpdateTemplateReason() async throws {
 
         // Call item
         let clubId = TestProperty.shared.testClub.id
@@ -776,16 +674,11 @@ extension FirebaseFunctionCallerTests {
         let callItem = FFChangeListCall(clubId: clubId, item: fine)
 
         // Call function
-        let result: Result<HTTPSCallableResult, Error> = try waitExpectation { handler in
-            FirebaseFunctionCaller.shared.call(callItem).thenResult(handler)
-        }
-        XCTAssertNil(result.error)
+        try await FirebaseFunctionCaller.shared.call(callItem)
 
         // Check fine
-        let fineListResult: Result<[FirebaseFine], Error> = try waitExpectation { handler in
-            FirebaseFetcher.shared.fetchList(FirebaseFine.self, clubId: clubId).thenResult(handler)
-        }
-        let fetchedFine = try fineListResult.get().first { $0.id == fine.id }
+        let fineList = try await FirebaseFetcher.shared.fetchList(FirebaseFine.self, clubId: clubId)
+        let fetchedFine = fineList.first { $0.id == fine.id }
         XCTAssertEqual(fetchedFine, fine)
     }
 }
@@ -795,29 +688,29 @@ extension FirebaseFunctionCallerTests {
 extension FirebaseFunctionCallerTests {
 
     /// Test change fine payed
-    func testChangeFinePayed() throws {
+    func testChangeFinePayed() async throws {
 
         // Change payed of not existing fine
-        try _testChangeFinePayedNoFine()
+        try await _testChangeFinePayedNoFine()
 
         // Add fine with unpayed
-        try _testChangeListFineSet()
+        try await _testChangeListFineSet()
 
         // Change to payed
-        try _testChangeFinePayed(.payed(date: Date(timeIntervalSinceReferenceDate: 12345), inApp: false))
+        try await _testChangeFinePayed(.payed(date: Date(timeIntervalSinceReferenceDate: 12345), inApp: false))
 
         // Change to payed
-        try _testChangeFinePayed(.payed(date: Date(timeIntervalSinceReferenceDate: 54321), inApp: true))
+        try await _testChangeFinePayed(.payed(date: Date(timeIntervalSinceReferenceDate: 54321), inApp: true))
 
         // Change to unpayed
-        try _testChangeFinePayed(.unpayed)
+        try await _testChangeFinePayed(.unpayed)
 
         // Change to settled
-        try _testChangeFinePayed(.settled)
+        try await _testChangeFinePayed(.settled)
     }
 
     /// Change payed of not existing fine
-    func _testChangeFinePayedNoFine() throws {
+    func _testChangeFinePayedNoFine() async throws {
 
         // Call item
         let clubId = TestProperty.shared.testClub.id
@@ -826,14 +719,11 @@ extension FirebaseFunctionCallerTests {
         let callItem = FFChangeFinePayed(clubId: clubId, fineId: fineId, newState: payed)
 
         // Call function
-        let result: Result<HTTPSCallableResult, Error> = try waitExpectation { handler in
-            FirebaseFunctionCaller.shared.call(callItem).thenResult(handler)
-        }
-        XCTAssertNil(result.error)
+        try await FirebaseFunctionCaller.shared.call(callItem)
     }
 
     /// Change to unpayed
-    func _testChangeFinePayed(_ state: Payed) throws {
+    func _testChangeFinePayed(_ state: Payed) async throws {
 
         // Call item
         let clubId = TestProperty.shared.testClub.id
@@ -841,16 +731,11 @@ extension FirebaseFunctionCallerTests {
         let callItem = FFChangeFinePayed(clubId: clubId, fineId: fineId, newState: state)
 
         // Call function
-        let result: Result<HTTPSCallableResult, Error> = try waitExpectation { handler in
-            FirebaseFunctionCaller.shared.call(callItem).thenResult(handler)
-        }
-        XCTAssertNil(result.error)
+        try await FirebaseFunctionCaller.shared.call(callItem)
 
         // Check payed
-        let fineListResult: Result<[FirebaseFine], Error> = try waitExpectation { handler in
-            FirebaseFetcher.shared.fetchList(FirebaseFine.self, clubId: clubId).thenResult(handler)
-        }
-        let fetchedFine = try fineListResult.get().first { $0.id == fineId }
+        let fineList = try await FirebaseFetcher.shared.fetchList(FirebaseFine.self, clubId: clubId)
+        let fetchedFine = fineList.first { $0.id == fineId }
         XCTAssertEqual(fetchedFine?.payed, state)
     }
 }
@@ -860,49 +745,47 @@ extension FirebaseFunctionCallerTests {
 extension FirebaseFunctionCallerTests {
 
     /// Test get person properties
-    func testGetPersonProperties() throws {
+    func testGetPersonProperties() async throws {
 
         // Try to get properties of not existing person
-        try _testGetPersonPropertiesNotExistingPerson()
+        try await _testGetPersonPropertiesNotExistingPerson()
 
         // Get properties of person
         let firstPerson = TestProperty.shared.testPersonFirst
-        try _testGetPersonPropertiesPerson(firstPerson.userId, person: firstPerson.person, isCashier: true)
+        try await _testGetPersonPropertiesPerson(firstPerson.userId, person: firstPerson.person, isCashier: true)
 
         // Register person with only first name
-        try _testRegisterPerson(TestProperty.shared.testPersonSecond.name)
+        try await _testRegisterPerson(TestProperty.shared.testPersonSecond.name)
     }
 
     /// With not existing person
-    func _testGetPersonPropertiesNotExistingPerson() throws {
+    func _testGetPersonPropertiesNotExistingPerson() async throws {
 
         // Call item
         let userId = TestProperty.shared.testPersonThird.userId
         let callItem = FFGetPersonPropertiesCall(userId: userId)
 
         // Call function
-        let result: Result<HTTPSCallableResult, Error> = try waitExpectation { handler in
-            FirebaseFunctionCaller.shared.call(callItem).thenResult(handler)
+        do {
+            _ = try await FirebaseFunctionCaller.shared.call(callItem)
+            XCTFail() // swiftlint:disable:this xctfail_message
+        } catch {
+            XCTAssertEqual((error as NSError?)?.domain, FunctionsErrorDomain)
+            let errorCode = FunctionsErrorCode(rawValue: (error as NSError?)!.code)
+            XCTAssertEqual(errorCode, .notFound)
         }
-        let error = result.error as NSError?
-        XCTAssertEqual(error?.domain, FunctionsErrorDomain)
-        let errorCode = FunctionsErrorCode(rawValue: error!.code)
-        XCTAssertEqual(errorCode, .notFound)
     }
 
     /// Get properties of person
-    func _testGetPersonPropertiesPerson(_ userId: String, person: FirebasePerson, isCashier: Bool) throws {
+    func _testGetPersonPropertiesPerson(_ userId: String, person: FirebasePerson, isCashier: Bool) async throws {
 
         // Call item
         let callItem = FFGetPersonPropertiesCall(userId: userId)
 
         // Call function
-        let result: Result<FFGetPersonPropertiesCall.CallResult, Error> = try waitExpectation { handler in
-            FirebaseFunctionCaller.shared.call(callItem).thenResult(handler)
-        }
+        let properties = try await FirebaseFunctionCaller.shared.call(callItem)
 
         // Check properties
-        let properties = try result.get()
         XCTAssertEqual(properties.clubProperties.id, TestProperty.shared.testClub.id)
         XCTAssertEqual(properties.clubProperties.identifier, TestProperty.shared.testClub.identifier)
         XCTAssertEqual(properties.clubProperties.name, TestProperty.shared.testClub.name)
@@ -918,43 +801,42 @@ extension FirebaseFunctionCallerTests {
 extension FirebaseFunctionCallerTests {
 
     /// Test get club id
-    func testGetClubId() throws {
+    func testGetClubId() async throws {
 
         // Try to get club id of not existing club
-        try _testGetClubIdNotExistingClub()
+        try await _testGetClubIdNotExistingClub()
 
         // Get id of club
-        try _testGetClubIdClub()
+        try await _testGetClubIdClub()
     }
 
     /// With not existing club
-    func _testGetClubIdNotExistingClub() throws {
+    func _testGetClubIdNotExistingClub() async throws {
 
         // Call item
         let callItem = FFGetClubIdCall(identifier: "asdf")
 
         // Call function
-        let result: Result<HTTPSCallableResult, Error> = try waitExpectation { handler in
-            FirebaseFunctionCaller.shared.call(callItem).thenResult(handler)
+        do {
+            _ = try await FirebaseFunctionCaller.shared.call(callItem)
+            XCTFail() // swiftlint:disable:this xctfail_message
+        } catch {
+            XCTAssertEqual((error as NSError?)?.domain, FunctionsErrorDomain)
+            let errorCode = FunctionsErrorCode(rawValue: (error as NSError?)!.code)
+            XCTAssertEqual(errorCode, .notFound)
         }
-        let error = result.error as NSError?
-        XCTAssertEqual(error?.domain, FunctionsErrorDomain)
-        let errorCode = FunctionsErrorCode(rawValue: error!.code)
-        XCTAssertEqual(errorCode, .notFound)
     }
 
     /// Get properties of person
-    func _testGetClubIdClub() throws {
+    func _testGetClubIdClub() async throws {
 
         // Call item
         let identifier = TestProperty.shared.testClub.identifier
         let callItem = FFGetClubIdCall(identifier: identifier)
 
         // Call function
-        let result: Result<Club.ID, Error> = try waitExpectation { handler in
-            FirebaseFunctionCaller.shared.call(callItem).thenResult(handler)
-        }
-        XCTAssertEqual(try result.get(), TestProperty.shared.testClub.id)
+        let result = try await FirebaseFunctionCaller.shared.call(callItem)
+        XCTAssertEqual(result, TestProperty.shared.testClub.id)
     }
 }
 
@@ -963,40 +845,36 @@ extension FirebaseFunctionCallerTests {
 extension FirebaseFunctionCallerTests {
 
     /// Test exists club with identifier
-    func testExistsClubWithIdentifier() throws {
+    func testExistsClubWithIdentifier() async throws {
 
         // Of not existing club
-        try _testExistsClubWithIdentifierNotExisting()
+        try await _testExistsClubWithIdentifierNotExisting()
 
         // Of existing club
-        try _testExistsClubWithIdentifierExisting()
+        try await _testExistsClubWithIdentifierExisting()
     }
 
     /// Of not existing club
-    func _testExistsClubWithIdentifierNotExisting() throws {
+    func _testExistsClubWithIdentifierNotExisting() async throws {
 
         // Call item
         let callItem = FFExistsClubWithIdentifierCall(identifier: "asdf")
 
         // Call function
-        let result: Result<Bool, Error> = try waitExpectation { handler in
-            FirebaseFunctionCaller.shared.call(callItem).thenResult(handler)
-        }
-        XCTAssertFalse(try result.get())
+        let result = try await FirebaseFunctionCaller.shared.call(callItem)
+        XCTAssertFalse(result)
     }
 
     /// Of existing club
-    func _testExistsClubWithIdentifierExisting() throws {
+    func _testExistsClubWithIdentifierExisting() async throws {
 
         // Call item
         let identifier = TestProperty.shared.testClub.identifier
         let callItem = FFExistsClubWithIdentifierCall(identifier: identifier)
 
         // Call function
-        let result: Result<Bool, Error> = try waitExpectation { handler in
-            FirebaseFunctionCaller.shared.call(callItem).thenResult(handler)
-        }
-        XCTAssertTrue(try result.get())
+        let result = try await FirebaseFunctionCaller.shared.call(callItem)
+        XCTAssertTrue(result)
     }
 }
 
@@ -1005,39 +883,35 @@ extension FirebaseFunctionCallerTests {
 extension FirebaseFunctionCallerTests {
 
     /// Test exists person with user id
-    func testExistsPersonWithUserId() throws {
+    func testExistsPersonWithUserId() async throws {
 
         // Of not existing person
-        try _testExistsPersonWithUserIdNotExisting()
+        try await _testExistsPersonWithUserIdNotExisting()
 
         // Of existing person
-        try _testExistsPersonWithUserIdExisting()
+        try await _testExistsPersonWithUserIdExisting()
     }
 
     /// Of not existing person
-    func _testExistsPersonWithUserIdNotExisting() throws {
+    func _testExistsPersonWithUserIdNotExisting() async throws {
 
         // Call item
         let callItem = FFExistsPersonWithUserIdCall(userId: "asdf")
 
         // Call function
-        let result: Result<Bool, Error> = try waitExpectation { handler in
-            FirebaseFunctionCaller.shared.call(callItem).thenResult(handler)
-        }
-        XCTAssertFalse(try result.get())
+        let result = try await FirebaseFunctionCaller.shared.call(callItem)
+        XCTAssertFalse(result)
     }
 
     /// Of existing person
-    func _testExistsPersonWithUserIdExisting() throws {
+    func _testExistsPersonWithUserIdExisting() async throws {
 
         // Call item
         let userId = TestProperty.shared.testPersonFirst.userId
         let callItem = FFExistsPersonWithUserIdCall(userId: userId)
 
         // Call function
-        let result: Result<Bool, Error> = try waitExpectation { handler in
-            FirebaseFunctionCaller.shared.call(callItem).thenResult(handler)
-        }
-        XCTAssertTrue(try result.get())
+        let result = try await FirebaseFunctionCaller.shared.call(callItem)
+        XCTAssertTrue(result)
     }
 }

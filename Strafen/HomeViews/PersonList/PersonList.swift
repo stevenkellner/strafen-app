@@ -156,8 +156,11 @@ struct PersonList: View {
                         isNavigationLinkActive = true
                     }
                     .onAppear {
-                        FirebaseImageStorage.shared.getImage(.personImage(clubId: loggedInPerson.club.id, personId: person.id), size: .thumbsSmall) { image in
-                            self.image = image
+                        async {
+                            do {
+                                let imageType = FirebaseImageStorage.ImageType(id: person.id, clubId: loggedInPerson.club.id)
+                                image = try await FirebaseImageStorage.shared.getImage(imageType, size: .thumbsSmall)
+                            } catch {}
                         }
                     }
             }

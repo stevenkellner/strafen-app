@@ -17,54 +17,48 @@ class FirebaseObserverTests: XCTestCase {
 
     // MARK: set up
 
-    override func setUpWithError() throws {
+    @MainActor override func setUpWithError() throws {
         continueAfterFailure = false
         FirebaseFunctionCaller.shared.level = .testing
         FirebaseFetcher.shared.level = .testing
         FirebaseObserver.shared.level = .testing
 
-        // Sign test user in
-        let signInError: Error? = try waitExpectation { handler in
-            Auth.auth().signIn(withEmail: "app.demo@web.de", password: "Demopw12") { _, error in
-                handler(error)
+        waitExpectation(timeout: 60) { handler in
+            async {
+
+                // Sign test user in
+                try await Auth.auth().signIn(withEmail: "app.demo@web.de", password: "Demopw12")
+
+                // Delete old test club
+                try await _setUpDeleteOldTestClub()
+
+                // Create new test club
+                try await _setUpCreateNewTestClub()
+
+                // Check test club
+                try await _setUpCheckTestClub()
+
+                handler()
             }
         }
-        XCTAssertNil(signInError)
-
-        // Delete old test club
-        try _setUpDeleteOldTestClub()
-
-        // Create new test club
-        try _setUpCreateNewTestClub()
-
-        // Check test club
-        try _setUpCheckTestClub()
+        try Task.checkCancellation()
     }
 
     /// Set up: deletes old test club
-    func _setUpDeleteOldTestClub() throws {
-        let result: Result<HTTPSCallableResult, Error> = try waitExpectation { handler in
-            let callItem = FFDeleteTestClubCall(clubId: clubId)
-            FirebaseFunctionCaller.shared.call(callItem).thenResult(handler)
-        }
-        _ = try result.get()
+    func _setUpDeleteOldTestClub() async throws {
+        let callItem = FFDeleteTestClubCall(clubId: clubId)
+        try await FirebaseFunctionCaller.shared.call(callItem)
     }
 
     /// Set up: creates new test club
-    func _setUpCreateNewTestClub() throws {
-        let result: Result<HTTPSCallableResult, Error> = try waitExpectation { handler in
-            let callItem = FFNewTestClubCall(clubId: clubId, testClubType: .fetcherTestClub)
-            FirebaseFunctionCaller.shared.call(callItem).thenResult(handler)
-        }
-        _ = try result.get()
+    func _setUpCreateNewTestClub() async throws {
+        let callItem = FFNewTestClubCall(clubId: clubId, testClubType: .fetcherTestClub)
+        try await FirebaseFunctionCaller.shared.call(callItem)
     }
 
     /// Set up: Check test club
-    func _setUpCheckTestClub() throws {
-        let result: Result<TestClub, Error> = try waitExpectation { handler in
-            FirebaseFetcher.shared.fetchClub(clubId).thenResult(handler)
-        }
-        let club = try result.get()
+    func _setUpCheckTestClub() async throws {
+        let club = try await FirebaseFetcher.shared.fetchClub(clubId)
         XCTAssertEqual(club, TestClub.fetcherTestClub)
     }
 
@@ -73,61 +67,65 @@ class FirebaseObserverTests: XCTestCase {
     override func tearDownWithError() throws {
 
         // Delete created test club (same as delete old test club in setUp)
-        try _setUpDeleteOldTestClub()
+        waitExpectation { handler in
+            async {
+                try await _setUpDeleteOldTestClub()
+                handler()
+            }
+        }
+        try Task.checkCancellation()
     }
 
     // MARK: observe object
 
     /// Test observe object
-    func testObserveObject() throws {
+    func testObserveObject() async throws {
 
         // Observe primitive type
-        try _testObserveObjectPrimitiveType()
+        try await _testObserveObjectPrimitiveType()
 
         // Observe removed observer
-        try _testObserveObjectRemovedObserver()
+        try await _testObserveObjectRemovedObserver()
 
         // Observe primitive type with wrong type
-        try _testObserveObjectWrongTypePrimitiveType()
+        try await _testObserveObjectWrongTypePrimitiveType()
 
         // Observe object
-        try _testObserveObjectObject()
+        try await _testObserveObjectObject()
 
         // Observe object with wrong type
-        try _testObserveObjectWrongTypeObject()
+        try await _testObserveObjectWrongTypeObject()
     }
 
     /// Test observe object: observe primitive type
-    func _testObserveObjectPrimitiveType() throws {
+    func _testObserveObjectPrimitiveType() async throws {
 
         // Observe value added
-        try _testObserveObjectPrimitiveTypeAdded()
+        try await _testObserveObjectPrimitiveTypeAdded()
 
         // Observe value changed
-        try _testObserveObjectPrimitiveTypeChanged()
+        try await _testObserveObjectPrimitiveTypeChanged()
 
         // Observe value removed
-        try _testObserveObjectPrimitiveTypeRemoved()
+        try await _testObserveObjectPrimitiveTypeRemoved()
     }
 
     /// Test observe object: observe primitive type added
-    func _testObserveObjectPrimitiveTypeAdded() throws {
+    func _testObserveObjectPrimitiveTypeAdded() async throws {
         var removeObserver: (() -> Void)?
-        let observedResult: String = try waitExpectation { handler in
+        let observedResult: String = try await waitExpectation { handler in
             removeObserver = FirebaseObserver.shared.observe(String.self, url: URL(string: "stringKey")!, clubId: clubId, onChange: handler)
             let callItem = FFNewTestClubPropertyCall(clubId: clubId, urlFromClub: URL(string: "stringKey")!, property: "value")
-            FirebaseFunctionCaller.shared.call(callItem).thenResult { result in
-                XCTAssertNil(result.error)
-            }
+            try await FirebaseFunctionCaller.shared.call(callItem)
         }
-        if let removeObserver = removeObserver { removeObserver() }
+        removeObserver?()
         XCTAssertEqual(observedResult, "value")
     }
 
     /// Test observe object: observe primitive type changed
-    func _testObserveObjectPrimitiveTypeChanged() throws {
+    func _testObserveObjectPrimitiveTypeChanged() async throws {
         var removeObserver: (() -> Void)?
-        let observedResult: String = try waitExpectation { handler in
+        let observedResult: String = try await waitExpectation { handler in
             var numberObserved = 0
             removeObserver =  FirebaseObserver.shared.observe(String.self, url: URL(string: "stringKey")!, clubId: clubId) { value in
                 numberObserved += 1
@@ -135,29 +133,25 @@ class FirebaseObserverTests: XCTestCase {
                 handler(value)
             }
             let callItem = FFNewTestClubPropertyCall(clubId: clubId, urlFromClub: URL(string: "stringKey")!, property: "newValue")
-            FirebaseFunctionCaller.shared.call(callItem).thenResult { result in
-                XCTAssertNil(result.error)
-            }
+            try await FirebaseFunctionCaller.shared.call(callItem)
         }
-        if let removeObserver = removeObserver { removeObserver() }
+        removeObserver?()
         XCTAssertEqual(observedResult, "newValue")
     }
 
     /// Test observe object: observe primitive type removed
-    func _testObserveObjectPrimitiveTypeRemoved() throws {
+    func _testObserveObjectPrimitiveTypeRemoved() async throws {
         var removeObserver: (() -> Void)?
-        waitExpectation { handler in
+        try await waitExpectation { handler in
             removeObserver = FirebaseObserver.shared.observe(String.self, url: URL(string: "stringKey")!, clubId: clubId, onRemove: handler)
             let callItem = FFDeleteTestClubPropertyCall(clubId: clubId, urlFromClub: URL(string: "stringKey")!)
-            FirebaseFunctionCaller.shared.call(callItem).thenResult { result in
-                XCTAssertNil(result.error)
-            }
+            try await FirebaseFunctionCaller.shared.call(callItem)
         }
-        if let removeObserver = removeObserver { removeObserver() }
+        removeObserver?()
     }
 
     /// Test observe object: observe removed observer
-    func _testObserveObjectRemovedObserver() throws {
+    func _testObserveObjectRemovedObserver() async throws {
         var numberExecuted = 0
         let removeObserver = FirebaseObserver.shared.observe(String.self, url: URL(string: "otherKey")!, clubId: clubId) { value in
             XCTAssertEqual(value, "value")
@@ -165,11 +159,8 @@ class FirebaseObserverTests: XCTestCase {
         }
 
         // Set value
-        var result: Result<HTTPSCallableResult, Error> = try waitExpectation { handler in
-            let setValueCallItem = FFNewTestClubPropertyCall(clubId: clubId, urlFromClub: URL(string: "otherKey")!, property: "value")
-            FirebaseFunctionCaller.shared.call(setValueCallItem).thenResult(handler)
-        }
-        _ = try result.get()
+        let setValueCallItem = FFNewTestClubPropertyCall(clubId: clubId, urlFromClub: URL(string: "otherKey")!, property: "value")
+        try await FirebaseFunctionCaller.shared.call(setValueCallItem)
 
         wait(1)
 
@@ -177,11 +168,8 @@ class FirebaseObserverTests: XCTestCase {
         removeObserver()
 
         // Update value
-        result = try waitExpectation { handler in
-            let changeValueCallItem = FFNewTestClubPropertyCall(clubId: clubId, urlFromClub: URL(string: "otherKey")!, property: "newValue")
-            FirebaseFunctionCaller.shared.call(changeValueCallItem).thenResult(handler)
-        }
-        _ = try result.get()
+        let changeValueCallItem = FFNewTestClubPropertyCall(clubId: clubId, urlFromClub: URL(string: "otherKey")!, property: "newValue")
+        try await FirebaseFunctionCaller.shared.call(changeValueCallItem)
 
         // Still wait 10sec for observed value
         wait(10)
@@ -190,7 +178,7 @@ class FirebaseObserverTests: XCTestCase {
     }
 
     /// Test observe object: observe wrong type primitive type
-    func _testObserveObjectWrongTypePrimitiveType() throws {
+    func _testObserveObjectWrongTypePrimitiveType() async throws {
 
         // Try observe bool as string
         waitNoData(timeout: 10) { handler in
@@ -204,9 +192,9 @@ class FirebaseObserverTests: XCTestCase {
     }
 
     /// Test observe object: observe object
-    func _testObserveObjectObject() throws {
+    func _testObserveObjectObject() async throws {
         var removeObserver: (() -> Void)?
-        let observedResult: PersonName = try waitExpectation { handler in
+        let observedResult: PersonName = try await waitExpectation { handler in
             var numberObserved = 0
             removeObserver =  FirebaseObserver.shared.observe(PersonName.self, url: URL(string: "persons/D1852AC0-A0E2-4091-AC7E-CB2C23F708D9/name")!, clubId: clubId) { value in
                 numberObserved += 1
@@ -214,65 +202,63 @@ class FirebaseObserverTests: XCTestCase {
                 handler(value)
             }
             let callItem = FFNewTestClubPropertyCall(clubId: clubId, urlFromClub: URL(string: "persons/D1852AC0-A0E2-4091-AC7E-CB2C23F708D9/name/first")!, property: "new First Name")
-            FirebaseFunctionCaller.shared.call(callItem).thenResult { result in
-                XCTAssertNil(result.error)
-            }
+            try await FirebaseFunctionCaller.shared.call(callItem)
         }
-        if let removeObserver = removeObserver { removeObserver() }
+        removeObserver?()
         XCTAssertEqual(observedResult.firstName, "new First Name")
     }
 
     /// Test observe object: fetch wrong type object
-    func _testObserveObjectWrongTypeObject() throws {
+    func _testObserveObjectWrongTypeObject() async throws {
 
         // Try fetch string as object
         var removeObserver1: (() -> Void)?
         waitNoData(timeout: 10) { handler in
             removeObserver1 = FirebaseObserver.shared.observe(FirebasePerson.self, url: URL(string: "identifier")!, clubId: clubId, onChange: handler)
         }
-        if let removeObserver1 = removeObserver1 { removeObserver1() }
+        removeObserver1?()
 
         // Try fetch object as object
         var removeObserver2: (() -> Void)?
         waitNoData(timeout: 10) { handler in
             removeObserver2 = FirebaseObserver.shared.observe(FirebasePerson.self, url: URL(string: "fines/02462A8B-107F-4BAE-A85B-EFF1F727C00F")!, clubId: clubId, onChange: handler)
         }
-        if let removeObserver2 = removeObserver2 { removeObserver2() }
+        removeObserver2?()
     }
 
     // MARK: observe list
 
     /// Test observe list
-    func testObserveList() throws {
+    func testObserveList() async throws {
 
         // Observe list
-        try _testObserveList()
+        try await _testObserveList()
 
         // Observe list removed observer
-        try _testObserveListRemovedObserver()
+        try await _testObserveListRemovedObserver()
 
         // Observe list with wrong type
         // try _testObserveListWrongType()
     }
 
     /// Test observe list
-    func _testObserveList() throws {
+    func _testObserveList() async throws {
 
         // Observe value added
-        try _testObserveListChildAdded()
+        try await _testObserveListChildAdded()
 
         // Observe value changed
-        try _testObserveListChildChanged()
+        try await _testObserveListChildChanged()
 
         // Observe value removed
-        try _testObserveListChildRemoved()
+        try await _testObserveListChildRemoved()
 
     }
 
     /// Test observe list: child added
-    func _testObserveListChildAdded() throws {
+    func _testObserveListChildAdded() async throws {
         var removeObserver: (() -> Void)?
-        let observedResult: FirebasePerson = try waitExpectation { handler in
+        let observedResult: FirebasePerson = try await waitExpectation { handler in
             var numberObserved = 0
             removeObserver = FirebaseObserver.shared.observeList(FirebasePerson.self, event: .childAdded, clubId: clubId) { value in
                 numberObserved += 1
@@ -280,44 +266,38 @@ class FirebaseObserverTests: XCTestCase {
                 handler(value)
             }
             let callItem = FFNewTestClubPropertyCall(clubId: clubId, urlFromClub: URL(string: "persons/13BC2D6B-13FE-4874-AFD9-8351FB79B5D5")!, property: ["name": ["first": "firstName", "last": "lastName"]])
-            FirebaseFunctionCaller.shared.call(callItem).thenResult { result in
-                XCTAssertNil(result.error)
-            }
+            try await FirebaseFunctionCaller.shared.call(callItem)
         }
-        if let removeObserver = removeObserver { removeObserver() }
+        removeObserver?()
         XCTAssertEqual(observedResult, FirebasePerson(id: FirebasePerson.ID(rawValue: UUID(uuidString: "13BC2D6B-13FE-4874-AFD9-8351FB79B5D5")!), name: PersonName(firstName: "firstName", lastName: "lastName"), signInData: nil))
     }
 
     /// Test observe list: child changed
-    func _testObserveListChildChanged() throws {
+    func _testObserveListChildChanged() async throws {
         var removeObserver: (() -> Void)?
-        let observedResult: FirebasePerson = try waitExpectation { handler in
+        let observedResult: FirebasePerson = try await waitExpectation { handler in
             removeObserver = FirebaseObserver.shared.observeList(FirebasePerson.self, event: .childChanged, clubId: clubId, handler: handler)
             let callItem = FFNewTestClubPropertyCall(clubId: clubId, urlFromClub: URL(string: "persons/13BC2D6B-13FE-4874-AFD9-8351FB79B5D5/name/first")!, property: "newFirstName")
-            FirebaseFunctionCaller.shared.call(callItem).thenResult { result in
-                XCTAssertNil(result.error)
-            }
+            try await FirebaseFunctionCaller.shared.call(callItem)
         }
-        if let removeObserver = removeObserver { removeObserver() }
+        removeObserver?()
         XCTAssertEqual(observedResult, FirebasePerson(id: FirebasePerson.ID(rawValue: UUID(uuidString: "13BC2D6B-13FE-4874-AFD9-8351FB79B5D5")!), name: PersonName(firstName: "newFirstName", lastName: "lastName"), signInData: nil))
     }
 
     /// Test observe list: child removed
-    func _testObserveListChildRemoved() throws {
+    func _testObserveListChildRemoved() async throws {
         var removeObserver: (() -> Void)?
-        let observedResult: FirebasePerson = try waitExpectation { handler in
+        let observedResult: FirebasePerson = try await waitExpectation { handler in
             removeObserver = FirebaseObserver.shared.observeList(FirebasePerson.self, event: .childRemoved, clubId: clubId, handler: handler)
             let callItem = FFDeleteTestClubPropertyCall(clubId: clubId, urlFromClub: URL(string: "persons/13BC2D6B-13FE-4874-AFD9-8351FB79B5D5")!)
-            FirebaseFunctionCaller.shared.call(callItem).thenResult { result in
-                XCTAssertNil(result.error)
-            }
+            try await FirebaseFunctionCaller.shared.call(callItem)
         }
-        if let removeObserver = removeObserver { removeObserver() }
+        removeObserver?()
         XCTAssertEqual(observedResult, FirebasePerson(id: FirebasePerson.ID(rawValue: UUID(uuidString: "13BC2D6B-13FE-4874-AFD9-8351FB79B5D5")!), name: PersonName(firstName: "newFirstName", lastName: "lastName"), signInData: nil))
     }
 
     /// Test observe list: removed observer
-    func _testObserveListRemovedObserver() throws {
+    func _testObserveListRemovedObserver() async throws {
         var numberExecuted = 0
         let removeObserver = FirebaseObserver.shared.observeList(FirebasePerson.self, event: .childChanged, clubId: clubId) { value in
             XCTAssertEqual(value, FirebasePerson(id: FirebasePerson.ID(rawValue: UUID(uuidString: "D1852AC0-A0E2-4091-AC7E-CB2C23F708D9")!), name: PersonName(firstName: "first", lastName: "Doe"), signInData: nil))
@@ -325,11 +305,8 @@ class FirebaseObserverTests: XCTestCase {
         }
 
         // Update value
-        var result: Result<HTTPSCallableResult, Error> = try waitExpectation { handler in
-            let callItem = FFNewTestClubPropertyCall(clubId: clubId, urlFromClub: URL(string: "persons/D1852AC0-A0E2-4091-AC7E-CB2C23F708D9/name/first")!, property: "first")
-            FirebaseFunctionCaller.shared.call(callItem).thenResult(handler)
-        }
-        _ = try result.get()
+        let callItem1 = FFNewTestClubPropertyCall(clubId: clubId, urlFromClub: URL(string: "persons/D1852AC0-A0E2-4091-AC7E-CB2C23F708D9/name/first")!, property: "first")
+        try await FirebaseFunctionCaller.shared.call(callItem1)
 
         wait(1)
 
@@ -337,11 +314,8 @@ class FirebaseObserverTests: XCTestCase {
         removeObserver()
 
         // Update value
-        result = try waitExpectation { handler in
-            let callItem = FFNewTestClubPropertyCall(clubId: clubId, urlFromClub: URL(string: "persons/D1852AC0-A0E2-4091-AC7E-CB2C23F708D9/name/last")!, property: "last")
-            FirebaseFunctionCaller.shared.call(callItem).thenResult(handler)
-        }
-        _ = try result.get()
+        let callItem2 = FFNewTestClubPropertyCall(clubId: clubId, urlFromClub: URL(string: "persons/D1852AC0-A0E2-4091-AC7E-CB2C23F708D9/name/last")!, property: "last")
+        try await FirebaseFunctionCaller.shared.call(callItem2)
 
         // Still wait 10sec for observed value
         wait(10)
@@ -350,45 +324,42 @@ class FirebaseObserverTests: XCTestCase {
     }
 
     /// Test observe list: wrong type
-    func _testObserveListWrongType() throws {
+    func _testObserveListWrongType() async throws {
 
         // Set non person list to person list
-        let result: Result<HTTPSCallableResult, Error> = try waitExpectation { handler in
-            let callItem = FFNewTestClubPropertyCall(clubId: clubId, urlFromClub: URL(string: "persons")!, property: ["id": ["test": "value"]])
-            FirebaseFunctionCaller.shared.call(callItem).thenResult(handler)
-        }
-        _ = try result.get()
+        let callItem = FFNewTestClubPropertyCall(clubId: clubId, urlFromClub: URL(string: "persons")!, property: ["id": ["test": "value"]])
+        try await FirebaseFunctionCaller.shared.call(callItem)
 
         // Try observe person list
         var removeObserver: (() -> Void)?
         waitNoData(timeout: 10) { handler in
             removeObserver = FirebaseObserver.shared.observeList(FirebasePerson.self, event: .childAdded, clubId: clubId, handler: handler)
         }
-        if let removeObserver = removeObserver { removeObserver() }
+        removeObserver?()
     }
 
     // MARK: observe list all events
 
     /// Test observe list all events
-    func testObserveListAllEvents() throws {
+    func testObserveListAllEvents() async throws {
 
         // Observe value added
-        try _testObserveListAllEventsChildAdded()
+        try await _testObserveListAllEventsChildAdded()
 
         // Observe value changed
-        try _testObserveListAllEventsChildChanged()
+        try await _testObserveListAllEventsChildChanged()
 
         // Observe value removed
-        try _testObserveListAllEventsChildRemoved()
+        try await _testObserveListAllEventsChildRemoved()
 
         // Observe value added same id
-        try _testObserveListAllEventsAlreadySameId()
+        try await _testObserveListAllEventsAlreadySameId()
     }
 
     /// Test observe list all events: child added
-    func _testObserveListAllEventsChildAdded() throws {
+    func _testObserveListAllEventsChildAdded() async throws {
         var removeObserver: (() -> Void)?
-        let personList: [FirebasePerson] = try waitExpectation { handler in
+        let personList: [FirebasePerson] = try await waitExpectation { handler in
             var personList = [FirebasePerson]()
             var numberObserved = 0
             removeObserver = FirebaseObserver.shared.observeList(FirebasePerson.self, clubId: clubId) { changeList in
@@ -398,18 +369,16 @@ class FirebaseObserverTests: XCTestCase {
                 handler(personList)
             }
             let callItem = FFNewTestClubPropertyCall(clubId: clubId, urlFromClub: URL(string: "persons/13BC2D6B-13FE-4874-AFD9-8351FB79B5D5")!, property: ["name": ["first": "firstName", "last": "lastName"]])
-            FirebaseFunctionCaller.shared.call(callItem).thenResult { result in
-                XCTAssertNil(result.error)
-            }
+            try await FirebaseFunctionCaller.shared.call(callItem)
         }
-        if let removeObserver = removeObserver { removeObserver() }
+        removeObserver?()
         XCTAssertEqual(personList, [FirebasePerson(id: FirebasePerson.ID(rawValue: UUID(uuidString: "13BC2D6B-13FE-4874-AFD9-8351FB79B5D5")!), name: PersonName(firstName: "firstName", lastName: "lastName"), signInData: nil)])
     }
 
     /// Test observe list all events: child changed
-    func _testObserveListAllEventsChildChanged() throws {
+    func _testObserveListAllEventsChildChanged() async throws {
         var removeObserver: (() -> Void)?
-        let personList: [FirebasePerson] = try waitExpectation { handler in
+        let personList: [FirebasePerson] = try await waitExpectation { handler in
             var personList = [FirebasePerson(id: FirebasePerson.ID(rawValue: UUID(uuidString: "CEECA214-BA2B-4CEA-914D-6C12F5BD7C1F")!), name: PersonName(firstName: "otherFirstName", lastName: "otherLastName"), signInData: nil),
                               FirebasePerson(id: FirebasePerson.ID(rawValue: UUID(uuidString: "13BC2D6B-13FE-4874-AFD9-8351FB79B5D5")!), name: PersonName(firstName: "firstName", lastName: "lastName"), signInData: nil)]
             var numberObserved = 0
@@ -420,19 +389,17 @@ class FirebaseObserverTests: XCTestCase {
                 handler(personList)
             }
             let callItem = FFNewTestClubPropertyCall(clubId: clubId, urlFromClub: URL(string: "persons/13BC2D6B-13FE-4874-AFD9-8351FB79B5D5/name/first")!, property: "newFirstName")
-            FirebaseFunctionCaller.shared.call(callItem).thenResult { result in
-                XCTAssertNil(result.error)
-            }
+            try await FirebaseFunctionCaller.shared.call(callItem)
         }
-        if let removeObserver = removeObserver { removeObserver() }
+        removeObserver?()
         XCTAssertEqual(personList, [FirebasePerson(id: FirebasePerson.ID(rawValue: UUID(uuidString: "CEECA214-BA2B-4CEA-914D-6C12F5BD7C1F")!), name: PersonName(firstName: "otherFirstName", lastName: "otherLastName"), signInData: nil),
                                     FirebasePerson(id: FirebasePerson.ID(rawValue: UUID(uuidString: "13BC2D6B-13FE-4874-AFD9-8351FB79B5D5")!), name: PersonName(firstName: "newFirstName", lastName: "lastName"), signInData: nil)])
     }
 
     /// Test observe list all events: child removed
-    func _testObserveListAllEventsChildRemoved() throws {
+    func _testObserveListAllEventsChildRemoved() async throws {
         var removeObserver: (() -> Void)?
-        let personList: [FirebasePerson] = try waitExpectation { handler in
+        let personList: [FirebasePerson] = try await waitExpectation { handler in
             var personList = [FirebasePerson(id: FirebasePerson.ID(rawValue: UUID(uuidString: "13BC2D6B-13FE-4874-AFD9-8351FB79B5D5")!), name: PersonName(firstName: "firstName", lastName: "lastName"), signInData: nil)]
             var numberObserved = 0
             removeObserver = FirebaseObserver.shared.observeList(FirebasePerson.self, clubId: clubId) { changeList in
@@ -442,18 +409,16 @@ class FirebaseObserverTests: XCTestCase {
                 handler(personList)
             }
             let callItem = FFDeleteTestClubPropertyCall(clubId: clubId, urlFromClub: URL(string: "persons/13BC2D6B-13FE-4874-AFD9-8351FB79B5D5")!)
-            FirebaseFunctionCaller.shared.call(callItem).thenResult { result in
-                XCTAssertNil(result.error)
-            }
+            try await FirebaseFunctionCaller.shared.call(callItem)
         }
-        if let removeObserver = removeObserver { removeObserver() }
+        removeObserver?()
         XCTAssertEqual(personList, [])
     }
 
     /// Test observe list all events: already same id
-    func _testObserveListAllEventsAlreadySameId() throws {
+    func _testObserveListAllEventsAlreadySameId() async throws {
         var removeObserver: (() -> Void)?
-        let personList: [FirebasePerson] = try waitExpectation { handler in
+        let personList: [FirebasePerson] = try await waitExpectation { handler in
             var personList = [FirebasePerson(id: FirebasePerson.ID(rawValue: UUID(uuidString: "13BC2D6B-13FE-4874-AFD9-8351FB79B5D5")!), name: PersonName(firstName: "firstName", lastName: "lastName"), signInData: nil)]
             var numberObserved = 0
             removeObserver = FirebaseObserver.shared.observeList(FirebasePerson.self, clubId: clubId) { changeList in
@@ -463,11 +428,9 @@ class FirebaseObserverTests: XCTestCase {
                 handler(personList)
             }
             let callItem = FFNewTestClubPropertyCall(clubId: clubId, urlFromClub: URL(string: "persons/13BC2D6B-13FE-4874-AFD9-8351FB79B5D5")!, property: ["name": ["first": "newFirstName", "last": "lastName"]])
-            FirebaseFunctionCaller.shared.call(callItem).thenResult { result in
-                XCTAssertNil(result.error)
-            }
+            try await FirebaseFunctionCaller.shared.call(callItem)
         }
-        if let removeObserver = removeObserver { removeObserver() }
+        removeObserver?()
         XCTAssertEqual(personList, [FirebasePerson(id: FirebasePerson.ID(rawValue: UUID(uuidString: "13BC2D6B-13FE-4874-AFD9-8351FB79B5D5")!), name: PersonName(firstName: "firstName", lastName: "lastName"), signInData: nil)])
     }
 }

@@ -227,12 +227,30 @@ struct SplittedButton: View {
         return button
     }
 
+    /// Sets left button handler
+    /// - Parameter buttonHandler: left button handler
+    /// - Returns: modified single button
+    public func onLeftClick(perform buttonHandler: @escaping () async -> Void) -> SplittedButton {
+        var button = self
+        button.leftButtonHandler = { async { await buttonHandler() } }
+        return button
+    }
+
     /// Sets right button handler
     /// - Parameter buttonHandler: right button handler
     /// - Returns: modified single button
     public func onRightClick(perform buttonHandler: @escaping () -> Void) -> SplittedButton {
         var button = self
         button.rightButtonHandler = buttonHandler
+        return button
+    }
+
+    /// Sets right button handler
+    /// - Parameter buttonHandler: right button handler
+    /// - Returns: modified single button
+    public func onRightClick(perform buttonHandler: @escaping () async -> Void) -> SplittedButton {
+        var button = self
+        button.rightButtonHandler = { async { await buttonHandler() } }
         return button
     }
 

@@ -83,17 +83,7 @@ struct SignInView: View {
                     VStack(spacing: 5) {
                         SingleButton("sign-in-with-google-button-text", table: .logInSignIn, comment: "Text of sign in with google button")
                             .leftSymbol(Image(uiImage: #imageLiteral(resourceName: "google-icon")))
-                            .onClick {
-                                guard connectionState != .loading else { return }
-                                clearErrorMessages()
-                                signInGoogleController.handleGoogleSignIn { userId, personNameComponents in
-                                    handleNextPage(userId: userId, name: personNameComponents, errorMessage: $googleErrorMessage)
-                                } onFailure: {
-                                    googleErrorMessage = .internalErrorSignIn
-                                    connectionState.failed()
-                                }
-
-                            }
+                            .onClick(perform: handleSignInGoogleButtonPress)
                         ErrorMessageView($googleErrorMessage)
                     }
 
@@ -102,16 +92,7 @@ struct SignInView: View {
                         SingleButton("sign-in-with-apple-button-text", table: .logInSignIn, comment: "Text of sign in with apple button")
                             .leftSymbol(name: "applelogo")
                             .leftColor(.white)
-                            .onClick {
-                                guard connectionState != .loading else { return }
-                                clearErrorMessages()
-                                signInAppleController.handleAppleSignIn { userId, personNameComponents in
-                                    handleNextPage(userId: userId, name: personNameComponents, errorMessage: $appleErrorMessage)
-                                } onFailure: {
-                                    appleErrorMessage = .internalErrorSignIn
-                                    connectionState.failed()
-                                }
-                            }
+                            .onClick(perform: handleSignInAppleButtonPress)
                         ErrorMessageView($appleErrorMessage)
                     }
 
@@ -130,16 +111,45 @@ struct SignInView: View {
         }.maxFrame
     }
 
+    /// Handles sign in with google button press
+    func handleSignInGoogleButtonPress() {
+        guard connectionState != .loading else { return }
+        clearErrorMessages()
+        signInGoogleController.handleGoogleSignIn { userId, personNameComponents in
+            async {
+                await handleNextPage(userId: userId, name: personNameComponents, errorMessage: $googleErrorMessage)
+            }
+        } onFailure: {
+            googleErrorMessage = .internalErrorSignIn
+            connectionState.failed()
+        }
+    }
+
+    /// Handles sign in with apple button press
+    func handleSignInAppleButtonPress() {
+        guard connectionState != .loading else { return }
+        clearErrorMessages()
+        signInAppleController.handleAppleSignIn { userId, personNameComponents in
+            async {
+                await handleNextPage(userId: userId, name: personNameComponents, errorMessage: $appleErrorMessage)
+            }
+        } onFailure: {
+            appleErrorMessage = .internalErrorSignIn
+            connectionState.failed()
+        }
+    }
+
     /// Handles to go to the next page
-    func handleNextPage(userId: String, name: PersonNameComponents?, errorMessage: Binding<ErrorMessages?>) {
+    func handleNextPage(userId: String, name: PersonNameComponents?, errorMessage: Binding<ErrorMessages?>) async {
         signInProperties = nil
         signInPropertyValidName = nil
         isNavigationLinkActive = false
         isSelectClubNavigationLinkActive = false
 
         guard connectionState.restart() == .passed else { return }
-        let callItem = FFExistsPersonWithUserIdCall(userId: userId)
-        FirebaseFunctionCaller.shared.call(callItem).then { existsPerson in
+        do {
+            let callItem = FFExistsPersonWithUserIdCall(userId: userId)
+            let existsPerson = try await FirebaseFunctionCaller.shared.call(callItem)
             guard !existsPerson else {
                 connectionState.failed()
                 return errorMessage.wrappedValue = .alreadySignedIn
@@ -152,7 +162,7 @@ struct SignInView: View {
                 isNavigationLinkActive = true
             }
             connectionState.passed()
-        }.catch { _ in
+        } catch {
             errorMessage.wrappedValue = .internalErrorSignIn
             connectionState.failed()
         }

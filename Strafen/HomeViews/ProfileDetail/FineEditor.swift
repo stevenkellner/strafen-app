@@ -340,15 +340,17 @@ struct FineEditor: View {
 
     /// Handles fine delete
     func handleFineDelete() {
-        Self.handleFineDelete(fine: fine,
-                              person: person,
-                              inputProperties: $inputProperties,
-                              presentationMode: presentationMode)
+        async {
+            await Self.handleFineDelete(fine: fine,
+                                        person: person,
+                                        inputProperties: $inputProperties,
+                                        presentationMode: presentationMode)
+        }
     }
 
     /// Handles fine update
-    func handleFineUpdate() {
-        Self.handleFineUpdate(person: person,
+    func handleFineUpdate() async {
+        await Self.handleFineUpdate(person: person,
                               inputProperties: $inputProperties,
                               reasonList: reasonListEnvironment.list,
                               presentationMode: presentationMode)
@@ -358,31 +360,27 @@ struct FineEditor: View {
     static func handleFineDelete(fine: FirebaseFine,
                                  person: Settings.Person,
                                  inputProperties: Binding<InputProperties>,
-                                 presentationMode: Binding<PresentationMode>? = nil,
-                                 onCompletion completionHandler: (() -> Void)? = nil) {
-
+                                 presentationMode: Binding<PresentationMode>? = nil) async {
         guard person.isCashier else { return }
         guard inputProperties.wrappedValue.connectionStateUpdate != .loading,
               inputProperties.wrappedValue.connectionStateDelete.restart() == .passed else { return }
         inputProperties.wrappedValue.resetErrorMessages()
-
-        let callItem = FFChangeListCall<FirebaseFine>(clubId: person.club.id, id: fine.id)
-        FirebaseFunctionCaller.shared.call(callItem).then { _ in
+        do {
+            let callItem = FFChangeListCall<FirebaseFine>(clubId: person.club.id, id: fine.id)
+            try await FirebaseFunctionCaller.shared.call(callItem)
             presentationMode?.wrappedValue.dismiss()
             inputProperties.wrappedValue.connectionStateDelete.passed()
-        }.catch { _ in
+        } catch {
             inputProperties.wrappedValue.functionCallErrorMessage = .internalErrorDelete
             inputProperties.wrappedValue.connectionStateDelete.failed()
-        }.always { completionHandler?() }
+        }
     }
 
     /// Handles fine update
     static func handleFineUpdate(person: Settings.Person,
                                  inputProperties: Binding<InputProperties>,
                                  reasonList: [FirebaseReasonTemplate],
-                                 presentationMode: Binding<PresentationMode>? = nil,
-                                 onCompletion completionHandler: (() -> Void)? = nil) {
-
+                                 presentationMode: Binding<PresentationMode>? = nil) async {
         guard person.isCashier else { return }
         guard inputProperties.wrappedValue.connectionStateDelete != .loading,
               inputProperties.wrappedValue.connectionStateUpdate.restart() == .passed else { return }
@@ -396,14 +394,14 @@ struct FineEditor: View {
             presentationMode?.wrappedValue.dismiss()
             return
         }
-
-        let callItem = FFChangeListCall(clubId: person.club.id, item: updatedFine)
-        FirebaseFunctionCaller.shared.call(callItem).then { _ in
+        do {
+            let callItem = FFChangeListCall(clubId: person.club.id, item: updatedFine)
+            try await FirebaseFunctionCaller.shared.call(callItem)
             presentationMode?.wrappedValue.dismiss()
             inputProperties.wrappedValue.connectionStateUpdate.passed()
-        }.catch { _ in
+        } catch {
             inputProperties.wrappedValue.functionCallErrorMessage = .internalErrorSave
             inputProperties.wrappedValue.connectionStateUpdate.failed()
-        }.always { completionHandler?() }
+        }
     }
 }

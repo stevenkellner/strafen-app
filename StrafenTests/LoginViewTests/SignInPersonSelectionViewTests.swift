@@ -15,61 +15,56 @@ class SignInPersonSelectionViewTests: XCTestCase {
 
     let clubId = Club.ID(rawValue: UUID(uuidString: "fb3f6718-3cc5-4d2e-aca1-398a39fc1be7")!)
 
-    override func setUpWithError() throws {
+    @MainActor override func setUpWithError() throws {
         continueAfterFailure = false
         FirebaseFetcher.shared.level = .testing
-        FirebaseObserver.shared.level = .testing
         FirebaseFunctionCaller.shared.level = .testing
 
-        // Sign test user in
-        let signInError: Error? = try waitExpectation { handler in
-            Auth.auth().signIn(withEmail: "app.demo@web.de", password: "Demopw12") { _, error in
-                handler(error)
+        waitExpectation { handler in
+            async {
+
+                // Sign test user in
+                try await Auth.auth().signIn(withEmail: "app.demo@web.de", password: "Demopw12")
+
+                let callItem = FFNewTestClubCall(clubId: clubId, testClubType: .fetcherTestClub)
+                try await FirebaseFunctionCaller.shared.call(callItem)
+
+                handler()
             }
         }
-        XCTAssertNil(signInError)
-
-        let createClubResult: Result<HTTPSCallableResult, Error> = try waitExpectation { handler in
-            let callItem = FFNewTestClubCall(clubId: clubId, testClubType: .fetcherTestClub)
-            FirebaseFunctionCaller.shared.call(callItem).thenResult(handler)
-        }
-        _ = try createClubResult.get()
+        try Task.checkCancellation()
     }
 
     override func tearDownWithError() throws {
-        let deleteClubResult: Result<HTTPSCallableResult, Error> = try waitExpectation { handler in
-            let callItem = FFDeleteTestClubCall(clubId: clubId)
-            FirebaseFunctionCaller.shared.call(callItem).thenResult(handler)
+        waitExpectation { handler in
+            async {
+                let callItem = FFDeleteTestClubCall(clubId: clubId)
+                try await FirebaseFunctionCaller.shared.call(callItem)
+                handler()
+            }
         }
-        _ = try deleteClubResult.get()
+        try Task.checkCancellation()
     }
 
     /// Tests with selected person
-    func testWithPersonSelected() throws {
+    func testWithPersonSelected() async throws {
         var inputProperties = SignInPersonSelectionView.InputProperties()
         inputProperties.personList = []
         let person = TestClub.fetcherTestClub.persons.first { $0.signInData == nil }!
         inputProperties.selectedPersonId = person.id
         let inputBinding = Binding<SignInPersonSelectionView.InputProperties> { inputProperties } set: { inputProperties = $0 }
         let signInProperty = SignInProperty.UserIdNameClubId(userId: "userId", name: PersonName(firstName: "firstName"), clubId: clubId)
-        waitExpectation { handler in
-            SignInPersonSelectionView.handleRegisterButtonPress(signInProperty: signInProperty, inputProperty: inputBinding, onCompletion: handler)
-        }
+        await SignInPersonSelectionView.handleRegisterButtonPress(signInProperty: signInProperty, inputProperty: inputBinding)
         XCTAssertNil(inputProperties.errorMessage)
 
-        let personListResult: Result<[FirebasePerson], Error> = try waitExpectation { handler in
-            FirebaseFetcher.shared.fetchList(FirebasePerson.self, clubId: clubId).thenResult(handler)
-        }
-        let fetchedPerson = try personListResult.get().first { $0.id == person.id }
+        let personList = try await FirebaseFetcher.shared.fetchList(FirebasePerson.self, clubId: clubId)
+        let fetchedPerson = personList.first { $0.id == person.id }
         XCTAssertEqual(fetchedPerson?.name, PersonName(firstName: "firstName"))
         XCTAssertEqual(fetchedPerson?.signInData?.userId, "userId")
         XCTAssertEqual(fetchedPerson?.signInData?.isCashier, false)
 
-        let personUserIdResult: Result<String, Error> = try waitExpectation { handler in
-            let url = URL(string: "personUserIds/userId")!
-            FirebaseFetcher.shared.fetch(String.self, url: url, clubId: clubId).thenResult(handler)
-        }
-        XCTAssertEqual(try personUserIdResult.get(), person.id.uuidString)
+        let personUserId = try await FirebaseFetcher.shared.fetch(String.self, url: URL(string: "personUserIds/userId")!, clubId: clubId)
+        XCTAssertEqual(personUserId, person.id.uuidString)
 
         // Check settings
         XCTAssertEqual(Settings.shared.person?.id, person.id)
@@ -79,26 +74,18 @@ class SignInPersonSelectionViewTests: XCTestCase {
     }
 
     /// Tests without selected person
-    func testWithOutPersonSelected() throws {
+    func testWithOutPersonSelected() async throws {
         var inputProperties = SignInPersonSelectionView.InputProperties()
         inputProperties.personList = []
         let inputBinding = Binding<SignInPersonSelectionView.InputProperties> { inputProperties } set: { inputProperties = $0 }
         let signInProperty = SignInProperty.UserIdNameClubId(userId: "userId2", name: PersonName(firstName: "firstName2"), clubId: clubId)
-        waitExpectation { handler in
-            SignInPersonSelectionView.handleRegisterButtonPress(signInProperty: signInProperty, inputProperty: inputBinding, onCompletion: handler)
-        }
+        await SignInPersonSelectionView.handleRegisterButtonPress(signInProperty: signInProperty, inputProperty: inputBinding)
         XCTAssertNil(inputProperties.errorMessage)
 
-        let personUserIdResult: Result<String, Error> = try waitExpectation { handler in
-            let url = URL(string: "personUserIds/userId2")!
-            FirebaseFetcher.shared.fetch(String.self, url: url, clubId: clubId).thenResult(handler)
-        }
-        let personId = try personUserIdResult.get()
+        let personId = try await FirebaseFetcher.shared.fetch(String.self, url: URL(string: "personUserIds/userId2")!, clubId: clubId)
 
-        let personListResult: Result<[FirebasePerson], Error> = try waitExpectation { handler in
-            FirebaseFetcher.shared.fetchList(FirebasePerson.self, clubId: clubId).thenResult(handler)
-        }
-        let fetchedPerson = try personListResult.get().first { $0.id.uuidString == personId }
+        let personList = try await FirebaseFetcher.shared.fetchList(FirebasePerson.self, clubId: clubId)
+        let fetchedPerson = personList.first { $0.id.uuidString == personId }
         XCTAssertEqual(fetchedPerson?.name, PersonName(firstName: "firstName2"))
         XCTAssertEqual(fetchedPerson?.signInData?.userId, "userId2")
         XCTAssertEqual(fetchedPerson?.signInData?.isCashier, false)

@@ -85,10 +85,11 @@ struct ProfileDetail: View {
                 }.padding(.top, 40)
 
             }.maxFrame
-                .onAppear {
-                    FirebaseImageStorage.shared.getImage(.personImage(clubId: person.club.id, personId: person.id), size: .thumbBig) { image in
-                        self.image = image
-                    }
+                .task {
+                    do {
+                        let imageType = FirebaseImageStorage.ImageType(id: person.id, clubId: person.club.id)
+                        image = try await FirebaseImageStorage.shared.getImage(imageType, size: .thumbBig)
+                    } catch {}
                 }
         }
     }
@@ -129,7 +130,10 @@ struct ProfileDetail: View {
                     .toggleOnTapGesture($showImagePicker)
                     .sheet(isPresented: self.$showImagePicker) {
                         ImagePicker($image) { image, _ in
-                            FirebaseImageStorage.shared.store(image, of: .personImage(clubId: person.club.id, personId: person.id)) { _ in }
+                            async {
+                                let imageType = FirebaseImageStorage.ImageType(id: person.id, clubId: person.club.id)
+                                try? await FirebaseImageStorage.shared.store(image, of: imageType)
+                            }
                         }
                     }
 

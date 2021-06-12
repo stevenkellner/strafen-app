@@ -13,9 +13,6 @@ target 'Strafen' do
   
   # Sign in with google
   pod 'GoogleSignIn'
-
-  # Hydra
-  pod 'HydraAsync'
   
   # Introspect
   pod 'Introspect'

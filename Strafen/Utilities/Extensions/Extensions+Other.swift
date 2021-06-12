@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import Hydra
 
 extension UISceneConfiguration {
 
@@ -67,19 +66,6 @@ extension Bundle {
     /// Content of `KeysInfo` property list
     static var keysPropertyList: PropertyListContent {
         PropertyListContent(name: "KeysInfo")!
-    }
-}
-
-extension Promise {
-
-    /// Transforms value to Result.succes(value) and an error to Result.failure(error)
-    /// - Parameter handler: code block to execute
-    @discardableResult func thenResult(in context: Context? = nil, _ handler: @escaping (Result<Value, Error>) -> Void) -> Promise<Void> {
-        then(in: context) { value in
-            handler(.success(value))
-        }.catch { error in
-            handler(.failure(error))
-        }
     }
 }
 
