@@ -158,7 +158,8 @@ struct PersonList: View {
                     .onAppear {
                         async {
                             do {
-                                image = try await FirebaseImageStorage.shared.getImage(.personImage(clubId: loggedInPerson.club.id, personId: person.id), size: .thumbsSmall)
+                                let imageType = FirebaseImageStorage.ImageType(id: person.id, clubId: loggedInPerson.club.id)
+                                image = try await FirebaseImageStorage.shared.getImage(imageType, size: .thumbsSmall)
                             } catch {}
                         }
                     }

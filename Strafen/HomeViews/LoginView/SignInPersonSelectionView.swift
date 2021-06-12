@@ -153,7 +153,7 @@ struct SignInPersonSelectionView: View {
         inputProperty.wrappedValue.removeObserver?()
         async {
             do {
-                let personList = try await FirebaseFetcher.shared.fetchList(FirebasePerson.self, clubId: signInProperty.clubId)
+                let personList: [FirebasePerson] = try await FirebaseFetcher.shared.fetchList(clubId: signInProperty.clubId)
                 inputProperty.wrappedValue.personList = personList
                 inputProperty.wrappedValue.fetchConnectionState.passed()
             } catch {
@@ -243,7 +243,8 @@ struct SignInPersonSelectionView: View {
             guard !isPlaceholder else { return }
             async {
                 do {
-                    image = try await FirebaseImageStorage.shared.getImage(.personImage(clubId: clubId, personId: person.id), size: .thumbsSmall)
+                    let imageType = FirebaseImageStorage.ImageType(id: person.id, clubId: clubId)
+                    image = try await FirebaseImageStorage.shared.getImage(imageType, size: .thumbsSmall)
                 } catch {}
             }
         }

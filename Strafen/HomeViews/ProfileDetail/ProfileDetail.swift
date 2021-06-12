@@ -87,7 +87,8 @@ struct ProfileDetail: View {
             }.maxFrame
                 .task {
                     do {
-                        image = try await FirebaseImageStorage.shared.getImage(.personImage(clubId: person.club.id, personId: person.id), size: .thumbBig)
+                        let imageType = FirebaseImageStorage.ImageType(id: person.id, clubId: person.club.id)
+                        image = try await FirebaseImageStorage.shared.getImage(imageType, size: .thumbBig)
                     } catch {}
                 }
         }
@@ -130,7 +131,8 @@ struct ProfileDetail: View {
                     .sheet(isPresented: self.$showImagePicker) {
                         ImagePicker($image) { image, _ in
                             async {
-                                try? await FirebaseImageStorage.shared.store(image, of: .personImage(clubId: person.club.id, personId: person.id))
+                                let imageType = FirebaseImageStorage.ImageType(id: person.id, clubId: person.club.id)
+                                try? await FirebaseImageStorage.shared.store(image, of: imageType)
                             }
                         }
                     }

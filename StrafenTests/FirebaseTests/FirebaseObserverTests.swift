@@ -23,7 +23,7 @@ class FirebaseObserverTests: XCTestCase {
         FirebaseFetcher.shared.level = .testing
         FirebaseObserver.shared.level = .testing
 
-        waitExpectation { handler in
+        waitExpectation(timeout: 60) { handler in
             async {
 
                 // Sign test user in

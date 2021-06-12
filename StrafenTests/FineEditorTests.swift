@@ -18,7 +18,6 @@ class FineEditorTests: XCTestCase {
     @MainActor override func setUpWithError() throws {
         continueAfterFailure = false
         FirebaseFetcher.shared.level = .testing
-        FirebaseObserver.shared.level = .testing
         FirebaseFunctionCaller.shared.level = .testing
 
         waitExpectation { handler in

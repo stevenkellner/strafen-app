@@ -25,15 +25,17 @@ import FirebaseDatabase
 
         /// No data exists in retrieving snapshot
         case noData
+
+        /// Path couldn't be converted to an url
+        case invalidPath
     }
 
-    /// Fetches given type from firebase database
+    /// Fetches data from firebase database
     /// - Parameters:
-    ///   - type: Type of fetched value
-    ///   - urlFromClub: Url from club to value in firebase database
+    ///   - urlFromClub: url from club to value in firebase database
     ///   - clubId: id of club to fetch from
-    /// - Returns: Retrieved value
-    func fetch<T>(_ type: T.Type, url urlFromClub: URL?, clubId: Club.ID) async throws -> T where T: Decodable {
+    /// - Returns: Retrived data
+    private func fetch(url urlFromClub: URL?, clubId: Club.ID) async throws -> Any {
         let url = URL(string: level.clubComponent)!
             .appendingPathComponent(clubId.uuidString)
             .appendingUrl(urlFromClub)
@@ -42,29 +44,43 @@ import FirebaseDatabase
                 guard snapshot.exists(), let data = snapshot.value else {
                     return contination.resume(throwing: FetchError.noData)
                 }
-                let decodedResult = FirebaseDecoder.shared.decodeResult(type, data)
-                contination.resume(with: decodedResult)
+                contination.resume(returning: data)
             }
         }
     }
 
-    /// Fetches a list from firebase database
-    /// - Parameter type: Type of the list element
+    /// Fetches given type from firebase database
     /// - Parameters:
+    ///   - type: type of fetched value
+    ///   - urlFromClub: url from club to value in firebase database
+    ///   - clubId: id of club to fetch from
+    /// - Returns: Retrieved value
+    func fetch<T>(_ type: T.Type = T.self, url urlFromClub: URL?, clubId: Club.ID) async throws -> T where T: Decodable {
+        let data = try await fetch(url: urlFromClub, clubId: clubId)
+        return try FirebaseDecoder.shared.decodeOrThrow(type, data)
+    }
+
+    /// Fetches given type from firebase database
+    /// - Parameters:
+    ///   - type: type of fetched value
+    ///   - pathFromClub: path from club to value in firebase database
+    ///   - clubId: id of club to fetch from
+    /// - Returns: Retrieved value
+    func fetch<T>(_ type: T.Type = T.self, path pathFromClub: String, clubId: Club.ID) async throws -> T where T: Decodable {
+        guard let urlFromClub = URL(string: pathFromClub) else { throw FetchError.invalidPath }
+        let data = try await fetch(url: urlFromClub, clubId: clubId)
+        return try FirebaseDecoder.shared.decodeOrThrow(type, data)
+    }
+
+    /// Fetches a list from firebase database
+    /// - Parameters:
+    ///   - type: type of the list element
     ///   - clubId: id of club to fetch from
     /// - Returns: Retrieved list
-    func fetchList<ListType>(_ type: ListType.Type, clubId: Club.ID) async throws -> [ListType] where ListType: FirebaseListType {
-        let url = URL(string: level.clubComponent)!
-            .appendingPathComponent(clubId.uuidString)
-            .appendingUrl(ListType.urlFromClub)
-        return try await withCheckedThrowingContinuation { contination in
-            Database.database().reference(withPath: url.path).observeSingleEvent(of: .value) { snapshot in
-                guard snapshot.exists(), let data = snapshot.value else {
-                    return contination.resume(returning: [])
-                }
-                let decodedResult = FirebaseDecoder.shared.decodeListResult(type, data)
-                contination.resume(with: decodedResult)
-            }
-        }
+    func fetchList<ListType>(_ type: ListType.Type = ListType.self, clubId: Club.ID) async throws -> [ListType] where ListType: FirebaseListType {
+        do {
+            let data = try await fetch(url: ListType.urlFromClub, clubId: clubId)
+            return try FirebaseDecoder.shared.decodeListOrThrow(type, data)
+        } catch FetchError.noData { return [] }
     }
 }

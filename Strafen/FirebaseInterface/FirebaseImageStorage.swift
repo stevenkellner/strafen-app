@@ -10,12 +10,6 @@ import FirebaseStorage
 /// Used to storage and fetch images from server
 @MainActor class FirebaseImageStorage {
 
-    /// Shared instance for singelton
-    static let shared = FirebaseImageStorage()
-
-    /// Private init for singleton
-    private init() {}
-
     /// Image type
     enum ImageType {
 
@@ -24,6 +18,20 @@ import FirebaseStorage
 
         /// Person image
         case personImage(clubId: Club.ID, personId: FirebasePerson.ID)
+
+        /// Init image type as `.clubImage` with given club id
+        /// - Parameter clubId: club id
+        init(id clubId: Club.ID) {
+            self = .clubImage(clubId: clubId)
+        }
+
+        /// Init image type as `.personImage` with given person and club id
+        /// - Parameters:
+        ///   - personId: person id
+        ///   - clubId: club id
+        init(id personId: FirebasePerson.ID, clubId: Club.ID) {
+            self = .personImage(clubId: clubId, personId: personId)
+        }
 
         /// Url to image
         var url: URL {
@@ -40,7 +48,9 @@ import FirebaseStorage
             }
         }
 
-        /// Url to image with image size
+        /// Url to image with given image size
+        /// - Parameter imageSize: size of image
+        /// - Returns: url to image with given image size
         func url(with imageSize: ImageSize) -> URL {
             switch self {
             case .clubImage(clubId: let clubId):
@@ -90,12 +100,6 @@ import FirebaseStorage
         }
     }
 
-    /// Storage bucket url
-    static let storageBucketUrl: String = "gs://strafen-app.appspot.com"
-
-    /// Compression quality
-    static let compressionQuality: CGFloat = 0.85
-
     /// Error appears while storing an image
     enum StoreError: Error {
 
@@ -112,31 +116,37 @@ import FirebaseStorage
     /// Cache of small / standard / big and original images
     struct ImageCache {
 
-        /// Small images
-        var smallImages: DataCache<UUID, UIImage>
+        /// Cache for small images
+        var smallImageCache: DataCache<UUID, UIImage>
 
-        /// Standard images
-        var standardImages: DataCache<UUID, UIImage>
+        /// Cache for standard images
+        var standardImageCache: DataCache<UUID, UIImage>
 
-        /// Big images
-        var bigImages: DataCache<UUID, UIImage>
+        /// Cache for big images
+        var bigImageCache: DataCache<UUID, UIImage>
 
-        /// Original images
-        var originalImages: DataCache<UUID, UIImage>
+        /// Cache for original images
+        var originalImageCache: DataCache<UUID, UIImage>
 
-        init(maxSmall: Int, maxStandard: Int, maxBig: Int, maxOriginal: Int) {
-            smallImages = DataCache(maxItems: maxSmall)
-            standardImages = DataCache(maxItems: maxStandard)
-            bigImages = DataCache(maxItems: maxBig)
-            originalImages = DataCache(maxItems: maxOriginal)
+        /// Init with number of max item in all image caches
+        /// - Parameters:
+        ///   - maxItemsSmall: number of max items in small image cache
+        ///   - maxItemsStandard: number of max items in standard image cache
+        ///   - maxItemsBig: number of max items in big image cache
+        ///   - maxItemsOriginal: number of max items in original image cache
+        init(small maxItemsSmall: Int?, standard maxItemsStandard: Int?, big maxItemsBig: Int?, original maxItemsOriginal: Int?) {
+            smallImageCache = DataCache(maxItems: maxItemsSmall)
+            standardImageCache = DataCache(maxItems: maxItemsStandard)
+            bigImageCache = DataCache(maxItems: maxItemsBig)
+            originalImageCache = DataCache(maxItems: maxItemsOriginal)
         }
 
         /// Clear all caches
         mutating func clearAll() {
-            smallImages.clear()
-            standardImages.clear()
-            bigImages.clear()
-            originalImages.clear()
+            smallImageCache.clear()
+            standardImageCache.clear()
+            bigImageCache.clear()
+            originalImageCache.clear()
         }
 
         /// Append image to all caches
@@ -144,10 +154,10 @@ import FirebaseStorage
         ///   - image: image to append to all caches
         ///   - key: key of the image to append
         mutating func appendToAll(_ image: UIImage, with key: UUID) {
-            smallImages[key] = image
-            standardImages[key] = image
-            bigImages[key] = image
-            originalImages[key] = image
+            smallImageCache[key] = image
+            standardImageCache[key] = image
+            bigImageCache[key] = image
+            originalImageCache[key] = image
         }
 
         /// Append image to all caches smaller or equal size than given image size
@@ -156,43 +166,55 @@ import FirebaseStorage
         ///   - image: image to append to caches
         ///   - key: key of the image to append
         mutating func appendToAllSmaller(than imageSize: ImageSize, _ image: UIImage, with key: UUID) {
-            if imageSize >= .original { originalImages[key] = image }
-            if imageSize >= .thumbBig { bigImages[key] = image }
-            if imageSize >= .thumbStandard { standardImages[key] = image }
-            if imageSize >= .thumbsSmall { smallImages[key] = image }
+            if imageSize >= .original { originalImageCache[key] = image }
+            if imageSize >= .thumbBig { bigImageCache[key] = image }
+            if imageSize >= .thumbStandard { standardImageCache[key] = image }
+            if imageSize >= .thumbsSmall { smallImageCache[key] = image }
         }
 
         /// Delete image with given key from all caches
         /// - Parameter key: key of image to delete from caches
         mutating func deleteFromAll(with key: UUID) {
-            smallImages[key] = nil
-            standardImages[key] = nil
-            bigImages[key] = nil
-            originalImages[key] = nil
+            smallImageCache[key] = nil
+            standardImageCache[key] = nil
+            bigImageCache[key] = nil
+            originalImageCache[key] = nil
         }
 
         /// Get image with given key and size
         ///
-        /// If image with given size doen't exist in cache, but the image with greater size,
+        /// If image with given size doesn't exist in cache, but there is an image with greater size,
         /// this image is returned
         /// - Parameters:
         ///   - key: key of image to get
         ///   - imageSize: size of image to get
         /// - Returns: image from cache or nil if there are no image with given key in cache
         func getImage(with key: UUID, imageSize: ImageSize) -> UIImage? {
-            if imageSize <= .original, let image = originalImages[key] { return image}
-            if imageSize <= .thumbBig, let image = bigImages[key] { return image }
-            if imageSize <= .thumbStandard, let image = standardImages[key] { return image }
-            if imageSize <= .thumbsSmall, let image = smallImages[key] { return image }
+            if imageSize <= .thumbsSmall, let image = smallImageCache[key] { return image }
+            if imageSize <= .thumbStandard, let image = standardImageCache[key] { return image }
+            if imageSize <= .thumbBig, let image = bigImageCache[key] { return image }
+            if imageSize <= .original, let image = originalImageCache[key] { return image }
             return nil
         }
     }
 
+    /// Storage bucket url
+    static private let storageBucketUrl: String = "gs://strafen-app.appspot.com"
+
+    /// Compression quality
+    static private let compressionQuality: CGFloat = 0.85
+
+    /// Shared instance for singelton
+    static let shared = FirebaseImageStorage()
+
+    /// Private init for singleton
+    private init() {}
+
     /// Person image cache
-    var personImageCache = ImageCache(maxSmall: 40, maxStandard: 20, maxBig: 10, maxOriginal: 1)
+    private var personImageCache = ImageCache(small: 40, standard: 20, big: 10, original: 1)
 
     /// Club image cache
-    var clubImageCache = ImageCache(maxSmall: 1, maxStandard: 1, maxBig: 1, maxOriginal: 1)
+    private var clubImageCache = ImageCache(small: 1, standard: 1, big: 1, original: 1)
 
     /// Stores image on server
     /// - Parameters:
@@ -356,7 +378,7 @@ import FirebaseStorage
 /// A cache for any type
 struct DataCache<Key, DataType> where Key: Hashable {
 
-    /// Contains personId and associated image
+    /// Contains key and associated data
     private struct Metadata<Key, DataType> where Key: Hashable {
 
         /// Key
@@ -389,9 +411,7 @@ struct DataCache<Key, DataType> where Key: Hashable {
 
     /// Get and set data to given key
     subscript(_ key: Key) -> DataType? {
-        get {
-            dataList.first(where: { $0.key == key })?.data
-        }
+        get { dataList.first { $0.key == key }?.data }
         set {
             guard let newValue = newValue else { return delete(with: key) }
             if dataList.contains(where: { $0.key == key }) {
@@ -414,7 +434,7 @@ struct DataCache<Key, DataType> where Key: Hashable {
     /// Remove earlies data from cache
     private mutating func removeEarlist() {
         guard let earliesMetadata = dataList.min(by: { $0.time < $1.time }) else { return }
-        dataList.filtered { $0.key != earliesMetadata.key }
+        dataList.removeAll { $0.key == earliesMetadata.key }
     }
 
     /// Update data with given key in cache
@@ -428,7 +448,7 @@ struct DataCache<Key, DataType> where Key: Hashable {
     /// Delete data with given key from cache
     /// - Parameter key: key of data to delete from cache
     private mutating func delete(with key: Key) {
-        dataList.removeAll(where: { $0.key == key })
+        dataList.removeAll { $0.key == key }
     }
 
     /// Clear cache

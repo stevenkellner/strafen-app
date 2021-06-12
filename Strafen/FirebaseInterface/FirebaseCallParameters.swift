@@ -44,6 +44,12 @@ struct FirebaseCallParameterSet {
         parameters.merge(moreParameters) { firstValue, _ in firstValue}
     }
 
+    /// Adds parameter with given closure
+    ///   - adding: closure to add more parameters
+    mutating func add(_ adding: (inout [String: FirebaseParameterable]) -> Void) {
+        adding(&parameters)
+    }
+
     /// Sets and gets parameter with given key
     /// - Parameters:
     ///   - key: key of the parameter

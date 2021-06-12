@@ -199,7 +199,8 @@ struct PersonAddNew: View {
                                inputProperties: Binding<InputProperties>) async throws {
         guard let image = inputProperties.wrappedValue.image else { return }
         inputProperties.wrappedValue.imageUploadProgess = .zero
-        try await FirebaseImageStorage.shared.store(image, of: .personImage(clubId: person.club.id, personId: personId)) { progress in
+        let imageType = FirebaseImageStorage.ImageType(id: personId, clubId: person.club.id)
+        try await FirebaseImageStorage.shared.store(image, of: imageType) { progress in
             inputProperties.wrappedValue.imageUploadProgess = progress
         }
     }
