@@ -1,0 +1,9 @@
+/* Bundle name */
+"CFBundleName" = "Strafen";
+
+/* Privacy - Location When In Use Usage Description */
+"NSLocationWhenInUseUsageDescription" = "Required for in-app payment.";
+
+/* Privacy - Photo Library Usage Description */
+"NSPhotoLibraryUsageDescription" = "Is required to save images.";
+

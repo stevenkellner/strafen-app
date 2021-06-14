@@ -1,0 +1,377 @@
+/* Text of an amount display for amount sum of all unpayed fines with low importance. */
+"amount-sum-low-importance-text" = "All Pending";
+
+/* Text of an amount display for amount sum of all payed fines. */
+"amount-sum-payed-text" = "All Paid";
+
+/* Text of an amount display for amount sum of all fines. */
+"amount-sum-total-text" = "Total";
+
+/* Text of button to get to last page. */
+"back-button-text" = "Back";
+
+/* Text of cancel button. */
+"cancel-button-text" = "Cancel";
+
+/* Text of confirm button. */
+"confirm-button-text" = "Confirm";
+
+/* Text of continue button. */
+"continue-button-text" = "Continue";
+
+/* Text of done button. */
+"done-button-text" = "Done";
+
+/* Text of edit button. */
+"edit-button-text" = "Edit";
+
+/* An error message displayed, when a person is already signed in. */
+"error-message-alreadySignedIn" = "You're already registered!";
+
+/* An error message displayed, when a person is already signed in with inputed email. */
+"error-message-alreadySignedInEmail" = "This email is already registered!";
+
+/* An error message displayed, when inputed amount is zero. */
+"error-message-amountZero" = "Amount can't be zero!";
+
+/* An error message displayed, when no club with inputed club identfier exists. */
+"error-message-clubNotExists" = "There is no club with this identifier!";
+
+/* An error message displayed, when a text field is empty. */
+"error-message-emptyField" = "This field can not be empty!";
+
+/* An error message displayed, when inputed date is in the future. */
+"error-message-futureDate" = "Date can't be in the future!";
+
+/* An error message displayed, when a club with inputed club identfier already exists. */
+"error-message-identifierAlreadyExists" = "Team identifier is already taken!";
+
+/* An error message displayed, when inputed password is incorrect. */
+"error-message-incorrectPassword" = "The password you entered is incorrect!";
+
+/* An error message displayed, when an error while deleting occured. */
+"error-message-internalErrorDelete" = "There was a problem deleting!";
+
+/* An error message displayed, when an error while logging in occured. */
+"error-message-internalErrorLogIn" = "There was a problem signing in!";
+
+/* An error message displayed, when an error while saving occured. */
+"error-message-internalErrorSave" = "There was a problem saving!";
+
+/* An error message displayed, when an error while signing in occured. */
+"error-message-internalErrorSignIn" = "There was a problem registering!";
+
+/* An error message displayed, when inputed text isn't a valid email address. */
+"error-message-invalidEmail" = "This is not a valid email!";
+
+/* An error message displayed, when inputed number isn't between 1 and 99. */
+"error-message-invalidNumberRange" = "Number must be between 1 and 99!";
+
+/* An error message displayed, when inputed password doesn't contain a digit. */
+"error-message-noDigit" = "Must contain a number!";
+
+/* An error message displayed, when inputed password doesn't contain a lowercased character. */
+"error-message-noLowerCharacter" = "Must contain a lowercase letter!";
+
+/* An error message displayed, when no region is given. */
+"error-message-noRegionGiven" = "No region specified!";
+
+/* An error message displayed, when inputed region doesn't have EUR as currency. */
+"error-message-notEuro" = "Only works in countries with euros!";
+
+/* An error message displayed, when repeat password doen't match orignial password. */
+"error-message-notSamePassword" = "Passwords do not match!";
+
+/* An error message displayed, when person try to log in, that isn't signed in. */
+"error-message-notSignedIn" = "You're not registered!";
+
+/* An error message displayed, when inputed password doesn't contain an uppercased character. */
+"error-message-noUpperCharacter" = "Must contain an uppercase letter!";
+
+/* An error message displayed, when inputed password doesn't contain enough characters. */
+"error-message-tooFewCharacters" = "Password is too short!";
+
+/* An error message displayed, when the inputed password is too weak. */
+"error-message-weakPassword" = "The password is too weak!";
+
+/* Text to show who this fine is from. */
+"fine-detail-fine-of-text" = "Fine of";
+
+/* Text that indicates that this fine was payed in app. */
+"fine-detail-payed-in-app" = "Paid in app";
+
+/* Text that indicates that a payment is in process. */
+"fine-detail-payment-in-process" = "Payment in Progress";
+
+/* Name of person if no name is given. */
+"fine-detail-unknown-person-name" = "Unknown";
+
+/* Plain text of amount for text field placeholder. */
+"fine-editor-amount-placeholder" = "Amount";
+
+/* Plain text of amount for text field title. */
+"fine-editor-amount-title" = "Amount";
+
+/* Plain text of date for text field placeholder. */
+"fine-editor-date-placeholder" = "Date";
+
+/* Plain text of date for text field title. */
+"fine-editor-date-title" = "Date";
+
+/* Message of delete fine alert. */
+"fine-editor-delete-message" = "Do you really want to delete the fine?";
+
+/* Header of fine editor view. */
+"fine-editor-header-text" = "Change Fine";
+
+/* Plain text of importance for imporance changer title. */
+"fine-editor-importance-title" = "Importance";
+
+/* Plain text of number for text field placeholder. */
+"fine-editor-number-placeholder" = "Number";
+
+/* Plain text of number for text field title. */
+"fine-editor-number-title" = "Number";
+
+/* Plain text of reason for text field placeholder. */
+"fine-editor-reason-placeholder" = "Reason";
+
+/* Plain text of reason for text field title. */
+"fine-editor-reason-title" = "Reason";
+
+/* Message to change image. */
+"image-selector-change-image" = "Change image";
+
+/* Language code of localization. */
+"language-code" = "en";
+
+/* Plain text of late payment interest */
+"late-payment-interest" = "late payment interest";
+
+/* Text of log in button. */
+"log-in-button-text" = "Sign in";
+
+/* Plain text of email for text field placeholder. */
+"log-in-email-placeholder" = "Email";
+
+/* Plain text of email for text field title. */
+"log-in-email-title" = "Email";
+
+/* Message of forget passwort confirm alert with inputed email. */
+"log-in-forget-password-alert-confirm-message-%@" = "An email was sent to reset the password to% @.";
+
+/* Title of forget passwort confirm alert. */
+"log-in-forget-password-alert-confirm-title" = "Password reseted";
+
+/* Message of forget passwort invalid email alert. */
+"log-in-forget-password-alert-invalid-email-message" = "Enter a valid email to reset.";
+
+/* Title of forget passwort invalid email alert. */
+"log-in-forget-password-alert-invalid-email-title" = "Invalid Email";
+
+/* Text of forgot passwort button. */
+"log-in-forget-password-button-text" = "Forgot Password";
+
+/* Header of log in view. */
+"log-in-header" = "Sign in";
+
+/* Text of instead button, to sign in instead of log in. */
+"log-in-instead-button-text" = "Instead";
+
+/* Plain text of passwort for text field placeholder. */
+"log-in-password-placeholder" = "Password";
+
+/* Plain text of passwort for text field title. */
+"log-in-password-title" = "Password";
+
+/* Text of sign in instead of log in button. */
+"log-in-sign-in-button-text" = "Register";
+
+/* Text of understood alert button. */
+"log-in-understood-button-text" = "Understood";
+
+/* Text of log in with apple button. */
+"log-in-with-apple-button-text" = "Register with Apple";
+
+/* Text of log in with email button. */
+"log-in-with-email-button-text" = "Register with Email";
+
+/* Text of log in with google button. */
+"log-in-with-google-button-text" = "Register with Google";
+
+/* A text displayed, when there is no internet connection. */
+"no-connection-message" = "No Internet connection";
+
+/* Plain text of first name for text field placeholder. */
+"person-add-new-first-name-placeholder" = "First name";
+
+/* Header of person add new view. */
+"person-add-new-header-text" = "New Person";
+
+/* Plain text of name for text field title. */
+"person-add-new-name-title" = "Name";
+
+/* Plain text of last name that can be optional for text field placeholder. */
+"person-add-new-optional-last-name-placeholder" = "Last name (optional)";
+
+/* Text that image is uploading. */
+"person-add-new-upload-image-text" = "Upload image";
+
+/* Message that person list is empty. */
+"person-list-empty-list" = "There are no people registered!";
+
+/* Message that person list is empty for the cashier. */
+"person-list-empty-list-cashier" = "You have no person yet";
+
+/* Header of person list view. */
+"person-list-header-text" = "All Persons";
+
+/* Message that person has no fines. */
+"profile-detail-no-fines-message" = "You have no fines!";
+
+/* Placeholder text of a search text field. */
+"search-bar-text" = "Search";
+
+/* Description of the club identifier. */
+"sign-in-club-input-club-identifier-description" = "Use the unique identifier to add other players.";
+
+/* Plain text of club identifier for text field placeholder. */
+"sign-in-club-input-club-identifier-placeholder" = "Team identifier";
+
+/* Plain text of club identifier for text field title. */
+"sign-in-club-input-club-identifier-title" = "Team identifier";
+
+/* Plain text of club name for text field placeholder. */
+"sign-in-club-input-club-name-placeholder" = "Team name";
+
+/* Plain text of club name for text field title. */
+"sign-in-club-input-club-name-title" = "Team name";
+
+/* Header of sign in club input view */
+"sign-in-club-input-header" = "New Team";
+
+/* Description of in app payement. */
+"sign-in-club-input-in-app-payment-description" = "If active, your teammates can pay the fines in the app and then pay them out.";
+
+/* Plain text of in app payment for in app payment toggle placeholder. */
+"sign-in-club-input-in-app-payment-placeholder" = "In app payment";
+
+/* Plain text of in app payment for in app payment toggle title. */
+"sign-in-club-input-in-app-payment-title" = "In app payment";
+
+/* Plain text of region for region input title. */
+"sign-in-club-input-region-title" = "Region";
+
+/* Text of button to select a region. */
+"sign-in-club-input-select-region-button-text" = "Select Region";
+
+/* Message that you get the club identifier from your cashier. */
+"sign-in-club-selection-club-identifier-from-cashier-message" = "You get the identifier of your coach or cashier.";
+
+/* Plain text of club identifier for text field placeholder. */
+"sign-in-club-selection-club-identifier-placeholder" = "Team identifier";
+
+/* Plain text of club identifier for text field title. */
+"sign-in-club-selection-club-identifier-title" = "Team identifier";
+
+/* Text of create club button. */
+"sign-in-club-selection-create-club-button-text" = "Create Team";
+
+/* Header of sign in club selection view. */
+"sign-in-club-selection-header" = "Register";
+
+/* Plain text of 'or' button. */
+"sign-in-club-selection-or-button-text" = "or";
+
+/* Message that you as cashier can create a new club. */
+"sign-in-club-selection-you-cashier-create-club-message" = "If you are the cashier:\\ncreate a new club.";
+
+/* Plain text of email for text field placeholder. */
+"sign-in-email-email-placeholder" = "Email";
+
+/* Plain text of email for text field title. */
+"sign-in-email-email-title" = "Email";
+
+/* Plain text of first name for text field placeholder. */
+"sign-in-email-first-name-placeholder" = "First name";
+
+/* Header of sign in email view. */
+"sign-in-email-header" = "Register";
+
+/* Message that a name is required for sign in. */
+"sign-in-email-name-is-required-message" = "Your name is required for registration.";
+
+/* Plain text of name for text field title. */
+"sign-in-email-name-title" = "Name";
+
+/* Plain text of last name that can be optional for text field placeholder. */
+"sign-in-email-optional-last-name-placeholder" = "Last name (optional)";
+
+/* Plain text of password for text field placeholder. */
+"sign-in-email-password-placeholder" = "Password";
+
+/* Plain text of password for text field title. */
+"sign-in-email-password-title" = "Password";
+
+/* Plain text of repeat password for text field placeholder. */
+"sign-in-email-repeat-password-placeholder" = "Repeat Password";
+
+/* Header of sign in person selection view. */
+"sign-in-person-selection-header" = "Register";
+
+/* Message of select person if available. */
+"sign-in-person-selection-select-name-if-available-message" = "Choose your name if it is available.";
+
+/* Text of sign in button. */
+"sign-in-person-selection-sign-in-button-text" = "Register";
+
+/* Text of add new fine tab bar item. */
+"tab-bar-add-new-fine" = "Fine";
+
+/* Text of person list tab bar item. */
+"tab-bar-person-list" = "Persons";
+
+/* Text of profile detail tab bar item. */
+"tab-bar-profile-detail" = "Profile";
+
+/* Text of reason list tab bar item. */
+"tab-bar-reason-list" = "Penalty Catalog";
+
+/* Text of settings tab bar item. */
+"tab-bar-settings" = "Settings";
+
+/* Placeholder text of a textfield */
+"textfield-placeholder" = "Placeholder";
+
+/* Text of toogle state off. */
+"toggle-state-off" = "OFF";
+
+/* Text of toogle state on. */
+"toggle-state-on" = "ON";
+
+/* Text of button to try again loading this page. */
+"try-again-message" = "Try again";
+
+/* Text of a loading view. */
+"loading-text" = "Loading";
+
+/* Message that you can't return the deletion. */
+"delete-no-return" = "You can not revoke this action.";
+
+/* Text of delete button. */
+"delete-button-text" = "Delete";
+
+/* Region code of localization. */
+"region-code" = "US";
+
+/* Header of sign in view. */
+"sign-in-header" = "Register";
+
+/* Text of sign in with email button. */
+"sign-in-with-email-button-text" = "Sign in with Email";
+
+/* Text of sign in with google button. */
+"sign-in-with-google-button-text" = "Sign in with Google";
+
+/* Text of sign in with apple button. */
+"sign-in-with-apple-button-text" = "Sign in with Apple";

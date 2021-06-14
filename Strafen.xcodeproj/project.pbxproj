@@ -243,6 +243,8 @@
 		B0ACBA9626775C610030E0F5 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		B0ACBA9926775C610030E0F5 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
 		B0ACBAA12677B4A50030E0F5 /* HomeTab.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeTab.swift; sourceTree = "<group>"; };
+		B0ACBAA32677C3720030E0F5 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		B0ACBAA42677C3720030E0F5 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		B0AF0A8926430B2900DF4DC9 /* FFNewTestClubCall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FFNewTestClubCall.swift; sourceTree = "<group>"; };
 		B0AF0A8B26431B0800DF4DC9 /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		B0AF0A8D2643225300DF4DC9 /* FFDeleteTestClubCall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FFDeleteTestClubCall.swift; sourceTree = "<group>"; };
@@ -977,6 +979,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				B0ACBA9626775C610030E0F5 /* de */,
+				B0ACBAA32677C3720030E0F5 /* en */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
@@ -985,6 +988,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				B0ACBA9926775C610030E0F5 /* de */,
+				B0ACBAA42677C3720030E0F5 /* en */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
