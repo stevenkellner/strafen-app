@@ -273,7 +273,8 @@ struct SplittedButton: View {
     }
 
     /// Delete and confirm button
-    static let deleteConfirm = SplittedButton(left: NSLocalizedString("delete-button-text", table: .otherTexts, comment: "Text of delete button"), right: NSLocalizedString("confirm-button-text", table: .otherTexts, comment: "Text of confirm button"))
+    static let deleteConfirm = SplittedButton(left: String(localized: "delete-button-text", comment: "Text of delete button."),
+                                              right: String(localized: "confirm-button-text", comment: "Text of confirm button."))
         .fontSize(24)
         .leftSymbol(name: "trash")
         .rightSymbol(name: "checkmark.seal")
@@ -282,7 +283,8 @@ struct SplittedButton: View {
         .leftTextColor(.customRed)
 
     /// Cancel and confirm button
-    static let cancelConfirm = SplittedButton(left: NSLocalizedString("cancel-button-text", table: .otherTexts, comment: "Text of cancel button"), right: NSLocalizedString("confirm-button-text", table: .otherTexts, comment: "Text of confirm button"))
+    static let cancelConfirm = SplittedButton(left: String(localized: "cancel-button-text", comment: "Text of cancel button."),
+                                              right: String(localized: "confirm-button-text", comment: "Text of confirm button."))
         .fontSize(24)
         .leftSymbol(name: "chevron.left.2")
         .rightSymbol(name: "checkmark.seal")

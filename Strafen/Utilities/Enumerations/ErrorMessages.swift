@@ -81,33 +81,31 @@ enum ErrorMessages {
 
     /// Raw message of the error
     var rawMessage: String {
-        let localizationKey: String
         switch self {
-        case .emptyField: localizationKey = "emptyField"
-        case .invalidEmail: localizationKey = "invalidEmail"
-        case .tooFewCharacters: localizationKey = "tooFewCharacters"
-        case .noUpperCharacter: localizationKey = "noUpperCharacter"
-        case .noLowerCharacter: localizationKey = "noLowerCharacter"
-        case .noDigit: localizationKey = "noDigit"
-        case .notSamePassword: localizationKey = "notSamePassword"
-        case .internalErrorSignIn: localizationKey = "internalErrorSignIn"
-        case .internalErrorLogIn: localizationKey = "internalErrorLogIn"
-        case .internalErrorSave: localizationKey = "internalErrorSave"
-        case .alreadySignedInEmail: localizationKey = "alreadySignedInEmail"
-        case .alreadySignedIn: localizationKey = "alreadySignedIn"
-        case .weakPassword: localizationKey = "weakPassword"
-        case .clubNotExists: localizationKey = "clubNotExists"
-        case .noRegionGiven: localizationKey = "noRegionGiven"
-        case .notEuro: localizationKey = "notEuro"
-        case .identifierAlreadyExists: localizationKey = "identifierAlreadyExists"
-        case .incorrectPassword: localizationKey = "incorrectPassword"
-        case .notSignedIn: localizationKey = "notSignedIn"
-        case .amountZero: localizationKey = "amountZero"
-        case .futureDate: localizationKey = "futureDate"
-        case .invalidNumberRange: localizationKey = "invalidNumberRange"
-        case .internalErrorDelete: localizationKey = "internalErrorDelete"
+        case .emptyField: return String(localized: "error-message-emptyField", comment: "An error message displayed, when a text field is empty.")
+        case .invalidEmail: return String(localized: "error-message-invalidEmail", comment: "An error message displayed, when inputed text isn't a valid email address.")
+        case .tooFewCharacters: return String(localized: "error-message-tooFewCharacters", comment: "An error message displayed, when inputed password doesn't contain enough characters.")
+        case .noUpperCharacter: return String(localized: "error-message-noUpperCharacter", comment: "An error message displayed, when inputed password doesn't contain an uppercased character.")
+        case .noLowerCharacter: return String(localized: "error-message-noLowerCharacter", comment: "An error message displayed, when inputed password doesn't contain a lowercased character.")
+        case .noDigit: return String(localized: "error-message-noDigit", comment: "An error message displayed, when inputed password doesn't contain a digit.")
+        case .notSamePassword: return String(localized: "error-message-notSamePassword", comment: "An error message displayed, when repeat password doen't match orignial password.")
+        case .internalErrorSignIn: return String(localized: "error-message-internalErrorSignIn", comment: "An error message displayed, when an error while signing in occured.")
+        case .internalErrorLogIn: return String(localized: "error-message-internalErrorLogIn", comment: "An error message displayed, when an error while logging in occured.")
+        case .internalErrorSave: return String(localized: "error-message-internalErrorSave", comment: "An error message displayed, when an error while saving occured.")
+        case .alreadySignedInEmail: return String(localized: "error-message-alreadySignedInEmail", comment: "An error message displayed, when a person is already signed in with inputed email.")
+        case .alreadySignedIn: return String(localized: "error-message-alreadySignedIn", comment: "An error message displayed, when a person is already signed in.")
+        case .weakPassword: return String(localized: "error-message-weakPassword", comment: "An error message displayed, when the inputed password is too weak.")
+        case .clubNotExists: return String(localized: "error-message-clubNotExists", comment: "An error message displayed, when no club with inputed club identfier exists.")
+        case .noRegionGiven: return String(localized: "error-message-noRegionGiven", comment: "An error message displayed, when no region is given.")
+        case .notEuro: return String(localized: "error-message-notEuro", comment: "An error message displayed, when inputed region doesn't have EUR as currency.")
+        case .identifierAlreadyExists: return String(localized: "error-message-identifierAlreadyExists", comment: "An error message displayed, when a club with inputed club identfier already exists.")
+        case .incorrectPassword: return String(localized: "error-message-incorrectPassword", comment: "An error message displayed, when inputed password is incorrect.")
+        case .notSignedIn: return String(localized: "error-message-notSignedIn", comment: "An error message displayed, when person try to log in, that isn't signed in.")
+        case .amountZero: return String(localized: "error-message-amountZero", comment: "An error message displayed, when inputed amount is zero.")
+        case .futureDate: return String(localized: "error-message-futureDate", comment: "An error message displayed, when inputed date is in the future.")
+        case .invalidNumberRange: return String(localized: "error-message-invalidNumberRange", comment: "An error message displayed, when inputed number isn't between 1 and 99.")
+        case .internalErrorDelete: return String(localized: "error-message-internalErrorDelete", comment: "An error message displayed, when an error while deleting occured.")
         }
-        return NSLocalizedString(localizationKey, table: .errorMessages, comment: "Localizated error message")
     }
 
     /// Error code

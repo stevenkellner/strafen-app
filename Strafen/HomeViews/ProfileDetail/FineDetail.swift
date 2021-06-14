@@ -37,7 +37,7 @@ struct FineDetail: View {
 
                     // Fine of text
                     HStack(spacing: 0) {
-                        Text("fine-detail-fine-of-text", table: .profileDetail, comment: "Fine detail view fine of text")
+                        Text(verbatim: "\(String(localized: "fine-detail-fine-of-text", comment: "Text to show who this fine is from.")):")
                             .foregroundColor(.textColor)
                             .font(.system(size: 20, weight: .thin))
                             .lineLimit(1)
@@ -90,13 +90,13 @@ struct FineDetail: View {
                     PayedDisplay(fine: fine)
 
                     if fine.isSettled {
-                        Text("fine-detail-payment-in-process", table: .profileDetail, comment: "Fine detail payment in process")
+                        Text("fine-detail-payment-in-process", comment: "Text that indicates that a payment is in process.")
                             .foregroundColor(.textColor)
                             .font(.system(size: 25, weight: .thin))
                             .padding(.horizontal, 25)
                             .lineLimit(1)
                     } else if fine.payed.payedInApp {
-                        Text("fine-detail-payed-in-app", table: .profileDetail, comment: "Fine detail payed in app")
+                        Text("fine-detail-payed-in-app", comment: "Text that indicates that this fine was payed in app.")
                             .foregroundColor(.textColor)
                             .font(.system(size: 25, weight: .thin))
                             .padding(.horizontal, 25)
@@ -112,7 +112,7 @@ struct FineDetail: View {
 
     /// Name of associated person
     var associatedPersonName: String {
-        personListEnvironment.list.first { $0.id == fine.assoiatedPersonId }?.name.formatted ?? NSLocalizedString("fine-detail-unknown-person-name", table: .profileDetail, comment: "Fine detail unknown person name")
+        personListEnvironment.list.first { $0.id == fine.assoiatedPersonId }?.name.formatted ?? String(localized: "fine-detail-unknown-person-name", comment: "Name of person if no name is given.")
     }
 
     /// Amount text
@@ -130,7 +130,7 @@ struct FineDetail: View {
                 // Original Amount
                 HStack(spacing: 25) {
                     if fine.number != 1 {
-                        Text("\(fine.number) *")
+                        Text(verbatim: "\(fine.number) *")
                             .foregroundColor(.textColor)
                             .font(.system(size: 50, weight: .thin))
                             .lineLimit(1)
@@ -145,7 +145,7 @@ struct FineDetail: View {
 
                 // Late payment interest
                 if let latePaymentInterest = fine.latePaymentInterestAmount(with: reasonListEnvironment.list), latePaymentInterest != .zero {
-                    Text("+ \(String(describing: latePaymentInterest)) Verzugszinsen")
+                    Text(verbatim: "+ \(String(describing: latePaymentInterest)) \(String(localized: "late-payment-interest", comment: "Plain text of late payment interest"))")
                         .foregroundColor(.textColor)
                         .font(.system(size: 25, weight: .thin))
                         .padding(.horizontal, 25)

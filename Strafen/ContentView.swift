@@ -19,14 +19,8 @@ struct ContentView: View {
     /// Used to setup app with firebase
     @ObservedObject var appSetup = FirebaseAppSetup.shared
 
-    /// Person list
-    @State var personList: [FirebasePerson]?
-
-    /// Fine list
-    @State var fineList: [FirebaseFine]?
-
-    /// Reason list
-    @State var reasonList: [FirebaseReasonTemplate]?
+    /// Contains person, fine and reason template lists
+    @State var allLists: FirebaseAppSetup.AllLists?
 
     var body: some View {
         ZStack {
@@ -46,45 +40,43 @@ struct ContentView: View {
 
                     VStack {
                         if homeTab.active == .settings {
-                            Text("SettingsView") // SettingsView() TODO
+                            Text(verbatim: "SettingsView") // SettingsView() TODO
                         } else if appSetup.connectionState == .loading || appSetup.connectionState == .notStarted {
                             ZStack {
                                 Color.backgroundGray
-                                ProgressView(NSLocalizedString("loading-text", table: .otherTexts, comment: "Text for loading"))
+                                ProgressView(String(localized: "loading-text", comment: "Text of a loading view."))
                             }
                         } else if appSetup.connectionState == .failed {
                             ZStack {
                                 Color.backgroundGray
                                 VStack(spacing: 30) {
                                     Spacer()
-                                    Text("no-connection-message", table: .otherTexts, comment: "No connection message")
+                                    Text("no-connection-message", comment: "A text displayed, when there is no internet connection.")
                                         .foregroundColor(.textColor)
                                         .font(.system(size: 25, weight: .thin))
                                         .lineLimit(2)
                                         .padding(.horizontal, 15)
-                                    Text("try-again-message", table: .otherTexts, comment: "Try again message")
+                                    Text("try-again-message", comment: "Text of button to try again loading this page.")
                                         .foregroundColor(.customRed)
                                         .font(.system(size: 25, weight: .light))
                                         .lineLimit(2)
                                         .padding(.horizontal, 15)
                                         .onTapGesture {
                                             async {
-                                                guard let appLists = try? await appSetup.setup() else { return }
-                                                self.personList = appLists.personList
-                                                self.fineList = appLists.fineList
-                                                self.reasonList = appLists.reasonList
+                                                guard let allLists = try? await appSetup.setup() else { return }
+                                                self.allLists = allLists
                                             }
                                         }
                                     Spacer()
                                 }
                             }
-                        } else if let personList = personList, let fineList = fineList, let reasonList = reasonList {
+                        } else if let allLists = allLists {
                             ZStack {
                                 switch homeTab.active {
                                 case .profileDetail: ProfileDetail()
                                 case .personList: PersonList()
-                                case .reasonList: Text("ReasonList") // ReasonList() TODO
-                                case .addNewFine: Text("AddNewFine") // TODO
+                                case .reasonList: Text(verbatim: "ReasonList") // ReasonList() TODO
+                                case .addNewFine: Text(verbatim: "AddNewFine") // TODO
 //                                    ZStack {
 //                                        Color.backgroundGray
 //                                        AddNewFine()
@@ -92,14 +84,12 @@ struct ContentView: View {
 //                                    }
                                 case .settings: EmptyView()
                                 }
-                            }.environmentObject(ListEnvironment(personList, clubId: person.club.id))
-                                .environmentObject(ListEnvironment(fineList, clubId: person.club.id))
-                                .environmentObject(ListEnvironment(reasonList, clubId: person.club.id))
+                            }.environmentObject(ListEnvironment(allLists.personList, clubId: person.club.id))
+                                .environmentObject(ListEnvironment(allLists.fineList, clubId: person.club.id))
+                                .environmentObject(ListEnvironment(allLists.reasonList, clubId: person.club.id))
                         } else {
                             ZStack {
                                 Color.backgroundGray
-//                                Text("no-available-view", table: .otherTexts, comment: "No available view")
-//                                    .foregroundColor(.textColor).font(.system(size: 25, weight: .thin)).lineLimit(2).multilineTextAlignment(.center).padding(.horizontal, 15)
                             }
                         }
                     }.edgesIgnoringSafeArea(.all)
@@ -113,10 +103,8 @@ struct ContentView: View {
                     .environmentObject(DismissHandler())
                     .ignoresSafeArea(.keyboard)
                     .task {
-                        guard let appLists = try? await appSetup.setup() else { return }
-                        self.personList = appLists.personList
-                        self.fineList = appLists.fineList
-                        self.reasonList = appLists.reasonList
+                        guard let allLists = try? await appSetup.setup() else { return }
+                        self.allLists = allLists
                     }
 
             } else {

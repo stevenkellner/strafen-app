@@ -1,0 +1,377 @@
+/* Text of an amount display for amount sum of all unpayed fines with low importance. */
+"amount-sum-low-importance-text" = "Ausstehend";
+
+/* Text of an amount display for amount sum of all payed fines. */
+"amount-sum-payed-text" = "Bezahlt";
+
+/* Text of an amount display for amount sum of all fines. */
+"amount-sum-total-text" = "Gesamt";
+
+/* Text of button to get to last page. */
+"back-button-text" = "Zurück";
+
+/* Text of cancel button. */
+"cancel-button-text" = "Abbrechen";
+
+/* Text of confirm button */
+"confirm-button-text" = "Bestätigen";
+
+/* Text of continue button */
+"continue-button-text" = "Weiter";
+
+/* Text of done button. */
+"done-button-text" = "Fertig";
+
+/* Text of edit button. */
+"edit-button-text" = "Bearbeiten";
+
+/* An error message displayed, when a person is already signed in. */
+"error-message-alreadySignedIn" = "Du bist bereits registriert!";
+
+/* An error message displayed, when a person is already signed in with inputed email. */
+"error-message-alreadySignedInEmail" = "Diese Email ist bereits registriert!";
+
+/* An error message displayed, when inputed amount is zero. */
+"error-message-amountZero" = "Betrag darf nicht Null sein!";
+
+/* An error message displayed, when no club with inputed club identfier exists. */
+"error-message-clubNotExists" = "Es gibt keinen Verein mit dieser Kennung!";
+
+/* An error message displayed, when a text field is empty. */
+"error-message-emptyField" = "Dieses Feld darf nicht leer sein!";
+
+/* An error message displayed, when inputed date is in the future. */
+"error-message-futureDate" = "Datum darf nicht in der Zukunft liegen!";
+
+/* An error message displayed, when a club with inputed club identfier already exists. */
+"error-message-identifierAlreadyExists" = "Vereinskennung ist bereits vergeben!";
+
+/* An error message displayed, when inputed password is incorrect. */
+"error-message-incorrectPassword" = "Das eingegebene Passwort ist falsch!";
+
+/* An error message displayed, when an error while deleting occured. */
+"error-message-internalErrorDelete" = "Es gab ein Problem beim Löschen!";
+
+/* An error message displayed, when an error while logging in occured. */
+"error-message-internalErrorLogIn" = "Es gab ein Problem beim Anmelden!";
+
+/* An error message displayed, when an error while saving occured. */
+"error-message-internalErrorSave" = "Es gab ein Problem beim Speichern!";
+
+/* An error message displayed, when an error while signing in occured. */
+"error-message-internalErrorSignIn" = "Es gab ein Problem beim Registrieren!";
+
+/* An error message displayed, when inputed text isn't a valid email address. */
+"error-message-invalidEmail" = "Dies ist keine gültige Email!";
+
+/* An error message displayed, when inputed number isn't between 1 and 99. */
+"error-message-invalidNumberRange" = "Anzahl muss zwischen 1 und 99 liegen!";
+
+/* An error message displayed, when inputed password doesn't contain a digit. */
+"error-message-noDigit" = "Muss eine Zahl enthalten!";
+
+/* An error message displayed, when inputed password doesn't contain a lowercased character. */
+"error-message-noLowerCharacter" = "Muss einen Kleinbuchstaben enthalten!";
+
+/* An error message displayed, when no region is given. */
+"error-message-noRegionGiven" = "Keine Region angegeben!";
+
+/* An error message displayed, when inputed region doesn't have EUR as currency. */
+"error-message-notEuro" = "Funktioniert nur in Ländern mit Euro!";
+
+/* An error message displayed, when repeat password doen't match orignial password. */
+"error-message-notSamePassword" = "Passwörter stimmen nicht überein!";
+
+/* An error message displayed, when person try to log in, that isn't signed in. */
+"error-message-notSignedIn" = "Du bist noch nicht registriert!";
+
+/* An error message displayed, when inputed password doesn't contain an uppercased character. */
+"error-message-noUpperCharacter" = "Muss einen Großbuchstaben enthalten!";
+
+/* An error message displayed, when inputed password doesn't contain enough characters. */
+"error-message-tooFewCharacters" = "Passwort ist zu kurz!";
+
+/* An error message displayed, when the inputed password is too weak. */
+"error-message-weakPassword" = "Das Passwort ist zu schwach!";
+
+/* Text to show who this fine is from. */
+"fine-detail-fine-of-text" = "Strafe von";
+
+/* Text that indicates that this fine was payed in app. */
+"fine-detail-payed-in-app" = "InApp bezahlt";
+
+/* Text that indicates that a payment is in process. */
+"fine-detail-payment-in-process" = "Zahlung wird bearbeitet";
+
+/* Name of person if no name is given. */
+"fine-detail-unknown-person-name" = "Unbekannt";
+
+/* Plain text of amount for text field placeholder. */
+"fine-editor-amount-placeholder" = "Betrag";
+
+/* Plain text of amount for text field title. */
+"fine-editor-amount-title" = "Betrag";
+
+/* Plain text of date for text field placeholder. */
+"fine-editor-date-placeholder" = "Datum";
+
+/* Plain text of date for text field title. */
+"fine-editor-date-title" = "Datum";
+
+/* Message of delete fine alert. */
+"fine-editor-delete-message" = "Möchtest du die Strafe wirklich löschen?";
+
+/* Header of fine editor view. */
+"fine-editor-header-text" = "Strafe Ändern";
+
+/* Plain text of importance for imporance changer title. */
+"fine-editor-importance-title" = "Wichtigkeit";
+
+/* Plain text of number for text field placeholder. */
+"fine-editor-number-placeholder" = "Anzahl";
+
+/* Plain text of number for text field title. */
+"fine-editor-number-title" = "Anzahl";
+
+/* Plain text of reason for text field placeholder. */
+"fine-editor-reason-placeholder" = "Grund";
+
+/* Plain text of reason for text field title. */
+"fine-editor-reason-title" = "Grund";
+
+/* Message to change image. */
+"image-selector-change-image" = "Bild ändern";
+
+/* Language code of localization. */
+"language-code" = "de";
+
+/* Plain text of late payment interest */
+"late-payment-interest" = "Verzugzinsen";
+
+/* Text of log in button. */
+"log-in-button-text" = "Anmelden";
+
+/* Plain text of email for text field placeholder. */
+"log-in-email-placeholder" = "Email";
+
+/* Plain text of email for text field title. */
+"log-in-email-title" = "Email";
+
+/* Message of forget passwort confirm alert with inputed email. */
+"log-in-forget-password-alert-confirm-message-%@" = "Es wurde eine Email zum Zurücksetzen des Passworts an %@ gesendet.";
+
+/* Title of forget passwort confirm alert. */
+"log-in-forget-password-alert-confirm-title" = "Passwort zurückgesetzt";
+
+/* Message of forget passwort invalid email alert. */
+"log-in-forget-password-alert-invalid-email-message" = "Gebe eine gültige Email zum Zurücksetzen ein.";
+
+/* Title of forget passwort invalid email alert. */
+"log-in-forget-password-alert-invalid-email-title" = "Ungültige Email";
+
+/* Text of forgot passwort button. */
+"log-in-forget-password-button-text" = "Passwort vergessen";
+
+/* Header of log in view. */
+"log-in-header" = "Anmelden";
+
+/* Text of instead button, to sign in instead of log in. */
+"log-in-instead-button-text" = "Stattdessen";
+
+/* Plain text of passwort for text field placeholder. */
+"log-in-password-placeholder" = "Passwort";
+
+/* Plain text of passwort for text field title. */
+"log-in-password-title" = "Passwort";
+
+/* Text of sign in instead of log in button. */
+"log-in-sign-in-button-text" = "Registrieren";
+
+/* Text of understood alert button. */
+"log-in-understood-button-text" = "Verstanden";
+
+/* Text of log in with apple button. */
+"log-in-with-apple-button-text" = "Mit Apple anmelden";
+
+/* Text of log in with email button. */
+"log-in-with-email-button-text" = "Mit E-Mail anmelden";
+
+/* Text of log in with google button. */
+"log-in-with-google-button-text" = "Mit Google anmelden";
+
+/* A text displayed, when there is no internet connection. */
+"no-connection-message" = "Keine Internetverbindung";
+
+/* Plain text of first name for text field placeholder. */
+"person-add-new-first-name-placeholder" = "Vorname";
+
+/* Header of person add new view. */
+"person-add-new-header-text" = "Person Hinzufügen";
+
+/* Plain text of name for text field title. */
+"person-add-new-name-title" = "Name";
+
+/* Plain text of last name that can be optional for text field placeholder. */
+"person-add-new-optional-last-name-placeholder" = "Nachname (optional)";
+
+/* Text that image is uploading. */
+"person-add-new-upload-image-text" = "Bild hochladen";
+
+/* Message that person list is empty. */
+"person-list-empty-list" = "Es sind keine Personen registriert!";
+
+/* Message that person list is empty for the cashier. */
+"person-list-empty-list-cashier" = "Du hast noch keine Person erstellt!";
+
+/* Header of person list view. */
+"person-list-header-text" = "Alle Personen";
+
+/* Message that person has no fines. */
+"profile-detail-no-fines-message" = "Du hast keine Strafen!";
+
+/* Placeholder text of a search text field. */
+"search-bar-text" = "Suchen";
+
+/* Description of the club identifier. */
+"sign-in-club-input-club-identifier-description" = "Benutze die eindeutige Kennung um andere Spieler hinzuzufügen.";
+
+/* Plain text of club identifier for text field placeholder. */
+"sign-in-club-input-club-identifier-placeholder" = "Vereinskennung";
+
+/* Plain text of club identifier for text field title. */
+"sign-in-club-input-club-identifier-title" = "Vereinskennung";
+
+/* Plain text of club name for text field placeholder. */
+"sign-in-club-input-club-name-placeholder" = "Vereinsname";
+
+/* Plain text of club name for text field title. */
+"sign-in-club-input-club-name-title" = "Vereinsname";
+
+/* Header of sign in club input view */
+"sign-in-club-input-header" = "Neuer Verein";
+
+/* Description of in app payement. */
+"sign-in-club-input-in-app-payment-description" = "Wenn aktiv können deine Mitspieler die Strafen in der App zahlen und du sie dann auszahlen lassen.";
+
+/* Plain text of in app payment for in app payment toggle placeholder. */
+"sign-in-club-input-in-app-payment-placeholder" = "In App Payment";
+
+/* Plain text of in app payment for in app payment toggle title. */
+"sign-in-club-input-in-app-payment-title" = "In App Payment";
+
+/* Plain text of region for region input title. */
+"sign-in-club-input-region-title" = "Region";
+
+/* Text of button to select a region. */
+"sign-in-club-input-select-region-button-text" = "Region auswählen";
+
+/* Message that you get the club identifier from your cashier. */
+"sign-in-club-selection-club-identifier-from-cashier-message" = "Du bekommst die Kennung von deinem Trainer oder Kassier.";
+
+/* Plain text of club identifier for text field placeholder. */
+"sign-in-club-selection-club-identifier-placeholder" = "Vereinskennung";
+
+/* Plain text of club identifier for text field title. */
+"sign-in-club-selection-club-identifier-title" = "Vereinskennung";
+
+/* Text of create club button. */
+"sign-in-club-selection-create-club-button-text" = "Verein Erstellen";
+
+/* Header of sign in club selection view. */
+"sign-in-club-selection-header" = "Registrieren";
+
+/* Plain text of 'or' button. */
+"sign-in-club-selection-or-button-text" = "oder";
+
+/* Message that you as cashier can create a new club. */
+"sign-in-club-selection-you-cashier-create-club-message" = "Wenn du der Kassier bist:\\nErstelle eine neuen Verein.";
+
+/* Plain text of email for text field placeholder. */
+"sign-in-email-email-placeholder" = "Email";
+
+/* Plain text of email for text field title. */
+"sign-in-email-email-title" = "Email";
+
+/* Plain text of first name for text field placeholder. */
+"sign-in-email-first-name-placeholder" = "Vorname";
+
+/* Header of sign in email view. */
+"sign-in-email-header" = "Registrieren";
+
+/* Message that a name is required for sign in. */
+"sign-in-email-name-is-required-message" = "Dein Name ist für die Registrierung erforderlich.";
+
+/* Plain text of name for text field title. */
+"sign-in-email-name-title" = "Name";
+
+/* Plain text of last name that can be optional for text field placeholder. */
+"sign-in-email-optional-last-name-placeholder" = "Nachname (optional)";
+
+/* Plain text of password for text field placeholder. */
+"sign-in-email-password-placeholder" = "Passwort";
+
+/* Plain text of password for text field title. */
+"sign-in-email-password-title" = "Passwort";
+
+/* Plain text of repeat password for text field placeholder. */
+"sign-in-email-repeat-password-placeholder" = "Passwort Wiederholen";
+
+/* Header of sign in person selection view. */
+"sign-in-person-selection-header" = "Person Auswählen";
+
+/* Message of select person if available. */
+"sign-in-person-selection-select-name-if-available-message" = "Wähle deinen Namen aus, wenn er vorhanden ist.";
+
+/* Text of sign in button. */
+"sign-in-person-selection-sign-in-button-text" = "Registrieren";
+
+/* Text of add new fine tab bar item. */
+"tab-bar-add-new-fine" = "Strafe";
+
+/* Text of person list tab bar item. */
+"tab-bar-person-list" = "Personen";
+
+/* Text of profile detail tab bar item. */
+"tab-bar-profile-detail" = "Profil";
+
+/* Text of reason list tab bar item. */
+"tab-bar-reason-list" = "Strafenkatalog";
+
+/* Text of settings tab bar item. */
+"tab-bar-settings" = "Einstellungen";
+
+/* Placeholder text of a textfield */
+"textfield-placeholder" = "Platzhalter";
+
+/* Text of toogle state off. */
+"toggle-state-off" = "AUS";
+
+/* Text of toogle state on. */
+"toggle-state-on" = "AN";
+
+/* Text of button to try again loading this page. */
+"try-again-message" = "Erneut versuchen";
+
+/* Text of a loading view. */
+"loading-text" = "Laden";
+
+/* Message that you can't return the deletion. */
+"delete-no-return" = "Du kannst diese Aktion nicht widerrufen.";
+
+/* Text of delete button. */
+"delete-button-text" = "Löschen";
+
+/* Region code of localization. */
+"region-code" = "DE";
+
+/* Header of sign in view. */
+"sign-in-header" = "Registrieren";
+
+/* Text of sign in with email button. */
+"sign-in-with-email-button-text" = "Mit E-Mail anmelden";
+
+/* Text of sign in with google button. */
+"sign-in-with-google-button-text" = "Mit Google anmelden";
+
+/* Text of sign in with apple button. */
+"sign-in-with-apple-button-text" = "Mit Apple anmelden";

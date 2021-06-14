@@ -29,14 +29,14 @@ struct PersonList: View {
                 VStack(spacing: 10) {
 
                     // Header
-                    Header("person-list-header-text", table: .personList, comment: "Person list header text")
+                    Header(String(localized: "person-list-header-text", comment: "Header of person list view."))
                         .padding(.top, 50)
 
                     if personListEnvironment.list.isEmpty {
 
                         // Empty list text
                         if person.isCashier {
-                            Text("person-list-empty-list-cashier", table: .personList, comment: "Person list empty list cashier")
+                            Text("person-list-empty-list-cashier", comment: "Message that person list is empty for the cashier.")
                                 .foregroundColor(.textColor)
                                 .multilineTextAlignment(.center)
                                 .font(.system(size: 25, weight: .thin))
@@ -44,7 +44,7 @@ struct PersonList: View {
                                 .padding(.horizontal, 15)
                                 .padding(.top, 50)
                         } else {
-                            Text("person-list-empty-list", table: .personList, comment: "Person list empty list")
+                            Text("person-list-empty-list", comment: "Message that person list is empty.")
                                 .foregroundColor(.textColor)
                                 .multilineTextAlignment(.center)
                                 .font(.system(size: 25, weight: .thin))
@@ -118,7 +118,7 @@ struct PersonList: View {
 
                 // Navigation link to person detail
                 EmptyNavigationLink(isActive: $isNavigationLinkActive) {
-                    Text("Person Detail") // TODO
+                    Text(verbatim: "Person Detail") // TODO
                 }
 
                 SplittedOutlinedContent {

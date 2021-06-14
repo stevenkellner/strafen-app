@@ -46,8 +46,8 @@ extension Amount: CustomStringConvertible {
 
     /// Locale
     static var locale: Locale {
-        let countryCodeKey = Settings.shared.person?.club.regionCode ?? NSLocalizedString("region-code", tableName: "OtherTexts", value: "DE", comment: "Region code")
-        let languageCodeKey = Locale.current.languageCode ?? NSLocalizedString("language-code", tableName: "OtherTexts", value: "de", comment: "Language code")
+        let countryCodeKey = Settings.shared.person?.club.regionCode ?? String(localized: "region-code", comment: "Region code of localization.")
+        let languageCodeKey = Locale.current.languageCode ?? String(localized: "language-code", comment: "Language code of localization.")
         let identifier = Locale.identifier(fromComponents: [
             "kCFLocaleCountryCodeKey": countryCodeKey,
             "kCFLocaleLanguageCodeKey": languageCodeKey

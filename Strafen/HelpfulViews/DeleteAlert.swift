@@ -38,7 +38,7 @@ struct DeleteAlert: View {
                     .padding(.horizontal, 15)
 
                 // Text
-                Text("fine-editor-delete-no-return", table: .profileDetail, comment: "Fine editor delete no return")
+                Text("delete-no-return", comment: "Message that you can't return the deletion.")
                     .lineLimit(2)
                     .foregroundColor(.textColor)
                     .font(.system(size: 16, weight: .thin))
@@ -47,7 +47,7 @@ struct DeleteAlert: View {
                     .padding(.bottom, 30)
 
                 // Delete button
-                SingleButton("delete-button-text", table: .otherTexts, comment: "Text of delete button")
+                SingleButton(String(localized: "delete-button-text", comment: "Text of delete button."))
                     .fontSize(24)
                     .textColor(.customRed)
                     .size(width: UIScreen.main.bounds.width * 0.6, height: 40)
@@ -57,7 +57,7 @@ struct DeleteAlert: View {
                     }
 
                 // Cancel button
-                SingleButton("cancel-button-text", table: .otherTexts, comment: "Text of cancel button")
+                SingleButton(String(localized: "cancel-button-text", comment: "Text of cancel button."))
                     .fontSize(24)
                     .size(width: UIScreen.main.bounds.width * 0.6, height: 40)
                     .onClick { showDeleteAlert = false }

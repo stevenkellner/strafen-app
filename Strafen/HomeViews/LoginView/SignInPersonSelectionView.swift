@@ -62,12 +62,12 @@ struct SignInPersonSelectionView: View {
                     .padding(.top, 50)
 
                 // Header
-                Header("select-person-header", table: .logInSignIn, comment: "Select person header")
+                Header(String(localized: "sign-in-person-selection-header", comment: "Header of sign in person selection view."))
                     .padding(.top, 10)
 
                 // Select person text
                 if inputProperties.fetchConnectionState != .failed && inputProperties.errorMessage == nil {
-                    Text("select-name-if-available-message", table: .logInSignIn, comment: "Select name if available message")
+                    Text("sign-in-person-selection-select-name-if-available-message", comment: "Message of select person if available.")
                         .foregroundColor(.white)
                         .font(.system(size: 24, weight: .thin))
                         .multilineTextAlignment(.center)
@@ -91,13 +91,13 @@ struct SignInPersonSelectionView: View {
                         }.padding(.vertical, 10)
                     }
                 } else if inputProperties.fetchConnectionState == .failed {
-                    Text("no-connection-message", table: .otherTexts, comment: "No connection message")
+                    Text("no-connection-message", comment: "A text displayed, when there is no internet connection.")
                         .foregroundColor(.white)
                         .font(.system(size: 24, weight: .thin))
                         .multilineTextAlignment(.center)
                         .padding(.horizontal, 15)
                         .lineLimit(2)
-                    Text("try-again-message", table: .otherTexts, comment: "Try again message")
+                    Text("try-again-message", comment: "Text of button to try again loading this page.")
                         .foregroundColor(.customRed)
                         .font(.system(size: 24, weight: .light))
                         .multilineTextAlignment(.center)
@@ -118,7 +118,7 @@ struct SignInPersonSelectionView: View {
                 Spacer()
 
                 // Confirm button
-                SingleButton("sign-in-button-text", table: .logInSignIn, comment: "Text of sign in button")
+                SingleButton(String(localized: "sign-in-person-selection-sign-in-button-text", comment: "Text of sign in button."))
                     .fontSize(27)
                     .rightSymbol(name: "signpost.right")
                     .rightColor(.customGreen)

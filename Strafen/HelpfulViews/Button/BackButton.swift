@@ -17,7 +17,7 @@ struct BackButton: View {
         HStack(spacing: 0) {
 
             // Back Button
-            Text("back-button-text", tableName: "OtherTexts", comment: "Text of back button")
+            Text("back-button-text", comment: "Text of button to get to last page.")
                 .font(.system(size: 24, weight: .light))
                 .foregroundColor(.textColor)
                 .lineLimit(1)

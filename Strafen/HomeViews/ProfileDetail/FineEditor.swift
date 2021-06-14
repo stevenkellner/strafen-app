@@ -203,34 +203,34 @@ struct FineEditor: View {
                 SheetBar()
 
                 // Title
-                Header("fine-editor-header-text", table: .profileDetail, comment: "Fine editor header text")
+                Header(String(localized: "fine-editor-header-text", comment: "Header of fine editor view."))
 
                 ScrollView(showsIndicators: false) {
                     ScrollViewReader { proxy in
                         VStack(spacing: 20) {
 
                             // Importance Changer
-                            TitledContent("fine-editor-importance-title", table: .profileDetail, comment: "Fine editor importance title") {
+                            TitledContent(String(localized: "fine-editor-importance-title", comment: "Plain text of importance for imporance changer title.")) {
                                 ImportanceChanger(importance: $inputProperties.importance)
                                     .frame(width: 258, height: 25)
                             }
 
                             // Reason
-                            TitledContent("fine-editor-reason-text", table: .profileDetail, comment: "Fine editor reason text") {
+                            TitledContent(String(localized: "fine-editor-reason-title", comment: "Plain text of reason for text field title.")) {
                                 CustomTextField(.reason, inputProperties: $inputProperties)
-                                    .placeholder("fine-editor-reason-text", table: .profileDetail, comment: "Fine editor reason text")
+                                    .placeholder(String(localized: "fine-editor-reason-placeholder", comment: "Plain text of reason for text field placeholder."))
                                     .defaultTextFieldSize
                                     .scrollViewProxy(proxy)
                             }
 
                             // Amount
                             VStack(spacing: 5) {
-                                TitledContent("fine-editor-amount-text", table: .profileDetail, comment: "Fine editor amount text") {
+                                TitledContent(String(localized: "fine-editor-amount-title", comment: "Plain text of amount for text field title.")) {
                                     HStack(spacing: 15) {
 
                                         // Number
                                         if inputProperties.number != 1 {
-                                            Text("\(inputProperties.number) *")
+                                            Text(verbatim: "\(inputProperties.number) *")
                                                 .foregroundColor(.textColor)
                                                 .font(.system(size: 30, weight: .light))
                                                 .lineLimit(1)
@@ -238,7 +238,7 @@ struct FineEditor: View {
 
                                         // Text Field
                                         CustomTextField(.amount, inputProperties: $inputProperties)
-                                            .placeholder(NSLocalizedString("fine-editor-amount-text", table: .profileDetail, comment: "Fine editor amount text"))
+                                            .placeholder(String(localized: "fine-editor-amount-placeholder", comment: "Plain text of amount for text field placeholder."))
                                             .textFieldSize(width: 148, height: 50)
                                             .scrollViewProxy(proxy)
                                             .keyboardType(.decimalPad)
@@ -247,14 +247,14 @@ struct FineEditor: View {
                                             .onCompletion { isAmountEditing = false }
 
                                         // Currency sign
-                                        Text(Amount.locale.currencySymbol ?? "?")
+                                        Text(verbatim: Amount.locale.currencySymbol ?? "?")
                                             .foregroundColor(.textColor)
                                             .font(.system(size: 25, weight: .thin))
                                             .lineLimit(1)
 
                                         // Done button
                                         if isAmountEditing {
-                                            Text("done-button-text", table: .otherTexts, comment: "Text for done button")
+                                            Text("done-button-text", comment: "Text of done button.")
                                                 .foregroundColor(.customGreen)
                                                 .font(.system(size: 25, weight: .thin))
                                                 .lineLimit(1)
@@ -271,13 +271,13 @@ struct FineEditor: View {
 
                             // Number
                             VStack(spacing: 5) {
-                                TitledContent("fine-editor-number-text", table: .profileDetail, comment: "Fine editor number text") {
+                                TitledContent(String(localized: "fine-editor-number-title", comment: "Plain text of number for text field title.")) {
                                     SingleOutlinedContent {
                                         HStack(spacing: 0) {
                                             Spacer()
 
                                             // Left outline
-                                            Text("\(NSLocalizedString("fine-editor-number-text", table: .profileDetail, comment: "Fine editor number text")):")
+                                            Text(verbatim: "\(String(localized: "fine-editor-number-placeholder", comment: "Plain text of number for text field placeholder.")):")
                                                 .foregroundColor(.textColor)
                                                 .font(.system(size: 20, weight: .thin))
                                                 .lineLimit(1)
@@ -326,7 +326,7 @@ struct FineEditor: View {
                 }.padding(.bottom, 35)
                     .animation(.default)
                     .toast(isPresented: $showDeleteAlert) {
-                        DeleteAlert(deleteText: NSLocalizedString("fine-editor-delete-message", table: .profileDetail, comment: "Fine editor delete message"),
+                        DeleteAlert(deleteText: String(localized: "fine-editor-delete-message", comment: "Message of delete fine alert."),
                                     showDeleteAlert: $showDeleteAlert,
                                     deleteHandler: handleFineDelete)
                     }

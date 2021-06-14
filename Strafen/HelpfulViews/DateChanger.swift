@@ -19,14 +19,14 @@ struct DateChanger: View {
     var body: some View {
         VStack(spacing: 5) {
 
-            TitledContent("fine-editor-date-text", table: .profileDetail, comment: "Fine editor date text") {
+            TitledContent(String(localized: "fine-editor-date-title", comment: "Plain text of date for text field title.")) {
                 ZStack {
 
                     // Date View
                     SplittedOutlinedContent {
 
                         // Left outline
-                        Text("\(NSLocalizedString("fine-editor-date-text", table: .profileDetail, comment: "Fine editor date text")):")
+                        Text(verbatim: "\(String(localized: "fine-editor-date-placeholder", comment: "Plain text of date for text field placeholder.")):")
                             .foregroundColor(.textColor)
                             .font(.system(size: 20, weight: .thin))
                             .lineLimit(1)

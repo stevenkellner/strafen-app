@@ -182,7 +182,7 @@ struct SignInEmailView: View {
                     .padding(.top, 50)
 
                 // Header
-                Header("sign-in-header", table: .logInSignIn, comment: "Header of sign in views")
+                Header(String(localized: "sign-in-email-header", comment: "Header of sign in email view."))
                     .padding(.top, 10)
 
                 Spacer()
@@ -192,7 +192,7 @@ struct SignInEmailView: View {
                         VStack(spacing: 15) {
 
                             if signInProperties != nil {
-                                Text("name-is-required-message", table: .logInSignIn, comment: "Name is required message")
+                                Text("sign-in-email-name-is-required-message", comment: "Message that a name is required for sign in.")
                                     .foregroundColor(.customRed)
                                     .font(.system(size: 24, weight: .regular))
                                     .multilineTextAlignment(.center)
@@ -202,18 +202,18 @@ struct SignInEmailView: View {
                             }
 
                             // Name
-                            TitledContent("name", table: .logInSignIn, comment: "name text") {
+                            TitledContent(String(localized: "sign-in-email-name-title", comment: "Plain text of name for text field title.")) {
                                 VStack(spacing: 5) {
 
                                     // First name
                                     CustomTextField(.firstName, inputProperties: $inputProperties)
-                                        .placeholder("first-name", table: .logInSignIn, comment: "first name text")
+                                        .placeholder(String(localized: "sign-in-email-first-name-placeholder", comment: "Plain text of first name for text field placeholder."))
                                         .defaultTextFieldSize
                                         .scrollViewProxy(proxy)
 
                                     // Last name
                                     CustomTextField(.lastName, inputProperties: $inputProperties)
-                                        .placeholder("optional-last-name", table: .logInSignIn, comment: "optional last name text")
+                                        .placeholder(String(localized: "sign-in-email-optional-last-name-placeholder", comment: "Plain text of last name that can be optional for text field placeholder."))
                                         .defaultTextFieldSize
                                         .scrollViewProxy(proxy)
 
@@ -223,28 +223,28 @@ struct SignInEmailView: View {
                             if signInProperties == nil {
 
                                 // Email
-                                TitledContent("email", table: .logInSignIn, comment: "email text") {
+                                TitledContent(String(localized: "sign-in-email-email-title", comment: "Plain text of email for text field title.")) {
                                     CustomTextField(.email, inputProperties: $inputProperties)
-                                        .placeholder("email", table: .logInSignIn, comment: "email text")
+                                        .placeholder(String(localized: "sign-in-email-email-placeholder", comment: "Plain text of email for text field placeholder."))
                                         .defaultTextFieldSize
                                         .scrollViewProxy(proxy)
 
                                 }
 
                                 // Password
-                                TitledContent("password", table: .logInSignIn, comment: "password text") {
+                                TitledContent(String(localized: "sign-in-email-password-title", comment: "Plain text of password for text field title.")) {
                                     VStack(spacing: 5) {
 
                                         // Password
                                         CustomTextField(.password, inputProperties: $inputProperties)
-                                            .placeholder("password", table: .logInSignIn, comment: "password text")
+                                            .placeholder(String(localized: "sign-in-email-password-placeholder", comment: "Plain text of password for text field placeholder."))
                                             .defaultTextFieldSize
                                             .scrollViewProxy(proxy)
                                             .secure
 
                                         // Repeat password
                                         CustomTextField(.repeatPassword, inputProperties: $inputProperties)
-                                            .placeholder("repeat-password", table: .logInSignIn, comment: "repeat password text")
+                                            .placeholder(String(localized: "sign-in-email-repeat-password-placeholder", comment: "Plain text of repeat password for text field placeholder."))
                                             .defaultTextFieldSize
                                             .scrollViewProxy(proxy)
                                             .secure

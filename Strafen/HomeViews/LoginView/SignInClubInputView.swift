@@ -91,7 +91,7 @@ struct SignInClubInputView: View {
         /// - Returns: result of this validation
         mutating func validateActivateInAppPayment() -> ValidationResult {
             if inAppPayment, let regionCode = regionCode {
-                let languageCodeKey = Locale.current.languageCode ?? "de"
+                let languageCodeKey = Locale.current.languageCode ?? String(localized: "language-code", comment: "Language code of localization.")
                 let identifier = Locale.identifier(fromComponents: [
                     "kCFLocaleCountryCodeKey": regionCode,
                     "kCFLocaleLanguageCodeKey": languageCodeKey
@@ -174,7 +174,7 @@ struct SignInClubInputView: View {
                     .padding(.top, 50)
 
                 // Header
-                Header("new-club-header", table: .logInSignIn, comment: "New club header")
+                Header(String(localized: "sign-in-club-input-header", comment: "Header of sign in club input view"))
                     .padding(.top, 10)
 
                 Spacer()
@@ -185,9 +185,9 @@ struct SignInClubInputView: View {
 
                             // Club name
 
-                            TitledContent("club-name", table: .logInSignIn, comment: "club name text") {
+                            TitledContent(String(localized: "sign-in-club-input-club-name-title", comment: "Plain text of club name for text field title.")) {
                                 CustomTextField(.clubName, inputProperties: $inputProperties)
-                                    .placeholder("club-name", table: .logInSignIn, comment: "club name text")
+                                    .placeholder(String(localized: "sign-in-club-input-club-name-placeholder", comment: "Plain text of club name for text field placeholder."))
                                     .defaultTextFieldSize
                                     .scrollViewProxy(proxy)
 
@@ -195,7 +195,7 @@ struct SignInClubInputView: View {
 
                             // Region code
                             VStack(spacing: 5) {
-                                TitledContent("region", table: .logInSignIn, comment: "region text") {
+                                TitledContent(String(localized: "sign-in-club-input-region-title", comment: "Plain text of region for region input title.")) {
                                     RegionInput(inputProperties: $inputProperties)
                                 }
                                 ErrorMessageView($inputProperties.regionCodeErrorMessage)
@@ -204,15 +204,15 @@ struct SignInClubInputView: View {
                             // Aktivate in app payment
                             VStack(spacing: 5) {
                                 VStack(spacing: 5) {
-                                    TitledContent("in-app-payment", table: .logInSignIn, comment: "in app payment text") {
-                                        CustomToggle("in-app-payment", table: .logInSignIn, comment: "in app payment text", isOn: $inputProperties.inAppPayment)
+                                    TitledContent(String(localized: "sign-in-club-input-in-app-payment-title", comment: "Plain text of in app payment for in app payment toggle title.")) {
+                                        CustomToggle(String(localized: "sign-in-club-input-in-app-payment-placeholder", comment: "Plain text of in app payment for in app payment toggle placeholder."), isOn: $inputProperties.inAppPayment)
                                             .fieldSize(width: UIScreen.main.bounds.width * 0.95, height: 55)
                                             .errorMessage($inputProperties.inAppPaymentErrorMessage)
                                     }
                                     ErrorMessageView($inputProperties.inAppPaymentErrorMessage)
                                 }
 
-                                Text("in-app-payment-description", table: .logInSignIn, comment: "In app payment description")
+                                Text("sign-in-club-input-in-app-payment-description", comment: "Description of in app payement.")
                                     .foregroundColor(.white)
                                     .font(.system(size: 24, weight: .thin))
                                     .multilineTextAlignment(.center)
@@ -222,15 +222,15 @@ struct SignInClubInputView: View {
 
                             // Club identifier
                             VStack(spacing: 5) {
-                                TitledContent("club-identifier", table: .logInSignIn, comment: "club identifier text") {
+                                TitledContent(String(localized: "sign-in-club-input-club-identifier-title", comment: "Plain text of club identifier for text field title.")) {
                                     CustomTextField(.clubIdentifier, inputProperties: $inputProperties)
-                                        .placeholder("club-identifier", table: .logInSignIn, comment: "club identifier text")
+                                        .placeholder(String(localized: "sign-in-club-input-club-identifier-placeholder", comment: "Plain text of club identifier for text field placeholder."))
                                         .defaultTextFieldSize
                                         .scrollViewProxy(proxy)
                                 }
 
                                 // Text
-                                Text("club-identifier-description", table: .logInSignIn, comment: "Club identifier description")
+                                Text("sign-in-club-input-club-identifier-description", comment: "Description of the club identifier.")
                                     .foregroundColor(.white)
                                     .font(.system(size: 24, weight: .thin))
                                     .multilineTextAlignment(.center)
@@ -332,7 +332,7 @@ struct SignInClubInputView: View {
         var body: some View {
             SingleOutlinedContent {
                 Picker({ () -> String in
-                    guard let regionCode = inputProperties.regionCode else { return NSLocalizedString("select-region-button-text", table: .logInSignIn, comment: "Text of select region button") }
+                    guard let regionCode = inputProperties.regionCode else { return String(localized: "sign-in-club-input-select-region-button-text", comment: "Text of button to select a region.") }
                     return Locale.regionName(of: regionCode)
                 }(), selection: $inputProperties.regionCode) {
                     ForEach(Locale.availableRegionCodes, id: \.self) { regionCode in

@@ -24,7 +24,7 @@ struct SearchBar: View {
 
             // Finish Button
             if isSearchKeyboardShown {
-                Text("cancel-button-text", table: .otherTexts, comment: "Text of cancel button")
+                Text("cancel-button-text", comment: "Text of cancel button.")
                     .foregroundColor(.textColor)
                     .font(.system(size: 20, weight: .thin))
                     .lineLimit(1)
@@ -89,7 +89,7 @@ struct SearchBarView: UIViewRepresentable {
         searchBar.delegate = context.coordinator
         searchBar.autocapitalizationType = .none
         searchBar.backgroundImage = UIImage()
-        searchBar.placeholder = NSLocalizedString("search-bar-text", table: .otherTexts, comment: "Search bar text")
+        searchBar.placeholder = String(localized: "search-bar-text", comment: "Placeholder text of a search text field.")
         return searchBar
     }
 

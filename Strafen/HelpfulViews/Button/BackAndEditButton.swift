@@ -30,7 +30,7 @@ struct BackAndEditButton<EditSheetContent>: View where EditSheetContent: View {
         HStack(spacing: 0) {
 
             // Back Button
-            Text("back-button-text", tableName: "OtherTexts", comment: "Text of back button")
+            Text("back-button-text", comment: "Text of button to get to last page.")
                 .font(.system(size: 24, weight: .light))
                 .foregroundColor(.textColor)
                 .lineLimit(1)
@@ -41,7 +41,7 @@ struct BackAndEditButton<EditSheetContent>: View where EditSheetContent: View {
 
             // EditButton
             if person.isCashier {
-                Text("edit-button-text", tableName: "OtherTexts", comment: "Text of edit button")
+                Text("edit-button-text", comment: "Text of edit button.")
                     .font(.system(size: 24, weight: .light))
                     .foregroundColor(.textColor)
                     .lineLimit(1)

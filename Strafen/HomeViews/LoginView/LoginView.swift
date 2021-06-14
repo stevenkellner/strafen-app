@@ -106,7 +106,7 @@ struct LoginView: View {
 
                     // Back Button
                     HStack(spacing: 0) {
-                        Text("back-button-text", tableName: "OtherTexts", comment: "Text of back button")
+                        Text("back-button-text", comment: "Text of button to get to last page.")
                             .font(.system(size: 24, weight: .light))
                             .foregroundColor(.textColor)
                             .lineLimit(1)
@@ -118,7 +118,7 @@ struct LoginView: View {
                         .animation(.default)
 
                     // Header
-                    Header("log-in-header", table: .logInSignIn, comment: "Header of log in views")
+                    Header(String(localized: "log-in-header", comment: "Header of log in view."))
                         .padding(.top, emailInputActive ? 10 : 50)
                         .animation(.default)
 
@@ -130,17 +130,17 @@ struct LoginView: View {
                                 VStack(spacing: 15) {
 
                                     // Email
-                                    TitledContent("email", table: .logInSignIn, comment: "email text") {
+                                    TitledContent(String(localized: "log-in-email-title", comment: "Plain text of email for text field title.")) {
                                         CustomTextField(.email, inputProperties: $inputProperties)
-                                            .placeholder("email", table: .logInSignIn, comment: "email text")
+                                            .placeholder(String(localized: "log-in-email-placeholder", comment: "Plain text of email for text field placeholder."))
                                             .defaultTextFieldSize
                                             .scrollViewProxy(proxy)
                                     }
 
                                     // Password
-                                    TitledContent("password", table: .logInSignIn, comment: "password text") {
+                                    TitledContent(String(localized: "log-in-password-title", comment: "Plain text of passwort for text field title.")) {
                                         CustomTextField(.password, inputProperties: $inputProperties)
-                                            .placeholder("password", table: .logInSignIn, comment: "password text")
+                                            .placeholder(String(localized: "log-in-password-placeholder", comment: "Plain text of passwort for text field placeholder."))
                                             .defaultTextFieldSize
                                             .scrollViewProxy(proxy)
                                             .secure
@@ -148,7 +148,7 @@ struct LoginView: View {
 
                                     // Forgot password button
                                     SingleOutlinedContent {
-                                        Text("forget-password-button-text", table: .logInSignIn, comment: "Text of forgot password button")
+                                        Text("log-in-forget-password-button-text", comment: "Text of forgot passwort button.")
                                             .foregroundColor(.textColor)
                                             .lineLimit(1)
                                             .font(.system(size: 15, weight: .thin))
@@ -157,12 +157,12 @@ struct LoginView: View {
                                         .onTapGesture(perform: handleForgotPasswordButtonPress)
                                         .alert(item: $resetPasswordMessage) { message in
                                             switch message {
-                                            case .invalidEmail: return Alert(title: Text("forget-password-alert-invalid-email-title", table: .logInSignIn, comment: "Title of forgot password invalid email alert"),
-                                                                             message: Text("forget-password-alert-invalid-email-message", table: .logInSignIn, comment: "Messages of forgot password invalid email alert"),
-                                                                             dismissButton: .default(Text("understood-button-text", table: .otherTexts, comment: "Text of understood button")) { resetPasswordMessage = nil })
-                                            case .confirm: return Alert(title: Text("forget-password-alert-confirm-title", table: .logInSignIn, comment: "Title of forgot password confirm alert"),
-                                                                        message: Text("forget-password-alert-confirm-message", table: .logInSignIn, replaceDict: ["email": inputProperties[.email]], comment: "Messages of forgot password confirm alert"),
-                                                                        dismissButton: .default(Text("understood-button-text", table: .otherTexts, comment: "Text of understood button")) { resetPasswordMessage = nil })
+                                            case .invalidEmail: return Alert(title: Text("log-in-forget-password-alert-invalid-email-title", comment: "Title of forget passwort invalid email alert."),
+                                                                             message: Text("log-in-forget-password-alert-invalid-email-message", comment: "Message of forget passwort invalid email alert."),
+                                                                             dismissButton: .default(Text("log-in-understood-button-text", comment: "Text of understood alert button.")) { resetPasswordMessage = nil })
+                                            case .confirm: return Alert(title: Text("log-in-forget-password-alert-confirm-title", comment: "Title of forget passwort confirm alert."),
+                                                                        message: Text("log-in-forget-password-alert-confirm-message-\(inputProperties[.email])", comment: "Message of forget passwort confirm alert with inputed email."),
+                                                                        dismissButton: .default(Text("log-in-understood-button-text", comment: "Text of understood alert button.")) { resetPasswordMessage = nil })
                                             }
                                         }
 
@@ -174,7 +174,7 @@ struct LoginView: View {
                         VStack(spacing: 15) {
 
                             // Log in with email button
-                            SingleButton("log-in-with-email-button-text", table: .logInSignIn, comment: "Text of log in with email button")
+                            SingleButton(String(localized: "log-in-with-email-button-text", comment: "Text of log in with email button."))
                                 .leftSymbol(name: "envelope")
                                 .leftColor(.textColor)
                                 .leftSymbolHeight(24)
@@ -182,7 +182,7 @@ struct LoginView: View {
 
                             // Log in with google button
                             VStack(spacing: 5) {
-                                SingleButton("log-in-with-google-button-text", table: .logInSignIn, comment: "Text of log in with google button")
+                                SingleButton(String(localized: "log-in-with-google-button-text", comment: "Text of log in with google button."))
                                     .leftSymbol(Image(uiImage: #imageLiteral(resourceName: "google-icon")))
                                     .onClick(perform: handleLogInGoogleButtonPress)
                                 ErrorMessageView($googleErrorMessage)
@@ -190,7 +190,7 @@ struct LoginView: View {
 
                             // Log in with apple button
                             VStack(spacing: 5) {
-                                SingleButton("log-in-with-apple-button-text", table: .logInSignIn, comment: "Text of log in with apple button")
+                                SingleButton(String(localized: "log-in-with-apple-button-text", comment: "Text of log in with apple button."))
                                     .leftSymbol(name: "applelogo")
                                     .leftColor(.white)
                                     .onClick(perform: handleLogInAppleButtonPress)
@@ -200,14 +200,14 @@ struct LoginView: View {
                             // Sign in button
                             HStack(spacing: 10) {
 
-                                Text("instead-button-text", table: .logInSignIn, comment: "Text of instead button")
+                                Text("log-in-instead-button-text", comment: "Text of instead button, to sign in instead of log in.")
                                     .foregroundColor(.white)
                                     .lineLimit(1)
                                     .font(.system(size: 20, weight: .thin))
 
                                 NavigationLink(destination: SignInView()) {
                                     SingleOutlinedContent {
-                                        Text("sign-in-button-text", table: .logInSignIn, comment: "Text of sign in button")
+                                        Text("log-in-sign-in-button-text", comment: "Text of sign in instead of log in button.")
                                             .foregroundColor(.textColor)
                                             .lineLimit(1)
                                             .font(.system(size: 20, weight: .thin))
@@ -221,7 +221,7 @@ struct LoginView: View {
                     Spacer()
 
                     // Log in button
-                    SingleButton("log-in-button-text", table: .logInSignIn, comment: "Text of log in button")
+                    SingleButton(String(localized: "log-in-button-text", comment: "Text of log in button."))
                         .fontSize(27)
                         .rightSymbol(name: "arrow.uturn.right")
                         .rightColor(.customGreen)

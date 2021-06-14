@@ -1,0 +1,9 @@
+/* Bundle name */
+"CFBundleName" = "Strafen";
+
+/* Privacy - Location When In Use Usage Description */
+"NSLocationWhenInUseUsageDescription" = "Wird für In-App Bezahlung benötigt.";
+
+/* Privacy - Photo Library Usage Description */
+"NSPhotoLibraryUsageDescription" = "Wird zum Speichern von Bildern benötigt.";
+

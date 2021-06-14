@@ -26,11 +26,11 @@ struct SingleAmountDisplay: View {
         var text: String {
             switch self {
             case .payed:
-                return NSLocalizedString("amount-sum-payed-text", table: .otherTexts, comment: "Text of payed amount sum")
+                return String(localized: "amount-sum-payed-text", comment: "Text of an amount display for amount sum of all payed fines.")
             case .unpayed:
-                return NSLocalizedString("amount-sum-low-importance-text", table: .otherTexts, comment: "Text of amount sum with low importance")
+                return String(localized: "amount-sum-low-importance-text", comment: "Text of an amount display for amount sum of all unpayed fines with low importance.")
             case .total:
-                return NSLocalizedString("amount-sum-total-text", table: .otherTexts, comment: "Text of total amount sum")
+                return String(localized: "amount-sum-total-text", comment: "Text of an amount display for amount sum of all fines.")
             }
         }
 
@@ -83,7 +83,7 @@ struct SingleAmountDisplay: View {
 
     var body: some View {
         SplittedOutlinedContent {
-            Text("\(displayType.text):")
+            Text(verbatim: "\(displayType.text):")
                 .foregroundColor(.textColor)
                 .font(.system(size: 16, weight: .thin))
                 .lineLimit(1)

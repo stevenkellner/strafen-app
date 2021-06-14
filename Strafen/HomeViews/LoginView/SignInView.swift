@@ -58,7 +58,7 @@ struct SignInView: View {
             VStack(spacing: 0) {
 
                 // Header
-                Header("sign-in-header", table: .logInSignIn, comment: "Header of sign in views")
+                Header(String(localized: "sign-in-header", comment: "Header of sign in view."))
                     .padding(.top, 50)
 
                 Spacer()
@@ -66,7 +66,7 @@ struct SignInView: View {
                 VStack(spacing: 15) {
 
                     // Sign in with email button
-                    SingleButton("sign-in-with-email-button-text", table: .logInSignIn, comment: "Text of sign in with email button")
+                    SingleButton(String(localized: "sign-in-with-email-button-text", comment: "Text of sign in with email button."))
                         .leftSymbol(name: "envelope")
                         .leftColor(.textColor)
                         .leftSymbolHeight(24)
@@ -81,7 +81,7 @@ struct SignInView: View {
 
                     // Sign in with google button
                     VStack(spacing: 5) {
-                        SingleButton("sign-in-with-google-button-text", table: .logInSignIn, comment: "Text of sign in with google button")
+                        SingleButton(String(localized: "sign-in-with-google-button-text", comment: "Text of sign in with google button."))
                             .leftSymbol(Image(uiImage: #imageLiteral(resourceName: "google-icon")))
                             .onClick(perform: handleSignInGoogleButtonPress)
                         ErrorMessageView($googleErrorMessage)
@@ -89,7 +89,7 @@ struct SignInView: View {
 
                     // Sign in with apple button
                     VStack(spacing: 5) {
-                        SingleButton("sign-in-with-apple-button-text", table: .logInSignIn, comment: "Text of sign in with apple button")
+                        SingleButton(String(localized: "sign-in-with-apple-button-text", comment: "Text of sign in with apple button."))
                             .leftSymbol(name: "applelogo")
                             .leftColor(.white)
                             .onClick(perform: handleSignInAppleButtonPress)

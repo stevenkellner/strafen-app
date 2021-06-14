@@ -107,7 +107,7 @@ struct SignInClubSelectionView: View {
                     .padding(.top, 50)
 
                 // Header
-                Header("sign-in-header", table: .logInSignIn, comment: "Header of sign in views")
+                Header(String(localized: "sign-in-club-selection-header", comment: "Header of sign in club selection view."))
                     .padding(.top, 10)
 
                 Spacer()
@@ -115,14 +115,14 @@ struct SignInClubSelectionView: View {
                 VStack(spacing: 5) {
 
                     // Club identifer input
-                    TitledContent("club-identifier", table: .logInSignIn, comment: "club identifier text") {
+                    TitledContent(String(localized: "sign-in-club-selection-club-identifier-title", comment: "Plain text of club identifier for text field title.")) {
                         VStack(spacing: 5) {
 
                             HStack(spacing: 0) {
 
                                 // Textfield
                                 CustomTextField(.clubIdentifier, inputProperties: $inputProperties)
-                                    .placeholder("club-identifier", table: .logInSignIn, comment: "club identifier text")
+                                    .placeholder(String(localized: "sign-in-club-selection-club-identifier-placeholder", comment: "Plain text of club identifier for text field placeholder."))
                                     .textFieldSize(width: UIScreen.main.bounds.width * 0.75, height: 50)
                                     .hideErrorMessage
 
@@ -149,7 +149,7 @@ struct SignInClubSelectionView: View {
                         }
                     }
 
-                    Text("club-identifier-from-cashier-message", table: .logInSignIn, comment: "Club identifier from cashier message")
+                    Text("sign-in-club-selection-club-identifier-from-cashier-message", comment: "Message that you get the club identifier from your cashier.")
                         .foregroundColor(.white)
                         .font(.system(size: 24, weight: .thin))
                         .multilineTextAlignment(.center)
@@ -157,19 +157,19 @@ struct SignInClubSelectionView: View {
                         .lineLimit(2)
 
                     // "or" Text
-                    Text("or-button-text", table: .logInSignIn, comment: "Text of or button")
+                    Text("sign-in-club-selection-or-button-text", comment: "Plain text of 'or' button.")
                         .foregroundColor(.textColor)
                         .font(.system(size: 20, weight: .light))
                         .padding(15)
                         .lineLimit(2)
 
-                    SingleButton("create-club-button-text", table: .logInSignIn, comment: "Text of create club button")
+                    SingleButton(String(localized: "sign-in-club-selection-create-club-button-text", comment: "Text of create club button."))
                         .fontSize(24)
                         .leftSymbol(name: "plus.square")
                         .leftColor(.customBlue)
                         .onClick { navigationLinkSignInClubInputViewActive = true }
 
-                    Text("you-cashier-create-club-message", table: .logInSignIn, comment: "You cashier create club message")
+                    Text("sign-in-club-selection-you-cashier-create-club-message", comment: "Message that you as cashier can create a new club.")
                         .foregroundColor(.white)
                         .font(.system(size: 24, weight: .thin))
                         .multilineTextAlignment(.center)

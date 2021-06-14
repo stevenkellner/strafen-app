@@ -18,7 +18,7 @@ struct CustomTextField<InputProperties>: View where InputProperties: InputProper
     private let inputProperties: Binding<InputProperties>
 
     /// Placeholder of Text field
-    private var placeholder: String = NSLocalizedString("textfield-placeholder", table: .otherTexts, comment: "Placeholder text of textfield")
+    private var placeholder: String?
 
     /// Handler executed after textfield is focused
     private var focusedHandler: (() -> Void)?
@@ -126,19 +126,6 @@ struct CustomTextField<InputProperties>: View where InputProperties: InputProper
         return textField
     }
 
-    /// Set localized placeholder
-    /// - Parameters:
-    ///   - key: key of localized string
-    ///   - table: table of localization
-    ///   - replaceDict: dictionary to replace for string interpolation   
-    ///   - comment: comment for localization
-    /// - Returns: modified textfield
-    public func placeholder(_ key: String, table: LocalizationTables, replaceDict: [String: String] = [:], comment: String) -> CustomTextField {
-        var textField = self
-        textField.placeholder = NSLocalizedString(key, table: table, replaceDict: replaceDict, comment: comment)
-        return textField
-    }
-
     /// Set keyboard type
     /// - Parameter keyboardType: keyboard type
     /// - Returns: modified textfield
@@ -218,7 +205,7 @@ struct CustomTextField<InputProperties>: View where InputProperties: InputProper
         }
 
         /// Placeholder
-        private var placeholder: String = NSLocalizedString("textfield-placeholder", table: .otherTexts, comment: "Placeholder text of textfield")
+        private var placeholder: String = String(localized: "textfield-placeholder", comment: "Placeholder text of a textfield")
 
         /// Inidcates whether textfield is secure
         private var isSecure: Bool = false
@@ -320,9 +307,11 @@ struct CustomTextField<InputProperties>: View where InputProperties: InputProper
         /// Set placeholder
         /// - Parameter placeholder: placeholder
         /// - Returns: modified textfield
-        public func placeholder(_ placeholder: String) -> UICustomTextField {
+        public func placeholder(_ placeholder: String?) -> UICustomTextField {
             var textField = self
-            textField.placeholder = placeholder
+            if let placeholder = placeholder {
+                textField.placeholder = placeholder
+            }
             return textField
         }
 

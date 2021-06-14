@@ -25,18 +25,6 @@ struct CustomToggle: View {
         self._boolToToggle = boolToToggle
     }
 
-    /// Init with localized string and bool to change
-    /// - Parameters:
-    ///   - key: key of lacalized string
-    ///   - table: table of localization
-    ///   - replaceDict: dictionary to replace for string interpolation
-    ///   - comment: comment for localization
-    ///   - boolToToggle: bool to change
-    init(_ key: String, table: LocalizationTables, replaceDict: [String: String] = [:], comment: String, isOn boolToToggle: Binding<Bool>) {
-        self.title = NSLocalizedString(key, table: table, replaceDict: replaceDict, comment: comment)
-        self._boolToToggle = boolToToggle
-    }
-
     /// Error message of the bool
     private var errorMessage: Binding<ErrorMessages?>?
 
@@ -50,7 +38,7 @@ struct CustomToggle: View {
                     Spacer()
 
                     // Title
-                    Text("\(title):")
+                    Text(verbatim: "\(title):")
                         .foregroundColor(.textColor)
                         .font(.system(size: 20, weight: .light))
                         .padding(.horizontal, 15)
@@ -61,13 +49,13 @@ struct CustomToggle: View {
                     // Toggle
                     HStack(spacing: 0) {
                         SplittedOutlinedContent {
-                            Text("toggle-state-off", tableName: "OtherTexts", comment: "Toggle state `off`")
+                            Text("toggle-state-off", comment: "Text of toogle state off.")
                                 .foregroundColor(boolToToggle ? .customRed : .textColor)
                                 .font(.system(size: 16, weight: .light))
                                 .padding(.horizontal, 5)
                                 .lineLimit(1)
                         } rightContent: {
-                            Text("toggle-state-on", tableName: "OtherTexts", comment: "Toggle state `on`")
+                            Text("toggle-state-on", comment: "Text of toogle state on.")
                                 .foregroundColor(boolToToggle ? .textColor : .customGreen)
                                 .font(.system(size: 16, weight: .light))
                                 .padding(.horizontal, 5)

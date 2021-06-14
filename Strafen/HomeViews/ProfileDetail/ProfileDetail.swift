@@ -64,7 +64,7 @@ struct ProfileDetail: View {
 
                     // Empty List Text
                     if fineListEnvironment.hasNoFines(of: person.id) {
-                        Text("no-fines-message", table: .profileDetail, comment: "No fines message")
+                        Text("profile-detail-no-fines-message", comment: "Message that person has no fines.")
                             .foregroundColor(.textColor)
                             .font(.system(size: 25, weight: .thin))
                             .lineLimit(1)
@@ -122,7 +122,7 @@ struct ProfileDetail: View {
 
                 // Edit button
                 SingleOutlinedContent {
-                    Text("edit-button-text", table: .otherTexts, comment: "Text of edit button")
+                    Text("edit-button-text", comment: "Text of edit button.")
                         .foregroundColor(.textColor)
                         .font(.system(size: 20, weight: .thin))
                         .lineLimit(1)
@@ -132,7 +132,7 @@ struct ProfileDetail: View {
                         ImagePicker($image) { image, _ in
                             async {
                                 let imageType = FirebaseImageStorage.ImageType(id: person.id, clubId: person.club.id)
-                                try? await FirebaseImageStorage.shared.store(image, of: imageType)
+                                _ = try? await FirebaseImageStorage.shared.store(image, of: imageType)
                             }
                         }
                     }

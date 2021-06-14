@@ -61,7 +61,7 @@ struct ImageSelector: View {
 
                     // Change image text
                     if uploadProgress == nil {
-                        Text("Bild ändern")
+                        Text("image-selector-change-image", comment: "Message to change image.")
                             .foregroundColor(.textColor)
                             .font(.system(size: geometry.size.width / 7.5, weight: .thin))
                             .frame(width: geometry.size.width)

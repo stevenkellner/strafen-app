@@ -88,7 +88,7 @@ struct PersonAddNew: View {
                 SheetBar()
 
                 // Title
-                Header("person-add-new-header-text", table: .personList, comment: "Person add new header text")
+                Header(String(localized: "person-add-new-header-text", comment: "Header of person add new view."))
 
                 ScrollView(showsIndicators: false) {
                     ScrollViewReader { proxy in
@@ -103,7 +103,7 @@ struct PersonAddNew: View {
                                 // Progress bar
                                 if let imageUploadProgess = inputProperties.imageUploadProgess {
                                     VStack(spacing: 5) {
-                                        Text("person-add-new-upload-image-text", table: .personList, comment: "Person add new upload image text")
+                                        Text("person-add-new-upload-image-text", comment: "Text that image is uploading.")
                                             .foregroundColor(.textColor)
                                             .font(.system(size: 15, weight: .thin))
                                             .padding(.horizontal, 20)
@@ -116,18 +116,18 @@ struct PersonAddNew: View {
                             }
 
                             // Name
-                            TitledContent("person-add-new-name", table: .personList, comment: "Person add new name text") {
+                            TitledContent(String(localized: "person-add-new-name-title", comment: "Plain text of name for text field title.")) {
                                 VStack(spacing: 5) {
 
                                     // First name
                                     CustomTextField(.firstName, inputProperties: $inputProperties)
-                                        .placeholder("person-add-new-first-name", table: .personList, comment: "Person add new first name text")
+                                        .placeholder(String(localized: "person-add-new-first-name-placeholder", comment: "Plain text of first name for text field placeholder."))
                                         .defaultTextFieldSize
                                         .scrollViewProxy(proxy)
 
                                     // Last name
                                     CustomTextField(.lastName, inputProperties: $inputProperties)
-                                        .placeholder("person-add-new-optional-last-name", table: .personList, comment: "Person add new optional last name text")
+                                        .placeholder(String(localized: "person-add-new-optional-last-name-placeholder", comment: "Plain text of last name that can be optional for text field placeholder."))
                                         .defaultTextFieldSize
                                         .scrollViewProxy(proxy)
 
