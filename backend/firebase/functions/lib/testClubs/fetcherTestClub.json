@@ -24,6 +24,20 @@
                 "importance": "medium",
                 "reason": "Das ist ein Test"
             }
+        },
+        "1B5F958E-9D7D-46E1-8AEE-F52F4370A95A": {
+            "date": 6.3016007523132E8,
+            "number": 2,
+            "payed": {
+                "payDate": 6.30160103445665E8,
+                "state": "payed"
+            },
+            "personId": "D1852AC0-A0E2-4091-AC7E-CB2C23F708D9",
+            "reason": {
+                "amount": 1.1,
+                "importance": "medium",
+                "reason": "Das ist ein Test"
+            }
         }
     },
     "identifier": "demo-team",

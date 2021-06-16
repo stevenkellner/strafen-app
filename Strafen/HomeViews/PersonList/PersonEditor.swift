@@ -254,14 +254,21 @@ struct PersonEditor: View {
             return inputProperties.wrappedValue.connectionStateDelete.failed()
         }
 
-        // Delete image
-        let imageType = FirebaseImageStorage.ImageType(id: personId, clubId: loggedInPerson.club.id)
-        try? await FirebaseImageStorage.shared.delete(imageType)
+        await withTaskGroup(of: Void.self) { group in
 
-        // Delete fines
-        for fine in fineList.filter({ $0.assoiatedPersonId == personId }) {
-            let callItem = FFChangeListCall<FirebaseFine>(clubId: loggedInPerson.club.id, id: fine.id)
-            _ = try? await FirebaseFunctionCaller.shared.call(callItem)
+            // Delete image
+            group.async {
+                let imageType = FirebaseImageStorage.ImageType(id: personId, clubId: loggedInPerson.club.id)
+                try? await FirebaseImageStorage.shared.delete(imageType)
+            }
+
+            // Delete fines
+            for fine in fineList where fine.assoiatedPersonId == personId {
+                group.async {
+                    let callItem = FFChangeListCall<FirebaseFine>(clubId: loggedInPerson.club.id, id: fine.id)
+                    _ = try? await FirebaseFunctionCaller.shared.call(callItem)
+                }
+            }
         }
 
         presentationMode?.wrappedValue.dismiss()
@@ -301,6 +308,7 @@ struct PersonEditor: View {
                 inputProperties.wrappedValue.imageUploadProgess = nil
             }
 
+            inputProperties.wrappedValue.connectionStateUpdate.passed()
         } catch {
             inputProperties.wrappedValue.functionCallErrorMessage = .internalErrorSave
             inputProperties.wrappedValue.imageUploadProgess = nil

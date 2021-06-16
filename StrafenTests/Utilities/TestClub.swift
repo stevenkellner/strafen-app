@@ -113,6 +113,18 @@ struct TestClub: Equatable {
                         amount: Amount(1, subUnit: 10),
                         importance: .medium
                     )
+                ),
+                FirebaseFine(
+                    id: FirebaseFine.ID(rawValue: UUID(uuidString: "1B5F958E-9D7D-46E1-8AEE-F52F4370A95A")!),
+                    assoiatedPersonId: FirebasePerson.ID(rawValue: UUID(uuidString: "D1852AC0-A0E2-4091-AC7E-CB2C23F708D9")!),
+                    date: Date(timeIntervalSinceReferenceDate: 6.3016007523132E8),
+                    payed: .payed(date: Date(timeIntervalSinceReferenceDate: 6.30160103445665E8), inApp: false),
+                    number: 2,
+                    fineReason: FineReasonCustom(
+                        reason: "Das ist ein Test",
+                        amount: Amount(1, subUnit: 10),
+                        importance: .medium
+                    )
                 )
              ],
              reasons: [

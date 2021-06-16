@@ -88,6 +88,7 @@ struct ImageSelector: View {
                         .padding(.leading, geometry.size.width / 10)
                         .onTapGesture {
                             withAnimation { image = nil }
+                            completionHandler?()
                         }
                 }
             }
