@@ -44,6 +44,8 @@
 		B0447C1D2641B84600148430 /* Extensions+Other.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0447C1C2641B84600148430 /* Extensions+Other.swift */; };
 		B0447C202641BAFE00148430 /* FirebaseFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0447C1F2641BAFE00148430 /* FirebaseFetcher.swift */; };
 		B04A40DA2679F05C00C50C72 /* TestImages.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B04A40D92679F05C00C50C72 /* TestImages.xcassets */; };
+		B04A40DD267A2B1900C50C72 /* PersonDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = B04A40DC267A2B1900C50C72 /* PersonDetail.swift */; };
+		B04A40DF267A315500C50C72 /* AmountDisplay.swift in Sources */ = {isa = PBXBuildFile; fileRef = B04A40DE267A315500C50C72 /* AmountDisplay.swift */; };
 		B04AD2AA26567464001A760F /* PersonRowImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B04AD2A926567464001A760F /* PersonRowImage.swift */; };
 		B04AD2AC26567CD6001A760F /* RandomInstanceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = B04AD2AB26567CD6001A760F /* RandomInstanceProtocol.swift */; };
 		B04AD2AE26569614001A760F /* SignInPersonSelectionViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B04AD2AD26569614001A760F /* SignInPersonSelectionViewTests.swift */; };
@@ -185,6 +187,8 @@
 		B0447C1C2641B84600148430 /* Extensions+Other.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extensions+Other.swift"; sourceTree = "<group>"; };
 		B0447C1F2641BAFE00148430 /* FirebaseFetcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseFetcher.swift; sourceTree = "<group>"; };
 		B04A40D92679F05C00C50C72 /* TestImages.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = TestImages.xcassets; sourceTree = "<group>"; };
+		B04A40DC267A2B1900C50C72 /* PersonDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonDetail.swift; sourceTree = "<group>"; };
+		B04A40DE267A315500C50C72 /* AmountDisplay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmountDisplay.swift; sourceTree = "<group>"; };
 		B04AD2A926567464001A760F /* PersonRowImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonRowImage.swift; sourceTree = "<group>"; };
 		B04AD2AB26567CD6001A760F /* RandomInstanceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RandomInstanceProtocol.swift; sourceTree = "<group>"; };
 		B04AD2AD26569614001A760F /* SignInPersonSelectionViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInPersonSelectionViewTests.swift; sourceTree = "<group>"; };
@@ -367,6 +371,7 @@
 		B021DF3D264918D300FD418F /* HelpfulViews */ = {
 			isa = PBXGroup;
 			children = (
+				B04A40DE267A315500C50C72 /* AmountDisplay.swift */,
 				B021DF3E264918E400FD418F /* BackgroundWave.swift */,
 				B0A4629E2649A7070045D2BE /* CustomTextField.swift */,
 				B0225D23265119D300D75CDA /* CustomToggle.swift */,
@@ -518,6 +523,7 @@
 			children = (
 				B0726AF52664F62500ABFEAD /* PersonList.swift */,
 				B0C58D3A266CCB9200FA19B1 /* PersonAddNew.swift */,
+				B04A40DC267A2B1900C50C72 /* PersonDetail.swift */,
 			);
 			path = PersonList;
 			sourceTree = "<group>";
@@ -906,6 +912,7 @@
 				B0225D2626513C4900D75CDA /* FFExistsClubWithIdentifierCall.swift in Sources */,
 				B04AD2AC26567CD6001A760F /* RandomInstanceProtocol.swift in Sources */,
 				B0AF0A9C2643328800DF4DC9 /* Payed.swift in Sources */,
+				B04A40DD267A2B1900C50C72 /* PersonDetail.swift in Sources */,
 				B05CCFD42662990E00F13786 /* PersonDetailImage.swift in Sources */,
 				B050AC95265FA152000B3E84 /* TabBar.swift in Sources */,
 				B09CCE1826593E4C008C545A /* SignInAppleController.swift in Sources */,
@@ -928,6 +935,7 @@
 				B0A4629D2649A5600045D2BE /* EmptyNavigationLink.swift in Sources */,
 				B08FC119265D38C400F63975 /* Settings.swift in Sources */,
 				B02221A92641D4FE0005295B /* FirebaseDecoder.swift in Sources */,
+				B04A40DF267A315500C50C72 /* AmountDisplay.swift in Sources */,
 				B0726AF12664242400ABFEAD /* DeleteAlert.swift in Sources */,
 				B090FDF526640B55005700A8 /* SplittedOutlinedContent.swift in Sources */,
 				B02221A72641BEFC0005295B /* Tagged.swift in Sources */,

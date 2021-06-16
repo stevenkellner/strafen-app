@@ -1,6 +1,12 @@
 /* Text of an amount display for amount sum of all unpayed fines with low importance. */
 "amount-sum-low-importance-text" = "All Pending";
 
+/* Text of an amount display for amount sum of all unpayed fines with medium importance. */
+"amount-sum-medium-importance-text" = "Only Medium";
+
+/* Text of an amount display for amount sum of all unpayed fines with high importance. */
+"amount-sum-high-importance-text" = "Only Important";
+
 /* Text of an amount display for amount sum of all payed fines. */
 "amount-sum-payed-text" = "All Paid";
 

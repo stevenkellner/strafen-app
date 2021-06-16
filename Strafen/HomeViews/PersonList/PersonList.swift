@@ -118,7 +118,7 @@ struct PersonList: View {
 
                 // Navigation link to person detail
                 EmptyNavigationLink(isActive: $isNavigationLinkActive) {
-                    Text(verbatim: "Person Detail") // TODO
+                    PersonDetail(person: person)
                 }
 
                 SplittedOutlinedContent {

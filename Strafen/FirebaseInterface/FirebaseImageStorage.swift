@@ -202,7 +202,7 @@ import FirebaseStorage
     static private let storageBucketUrl: String = "gs://strafen-app.appspot.com"
 
     /// Compression quality
-    static private let compressionQuality: CGFloat = 0.85
+    static let compressionQuality: CGFloat = 0.85
 
     /// Shared instance for singelton
     static let shared = FirebaseImageStorage()
@@ -337,35 +337,33 @@ import FirebaseStorage
 
     /// Deletes image with given type
     /// - Parameter imageType: type of image to delete
-    /// - Returns: result of delete operation
-    @discardableResult func delete(_ imageType: ImageType) async -> OperationResult {
+    func delete(_ imageType: ImageType) async throws {
 
         // Delete images on server
-        let result = await withTaskGroup(of: OperationResult.self, returning: OperationResult.self) { group in
+        let error = await withTaskGroup(of: Error?.self, returning: Error??.self) { group in
             for imageSize in ImageSize.allCases {
                 group.async {
                     do {
                         try await Storage.storage(url: Self.storageBucketUrl).reference(withPath: imageType.url(with: imageSize).path).delete()
+                        return nil
                     } catch {
-                        guard let error = error as NSError?, error.domain == StorageErrorDomain else { return .passed }
-                        guard StorageErrorCode(rawValue: error.code) == .objectNotFound else { return .failed }
+                        guard let error = error as NSError?, error.domain == StorageErrorDomain else { return error }
+                        if StorageErrorCode(rawValue: error.code) == .objectNotFound { return nil }
+                        return error
                     }
-                    return .passed
                 }
             }
-            return await group.contains(.failed) ? .failed : .passed
+            return await group.first { $0 != nil }
         }
+        if let error1 = error, let error2 = error1 { throw error2 }
 
         // Delete image in cache
-        guard result == .passed else { return .failed }
         switch imageType {
         case .clubImage(clubId: let key):
             clubImageCache.deleteFromAll(with: key.rawValue)
         case .personImage(clubId: _, personId: let key):
             personImageCache.deleteFromAll(with: key.rawValue)
         }
-
-        return .passed
     }
 
     /// Clear cache

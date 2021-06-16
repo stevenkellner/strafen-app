@@ -16,8 +16,13 @@ struct PersonDetailImage: View {
     /// Person
     let person: FirebasePerson
 
+    init(_ image: Binding<UIImage?>, person: FirebasePerson) {
+        self._image = image
+        self.person = person
+    }
+
     /// Size of the image
-    private let imageSize: CGSize = CGSize(width: 100, height: 100)
+    private var imageSize: CGSize = CGSize(width: 100, height: 100)
 
     /// True if image detail is showed
     @State var showImageDetail = false
@@ -46,5 +51,14 @@ struct PersonDetailImage: View {
                     .overlay(Circle().stroke(Color.textColor, lineWidth: 2).frame(size: imageSize * 0.75))
             }
         }.frame(size: imageSize)
+    }
+
+    /// Sets image size
+    /// - Parameter width: width of the image
+    /// - Returns: modified person detail image
+    func size(_ width: CGFloat) -> PersonDetailImage {
+        var image = self
+        image.imageSize = CGSize(width: width, height: width)
+        return image
     }
 }

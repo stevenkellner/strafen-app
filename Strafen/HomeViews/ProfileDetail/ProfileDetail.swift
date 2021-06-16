@@ -115,7 +115,7 @@ struct ProfileDetail: View {
             HStack(spacing: 0) {
 
                 // Image
-                PersonDetailImage(image: $image, person: person.firebasePerson)
+                PersonDetailImage($image, person: person.firebasePerson)
                     .padding(.leading, image == nil ? 25 : 0)
 
                 Spacer()

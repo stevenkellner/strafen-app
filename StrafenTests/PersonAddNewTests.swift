@@ -106,11 +106,11 @@ class PersonAddNewTests: XCTestCase {
         // Check image
         let imageType = FirebaseImageStorage.ImageType(id: personId!, clubId: clubId)
         let image = try await FirebaseImageStorage.shared.fetch(imageType, size: .original)
-        XCTAssertEqual(image.size, inputProperties.image?.size)
+        let otherImage = UIImage(data: inputProperties.image?.jpegData(compressionQuality: FirebaseImageStorage.compressionQuality))
+        XCTAssertEqual(image.jpegData(compressionQuality: 1), otherImage?.jpegData(compressionQuality: 1))
 
         // Delete images
         await wait(10)
-        let deleteResult = await FirebaseImageStorage.shared.delete(imageType)
-        XCTAssertEqual(deleteResult, .passed)
+        try await FirebaseImageStorage.shared.delete(imageType)
     }
 }

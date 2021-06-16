@@ -1,6 +1,12 @@
 /* Text of an amount display for amount sum of all unpayed fines with low importance. */
 "amount-sum-low-importance-text" = "Ausstehend";
 
+/* Text of an amount display for amount sum of all unpayed fines with medium importance. */
+"amount-sum-medium-importance-text" = "Mittleres";
+
+/* Text of an amount display for amount sum of all unpayed fines with high importance. */
+"amount-sum-high-importance-text" = "Wichtigstes";
+
 /* Text of an amount display for amount sum of all payed fines. */
 "amount-sum-payed-text" = "Bezahlt";
 
@@ -375,3 +381,9 @@
 
 /* Text of sign in with apple button. */
 "sign-in-with-apple-button-text" = "Mit Apple anmelden";
+
+/* Message that this person has no fines. */
+"person-detail-no-fines-message" = "Diese Person hat keine Strafen.";
+
+/* Message how you can add new fines. */
+"person-detail-how-new-fine-message" = "Füge eine Neue mit der Taste unten rechts hinzu.";
