@@ -38,7 +38,7 @@ struct PersonDetail: View {
 
                 // Back / edit button
                 BackAndEditButton {
-                    Text(verbatim: "Person Editor")
+                    PersonEditor(person)
                 }.padding(.top, 50)
 
                 // Image

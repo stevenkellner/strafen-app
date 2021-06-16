@@ -14,7 +14,7 @@ struct AmountDisplay: View {
     let personId: FirebasePerson.ID
 
     /// State of amount display
-    enum AmountDisplayState: Int {
+    enum AmountDisplayState: Int, CaseIterable {
 
         /// total amount sum
         case total = 0
@@ -53,36 +53,14 @@ struct AmountDisplay: View {
             }
         }
 
-        /// Next state
-        var next: AmountDisplayState {
-            switch self {
-            case .total: return .payed
-            case .payed: return .low
-            case .low: return .medium
-            case .medium: return .high
-            case .high: return .total
-            }
-        }
-
-        /// Previous state
-        var previous: AmountDisplayState {
-            switch self {
-            case .total: return .high
-            case .payed: return .total
-            case .low: return .payed
-            case .medium: return .low
-            case .high: return .medium
-            }
-        }
-
         /// Gets to the next state
         mutating func toNextState() {
-            self = next
+            self = AmountDisplayState(rawValue: (rawValue + 1) % AmountDisplayState.allCases.count)!
         }
 
         /// Gets to the previous state
         mutating func toPreviousState() {
-            self = previous
+            self = AmountDisplayState(rawValue: (rawValue + AmountDisplayState.allCases.count - 1) % AmountDisplayState.allCases.count)!
         }
 
         /// Number of offset to given state

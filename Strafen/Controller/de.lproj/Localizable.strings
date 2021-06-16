@@ -387,3 +387,24 @@
 
 /* Message how you can add new fines. */
 "person-detail-how-new-fine-message" = "Füge eine Neue mit der Taste unten rechts hinzu.";
+
+/* Header of person editor view. */
+"person-editor-header-text" = "Person Ändern";
+
+/* Plain text of first name for text field placeholder. */
+"person-editor-first-name-placeholder" = "Vorname";
+
+/* Plain text of name for text field title. */
+"person-editor-name-title" = "Name";
+
+/* Plain text of last name that can be optional for text field placeholder. */
+"person-editor-optional-last-name-placeholder" = "Nachname (optional)";
+
+/* Text that image is uploading. */
+"person-editor-upload-image-text" = "Bild hochladen";
+
+/* Message of delete person alert. */
+"person-editor-delete-message" = "Möchtest du die Person wirklich löschen?";
+
+/* An error message displayed, when person is undeletable cause person is already registred. */
+"error-message-personUndeletable" = "Nicht löschbar, da sie bereits registriert ist!";
