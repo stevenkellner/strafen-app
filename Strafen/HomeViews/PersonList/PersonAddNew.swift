@@ -167,13 +167,14 @@ struct PersonAddNew: View {
     }
 
     /// Handles person and image saving
-    static func handlePersonSave(person: Settings.Person,
-                                 inputProperties: Binding<InputProperties>,
-                                 presentationMode: Binding<PresentationMode>? = nil) async {
-        guard inputProperties.wrappedValue.connectionState.restart() == .passed else { return }
+    @discardableResult static func handlePersonSave(person: Settings.Person,
+                                                    inputProperties: Binding<InputProperties>,
+                                                    presentationMode: Binding<PresentationMode>? = nil) async -> FirebasePerson.ID? {
+        guard inputProperties.wrappedValue.connectionState.restart() == .passed else { return nil }
         inputProperties.wrappedValue.functionCallErrorMessage = nil
         guard inputProperties.wrappedValue.validateAllInputs() == .valid else {
-            return inputProperties.wrappedValue.connectionState.failed()
+            inputProperties.wrappedValue.connectionState.failed()
+            return nil
         }
         inputProperties.wrappedValue.imageUploadProgess = nil
         let personId = FirebasePerson.ID(rawValue: UUID())
@@ -184,13 +185,15 @@ struct PersonAddNew: View {
             try await setPersonImage(of: personId, person: person, inputProperties: inputProperties)
 
             // Create new person in database
-            await createNewPerson(of: personId, person: person, inputProperties: inputProperties)
+            try await createNewPerson(of: personId, person: person, inputProperties: inputProperties)
 
         } catch {
             inputProperties.wrappedValue.functionCallErrorMessage = .internalErrorSave
             inputProperties.wrappedValue.imageUploadProgess = nil
             inputProperties.wrappedValue.connectionState.failed()
         }
+
+        return personId
     }
 
     /// Set person image
@@ -203,22 +206,18 @@ struct PersonAddNew: View {
         try await FirebaseImageStorage.shared.store(image, of: imageType) { progress in
             inputProperties.wrappedValue.imageUploadProgess = progress
         }
+        inputProperties.wrappedValue.imageUploadProgess = nil
     }
 
     /// Create new person in database
     static func createNewPerson(of personId: FirebasePerson.ID,
                                 person loggedInPerson: Settings.Person,
-                                inputProperties: Binding<InputProperties>) async {
+                                inputProperties: Binding<InputProperties>) async throws {
         let name = PersonName(firstName: inputProperties.wrappedValue[.firstName], lastName: inputProperties.wrappedValue[.lastName])
         let person = FirebasePerson(id: personId, name: name, signInData: nil)
         let callItem = FFChangeListCall(clubId: loggedInPerson.club.id, item: person)
 
-        do {
-            try await FirebaseFunctionCaller.shared.call(callItem)
-            inputProperties.wrappedValue.connectionState.passed()
-        } catch {
-            inputProperties.wrappedValue.functionCallErrorMessage = .internalErrorSave
-            inputProperties.wrappedValue.connectionState.failed()
-        }
+        try await FirebaseFunctionCaller.shared.call(callItem)
+        inputProperties.wrappedValue.connectionState.passed()
     }
 }

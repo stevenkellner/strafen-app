@@ -276,7 +276,7 @@ import FirebaseStorage
     ///   - imageSize: size of image to fetch
     ///   - progressChangeHandler: handles fetch progress changes
     /// - Returns: fetched image
-    private func fetch(_ imageType: ImageType, size imageSize: ImageSize, progress progressChangeHandler: ((Double) -> Void)? = nil) async throws -> UIImage {
+    func fetch(_ imageType: ImageType, size imageSize: ImageSize, progress progressChangeHandler: ((Double) -> Void)? = nil) async throws -> UIImage {
         let maxSize: Int64 = 30 * 1024 * 1024 // 30 MB
         let dispatchGroup = DispatchGroup()
         dispatchGroup.enter()

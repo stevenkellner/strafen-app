@@ -162,7 +162,7 @@ class FirebaseObserverTests: XCTestCase {
         let setValueCallItem = FFNewTestClubPropertyCall(clubId: clubId, urlFromClub: URL(string: "otherKey")!, property: "value")
         try await FirebaseFunctionCaller.shared.call(setValueCallItem)
 
-        wait(1)
+        await wait(1)
 
         // Remove observer
         removeObserver()
@@ -172,7 +172,7 @@ class FirebaseObserverTests: XCTestCase {
         try await FirebaseFunctionCaller.shared.call(changeValueCallItem)
 
         // Still wait 10sec for observed value
-        wait(10)
+        await wait(10)
 
         XCTAssertEqual(numberExecuted, 1)
     }
@@ -308,7 +308,7 @@ class FirebaseObserverTests: XCTestCase {
         let callItem1 = FFNewTestClubPropertyCall(clubId: clubId, urlFromClub: URL(string: "persons/D1852AC0-A0E2-4091-AC7E-CB2C23F708D9/name/first")!, property: "first")
         try await FirebaseFunctionCaller.shared.call(callItem1)
 
-        wait(1)
+        await wait(1)
 
         // Remove observer
         removeObserver()
@@ -318,7 +318,7 @@ class FirebaseObserverTests: XCTestCase {
         try await FirebaseFunctionCaller.shared.call(callItem2)
 
         // Still wait 10sec for observed value
-        wait(10)
+        await wait(10)
 
         XCTAssertEqual(numberExecuted, 1)
     }

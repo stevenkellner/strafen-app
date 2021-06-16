@@ -111,10 +111,12 @@ extension XCTestCase {
 
     /// Waits for given timeinterval
     /// - Parameter timeout: timeintval to wait
-    func wait(_ timeout: TimeInterval) {
-        let expectation = self.expectation(description: "waitExpectation")
-        DispatchQueue.main.asyncAfter(deadline: .now() + timeout) { expectation.fulfill() }
-        waitForExpectations(timeout: timeout + 1)
+    func wait(_ timeout: TimeInterval) async {
+        await withCheckedContinuation { continuation in
+            DispatchQueue.main.asyncAfter(deadline: .now() + timeout) {
+                continuation.resume()
+            }
+        }
     }
 }
 
