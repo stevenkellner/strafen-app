@@ -18,6 +18,7 @@ class PersonAddNewTests: XCTestCase {
         continueAfterFailure = false
         FirebaseFetcher.shared.level = .testing
         FirebaseFunctionCaller.shared.level = .testing
+        FirebaseImageStorage.shared.level = .testing
 
         waitExpectation { handler in
             async {

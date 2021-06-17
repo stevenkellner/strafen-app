@@ -60,15 +60,15 @@ struct FineReasonTemplate: FineReason, Equatable {
     let templateId: FirebaseReasonTemplate.ID
 
     func reason(with reasonList: [FirebaseReasonTemplate]) -> String {
-        reasonList.first(where: { $0.id == templateId })?.reason ?? ""
+        reasonList.first { $0.id == templateId }?.reason ?? ""
     }
 
     func amount(with reasonList: [FirebaseReasonTemplate]) -> Amount {
-        reasonList.first(where: { $0.id == templateId })?.amount ?? .zero
+        reasonList.first { $0.id == templateId }?.amount ?? .zero
     }
 
     func importance(with reasonList: [FirebaseReasonTemplate]) -> Importance {
-        reasonList.first(where: { $0.id == templateId })?.importance ?? .low
+        reasonList.first { $0.id == templateId }?.importance ?? .low
     }
 
     var parameterSet: FirebaseCallParameterSet {

@@ -34,7 +34,7 @@ struct FirebaseObserver {
             .appendingUrl(urlFromClub)
         let observerHandle = Database.database().reference(withPath: url.path).observe(.value) { snapshot in
             guard snapshot.exists(), let data = snapshot.value else {
-                if let removeHandler = removeHandler { removeHandler() }
+                removeHandler?()
                 return
             }
             guard let value = FirebaseDecoder.shared.decode(type, data) else { return }

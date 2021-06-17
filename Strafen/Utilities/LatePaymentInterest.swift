@@ -25,24 +25,18 @@ struct LatePaymentInterest: Codable, Equatable {
         /// Same componets of Calender.Components
         var dateComponentFlag: Calendar.Component {
             switch self {
-            case .day:
-                return .day
-            case .month:
-                return .month
-            case .year:
-                return .year
+            case .day: return .day
+            case .month: return .month
+            case .year: return .year
             }
         }
 
         /// Keypath from DateComponents to same component
         var dateComponentKeyPath: KeyPath<DateComponents, Int?> {
             switch self {
-            case .day:
-                return \.day
-            case .month:
-                return \.month
-            case .year:
-                return \.year
+            case .day: return \.day
+            case .month: return \.month
+            case .year: return \.year
             }
         }
 

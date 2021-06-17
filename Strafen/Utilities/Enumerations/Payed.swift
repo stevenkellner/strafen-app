@@ -39,10 +39,8 @@ extension Payed: Decodable, Equatable {
         let container = try decoder.singleValueContainer()
         let rawPayed = try container.decode(CodablePayed.self)
         switch rawPayed.state {
-        case "unpayed":
-            self = .unpayed
-        case "settled":
-            self = .settled
+        case "unpayed": self = .unpayed
+        case "settled": self = .settled
         case "payed":
             guard let date = rawPayed.payDate else {
                 throw DecodingError.dataCorruptedError(in: container, debugDescription: "Date for payed not found.")
@@ -59,36 +57,27 @@ extension Payed {
     /// State of payment
     var state: String {
         switch self {
-        case .unpayed:
-            return "unpayed"
-        case .settled:
-            return "settled"
-        case .payed(date: _, inApp: _):
-            return "payed"
+        case .unpayed: return "unpayed"
+        case .settled: return "settled"
+        case .payed(date: _, inApp: _): return "payed"
         }
     }
 
     /// Pay date (only for payed)
     var payDate: Date? {
         switch self {
-        case .unpayed:
-            return nil
-        case .settled:
-            return nil
-        case .payed(date: let date, inApp: _):
-            return date
+        case .unpayed: return nil
+        case .settled: return nil
+        case .payed(date: let date, inApp: _): return date
         }
     }
 
     /// In app payed
     var payedInApp: Bool {
         switch self {
-        case .unpayed:
-            return false
-        case .settled:
-            return false
-        case .payed(date: _, inApp: let inApp):
-            return inApp
+        case .unpayed: return false
+        case .settled: return false
+        case .payed(date: _, inApp: let inApp): return inApp
         }
     }
 }

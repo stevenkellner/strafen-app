@@ -34,14 +34,14 @@ import FirebaseStorage
         }
 
         /// Url to image
-        var url: URL {
+        func url(level: FirebaseDatabaseLevel) -> URL {
             switch self {
             case .clubImage(clubId: let clubId):
-                return URL(string: "images")!
+                return URL(string: level.imageComponent)!
                     .appendingPathComponent(clubId.uuidString.uppercased())
                     .appendingPathComponent("original")
             case .personImage(clubId: let clubId, personId: let personId):
-                return URL(string: "images")!
+                return URL(string: level.imageComponent)!
                     .appendingPathComponent(clubId.uuidString.uppercased())
                     .appendingPathComponent(personId.uuidString.uppercased())
                     .appendingPathComponent("original")
@@ -51,14 +51,14 @@ import FirebaseStorage
         /// Url to image with given image size
         /// - Parameter imageSize: size of image
         /// - Returns: url to image with given image size
-        func url(with imageSize: ImageSize) -> URL {
+        func url(with imageSize: ImageSize, level: FirebaseDatabaseLevel) -> URL {
             switch self {
             case .clubImage(clubId: let clubId):
-                return URL(string: "images")!
+                return URL(string: level.imageComponent)!
                     .appendingPathComponent(clubId.uuidString.uppercased())
                     .appendingPathComponent(imageSize.imageName)
             case .personImage(clubId: let clubId, personId: let personId):
-                return URL(string: "images")!
+                return URL(string: level.imageComponent)!
                     .appendingPathComponent(clubId.uuidString.uppercased())
                     .appendingPathComponent(personId.uuidString.uppercased())
                     .appendingPathComponent(imageSize.imageName)
@@ -204,6 +204,9 @@ import FirebaseStorage
     /// Compression quality
     static let compressionQuality: CGFloat = 0.85
 
+    /// Level of a firebase database fetch
+    public var level: FirebaseDatabaseLevel = .defaultValue
+
     /// Shared instance for singelton
     static let shared = FirebaseImageStorage()
 
@@ -231,7 +234,7 @@ import FirebaseStorage
         var storageResult: Result<StorageMetadata, Error>?
 
         // Store image
-        let uploadTask = Storage.storage(url: Self.storageBucketUrl).reference(withPath: imageType.url.path).putData(imageData, metadata: metadata) { [weak self] metadata, error in
+        let uploadTask = Storage.storage(url: Self.storageBucketUrl).reference(withPath: imageType.url(level: self.level).path).putData(imageData, metadata: metadata) { [weak self] metadata, error in
             if let metadata = metadata {
                 storageResult = .success(metadata)
                 dispatchGroup.leave()
@@ -283,7 +286,7 @@ import FirebaseStorage
         var fetchResult: Result<UIImage, Error>?
 
         // Fetch image
-        let downloadTask = Storage.storage(url: Self.storageBucketUrl).reference(withPath: imageType.url(with: imageSize).path).getData(maxSize: maxSize) { [weak self] data, _ in
+        let downloadTask = Storage.storage(url: Self.storageBucketUrl).reference(withPath: imageType.url(with: imageSize, level: self.level).path).getData(maxSize: maxSize) { [weak self] data, _ in
             let image = UIImage(data: data)
             if let image = image {
                 fetchResult = .success(image)
@@ -344,7 +347,7 @@ import FirebaseStorage
             for imageSize in ImageSize.allCases {
                 group.async {
                     do {
-                        try await Storage.storage(url: Self.storageBucketUrl).reference(withPath: imageType.url(with: imageSize).path).delete()
+                        try await Storage.storage(url: Self.storageBucketUrl).reference(withPath: imageType.url(with: imageSize, level: self.level).path).delete()
                         return nil
                     } catch {
                         guard let error = error as NSError?, error.domain == StorageErrorDomain else { return error }

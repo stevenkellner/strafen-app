@@ -56,20 +56,8 @@ extension Amount: CustomStringConvertible {
     }
 
     var description: String {
-        let numberFormatter = NumberFormatter()
-        numberFormatter.locale = Amount.locale
-        numberFormatter.numberStyle = .currency
-        return numberFormatter.string(from: NSNumber(value: doubleValue)) ?? numberFormatter.string(from: 0)!
-    }
-}
-
-extension Amount: CustomDebugStringConvertible {
-
-    var debugDescription: String {
-        let numberFormatter = NumberFormatter()
-        numberFormatter.locale = Locale.current
-        numberFormatter.numberStyle = .currency
-        return numberFormatter.string(from: NSNumber(value: doubleValue)) ?? numberFormatter.string(from: 0)!
+        guard let currencyCode = Amount.locale.currencyCode else { return stringValue }
+        return doubleValue.formatted(.currency(code: currencyCode))
     }
 }
 

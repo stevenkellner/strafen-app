@@ -26,12 +26,18 @@ enum FirebaseDatabaseLevel: String {
     /// Club component
     var clubComponent: String {
         switch self {
-        case .regular:
-            return "clubs"
-        case .debug:
-            return "debugClubs"
-        case .testing:
-            return "testableClubs"
+        case .regular: return "clubs"
+        case .debug: return "debugClubs"
+        case .testing: return "testableClubs"
+        }
+    }
+
+    /// Image component
+    var imageComponent: String {
+        switch self {
+        case .regular: return "images"
+        case .debug: return "debugImages"
+        case .testing: return "testableImages"
         }
     }
 

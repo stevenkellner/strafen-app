@@ -26,7 +26,7 @@ export const generateThumbs = functions.region("europe-west1").storage.object().
     if (fileName.includes("thumb@") ||
       object.contentType == null ||
       !object.contentType.includes("image") ||
-      fileComponents[0] != "images" ||
+      !(fileComponents[0] == "images" || fileComponents[0] == "debugImages" || fileComponents[0] == "testableImages") ||
       fileComponents[1] == "person" ||
       fileComponents[1] == "club") {
         return;

@@ -61,7 +61,7 @@ struct FirebaseCallParameterSet {
 
     /// Transformed parameters as Dictionaray of [String : FirebasePrimordialParameterable]
     /// that can be used as a parameter in a firebase function call.
-    var primordialParameter: [String: FirebasePrimordialParameterable] {
+    var primordialParameter: FirebasePrimordialParameterable {
         parameters.mapValues { value in
             value.primordialParameter
         }

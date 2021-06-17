@@ -31,16 +31,11 @@ class HomeTab: ObservableObject {
         /// System image name
         var imageName: String {
             switch self {
-            case .profileDetail:
-                return "person"
-            case .personList:
-                return "person.2"
-            case .reasonList:
-                return "list.dash"
-            case .addNewFine:
-                return "plus"
-            case .settings:
-                return "gear"
+            case .profileDetail: return "person"
+            case .personList: return "person.2"
+            case .reasonList: return "list.dash"
+            case .addNewFine: return "plus"
+            case .settings: return "gear"
             }
         }
 

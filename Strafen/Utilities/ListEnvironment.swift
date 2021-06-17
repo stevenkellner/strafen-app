@@ -36,6 +36,7 @@ import SwiftUI
         }
     }
 }
+
 extension ListEnvironment {
 
     /// Changes item with given id to new value

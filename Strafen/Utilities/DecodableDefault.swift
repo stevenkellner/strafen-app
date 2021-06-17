@@ -74,7 +74,7 @@ extension DecodableDefault {
             static var defaultValue: T { [] }
         }
 
-        /// For Dicctionary is default value `[:]`
+        /// For Dictionary is default value `[:]`
         enum EmptyDict<T>: DecodableDefaultSource where T: Decodable & ExpressibleByDictionaryLiteral {
             static var defaultValue: T { [:] }
         }

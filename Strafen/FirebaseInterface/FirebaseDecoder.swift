@@ -29,10 +29,26 @@ struct FirebaseDecoder {
 
     /// Decodes given type from firebase database data and given key.
     /// Throws error if data can not be decoded.
+    ///
+    /// Decodes data like this:
+    /// ```json
+    /// {
+    ///     "firstProperty": "value",
+    ///     "secondProperty": 12.5
+    /// }
+    /// ```
+    /// to a type like this:
+    /// ```swift
+    /// struct DecodedType: Decodable {
+    ///     let key: String
+    ///     let firstProperty: String
+    ///     let secondProperty: Double
+    /// }
+    /// ```
     /// - Parameters:
-    ///   - type: Type to decode to
-    ///   - data: Data to decode from
-    ///   - key: Key of the data
+    ///   - type: The type of the value to decode.
+    ///   - data: The data to decode from.
+    ///   - key: The key of the data.
     /// - Throws: DecodingError and FirebaseDecoder.DecodingError if data can not be decoded.
     /// - Returns: Decoded data of given type
     func decodeOrThrow<T>(_ type: T.Type, _ data: Any, key: String) throws -> T where T: Decodable {
@@ -44,10 +60,26 @@ struct FirebaseDecoder {
 
     /// Decodes given type from firebase database data and given key.
     /// Returns `.failure(_)` if data can not be decoded.
+    ///
+    /// Decodes data like this:
+    /// ```json
+    /// {
+    ///     "firstProperty": "value",
+    ///     "secondProperty": 12.5
+    /// }
+    /// ```
+    /// to a type like this:
+    /// ```swift
+    /// struct DecodedType: Decodable {
+    ///     let key: String
+    ///     let firstProperty: String
+    ///     let secondProperty: Double
+    /// }
+    /// ```
     /// - Parameters:
-    ///   - type: Type to decode to
-    ///   - data: Data to decode from
-    ///   - key: Key of the data
+    ///   - type: The type of the value to decode.
+    ///   - data: The data to decode from.
+    ///   - key: The key of the data.
     /// - Returns: Result of decoded data of given type or `.failure(_)` if data can not be decoded.
     func decodeResult<T>(_ type: T.Type, _ data: Any, key: String) -> Result<T, Error> where T: Decodable {
         Result { try decodeOrThrow(type, data, key: key) }
@@ -55,10 +87,26 @@ struct FirebaseDecoder {
 
     /// Decodes given type from firebase database data and given key.
     /// Returns nil if data can not be decoded.
+    ///
+    /// Decodes data like this:
+    /// ```json
+    /// {
+    ///     "firstProperty": "value",
+    ///     "secondProperty": 12.5
+    /// }
+    /// ```
+    /// to a type like this:
+    /// ```swift
+    /// struct DecodedType: Decodable {
+    ///     let key: String
+    ///     let firstProperty: String
+    ///     let secondProperty: Double
+    /// }
+    /// ```
     /// - Parameters:
-    ///   - type: Type to decode to
-    ///   - data: Data to decode from
-    ///   - key: Key of the data
+    ///   - type: The type of the value to decode.
+    ///   - data: The data to decode from.
+    ///   - key: The key of the data.
     /// - Returns: Decoded data of given type or nil if data can not be decoded.
     func decode<T>(_ type: T.Type, _ data: Any, key: String) -> T? where T: Decodable {
         try? decodeOrThrow(type, data, key: key)
@@ -66,9 +114,24 @@ struct FirebaseDecoder {
 
     /// Decodes given type from firebase database data.
     /// Throws error if data can not be decoded.
+    ///
+    /// Decodes data like this:
+    /// ```json
+    /// {
+    ///     "firstProperty": "value",
+    ///     "secondProperty": 12.5
+    /// }
+    /// ```
+    /// to a type like this:
+    /// ```swift
+    /// struct DecodedType: Decodable {
+    ///     let firstProperty: String
+    ///     let secondProperty: Double
+    /// }
+    /// ```
     /// - Parameters:
-    ///   - type: Type to decode to
-    ///   - data: Data to decode from
+    ///   - type: The type of the value to decode.
+    ///   - data: The data to decode from.
     /// - Throws: DecodingError if data can not be decoded.
     /// - Returns: Decoded data of given type
     func decodeOrThrow<T>(_ type: T.Type, _ data: Any) throws -> T where T: Decodable {
@@ -78,9 +141,24 @@ struct FirebaseDecoder {
 
     /// Decodes given type from firebase database data.
     /// Returns `.failure(_)` if data can not be decoded.
+    ///
+    /// Decodes data like this:
+    /// ```json
+    /// {
+    ///     "firstProperty": "value",
+    ///     "secondProperty": 12.5
+    /// }
+    /// ```
+    /// to a type like this:
+    /// ```swift
+    /// struct DecodedType: Decodable {
+    ///     let firstProperty: String
+    ///     let secondProperty: Double
+    /// }
+    /// ```
     /// - Parameters:
-    ///   - type: Type to decode to
-    ///   - data: Data to decode from
+    ///   - type: The type of the value to decode.
+    ///   - data: The data to decode from.
     /// - Returns: Result of decoded data of given type orr`.failure(_)` if data can not be decoded.
     func decodeResult<T>(_ type: T.Type, _ data: Any) -> Result<T, Error> where T: Decodable {
         Result { try decodeOrThrow(type, data) }
@@ -88,9 +166,24 @@ struct FirebaseDecoder {
 
     /// Decodes given type from firebase database data.
     /// Returns nil if data can not be decoded.
+    ///
+    /// Decodes data like this:
+    /// ```json
+    /// {
+    ///     "firstProperty": "value",
+    ///     "secondProperty": 12.5
+    /// }
+    /// ```
+    /// to a type like this:
+    /// ```swift
+    /// struct DecodedType: Decodable {
+    ///     let firstProperty: String
+    ///     let secondProperty: Double
+    /// }
+    /// ```
     /// - Parameters:
-    ///   - type: Type to decode to
-    ///   - data: Data to decode from
+    ///   - type: The type of the value to decode.
+    ///   - data: The data to decode from.
     /// - Returns: Decoded data of given type or nil if data can not be decoded.
     func decode<T>(_ type: T.Type, _ data: Any) -> T? where T: Decodable {
         try? decodeOrThrow(type, data)
@@ -98,9 +191,28 @@ struct FirebaseDecoder {
 
     /// Decodes array of given type from firebase database data.
     /// Throws error if data can not be decoded.
+    ///
+    /// Decodes data like this:
+    /// ```json
+    /// {
+    ///     "firstKey": {
+    ///         "firstProperty": "value",
+    ///         "secondProperty": 12.5
+    ///     },
+    ///     ...
+    /// }
+    /// ```
+    /// to a list with elements of type like this:
+    /// ```swift
+    /// struct DecodedElement: Decodable {
+    ///     let key: String
+    ///     let firstProperty: String
+    ///     let secondProperty: Double
+    /// }
+    /// ```
     /// - Parameters:
-    ///   - type: Element type to decode to
-    ///   - data: Data to decode from
+    ///   - type: The type of the element to decode.
+    ///   - data: The data to decode from.
     /// - Throws: DecodingError and FirebaseDecoder.DecodingError if data can not be decoded.
     /// - Returns: Decoded data of array of given type
     func decodeListOrThrow<T>(_ type: T.Type, _ data: Any) throws -> [T] where T: Decodable {
@@ -112,9 +224,28 @@ struct FirebaseDecoder {
 
     /// Decodes array of given type from firebase database data.
     /// Returns `.failure(_)` if data can not be decoded.
+    ///
+    /// Decodes data like this:
+    /// ```json
+    /// {
+    ///     "firstKey": {
+    ///         "firstProperty": "value",
+    ///         "secondProperty": 12.5
+    ///     },
+    ///     ...
+    /// }
+    /// ```
+    /// to a list with elements of type like this:
+    /// ```swift
+    /// struct DecodedElement: Decodable {
+    ///     let key: String
+    ///     let firstProperty: String
+    ///     let secondProperty: Double
+    /// }
+    /// ```
     /// - Parameters:
-    ///   - type: Element type to decode to
-    ///   - data: Data to decode from
+    ///   - type: The type of the element to decode.
+    ///   - data: The data to decode from.
     /// - Returns: Result of decoded data of array of given type or `.failure(_)` if data can not be decoded.
     func decodeListResult<T>(_ type: T.Type, _ data: Any) -> Result<[T], Error> where T: Decodable {
         Result { try decodeListOrThrow(type, data) }
@@ -122,9 +253,28 @@ struct FirebaseDecoder {
 
     /// Decodes array of given type from firebase database data.
     /// Returns nil if data can not be decoded.
+    ///
+    /// Decodes data like this:
+    /// ```json
+    /// {
+    ///     "firstKey": {
+    ///         "firstProperty": "value",
+    ///         "secondProperty": 12.5
+    ///     },
+    ///     ...
+    /// }
+    /// ```
+    /// to a list with elements of type like this:
+    /// ```swift
+    /// struct DecodedElement: Decodable {
+    ///     let key: String
+    ///     let firstProperty: String
+    ///     let secondProperty: Double
+    /// }
+    /// ```
     /// - Parameters:
-    ///   - type: Element type to decode to
-    ///   - data: Data to decode from
+    ///   - type: The type of the element to decode.
+    ///   - data: The data to decode from.
     /// - Returns: Decoded data of array of given type or nil if data can not be decoded.
     func decodeList<T>(_ type: T.Type, _ data: Any) -> [T]? where T: Decodable {
         try? decodeListOrThrow(type, data)
@@ -132,9 +282,27 @@ struct FirebaseDecoder {
 
     /// Decodes array of given unkeyed type from firebase database data.
     /// Throws error if data can not be decoded.
+    ///
+    /// Decodes data like this:
+    /// ```json
+    /// [
+    ///     {
+    ///         "firstProperty": "value",
+    ///         "secondProperty": 12.5
+    ///     },
+    ///     ...
+    /// ]
+    /// ```
+    /// to a list with elements of type like this:
+    /// ```swift
+    /// struct DecodedElement: Decodable {
+    ///     let firstProperty: String
+    ///     let secondProperty: Double
+    /// }
+    /// ```
     /// - Parameters:
-    ///   - type: Element type to decode to
-    ///   - data: Data to decode from
+    ///   - type: The type of the element to decode.
+    ///   - data: The data to decode from.
     /// - Throws: DecodingError and FirebaseDecoder.DecodingError if data can not be decoded.
     /// - Returns: Decoded data of array of given primitive type
     func decodeUnkeyedListOrThrow<T>(_ type: T.Type, _ data: Any) throws -> [T] where T: Decodable {
@@ -146,9 +314,27 @@ struct FirebaseDecoder {
 
     /// Decodes array of given unkeyed type from firebase database data.
     /// Returns `.failure(_)` if data can not be decoded.
+    ///
+    /// Decodes data like this:
+    /// ```json
+    /// [
+    ///     {
+    ///         "firstProperty": "value",
+    ///         "secondProperty": 12.5
+    ///     },
+    ///     ...
+    /// ]
+    /// ```
+    /// to a list with elements of type like this:
+    /// ```swift
+    /// struct DecodedElement: Decodable {
+    ///     let firstProperty: String
+    ///     let secondProperty: Double
+    /// }
+    /// ```
     /// - Parameters:
-    ///   - type: Element type to decode to
-    ///   - data: Data to decode from
+    ///   - type: The type of the element to decode.
+    ///   - data: The data to decode from.
     /// - Returns: Result of decoded data of array of given primitive type or `.failure(_)` if data can not be decoded.
     func decodeUnkeyedListResult<T>(_ type: T.Type, _ data: Any) -> Result<[T], Error> where T: Decodable {
         Result { try decodeUnkeyedListOrThrow(type, data) }
@@ -156,9 +342,27 @@ struct FirebaseDecoder {
 
     /// Decodes array of given unkeyed type from firebase database data.
     /// Returns nil if data can not be decoded.
+    ///
+    /// Decodes data like this:
+    /// ```json
+    /// [
+    ///     {
+    ///         "firstProperty": "value",
+    ///         "secondProperty": 12.5
+    ///     },
+    ///     ...
+    /// ]
+    /// ```
+    /// to a list with elements of type like this:
+    /// ```swift
+    /// struct DecodedElement: Decodable {
+    ///     let firstProperty: String
+    ///     let secondProperty: Double
+    /// }
+    /// ```
     /// - Parameters:
-    ///   - type: Element type to decode to
-    ///   - data: Data to decode from
+    ///   - type: The type of the element to decode.
+    ///   - data: The data to decode from.
     /// - Returns: Decoded data of array of given primitive type or nil if data can not be decoded.
     func decodeUnkeyedList<T>(_ type: T.Type, _ data: Any) -> [T]? where T: Decodable {
         try? decodeUnkeyedListOrThrow(type, data)

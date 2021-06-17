@@ -22,12 +22,9 @@ enum Importance: Int {
     /// Color of the imporance in the UI
     var color: Color {
         switch self {
-        case .high:
-            return .customRed
-        case .medium:
-            return .customOrange
-        case .low:
-            return .customYellow
+        case .high: return .customRed
+        case .medium: return .customOrange
+        case .low: return .customYellow
         }
     }
 }
@@ -38,12 +35,9 @@ extension Importance: Decodable {
         let container = try decoder.singleValueContainer()
         let rawImportance = try container.decode(String.self)
         switch rawImportance {
-        case "high":
-            self = .high
-        case "medium":
-            self = .medium
-        case "low":
-            self = .low
+        case "high": self = .high
+        case "medium": self = .medium
+        case "low": self = .low
         default:
             throw DecodingError.dataCorruptedError(in: container, debugDescription: "Invalid importance: \(rawImportance)")
         }
@@ -61,12 +55,9 @@ extension Importance: FirebaseParameterable {
     /// String value
     var stringValue: String {
         switch self {
-        case .high:
-            return "high"
-        case .medium:
-            return "medium"
-        case .low:
-            return "low"
+        case .high: return "high"
+        case .medium: return "medium"
+        case .low: return "low"
         }
     }
 
