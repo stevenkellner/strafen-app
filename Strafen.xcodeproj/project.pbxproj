@@ -127,6 +127,7 @@
 		B0D4B62D2642CD19003A720C /* FirebaseFunctionCaller.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0D4B62C2642CD19003A720C /* FirebaseFunctionCaller.swift */; };
 		B0D7CA60267B6A3300424A08 /* ReasonList.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0D7CA5F267B6A3300424A08 /* ReasonList.swift */; };
 		B0D7CA62267B886900424A08 /* ReasonAddNew.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0D7CA61267B886900424A08 /* ReasonAddNew.swift */; };
+		B0D7CA64267B8D8C00424A08 /* ReasonAddNewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0D7CA63267B8D8C00424A08 /* ReasonAddNewTests.swift */; };
 		B0E29C8E264C052400E4BA3B /* TextFieldFirstResponders.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E29C8D264C052400E4BA3B /* TextFieldFirstResponders.swift */; };
 		B0E9C86826447AF100FB484E /* ListEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E9C86726447AF100FB484E /* ListEnvironment.swift */; };
 		B0EE4C94265FDD09001177E3 /* ProfileDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0EE4C93265FDD09001177E3 /* ProfileDetail.swift */; };
@@ -279,6 +280,7 @@
 		B0D4B62C2642CD19003A720C /* FirebaseFunctionCaller.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseFunctionCaller.swift; sourceTree = "<group>"; };
 		B0D7CA5F267B6A3300424A08 /* ReasonList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReasonList.swift; sourceTree = "<group>"; };
 		B0D7CA61267B886900424A08 /* ReasonAddNew.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReasonAddNew.swift; sourceTree = "<group>"; };
+		B0D7CA63267B8D8C00424A08 /* ReasonAddNewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReasonAddNewTests.swift; sourceTree = "<group>"; };
 		B0DBFF10266FA62D0095B833 /* Strafen.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = Strafen.xctestplan; sourceTree = "<group>"; };
 		B0E29C8D264C052400E4BA3B /* TextFieldFirstResponders.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldFirstResponders.swift; sourceTree = "<group>"; };
 		B0E9C86726447AF100FB484E /* ListEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListEnvironment.swift; sourceTree = "<group>"; };
@@ -617,6 +619,7 @@
 				B0726AF22664C5CC00ABFEAD /* FineEditorTests.swift */,
 				B0ACBAA52678D0E90030E0F5 /* PersonAddNewTests.swift */,
 				B04A40E2267A60CF00C50C72 /* PersonEditorTests.swift */,
+				B0D7CA63267B8D8C00424A08 /* ReasonAddNewTests.swift */,
 				B08DA6562654057D00FE0C52 /* FirebaseTests */,
 				B08DA6552654057400FE0C52 /* LoginViewTests */,
 				B0AF0A8826430AF300DF4DC9 /* FFCallables */,
@@ -986,6 +989,7 @@
 			files = (
 				B04AD2AE26569614001A760F /* SignInPersonSelectionViewTests.swift in Sources */,
 				B0AF0AA22644013400DF4DC9 /* FFNewTestClubPropertyCall.swift in Sources */,
+				B0D7CA64267B8D8C00424A08 /* ReasonAddNewTests.swift in Sources */,
 				B0A761B32642ED1F003B170F /* FirebaseFetcherTests.swift in Sources */,
 				B039864E26526F3500C97DF2 /* FunctionCallerTestProperty.swift in Sources */,
 				B0311305264427EB00E65025 /* FirebaseObserverTests.swift in Sources */,
