@@ -75,7 +75,7 @@ struct ContentView: View {
                                 switch homeTab.active {
                                 case .profileDetail: ProfileDetail()
                                 case .personList: PersonList()
-                                case .reasonList: Text(verbatim: "ReasonList") // ReasonList() TODO
+                                case .reasonList: ReasonList()
                                 case .addNewFine: Text(verbatim: "AddNewFine") // TODO
 //                                    ZStack {
 //                                        Color.backgroundGray

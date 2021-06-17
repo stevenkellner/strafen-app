@@ -83,7 +83,7 @@ struct PersonDetail: View {
                         ForEach(fineListEnvironment.sortedForList(of: person.id, with: reasonListEnvironment.list)) { fine in
                             FineListRow(of: fine, currentLargeFine: $currentLargeFine)
                         }
-                    }.padding(.vertical, 10)
+                    }.padding(.top, 10)
                 }.padding(.top, 10)
 
                 Spacer(minLength: 0)

@@ -408,3 +408,12 @@
 
 /* An error message displayed, when person is undeletable cause person is already registred. */
 "error-message-personUndeletable" = "Nicht löschbar, da sie bereits registriert ist!";
+
+/* Message that reason list is empty. */
+"reason-list-empty-list" = "Es gibt keine verfügbare Strafen!";
+
+/* Message that reason list is empty for the cashier. */
+"reason-list-empty-list-cashier" = "Füge eine Neue mit der Taste unten rechts hinzu!";
+
+/* Header of reason list view. */
+"reason-list-header-text" = "Verfügbare Strafen";

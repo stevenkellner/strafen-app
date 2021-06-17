@@ -70,7 +70,7 @@ struct PersonList: View {
                                     ForEach(personListEnvironment.list.sortedForList(loggedInPerson: person, with: searchText)) { person in
                                         PersonListRow(person: person, searchText: $searchText)
                                     }
-                                }.padding(.vertical, 10)
+                                }.padding(.top, 10)
 
                             }
                         }
@@ -182,7 +182,6 @@ struct PersonList: View {
     }
 }
 
-// Extension of Array to filter and sort it for person list
 extension Array where Element == FirebasePerson {
 
     /// Filtered and sorted for person list
