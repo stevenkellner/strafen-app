@@ -417,3 +417,21 @@
 
 /* Header of reason list view. */
 "reason-list-header-text" = "Verfügbare Strafen";
+
+/* Header of reason add new view. */
+"reason-add-new-header-text" = "Vorlage Hinzufügen";
+
+/* Plain text of amount for text field placeholder. */
+"reason-editor-amount-placeholder" = "Betrag";
+
+/* Plain text of amount for text field title. */
+"reason-editor-amount-title" = "Betrag";
+
+/* Plain text of importance for imporance changer title. */
+"reason-editor-importance-title" = "Wichtigkeit";
+
+/* Plain text of reason for text field placeholder. */
+"reason-editor-reason-placeholder" = "Grund";
+
+/* Plain text of reason for text field title. */
+"reason-editor-reason-title" = "Grund";

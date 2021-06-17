@@ -79,7 +79,7 @@ struct ReasonList: View {
 
                 // Add new reason button
                 AddNewListItemButton(isListEmpty: reasonListEnvironment.list.isEmpty) {
-                    Text(verbatim: "Reason Add New") // TODO
+                    ReasonAddNew()
                 }
 
             }.maxFrame

@@ -126,6 +126,7 @@
 		B0C58D3D266E3F6500FA19B1 /* ImageSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0C58D3C266E3F6500FA19B1 /* ImageSelector.swift */; };
 		B0D4B62D2642CD19003A720C /* FirebaseFunctionCaller.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0D4B62C2642CD19003A720C /* FirebaseFunctionCaller.swift */; };
 		B0D7CA60267B6A3300424A08 /* ReasonList.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0D7CA5F267B6A3300424A08 /* ReasonList.swift */; };
+		B0D7CA62267B886900424A08 /* ReasonAddNew.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0D7CA61267B886900424A08 /* ReasonAddNew.swift */; };
 		B0E29C8E264C052400E4BA3B /* TextFieldFirstResponders.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E29C8D264C052400E4BA3B /* TextFieldFirstResponders.swift */; };
 		B0E9C86826447AF100FB484E /* ListEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E9C86726447AF100FB484E /* ListEnvironment.swift */; };
 		B0EE4C94265FDD09001177E3 /* ProfileDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0EE4C93265FDD09001177E3 /* ProfileDetail.swift */; };
@@ -277,6 +278,7 @@
 		B0C58D3C266E3F6500FA19B1 /* ImageSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageSelector.swift; sourceTree = "<group>"; };
 		B0D4B62C2642CD19003A720C /* FirebaseFunctionCaller.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseFunctionCaller.swift; sourceTree = "<group>"; };
 		B0D7CA5F267B6A3300424A08 /* ReasonList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReasonList.swift; sourceTree = "<group>"; };
+		B0D7CA61267B886900424A08 /* ReasonAddNew.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReasonAddNew.swift; sourceTree = "<group>"; };
 		B0DBFF10266FA62D0095B833 /* Strafen.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = Strafen.xctestplan; sourceTree = "<group>"; };
 		B0E29C8D264C052400E4BA3B /* TextFieldFirstResponders.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldFirstResponders.swift; sourceTree = "<group>"; };
 		B0E9C86726447AF100FB484E /* ListEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListEnvironment.swift; sourceTree = "<group>"; };
@@ -638,6 +640,7 @@
 			isa = PBXGroup;
 			children = (
 				B0D7CA5F267B6A3300424A08 /* ReasonList.swift */,
+				B0D7CA61267B886900424A08 /* ReasonAddNew.swift */,
 			);
 			path = ReasonList;
 			sourceTree = "<group>";
@@ -970,6 +973,7 @@
 				B05CCFD626629E4A00F13786 /* ImagePicker.swift in Sources */,
 				B0AF0A9826432F1E00DF4DC9 /* FirebaseFine.swift in Sources */,
 				B072080E264C56FB0084FDE6 /* ErrorMessages.swift in Sources */,
+				B0D7CA62267B886900424A08 /* ReasonAddNew.swift in Sources */,
 				B090FDE82663A5EB005700A8 /* FineEditor.swift in Sources */,
 				B08FC117265D31C600F63975 /* DecodableDefault.swift in Sources */,
 				B090FDF126640B3D005700A8 /* SheetBar.swift in Sources */,

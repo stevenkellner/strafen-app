@@ -143,6 +143,7 @@ enum ErrorMessages {
     }
     /// Message of the error
     var message: String {
-        "(\(errorCode)) \(rawMessage)"
+        // "(\(errorCode)) \(rawMessage)"
+        rawMessage
     }
 }
