@@ -82,6 +82,9 @@ enum ErrorMessages {
     /// Person is undeletable cause person is already registred
     case personUndeletable
 
+    /// Reason is undeletable cause a fine uses this reason
+    case reasonUndeletable
+
     /// Raw message of the error
     var rawMessage: String {
         switch self {
@@ -109,6 +112,7 @@ enum ErrorMessages {
         case .invalidNumberRange: return String(localized: "error-message-invalidNumberRange", comment: "An error message displayed, when inputed number isn't between 1 and 99.")
         case .internalErrorDelete: return String(localized: "error-message-internalErrorDelete", comment: "An error message displayed, when an error while deleting occured.")
         case .personUndeletable: return String(localized: "error-message-personUndeletable", comment: "An error message displayed, when person is undeletable cause person is already registred.")
+        case .reasonUndeletable: return String(localized: "error-message-reasonUndeletable", comment: "An error message displayed, when reason is undeletable cause a fine uses this reason.")
         }
     }
 
@@ -139,6 +143,7 @@ enum ErrorMessages {
         case .invalidNumberRange: return 22
         case .internalErrorDelete: return 23
         case .personUndeletable: return 24
+        case .reasonUndeletable: return 25
         }
     }
     /// Message of the error

@@ -106,7 +106,7 @@ struct ReasonList: View {
 
                 // Navigation link to reason editor
                 EmptyNavigationLink(isActive: $isNavigationLinkActive) {
-                    Text(verbatim: "Reason Editor") // TODO
+                    ReasonEditor(reason)
                 }
 
                 SplittedOutlinedContent {

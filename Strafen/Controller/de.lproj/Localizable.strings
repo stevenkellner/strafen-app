@@ -422,6 +422,24 @@
 "reason-add-new-header-text" = "Vorlage Hinzufügen";
 
 /* Plain text of amount for text field placeholder. */
+"reason-add-new-amount-placeholder" = "Betrag";
+
+/* Plain text of amount for text field title. */
+"reason-add-new-amount-title" = "Betrag";
+
+/* Plain text of importance for imporance changer title. */
+"reason-add-new-importance-title" = "Wichtigkeit";
+
+/* Plain text of reason for text field placeholder. */
+"reason-add-new-reason-placeholder" = "Grund";
+
+/* Plain text of reason for text field title. */
+"reason-add-new-reason-title" = "Grund";
+
+/* Header of reason editor view. */
+"reason-editor-header-text" = "Vorlage Ändern";
+
+/* Plain text of amount for text field placeholder. */
 "reason-editor-amount-placeholder" = "Betrag";
 
 /* Plain text of amount for text field title. */
@@ -435,3 +453,9 @@
 
 /* Plain text of reason for text field title. */
 "reason-editor-reason-title" = "Grund";
+
+/* Message of delete reason alert. */
+"reason-editor-delete-message" = "Möchtest du die Vorlage wirklich löschen?";
+
+/* An error message displayed, when reason is undeletable cause a fine uses this reason. */
+"error-message-reasonUndeletable" = "Vorlage kann nicht gelöscht werden, da es Strafen gibt, die diese Vorlage benutzen.";

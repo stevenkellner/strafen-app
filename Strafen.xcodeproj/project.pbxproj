@@ -87,6 +87,7 @@
 		B090FDF826640C03005700A8 /* BackAndEditButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B090FDF726640C03005700A8 /* BackAndEditButton.swift */; };
 		B090FDFA26640C45005700A8 /* SplittedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B090FDF926640C45005700A8 /* SplittedButton.swift */; };
 		B090FDFD26641622005700A8 /* lottie-delete-trash.json in Resources */ = {isa = PBXBuildFile; fileRef = B090FDFC26641622005700A8 /* lottie-delete-trash.json */; };
+		B091FFA6267CF10C007931AD /* ReasonEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = B091FFA5267CF10C007931AD /* ReasonEditor.swift */; };
 		B09CCE1826593E4C008C545A /* SignInAppleController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B09CCE1726593E4C008C545A /* SignInAppleController.swift */; };
 		B09CCE1A26593E5C008C545A /* SignInGoogleController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B09CCE1926593E5C008C545A /* SignInGoogleController.swift */; };
 		B0A462912649412C0045D2BE /* Header.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0A462902649412B0045D2BE /* Header.swift */; };
@@ -235,6 +236,7 @@
 		B090FDF726640C03005700A8 /* BackAndEditButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackAndEditButton.swift; sourceTree = "<group>"; };
 		B090FDF926640C45005700A8 /* SplittedButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplittedButton.swift; sourceTree = "<group>"; };
 		B090FDFC26641622005700A8 /* lottie-delete-trash.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "lottie-delete-trash.json"; sourceTree = "<group>"; };
+		B091FFA5267CF10C007931AD /* ReasonEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReasonEditor.swift; sourceTree = "<group>"; };
 		B09CCE1726593E4C008C545A /* SignInAppleController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInAppleController.swift; sourceTree = "<group>"; };
 		B09CCE1926593E5C008C545A /* SignInGoogleController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInGoogleController.swift; sourceTree = "<group>"; };
 		B0A462902649412B0045D2BE /* Header.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Header.swift; sourceTree = "<group>"; };
@@ -644,6 +646,7 @@
 			children = (
 				B0D7CA5F267B6A3300424A08 /* ReasonList.swift */,
 				B0D7CA61267B886900424A08 /* ReasonAddNew.swift */,
+				B091FFA5267CF10C007931AD /* ReasonEditor.swift */,
 			);
 			path = ReasonList;
 			sourceTree = "<group>";
@@ -980,6 +983,7 @@
 				B090FDE82663A5EB005700A8 /* FineEditor.swift in Sources */,
 				B08FC117265D31C600F63975 /* DecodableDefault.swift in Sources */,
 				B090FDF126640B3D005700A8 /* SheetBar.swift in Sources */,
+				B091FFA6267CF10C007931AD /* ReasonEditor.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

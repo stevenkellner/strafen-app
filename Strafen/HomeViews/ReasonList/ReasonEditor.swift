@@ -1,14 +1,14 @@
 //
-//  ReasonAddNew.swift
+//  ReasonEditor.swift
 //  Strafen
 //
-//  Created by Steven on 17.06.21.
+//  Created by Steven on 18.06.21.
 //
 
 import SwiftUI
 
-/// View to add a new reason
-struct ReasonAddNew: View {
+/// View to edit a reason
+struct ReasonEditor: View {
 
     /// Properties of inputed reason
     struct InputProperties: InputPropertiesProtocol {
@@ -34,7 +34,10 @@ struct ReasonAddNew: View {
         var functionCallErrorMessage: ErrorMessages?
 
         /// State of data task connection
-        var connectionState: ConnectionState = .notStarted
+        var connectionStateUpdate: ConnectionState = .notStarted
+
+        /// State of data task connection
+        var connectionStateDelete: ConnectionState = .notStarted
 
         /// Validates the reason input and sets associated error messages
         /// - Parameter setErrorMessage: Indicates whether error message will be set
@@ -82,19 +85,37 @@ struct ReasonAddNew: View {
             amount = AmountParser.fromString(self[.amount])
             return FirebaseReasonTemplate(id: reasonId, reason: self[.reason], importance: importance, amount: amount)
         }
+
+        mutating func setReason(to reason: FirebaseReasonTemplate) {
+            self.amount = reason.amount
+            self[.amount] = amount.stringValue
+            self[.reason] = reason.reason
+        }
     }
 
     /// Currently logged in person
     @EnvironmentObject var person: Settings.Person
 
+    /// Environment of the fine list
+    @EnvironmentObject var fineListEnvironment: ListEnvironment<FirebaseFine>
+
     /// Presentation mode
     @Environment(\.presentationMode) private var presentationMode
 
+    /// Reason to edit
+    let oldReason: FirebaseReasonTemplate
+
+    init(_ reason: FirebaseReasonTemplate) {
+        self.oldReason = reason
+    }
     /// Input properties
     @State var inputProperties = InputProperties()
 
     /// Indicates whether amount is currently editing
     @State var isAmountEditing = false
+
+    /// Indicates whether delete alert is currently shown
+    @State var showDeleteAlert = false
 
     var body: some View {
         ZStack {
@@ -108,34 +129,34 @@ struct ReasonAddNew: View {
                 SheetBar()
 
                 // Title
-                Header(String(localized: "reason-add-new-header-text", comment: "Header of reason add new view."))
+                Header(String(localized: "reason-editor-header-text", comment: "Header of reason editor view."))
 
                 ScrollView(showsIndicators: false) {
                     ScrollViewReader { proxy in
                         VStack(spacing: 20) {
 
                             // Importance Changer
-                            TitledContent(String(localized: "reason-add-new-importance-title", comment: "Plain text of importance for imporance changer title.")) {
+                            TitledContent(String(localized: "reason-editor-importance-title", comment: "Plain text of importance for imporance changer title.")) {
                                 ImportanceChanger(importance: $inputProperties.importance)
                                     .frame(width: 258, height: 25)
                             }
 
                             // Reason
-                            TitledContent(String(localized: "reason-add-new-reason-title", comment: "Plain text of reason for text field title.")) {
+                            TitledContent(String(localized: "reason-editor-reason-title", comment: "Plain text of reason for text field title.")) {
                                 CustomTextField(.reason, inputProperties: $inputProperties)
-                                    .placeholder(String(localized: "reason-add-new-reason-placeholder", comment: "Plain text of reason for text field placeholder."))
+                                    .placeholder(String(localized: "reason-editor-reason-placeholder", comment: "Plain text of reason for text field placeholder."))
                                     .defaultTextFieldSize
                                     .scrollViewProxy(proxy)
                             }
 
                             // Amount
                             VStack(spacing: 5) {
-                                TitledContent(String(localized: "reason-add-new-amount-title", comment: "Plain text of amount for text field title.")) {
+                                TitledContent(String(localized: "reason-editor-amount-title", comment: "Plain text of amount for text field title.")) {
                                     HStack(spacing: 15) {
 
                                         // Text Field
                                         CustomTextField(.amount, inputProperties: $inputProperties)
-                                            .placeholder(String(localized: "reason-add-new-amount-placeholder", comment: "Plain text of amount for text field placeholder."))
+                                            .placeholder(String(localized: "reason-editor-amount-placeholder", comment: "Plain text of amount for text field placeholder."))
                                             .textFieldSize(width: 148, height: 50)
                                             .scrollViewProxy(proxy)
                                             .keyboardType(.decimalPad)
@@ -178,47 +199,89 @@ struct ReasonAddNew: View {
                     // Error message
                     ErrorMessageView($inputProperties.functionCallErrorMessage)
 
-                    // Cancel and confirm button
-                    SplittedButton.cancelConfirm
-                        .rightConnectionState($inputProperties.connectionState)
-                        .onLeftClick { presentationMode.wrappedValue.dismiss() }
-                        .onRightClick(perform: handleReasonSave)
+                    // Delete and confirm button
+                    SplittedButton.deleteConfirm
+                        .leftConnectionState($inputProperties.connectionStateDelete)
+                        .rightConnectionState($inputProperties.connectionStateUpdate)
+                        .onLeftClick { showDeleteAlert = true }
+                        .onRightClick(perform: handleReasonUpdate)
 
                 }.padding(.bottom, 35)
                     .animation(.default)
+                    .toast(isPresented: $showDeleteAlert) {
+                        DeleteAlert(deleteText: String(localized: "reason-editor-delete-message", comment: "Message of delete reason alert."),
+                                    showDeleteAlert: $showDeleteAlert,
+                                    deleteHandler: handleReasonDelete)
+                    }
 
             }
         }.maxFrame
+            .onAppear {
+                inputProperties.setReason(to: oldReason)
+            }
     }
 
-    /// Handles reason saving
-    func handleReasonSave() async {
-        await ReasonAddNew.handleReasonSave(clubId: person.club.id,
-                                            inputProperties: $inputProperties,
-                                            presentationMode: presentationMode)
+    /// Handles reason updating
+    func handleReasonUpdate() async {
+        await ReasonEditor.handleReasonUpdate(clubId: person.club.id,
+                                              reasonId: oldReason.id,
+                                              inputProperties: $inputProperties,
+                                              presentationMode: presentationMode)
     }
 
-    /// Handles reason saving
-    @discardableResult static func handleReasonSave(clubId: Club.ID,
-                                                    inputProperties: Binding<InputProperties>,
-                                                    presentationMode: Binding<PresentationMode>? = nil) async -> FirebaseReasonTemplate.ID? {
-        guard inputProperties.wrappedValue.connectionState.restart() == .passed else { return nil }
-        inputProperties.wrappedValue.functionCallErrorMessage = nil
-        guard inputProperties.wrappedValue.validateAllInputs() == .valid else {
-            inputProperties.wrappedValue.connectionState.failed()
-            return nil
+    /// Handles reason delete
+    func handleReasonDelete() {
+        async {
+            await ReasonEditor.handleReasonDelete(clubId: person.club.id,
+                                                  reasonId: oldReason.id,
+                                                  fineList: fineListEnvironment.list,
+                                                  inputProperties: $inputProperties,
+                                                  presentationMode: presentationMode)
         }
-        let reasonId = FirebaseReasonTemplate.ID(rawValue: UUID())
+    }
+
+    /// Handles reason updating
+    static func handleReasonUpdate(clubId: Club.ID,
+                                   reasonId: FirebaseReasonTemplate.ID,
+                                   inputProperties: Binding<InputProperties>,
+                                   presentationMode: Binding<PresentationMode>? = nil) async {
+        guard inputProperties.wrappedValue.connectionStateDelete != .loading,
+              inputProperties.wrappedValue.connectionStateUpdate.restart() == .passed else { return }
+        guard inputProperties.wrappedValue.validateAllInputs() == .valid else {
+            return inputProperties.wrappedValue.connectionStateUpdate.failed()
+        }
         do {
             let callItem = FFChangeListCall(clubId: clubId, item: inputProperties.wrappedValue.reasonTemplate(with: reasonId))
             try await FirebaseFunctionCaller.shared.call(callItem)
             presentationMode?.wrappedValue.dismiss()
-            inputProperties.wrappedValue.connectionState.passed()
+            inputProperties.wrappedValue.connectionStateUpdate.passed()
         } catch {
-
             inputProperties.wrappedValue.functionCallErrorMessage = .internalErrorSave
-            inputProperties.wrappedValue.connectionState.failed()
+            inputProperties.wrappedValue.connectionStateUpdate.failed()
         }
-        return reasonId
+    }
+
+    /// Handles reason delete
+    static func handleReasonDelete(clubId: Club.ID,
+                                   reasonId: FirebaseReasonTemplate.ID,
+                                   fineList: [FirebaseFine],
+                                   inputProperties: Binding<InputProperties>,
+                                   presentationMode: Binding<PresentationMode>? = nil) async {
+        guard inputProperties.wrappedValue.connectionStateUpdate != .loading,
+              inputProperties.wrappedValue.connectionStateDelete.restart() == .passed else { return }
+        inputProperties.wrappedValue.errorMessages = [:]
+
+        guard !fineList.contains(where: { ($0.fineReason as? FineReasonTemplate)?.templateId == reasonId }) else {
+            inputProperties.wrappedValue.functionCallErrorMessage = .reasonUndeletable
+            return inputProperties.wrappedValue.connectionStateDelete.failed()
+        }
+
+        do {
+            let callItem = FFChangeListCall<FirebaseReasonTemplate>(clubId: clubId, id: reasonId)
+            try await FirebaseFunctionCaller.shared.call(callItem)
+        } catch {
+            inputProperties.wrappedValue.functionCallErrorMessage = .internalErrorDelete
+            return inputProperties.wrappedValue.connectionStateDelete.failed()
+        }
     }
 }
