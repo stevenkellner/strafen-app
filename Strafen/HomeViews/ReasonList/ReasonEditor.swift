@@ -279,6 +279,8 @@ struct ReasonEditor: View {
         do {
             let callItem = FFChangeListCall<FirebaseReasonTemplate>(clubId: clubId, id: reasonId)
             try await FirebaseFunctionCaller.shared.call(callItem)
+            presentationMode?.wrappedValue.dismiss()
+            inputProperties.wrappedValue.connectionStateDelete.passed()
         } catch {
             inputProperties.wrappedValue.functionCallErrorMessage = .internalErrorDelete
             return inputProperties.wrappedValue.connectionStateDelete.failed()
