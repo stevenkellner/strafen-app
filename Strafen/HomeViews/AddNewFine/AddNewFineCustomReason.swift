@@ -1,14 +1,14 @@
 //
-//  ReasonEditor.swift
+//  AddNewFineCustomReason.swift
 //  Strafen
 //
-//  Created by Steven on 18.06.21.
+//  Created by Steven on 20.06.21.
 //
 
 import SwiftUI
 
-/// View to edit a reason
-struct ReasonEditor: View {
+/// View to select reason for new fine
+struct AddNewFineCustomReason: View {
 
     /// Properties of inputed reason
     struct InputProperties: InputPropertiesProtocol {
@@ -29,15 +29,6 @@ struct ReasonEditor: View {
 
         /// Input importance
         var importance: Importance = .medium
-
-        /// Error message of function call
-        var functionCallErrorMessage: ErrorMessages?
-
-        /// State of data task connection
-        var connectionStateUpdate: ConnectionState = .notStarted
-
-        /// State of data task connection
-        var connectionStateDelete: ConnectionState = .notStarted
 
         /// Validates the reason input and sets associated error messages
         /// - Parameter setErrorMessage: Indicates whether error message will be set
@@ -81,42 +72,38 @@ struct ReasonEditor: View {
             }
         }
 
-        mutating func reasonTemplate(with reasonId: FirebaseReasonTemplate.ID) -> FirebaseReasonTemplate {
-            amount = AmountParser.fromString(self[.amount])
-            return FirebaseReasonTemplate(id: reasonId, reason: self[.reason], importance: importance, amount: amount)
-        }
-
-        mutating func setReason(to reason: FirebaseReasonTemplate) {
-            self.amount = reason.amount
+        /// Sets properties of fine reason
+        mutating func setProperties(of fineReason: FineReason?, reasonList: [FirebaseReasonTemplate]) {
+            guard let fineReason = fineReason else { return }
+            self[.reason] = fineReason.reason(with: reasonList)
+            self.amount = fineReason.amount(with: reasonList)
             self[.amount] = amount.stringValue
-            self[.reason] = reason.reason
+            self.importance = fineReason.importance(with: reasonList)
         }
     }
 
-    /// Currently logged in person
-    @EnvironmentObject var person: Settings.Person
-
-    /// Environment of the fine list
-    @EnvironmentObject var fineListEnvironment: ListEnvironment<FirebaseFine>
+    /// Environment of the reason list
+    @EnvironmentObject var reasonListEnvironment: ListEnvironment<FirebaseReasonTemplate>
 
     /// Presentation mode
     @Environment(\.presentationMode) private var presentationMode
 
-    /// Reason to edit
-    let oldReason: FirebaseReasonTemplate
+    /// Old fine reason
+    @Binding var fineReason: FineReason?
 
-    init(_ reason: FirebaseReasonTemplate) {
-        self.oldReason = reason
+    /// Handles reason selection
+    let completionHandler: () -> Void
+
+    init(with fineReason: Binding<FineReason?>, completion completionHandler: @escaping () -> Void) {
+        self._fineReason = fineReason
+        self.completionHandler = completionHandler
     }
 
-    /// Input properties
+    /// Fine reason input properties
     @State var inputProperties = InputProperties()
 
     /// Indicates whether amount is currently editing
     @State var isAmountEditing = false
-
-    /// Indicates whether delete alert is currently shown
-    @State var showDeleteAlert = false
 
     var body: some View {
         ZStack {
@@ -126,11 +113,11 @@ struct ReasonEditor: View {
 
             VStack(spacing: 0) {
 
-                // Bar to ipe sheet down
+                // Bar to wipe sheet down
                 SheetBar()
 
-                // Title
-                Header(String(localized: "reason-editor-header-text", comment: "Header of reason editor view."))
+                // Header
+                Header(String(localized: "add-new-fine-reason-header-text", comment: "Header of add new fine reason view."))
 
                 ScrollView(showsIndicators: false) {
                     ScrollViewReader { proxy in
@@ -195,96 +182,24 @@ struct ReasonEditor: View {
 
                 Spacer()
 
-                VStack(spacing: 5) {
-
-                    // Error message
-                    ErrorMessageView($inputProperties.functionCallErrorMessage)
-
-                    // Delete and confirm button
-                    SplittedButton.deleteConfirm
-                        .leftConnectionState($inputProperties.connectionStateDelete)
-                        .rightConnectionState($inputProperties.connectionStateUpdate)
-                        .onLeftClick { showDeleteAlert = true }
-                        .onRightClick(perform: handleReasonUpdate)
-
-                }.padding(.bottom, 35)
-                    .animation(.default)
-                    .toast(isPresented: $showDeleteAlert) {
-                        DeleteAlert(deleteText: String(localized: "reason-editor-delete-message", comment: "Message of delete reason alert."),
-                                    showDeleteAlert: $showDeleteAlert,
-                                    deleteHandler: handleReasonDelete)
+                // Cancel and Confirm button
+                SplittedButton.cancelConfirm
+                    .onLeftClick {
+                        presentationMode.wrappedValue.dismiss()
                     }
+                    .onRightClick {
+                        guard inputProperties.validateAllInputs() == .valid else { return }
+                        inputProperties.amount = AmountParser.fromString(inputProperties[.amount])
+                        fineReason = FineReasonCustom(reason: inputProperties[.reason], amount: inputProperties.amount, importance: inputProperties.importance)
+                        presentationMode.wrappedValue.dismiss()
+                        completionHandler()
+                    }
+                    .padding(.bottom, 35)
 
             }
         }.maxFrame
             .onAppear {
-                inputProperties.setReason(to: oldReason)
+                inputProperties.setProperties(of: fineReason, reasonList: reasonListEnvironment.list)
             }
-    }
-
-    /// Handles reason updating
-    func handleReasonUpdate() async {
-        await ReasonEditor.handleReasonUpdate(clubId: person.club.id,
-                                              reasonId: oldReason.id,
-                                              inputProperties: $inputProperties,
-                                              presentationMode: presentationMode)
-    }
-
-    /// Handles reason delete
-    func handleReasonDelete() {
-        async {
-            await ReasonEditor.handleReasonDelete(clubId: person.club.id,
-                                                  reasonId: oldReason.id,
-                                                  fineList: fineListEnvironment.list,
-                                                  inputProperties: $inputProperties,
-                                                  presentationMode: presentationMode)
-        }
-    }
-
-    /// Handles reason updating
-    static func handleReasonUpdate(clubId: Club.ID,
-                                   reasonId: FirebaseReasonTemplate.ID,
-                                   inputProperties: Binding<InputProperties>,
-                                   presentationMode: Binding<PresentationMode>? = nil) async {
-        guard inputProperties.wrappedValue.connectionStateDelete != .loading,
-              inputProperties.wrappedValue.connectionStateUpdate.restart() == .passed else { return }
-        guard inputProperties.wrappedValue.validateAllInputs() == .valid else {
-            return inputProperties.wrappedValue.connectionStateUpdate.failed()
-        }
-        do {
-            let callItem = FFChangeListCall(clubId: clubId, item: inputProperties.wrappedValue.reasonTemplate(with: reasonId))
-            try await FirebaseFunctionCaller.shared.call(callItem)
-            presentationMode?.wrappedValue.dismiss()
-            inputProperties.wrappedValue.connectionStateUpdate.passed()
-        } catch {
-            inputProperties.wrappedValue.functionCallErrorMessage = .internalErrorSave
-            inputProperties.wrappedValue.connectionStateUpdate.failed()
-        }
-    }
-
-    /// Handles reason delete
-    static func handleReasonDelete(clubId: Club.ID,
-                                   reasonId: FirebaseReasonTemplate.ID,
-                                   fineList: [FirebaseFine],
-                                   inputProperties: Binding<InputProperties>,
-                                   presentationMode: Binding<PresentationMode>? = nil) async {
-        guard inputProperties.wrappedValue.connectionStateUpdate != .loading,
-              inputProperties.wrappedValue.connectionStateDelete.restart() == .passed else { return }
-        inputProperties.wrappedValue.errorMessages = [:]
-
-        guard !fineList.contains(where: { ($0.fineReason as? FineReasonTemplate)?.templateId == reasonId }) else {
-            inputProperties.wrappedValue.functionCallErrorMessage = .reasonUndeletable
-            return inputProperties.wrappedValue.connectionStateDelete.failed()
-        }
-
-        do {
-            let callItem = FFChangeListCall<FirebaseReasonTemplate>(clubId: clubId, id: reasonId)
-            try await FirebaseFunctionCaller.shared.call(callItem)
-            presentationMode?.wrappedValue.dismiss()
-            inputProperties.wrappedValue.connectionStateDelete.passed()
-        } catch {
-            inputProperties.wrappedValue.functionCallErrorMessage = .internalErrorDelete
-            return inputProperties.wrappedValue.connectionStateDelete.failed()
-        }
     }
 }

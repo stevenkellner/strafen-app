@@ -91,22 +91,8 @@ struct PersonDetail: View {
 
             // Add New Fine Button
             AddNewListItemButton(isListEmpty: fineListEnvironment.list.filter({ $0.assoiatedPersonId == person.id }).isEmpty) {
-                Text(verbatim: "Fine add new") // TODO
+                AddNewFine(with: person.id, isSheet: true)
             }
-
-//            AddNewListItemButton(list: $fineListData.list, listFilter: { $0.assoiatedPersonId == person.id }) {
-//                VStack(spacing: 0) {
-//
-//                    // Bar to wipe sheet down
-//                    SheetBar()
-//
-//                    // Content
-//                    AddNewFine(with: person.id)
-//                        .padding(.bottom, 15)
-//
-//                }
-//            }
-
         }.maxFrame.dismissHandler
             .task {
                 do {

@@ -459,3 +459,57 @@
 
 /* An error message displayed, when reason is undeletable cause a fine uses this reason. */
 "error-message-reasonUndeletable" = "Vorlage kann nicht gelöscht werden, da es Strafen gibt, die diese Vorlage benutzen.";
+
+/* Header of add new fine view. */
+"add-new-fine-header-text" = "Strafen Hinzufügen";
+
+/* An error message displayed, when no person is selected for fine add new. */
+"error-message-noPersonSelected" = "Keine Person ausgewählt!";
+
+/* An error message displayed, when no reason is given for fine add new. */
+"error-message-noReasonGiven" = "Keine Strafe angegeben!";
+
+/* Plain text of number for text field title. */
+"add-new-fine-number-title" = "Anzahl";
+
+/* Plain text of number for text field placeholder. */
+"add-new-fine-number-placeholder" = "Anzahl";
+
+/* Plain text of person id for text field title. */
+"add-new-fine-person-title" = "Zugehörige Personen";
+
+/* Placeholder text to select persons. */
+"add-new-fine-select-persons-text" = "Personen auswählen";
+
+/* Name of person if no name is given. */
+"add-new-fine-unknown-person-name" = "Unbekannte Person";
+
+/* And number persons more text. */
+"add-new-fine-and-more-%lld" = "und ^[%lld Weitere](inflect: true)";
+
+/* Header of add new fine person view. */
+"add-new-fine-person-header-text" = "Personen Auswählen";
+
+/* Plain text of reason for text field title. */
+"add-new-fine-reason-title" = "Strafe";
+
+/* Placeholder text to select reason. */
+"add-new-fine-select-reason-text" = "Strafe auswählen";
+
+/* Header of add new fine reason view. */
+"add-new-fine-reason-header-text" = "Strafe Auswählen";
+
+/* Empty list text of add new fine reason. */
+"add-new-fine-reason-empty-list" = "Es sind keine Strafen verfügbar.";
+
+/* Empty list add new reason of new fine reason. */
+"add-new-fine-reason-empty-list-add-new" = "Lege erst eine Neue im Strafenkatalog an.";
+
+/* Title of custom reason for add new fine reason. */
+"add-new-fine-reason-custom-reason-title" = "Eigene erstellen";
+
+/* Title of reason list for add new fine reason. */
+"add-new-fine-reason-reason-list-title" = "Strafenkatalog";
+
+/* Text of select custom reason button. */
+"add-new-fine-reason-select-text" = "Auswählen";

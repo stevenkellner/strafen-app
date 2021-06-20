@@ -8,7 +8,7 @@
 import Foundation
 
 /// All error messages
-enum ErrorMessages {
+enum ErrorMessages: Int {
 
     /// Textfield is empty
     case emptyField
@@ -85,6 +85,12 @@ enum ErrorMessages {
     /// Reason is undeletable cause a fine uses this reason
     case reasonUndeletable
 
+    /// No person is selected for fine add new
+    case noPersonSelected
+
+    /// No reason is given for fine add new
+    case noReasonGiven
+
     /// Raw message of the error
     var rawMessage: String {
         switch self {
@@ -113,42 +119,14 @@ enum ErrorMessages {
         case .internalErrorDelete: return String(localized: "error-message-internalErrorDelete", comment: "An error message displayed, when an error while deleting occured.")
         case .personUndeletable: return String(localized: "error-message-personUndeletable", comment: "An error message displayed, when person is undeletable cause person is already registred.")
         case .reasonUndeletable: return String(localized: "error-message-reasonUndeletable", comment: "An error message displayed, when reason is undeletable cause a fine uses this reason.")
+        case .noPersonSelected: return String(localized: "error-message-noPersonSelected", comment: "An error message displayed, when no person is selected for fine add new.")
+        case .noReasonGiven: return String(localized: "error-message-noReasonGiven", comment: "An error message displayed, when no reason is given for fine add new.")
         }
     }
 
-    /// Error code
-    var errorCode: Int {
-        switch self {
-        case .emptyField: return 1
-        case .invalidEmail: return 2
-        case .tooFewCharacters: return 3
-        case .noUpperCharacter: return 4
-        case .noLowerCharacter: return 5
-        case .noDigit: return 6
-        case .notSamePassword: return 7
-        case .internalErrorSignIn: return 8
-        case .internalErrorLogIn: return 9
-        case .alreadySignedInEmail: return 10
-        case .alreadySignedIn: return 11
-        case .weakPassword: return 12
-        case .clubNotExists: return 13
-        case .noRegionGiven: return 14
-        case .notEuro: return 15
-        case .identifierAlreadyExists: return 16
-        case .incorrectPassword: return 17
-        case .notSignedIn: return 18
-        case .internalErrorSave: return 19
-        case .amountZero: return 20
-        case .futureDate: return 21
-        case .invalidNumberRange: return 22
-        case .internalErrorDelete: return 23
-        case .personUndeletable: return 24
-        case .reasonUndeletable: return 25
-        }
-    }
     /// Message of the error
     var message: String {
-        // "(\(errorCode)) \(rawMessage)"
+        // "(\(rawValue + 1)) \(rawMessage)"
         rawMessage
     }
 }

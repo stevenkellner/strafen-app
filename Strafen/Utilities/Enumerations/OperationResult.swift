@@ -76,6 +76,13 @@ enum OperationResult {
         result.toggle()
         return result
     }
+
+    /// Evaluates all operation results of given evaluator
+    /// - Parameter evaluator: evaluator to evaluate operation result
+    /// - Returns: result of operation evaluator
+    static func evaluate(@OperationResultEvaluator _ evaluator: () -> OperationResult) -> OperationResult {
+        return evaluator()
+    }
 }
 
 extension Collection where Element == OperationResult {
@@ -95,5 +102,28 @@ extension Collection {
     /// - Returns: check result
     func validateAll(passed: (Element) throws -> OperationResult) rethrows -> OperationResult {
         try map(passed).allPassed
+    }
+}
+
+/// Result builder for operation result evaluation
+@resultBuilder struct OperationResultEvaluator {
+    static func buildOptional(_ component: OperationResult?) -> OperationResult {
+        return component ?? .passed
+    }
+
+    static func buildEither(first component: OperationResult) -> OperationResult {
+        return component
+    }
+
+    static func buildEither(second component: OperationResult) -> OperationResult {
+        return component
+    }
+
+    static func buildArray(_ components: [OperationResult]) -> OperationResult {
+        return components.allPassed
+    }
+
+    static func buildBlock(_ components: OperationResult...) -> OperationResult {
+        return components.allPassed
     }
 }

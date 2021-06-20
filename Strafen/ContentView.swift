@@ -76,12 +76,7 @@ struct ContentView: View {
                                 case .profileDetail: ProfileDetail()
                                 case .personList: PersonList()
                                 case .reasonList: ReasonList()
-                                case .addNewFine: Text(verbatim: "AddNewFine") // TODO
-//                                    ZStack {
-//                                        Color.backgroundGray
-//                                        AddNewFine()
-//                                            .padding(.top, 50)
-//                                    }
+                                case .addNewFine: AddNewFine(isSheet: false)
                                 case .settings: EmptyView()
                                 }
                             }.environmentObject(ListEnvironment(allLists.personList, clubId: person.club.id))

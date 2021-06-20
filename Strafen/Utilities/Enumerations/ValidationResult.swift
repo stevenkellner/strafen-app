@@ -76,6 +76,13 @@ enum ValidationResult {
         result.toggle()
         return result
     }
+
+    /// Evaluates all validation results of given evaluator
+    /// - Parameter evaluator: evaluator to evaluate validation result
+    /// - Returns: result of valitator evaluator
+    static func evaluate(@ValidationResultEvaluator _ evaluator: () -> ValidationResult) -> ValidationResult {
+        return evaluator()
+    }
 }
 
 extension Collection where Element == ValidationResult {
@@ -95,5 +102,28 @@ extension Collection {
     /// - Returns: validation result
     func validateAll(validation: (Element) throws -> ValidationResult) rethrows -> ValidationResult {
         try map(validation).validateAll
+    }
+}
+
+/// Result builder for validation result evaluation
+@resultBuilder struct ValidationResultEvaluator {
+    static func buildOptional(_ component: ValidationResult?) -> ValidationResult {
+        return component ?? .valid
+    }
+
+    static func buildEither(first component: ValidationResult) -> ValidationResult {
+        return component
+    }
+
+    static func buildEither(second component: ValidationResult) -> ValidationResult {
+        return component
+    }
+
+    static func buildArray(_ components: [ValidationResult]) -> ValidationResult {
+        return components.validateAll
+    }
+
+    static func buildBlock(_ components: ValidationResult...) -> ValidationResult {
+        return components.validateAll
     }
 }

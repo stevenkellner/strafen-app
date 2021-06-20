@@ -89,6 +89,10 @@
 		B090FDFD26641622005700A8 /* lottie-delete-trash.json in Resources */ = {isa = PBXBuildFile; fileRef = B090FDFC26641622005700A8 /* lottie-delete-trash.json */; };
 		B091FFA6267CF10C007931AD /* ReasonEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = B091FFA5267CF10C007931AD /* ReasonEditor.swift */; };
 		B091FFA8267CF788007931AD /* ReasonEditorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B091FFA7267CF788007931AD /* ReasonEditorTests.swift */; };
+		B091FFAB267E08B8007931AD /* AddNewFine.swift in Sources */ = {isa = PBXBuildFile; fileRef = B091FFAA267E08B8007931AD /* AddNewFine.swift */; };
+		B091FFAD267E3CB5007931AD /* AddNewFinePerson.swift in Sources */ = {isa = PBXBuildFile; fileRef = B091FFAC267E3CB5007931AD /* AddNewFinePerson.swift */; };
+		B09A30A5267F3DE60096B84B /* AddNewFineReason.swift in Sources */ = {isa = PBXBuildFile; fileRef = B09A30A4267F3DE60096B84B /* AddNewFineReason.swift */; };
+		B09A30A7267F620F0096B84B /* AddNewFineCustomReason.swift in Sources */ = {isa = PBXBuildFile; fileRef = B09A30A6267F620F0096B84B /* AddNewFineCustomReason.swift */; };
 		B09CCE1826593E4C008C545A /* SignInAppleController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B09CCE1726593E4C008C545A /* SignInAppleController.swift */; };
 		B09CCE1A26593E5C008C545A /* SignInGoogleController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B09CCE1926593E5C008C545A /* SignInGoogleController.swift */; };
 		B0A462912649412C0045D2BE /* Header.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0A462902649412B0045D2BE /* Header.swift */; };
@@ -239,6 +243,10 @@
 		B090FDFC26641622005700A8 /* lottie-delete-trash.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "lottie-delete-trash.json"; sourceTree = "<group>"; };
 		B091FFA5267CF10C007931AD /* ReasonEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReasonEditor.swift; sourceTree = "<group>"; };
 		B091FFA7267CF788007931AD /* ReasonEditorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReasonEditorTests.swift; sourceTree = "<group>"; };
+		B091FFAA267E08B8007931AD /* AddNewFine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewFine.swift; sourceTree = "<group>"; };
+		B091FFAC267E3CB5007931AD /* AddNewFinePerson.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewFinePerson.swift; sourceTree = "<group>"; };
+		B09A30A4267F3DE60096B84B /* AddNewFineReason.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewFineReason.swift; sourceTree = "<group>"; };
+		B09A30A6267F620F0096B84B /* AddNewFineCustomReason.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewFineCustomReason.swift; sourceTree = "<group>"; };
 		B09CCE1726593E4C008C545A /* SignInAppleController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInAppleController.swift; sourceTree = "<group>"; };
 		B09CCE1926593E5C008C545A /* SignInGoogleController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInGoogleController.swift; sourceTree = "<group>"; };
 		B0A462902649412B0045D2BE /* Header.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Header.swift; sourceTree = "<group>"; };
@@ -417,6 +425,7 @@
 				B0EE4C92265FDCEF001177E3 /* ProfileDetail */,
 				B0726AF42664F60D00ABFEAD /* PersonList */,
 				B0D7CA5E267B6A1800424A08 /* ReasonList */,
+				B091FFA9267E089D007931AD /* AddNewFine */,
 			);
 			path = HomeViews;
 			sourceTree = "<group>";
@@ -596,6 +605,17 @@
 				B090FDFC26641622005700A8 /* lottie-delete-trash.json */,
 			);
 			path = LottieAnimations;
+			sourceTree = "<group>";
+		};
+		B091FFA9267E089D007931AD /* AddNewFine */ = {
+			isa = PBXGroup;
+			children = (
+				B091FFAA267E08B8007931AD /* AddNewFine.swift */,
+				B091FFAC267E3CB5007931AD /* AddNewFinePerson.swift */,
+				B09A30A4267F3DE60096B84B /* AddNewFineReason.swift */,
+				B09A30A6267F620F0096B84B /* AddNewFineCustomReason.swift */,
+			);
+			path = AddNewFine;
 			sourceTree = "<group>";
 		};
 		B0A7619D2642DB86003B170F /* FFCallables */ = {
@@ -892,6 +912,7 @@
 				B02221AE2641D6850005295B /* PersonName.swift in Sources */,
 				B03986512652776F00C97DF2 /* Club.swift in Sources */,
 				B0A7619C2642D366003B170F /* FirebaseCallParameters.swift in Sources */,
+				B091FFAD267E3CB5007931AD /* AddNewFinePerson.swift in Sources */,
 				B090FDEF26640B33005700A8 /* Indicator.swift in Sources */,
 				B0225D2D26525D8900D75CDA /* LatePaymentInterest.swift in Sources */,
 				B0B7B6AF26629192004044CB /* SingleAmountDisplay.swift in Sources */,
@@ -930,6 +951,7 @@
 				B0AF0A9026432B6F00DF4DC9 /* FirebaseReasonTemplate.swift in Sources */,
 				B03697BB2650115B00DA938D /* ErrorMessageView.swift in Sources */,
 				B072081C264DA0270084FDE6 /* SignInProperty.swift in Sources */,
+				B09A30A7267F620F0096B84B /* AddNewFineCustomReason.swift in Sources */,
 				B0720810264D282B0084FDE6 /* InputPropertiesProtocol.swift in Sources */,
 				B0A4629726497FD00045D2BE /* SingleButton.swift in Sources */,
 				B07148D9264E938800C5F7EF /* Importance.swift in Sources */,
@@ -979,6 +1001,7 @@
 				B0AF0A9A2643303500DF4DC9 /* FineReason.swift in Sources */,
 				B02221AC2641D5570005295B /* FirebasePerson.swift in Sources */,
 				B0726AFA2664FB0200ABFEAD /* SearchBar.swift in Sources */,
+				B09A30A5267F3DE60096B84B /* AddNewFineReason.swift in Sources */,
 				B05CCFD626629E4A00F13786 /* ImagePicker.swift in Sources */,
 				B0AF0A9826432F1E00DF4DC9 /* FirebaseFine.swift in Sources */,
 				B072080E264C56FB0084FDE6 /* ErrorMessages.swift in Sources */,
@@ -986,6 +1009,7 @@
 				B090FDE82663A5EB005700A8 /* FineEditor.swift in Sources */,
 				B08FC117265D31C600F63975 /* DecodableDefault.swift in Sources */,
 				B090FDF126640B3D005700A8 /* SheetBar.swift in Sources */,
+				B091FFAB267E08B8007931AD /* AddNewFine.swift in Sources */,
 				B091FFA6267CF10C007931AD /* ReasonEditor.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
