@@ -114,10 +114,18 @@ struct AddNewFine: View {
             self.date = Date()
             self.number = 1
         }
+
+        public func fine(with fineId: FirebaseFine.ID, personId: FirebasePerson.ID) -> FirebaseFine? {
+            guard let fineReason = fineReason else { return nil }
+            return FirebaseFine(id: fineId, assoiatedPersonId: personId, date: date, payed: .unpayed, number: number, fineReason: fineReason)
+        }
     }
 
     /// Presentation mode
     @Environment(\.presentationMode) private var presentationMode
+
+    /// Currently logged in person
+    @EnvironmentObject var person: Settings.Person
 
     /// Active home tab
     @EnvironmentObject var homeTab: HomeTab
@@ -172,7 +180,7 @@ struct AddNewFine: View {
 
                         }.padding(.vertical, 10)
                     }
-                }.padding(.vertical, 10)
+                }.padding(.top, 10)
 
                 Spacer()
 
@@ -190,14 +198,14 @@ struct AddNewFine: View {
                                 homeTab.active = .personList
                                 presentationMode.wrappedValue.dismiss()
                             }
-                            .onRightClick(perform: handleFineSave)
+                            .onRightClick(perform: handleFinesSave)
                     } else {
                         SingleButton.confirm
                             .connectionState($inputProperties.connectionState)
-                            .onClick(perform: handleFineSave)
+                            .onClick(perform: handleFinesSave)
                     }
 
-                }.padding(.bottom, 35)
+                }.padding(.bottom, isSheet ? 35 : 20)
             }
         }.maxFrame
             .onAppear {
@@ -206,8 +214,55 @@ struct AddNewFine: View {
     }
 
     /// Handles fine save
-    func handleFineSave() async {
-        _ = inputProperties.validateAllInputs()
+    func handleFinesSave() async {
+        await AddNewFine.handleFinesSave(clubId: person.club.id,
+                                        inputProperties: $inputProperties,
+                                        homeTab: $homeTab,
+                                        presentationMode: presentationMode)
+    }
+
+    /// Handles fine save
+    @discardableResult static func handleFinesSave(clubId: Club.ID,
+                                                   inputProperties: Binding<InputProperties>,
+                                                   homeTab: EnvironmentObject<HomeTab>.Wrapper? = nil,
+                                                   presentationMode: Binding<PresentationMode>? = nil) async -> [FirebaseFine.ID]? {
+        guard inputProperties.wrappedValue.connectionState.restart() == .passed else { return nil }
+        inputProperties.wrappedValue.functionCallErrorMessage = nil
+        guard inputProperties.wrappedValue.validateAllInputs() == .valid else {
+            inputProperties.wrappedValue.connectionState.failed()
+            return nil
+        }
+
+        let fineIds = await withTaskGroup(of: FirebaseFine.ID?.self, returning: [FirebaseFine.ID]?.self) { group in
+            for personId in inputProperties.wrappedValue.personIds {
+                group.async {
+                    do {
+                        let fineId = FirebaseFine.ID(rawValue: UUID())
+                        guard let fine = inputProperties.wrappedValue.fine(with: fineId, personId: personId) else { return nil }
+                        let callItem = FFChangeListCall(clubId: clubId, item: fine)
+                        try await FirebaseFunctionCaller.shared.call(callItem)
+                        inputProperties.wrappedValue.personIds.removeAll { $0 == personId }
+                        return fineId
+                    } catch { return nil }
+                }
+            }
+            return await group.reduce(into: []) { result, fineId in
+                guard let fineId = fineId else { return result = nil }
+                result?.append(fineId)
+            }
+        }
+
+        guard let fineIds = fineIds else {
+            inputProperties.wrappedValue.functionCallErrorMessage = .internalErrorSave
+            inputProperties.wrappedValue.connectionState.failed()
+            return nil
+        }
+
+        inputProperties.wrappedValue.resetProperties()
+        homeTab?.active.wrappedValue = .personList
+        inputProperties.wrappedValue.connectionState.passed()
+        presentationMode?.wrappedValue.dismiss()
+        return fineIds
     }
 
     /// Person input

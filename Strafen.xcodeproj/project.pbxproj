@@ -93,6 +93,7 @@
 		B091FFAD267E3CB5007931AD /* AddNewFinePerson.swift in Sources */ = {isa = PBXBuildFile; fileRef = B091FFAC267E3CB5007931AD /* AddNewFinePerson.swift */; };
 		B09A30A5267F3DE60096B84B /* AddNewFineReason.swift in Sources */ = {isa = PBXBuildFile; fileRef = B09A30A4267F3DE60096B84B /* AddNewFineReason.swift */; };
 		B09A30A7267F620F0096B84B /* AddNewFineCustomReason.swift in Sources */ = {isa = PBXBuildFile; fileRef = B09A30A6267F620F0096B84B /* AddNewFineCustomReason.swift */; };
+		B09A30A92680895B0096B84B /* AddNewFineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B09A30A82680895B0096B84B /* AddNewFineTests.swift */; };
 		B09CCE1826593E4C008C545A /* SignInAppleController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B09CCE1726593E4C008C545A /* SignInAppleController.swift */; };
 		B09CCE1A26593E5C008C545A /* SignInGoogleController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B09CCE1926593E5C008C545A /* SignInGoogleController.swift */; };
 		B0A462912649412C0045D2BE /* Header.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0A462902649412B0045D2BE /* Header.swift */; };
@@ -247,6 +248,7 @@
 		B091FFAC267E3CB5007931AD /* AddNewFinePerson.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewFinePerson.swift; sourceTree = "<group>"; };
 		B09A30A4267F3DE60096B84B /* AddNewFineReason.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewFineReason.swift; sourceTree = "<group>"; };
 		B09A30A6267F620F0096B84B /* AddNewFineCustomReason.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewFineCustomReason.swift; sourceTree = "<group>"; };
+		B09A30A82680895B0096B84B /* AddNewFineTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewFineTests.swift; sourceTree = "<group>"; };
 		B09CCE1726593E4C008C545A /* SignInAppleController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInAppleController.swift; sourceTree = "<group>"; };
 		B09CCE1926593E5C008C545A /* SignInGoogleController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInGoogleController.swift; sourceTree = "<group>"; };
 		B0A462902649412B0045D2BE /* Header.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Header.swift; sourceTree = "<group>"; };
@@ -645,6 +647,7 @@
 				B04A40E2267A60CF00C50C72 /* PersonEditorTests.swift */,
 				B0D7CA63267B8D8C00424A08 /* ReasonAddNewTests.swift */,
 				B091FFA7267CF788007931AD /* ReasonEditorTests.swift */,
+				B09A30A82680895B0096B84B /* AddNewFineTests.swift */,
 				B08DA6562654057D00FE0C52 /* FirebaseTests */,
 				B08DA6552654057400FE0C52 /* LoginViewTests */,
 				B0AF0A8826430AF300DF4DC9 /* FFCallables */,
@@ -1030,6 +1033,7 @@
 				B04A40E3267A60CF00C50C72 /* PersonEditorTests.swift in Sources */,
 				B08DA658265405DA00FE0C52 /* SignInEmailViewTests.swift in Sources */,
 				B0AF0AA42644125400DF4DC9 /* TestClub.swift in Sources */,
+				B09A30A92680895B0096B84B /* AddNewFineTests.swift in Sources */,
 				B039864C26526E7800C97DF2 /* FirebaseFunctionCallerTests.swift in Sources */,
 				B0AF0A8A26430B2900DF4DC9 /* FFNewTestClubCall.swift in Sources */,
 				B0AF0A8C26431B0800DF4DC9 /* Utils.swift in Sources */,
