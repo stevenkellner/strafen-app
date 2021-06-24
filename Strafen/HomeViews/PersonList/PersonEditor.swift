@@ -309,7 +309,8 @@ struct PersonEditor: View {
                 inputProperties.wrappedValue.imageUploadProgess = nil
             }
 
-            inputProperties.wrappedValue.connectionStateUpdate.passed()
+            presentationMode?.wrappedValue.dismiss()
+            inputProperties.wrappedValue.connectionStateDelete.passed()
         } catch {
             inputProperties.wrappedValue.functionCallErrorMessage = .internalErrorSave
             inputProperties.wrappedValue.imageUploadProgess = nil

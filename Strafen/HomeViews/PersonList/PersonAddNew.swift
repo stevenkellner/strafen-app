@@ -188,6 +188,9 @@ struct PersonAddNew: View {
             // Create new person in database
             try await createNewPerson(of: personId, person: person, inputProperties: inputProperties)
 
+            inputProperties.wrappedValue.connectionState.passed()
+            presentationMode?.wrappedValue.dismiss()
+
         } catch {
             inputProperties.wrappedValue.functionCallErrorMessage = .internalErrorSave
             inputProperties.wrappedValue.imageUploadProgess = nil
@@ -217,8 +220,6 @@ struct PersonAddNew: View {
         let name = PersonName(firstName: inputProperties.wrappedValue[.firstName], lastName: inputProperties.wrappedValue[.lastName])
         let person = FirebasePerson(id: personId, name: name, signInData: nil)
         let callItem = FFChangeListCall(clubId: loggedInPerson.club.id, item: person)
-
         try await FirebaseFunctionCaller.shared.call(callItem)
-        inputProperties.wrappedValue.connectionState.passed()
     }
 }
