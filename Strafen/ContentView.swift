@@ -19,6 +19,9 @@ struct ContentView: View {
     /// Used to setup app with firebase
     @ObservedObject var appSetup = FirebaseAppSetup.shared
 
+    /// Random lists
+    let randomLists = FirebaseAppSetup.shared.randomLists
+
     /// Contains person, fine and reason template lists
     @State var allLists: FirebaseAppSetup.AllLists?
 
@@ -34,13 +37,20 @@ struct ContentView: View {
                 VStack(spacing: 0) {
 
                     VStack {
-                        if homeTab.active == .settings && allLists == nil {
-                            SettingsView(hasLists: false)
-                        } else if appSetup.connectionState == .loading || appSetup.connectionState == .notStarted {
+                        if appSetup.connectionState == .loading || appSetup.connectionState == .notStarted {
                             ZStack {
-                                Color.backgroundGray
-                                ProgressView(String(localized: "loading-text", comment: "Text of a loading view."))
-                            }
+                                switch homeTab.active {
+                                case .profileDetail: ProfileDetail(placeholder: true)
+                                case .personList: PersonList(placeholder: true)
+                                case .reasonList: ReasonList(placeholder: true)
+                                case .addNewFine:
+                                    Color.backgroundGray
+                                    ProgressView(String(localized: "loading-text", comment: "Text of a loading view."))
+                                case .settings: SettingsView(hasLists: false)
+                                }
+                            }.environmentObject(ListEnvironment(randomLists.personList))
+                                .environmentObject(ListEnvironment(randomLists.fineList))
+                                .environmentObject(ListEnvironment(randomLists.reasonList))
                         } else if appSetup.connectionState == .failed {
                             ZStack {
                                 Color.backgroundGray
@@ -77,11 +87,7 @@ struct ContentView: View {
                             }.environmentObject(ListEnvironment(allLists.personList, clubId: person.club.id))
                                 .environmentObject(ListEnvironment(allLists.fineList, clubId: person.club.id))
                                 .environmentObject(ListEnvironment(allLists.reasonList, clubId: person.club.id))
-                        } else {
-                            ZStack {
-                                Color.backgroundGray
-                            }
-                        }
+                        } else { Color.backgroundGray }
                     }.edgesIgnoringSafeArea(.all)
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
 

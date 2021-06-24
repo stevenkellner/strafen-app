@@ -42,7 +42,7 @@ struct PersonDetail: View {
                 }.padding(.top, 50)
 
                 // Image
-                PersonDetailImage($image, person: person)
+                // PersonDetailImage($image, person: person) TODO
 
                 // Name
                 Text(person.name.formatted)

@@ -177,6 +177,18 @@ extension Amount: FirebaseParameterable {
     }
 }
 
+extension Amount: RandomInstanceProtocol {
+
+    /// Generates random amount
+    /// - Parameter generator: random number generator
+    /// - Returns: amount reason
+    static func random<T>(using generator: inout T) -> Amount where T: RandomNumberGenerator {
+        let value = (0..<100).randomElement(using: &generator)!
+        let subUnitValue = (0..<100).randomElement(using: &generator)!
+        return Amount(value, subUnit: subUnitValue)
+    }
+}
+
 /// Used to parse string to amount
 struct AmountParser {
 

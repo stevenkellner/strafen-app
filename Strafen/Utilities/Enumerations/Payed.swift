@@ -81,3 +81,20 @@ extension Payed {
         }
     }
 }
+
+extension Payed: RandomInstanceProtocol {
+
+    /// Generates random payed state
+    /// - Parameter generator: random number generator
+    /// - Returns: random payed states
+    static func random<T>(using generator: inout T) -> Payed where T: RandomNumberGenerator {
+        switch Int.random(in: 0...2) {
+        case 0:
+            let date = Date(timeIntervalSinceReferenceDate: Double.random(in: 100_000...10_000_000, using: &generator))
+            let inApp = Bool.random(using: &generator)
+            return .payed(date: date, inApp: inApp)
+        case 1: return .settled
+        default: return .unpayed
+        }
+    }
+}

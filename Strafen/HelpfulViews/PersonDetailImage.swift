@@ -16,9 +16,13 @@ struct PersonDetailImage: View {
     /// Person
     let person: FirebasePerson
 
-    init(_ image: Binding<UIImage?>, person: FirebasePerson) {
+    /// Indicates whether the view is a placeholder
+    let isPlaceholder: Bool
+
+    init(_ image: Binding<UIImage?>, person: FirebasePerson, placeholder: Bool) {
         self._image = image
         self.person = person
+        self.isPlaceholder = placeholder
     }
 
     /// Size of the image
@@ -29,7 +33,7 @@ struct PersonDetailImage: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            if let image = image {
+            if !isPlaceholder, let image = image {
                 Image(uiImage: image)
                     .resizable()
                     .aspectRatio(image.size, contentMode: .fill)
@@ -46,6 +50,7 @@ struct PersonDetailImage: View {
                     .offset(y: -imageSize.height * 0.03)
                     .foregroundColor(.textColor)
                     .overlay(Circle().stroke(Color.textColor, lineWidth: 2).frame(size: imageSize * 0.75))
+                    .unredacted()
             }
         }.frame(size: imageSize)
     }

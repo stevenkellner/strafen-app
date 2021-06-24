@@ -53,3 +53,17 @@ extension FirebaseReasonTemplate: FirebaseListType {
 }
 
 extension FirebaseReasonTemplate: Equatable {}
+
+extension FirebaseReasonTemplate: RandomInstanceProtocol {
+
+    /// Generates random reason
+    /// - Parameter generator: random number generator
+    /// - Returns: random reason
+    static func random<T>(using generator: inout T) -> FirebaseReasonTemplate where T: RandomNumberGenerator {
+        let id = ID(rawValue: UUID())
+        let reason = (10..<Int.random(in: 20...40, using: &generator)).map { _ in String("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmopqrstuvwxyz".randomElement(using: &generator)!) }.joined()
+        let importance = Importance.random(using: &generator)
+        let amount = Amount.random(using: &generator)
+        return FirebaseReasonTemplate(id: id, reason: reason, importance: importance, amount: amount)
+    }
+}

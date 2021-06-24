@@ -29,6 +29,7 @@ struct SearchBar: View {
                     .font(.system(size: 20, weight: .thin))
                     .lineLimit(1)
                     .padding(.trailing, 5)
+                    .unredacted()
                     .onTapGesture {
                         searchText = ""
                         UIApplication.shared.dismissKeyboard()

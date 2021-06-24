@@ -16,9 +16,13 @@ struct FineListRow: View {
     /// Id of fine that is currenttly in large design
     @Binding var currentLargeFine: FirebaseFine.ID?
 
-    init(of fine: FirebaseFine, currentLargeFine: Binding<FirebaseFine.ID?>) {
+    /// Indicates whether the view is a placeholder
+    let isPlaceholder: Bool
+
+    init(of fine: FirebaseFine, currentLargeFine: Binding<FirebaseFine.ID?>, placeholder: Bool = false) {
         self.fine = fine
         self._currentLargeFine = currentLargeFine
+        self.isPlaceholder = placeholder
     }
 
     /// Namespace for matched geometry effect
@@ -38,13 +42,13 @@ struct FineListRow: View {
             if currentLargeFine == fine.id {
 
                 // Large row
-                LargeRow(fine: fine, namespace: namespace, isNavigationLinkActive: $isNavigationLinkActive)
+                LargeRow(fine: fine, isPlaceholder: isPlaceholder, namespace: namespace, isNavigationLinkActive: $isNavigationLinkActive)
                     .setOnTapGesture($currentLargeFine, to: nil, animation: .default)
 
             } else {
 
                 // Small row
-                SmallRow(fine: fine, namespace: namespace, isNavigationLinkActive: $isNavigationLinkActive)
+                SmallRow(fine: fine, isPlaceholder: isPlaceholder, namespace: namespace, isNavigationLinkActive: $isNavigationLinkActive)
                     .setOnTapGesture($currentLargeFine, to: fine.id, animation: .default)
 
             }
@@ -60,6 +64,9 @@ struct FineListRow: View {
 
         /// Fine of this row
         let fine: FirebaseFine
+
+        /// Indicates whether the view is a placeholder
+        let isPlaceholder: Bool
 
         /// Namespace for matched geometry effect
         let namespace: Namespace.ID
@@ -102,7 +109,11 @@ struct FineListRow: View {
                             Spacer()
                         }.frame(width: geometry.size.width * 0.1, height: geometry.size.height)
                             .matchedGeometryEffect(id: "secondOutline", in: namespace)
-                            .toggleOnTapGesture($isNavigationLinkActive)
+                            .unredacted()
+                            .onTapGesture {
+                                guard !isPlaceholder else { return  }
+                                isNavigationLinkActive = true
+                            }
 
                     }
 
@@ -119,6 +130,9 @@ struct FineListRow: View {
 
         /// Fine of this row
         let fine: FirebaseFine
+
+        /// Indicates whether the view is a placeholder
+        let isPlaceholder: Bool
 
         /// Namespace for matched geometry effect
         let namespace: Namespace.ID
@@ -174,7 +188,11 @@ struct FineListRow: View {
                                 Spacer()
                             }.frame(width: geometry.size.width * 0.1, height: geometry.size.height)
                                 .matchedGeometryEffect(id: "secondOutline", in: namespace)
-                                .toggleOnTapGesture($isNavigationLinkActive)
+                                .unredacted()
+                                .onTapGesture {
+                                    guard !isPlaceholder else { return  }
+                                    isNavigationLinkActive = true
+                                }
 
                         }
                     }

@@ -88,6 +88,7 @@ struct SingleAmountDisplay: View {
                 .font(.system(size: 16, weight: .thin))
                 .lineLimit(1)
                 .padding(.horizontal, 2)
+                .unredacted()
         } rightContent: {
             Text(describing: displayType.amountSum(of: person.id, with: fineListEnvironment.list, reasonList: reasonListEnvironment.list))
                 .foregroundColor(displayType.color)

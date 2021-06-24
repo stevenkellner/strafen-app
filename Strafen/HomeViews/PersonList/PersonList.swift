@@ -16,6 +16,13 @@ struct PersonList: View {
     /// Currently logged in person
     @EnvironmentObject var person: Settings.Person
 
+    /// Indicates whether the view is a placeholder
+    let isPlaceholder: Bool
+
+    init(placeholder: Bool = false) {
+        self.isPlaceholder = placeholder
+    }
+
     /// Text to search in person list
     @State var searchText = ""
 
@@ -30,6 +37,7 @@ struct PersonList: View {
 
                     // Header
                     Header(String(localized: "person-list-header-text", comment: "Header of person list view."))
+                        .unredacted()
                         .padding(.top, 50)
 
                     if personListEnvironment.list.isEmpty {
@@ -68,7 +76,7 @@ struct PersonList: View {
                                 // Person list
                                 LazyVStack(spacing: 15) {
                                     ForEach(personListEnvironment.list.sortedForList(loggedInPerson: person, with: searchText)) { person in
-                                        PersonListRow(person: person, searchText: $searchText)
+                                        PersonListRow(person: person, searchText: $searchText, isPlaceholder: isPlaceholder)
                                     }
                                 }.padding(.top, 10)
 
@@ -81,11 +89,13 @@ struct PersonList: View {
                 }
 
                 // Add new person button
-                AddNewListItemButton(isListEmpty: personListEnvironment.list.isEmpty) {
-                    PersonAddNew()
+                if !isPlaceholder {
+                    AddNewListItemButton(isListEmpty: personListEnvironment.list.isEmpty) {
+                        PersonAddNew()
+                    }
                 }
 
-            }.maxFrame
+            }.maxFrame.redacted(reason: isPlaceholder ? .placeholder : [])
         }
     }
 
@@ -107,6 +117,9 @@ struct PersonList: View {
         /// Text to search in person list
         @Binding var searchText: String
 
+        /// Indicates whether the view is a placeholder
+        let isPlaceholder: Bool
+
         /// Indicates if navigation link is active
         @State var isNavigationLinkActive = false
 
@@ -127,7 +140,7 @@ struct PersonList: View {
                     HStack(spacing: 0) {
 
                         // Image
-                        PersonRowImage(image: $image)
+                        PersonRowImage(image: $image, placeholder: isPlaceholder)
                             .padding(.leading, 10)
 
                         // Name
@@ -151,12 +164,14 @@ struct PersonList: View {
                 }.leftWidthPercentage(0.7)
                     .frame(width: UIScreen.main.bounds.width * 0.95, height: 50)
                     .onTapGesture {
+                        guard !isPlaceholder else { return }
                         UIApplication.shared.dismissKeyboard()
                         searchText = ""
                         isNavigationLinkActive = true
                     }
                     .onAppear {
                         async {
+                            guard !isPlaceholder else { return }
                             do {
                                 let imageType = FirebaseImageStorage.ImageType(id: person.id, clubId: loggedInPerson.club.id)
                                 image = try await FirebaseImageStorage.shared.getImage(imageType, size: .thumbsSmall)

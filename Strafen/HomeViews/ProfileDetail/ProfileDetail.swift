@@ -19,6 +19,13 @@ struct ProfileDetail: View {
     /// Environment of the reason list
     @EnvironmentObject var reasonListEnvironment: ListEnvironment<FirebaseReasonTemplate>
 
+    /// Indicates whether the view is a placeholder
+    let isPlaceholder: Bool
+
+    init(placeholder: Bool = false) {
+        self.isPlaceholder = placeholder
+    }
+
     /// Image of the person
     @State var image: UIImage?
 
@@ -35,7 +42,7 @@ struct ProfileDetail: View {
                 VStack(spacing: 10) {
 
                     // Image and edit button
-                    ImageEditButton($image)
+                    ImageEditButton($image, placeholder: isPlaceholder)
 
                     // Payed and unpayed Display
                     HStack(spacing: 0) {
@@ -76,7 +83,7 @@ struct ProfileDetail: View {
                     ScrollView(showsIndicators: false) {
                         LazyVStack(spacing: 15) {
                             ForEach(fineListEnvironment.sortedForList(of: person.id, with: reasonListEnvironment.list)) { fine in
-                                FineListRow(of: fine, currentLargeFine: $currentLargeFine)
+                                FineListRow(of: fine, currentLargeFine: $currentLargeFine, placeholder: isPlaceholder)
                             }
                         }.padding(.vertical, 10)
                     }.padding(.top, 10)
@@ -84,8 +91,9 @@ struct ProfileDetail: View {
                     Spacer(minLength: 0)
                 }.padding(.top, 40)
 
-            }.maxFrame
+            }.maxFrame.redacted(reason: isPlaceholder ? .placeholder : [])
                 .task {
+                    guard !isPlaceholder else { return }
                     do {
                         let imageType = FirebaseImageStorage.ImageType(id: person.id, clubId: person.club.id)
                         image = try await FirebaseImageStorage.shared.getImage(imageType, size: .thumbBig)
@@ -103,9 +111,13 @@ struct ProfileDetail: View {
         /// Person image
         @Binding var image: UIImage?
 
+        /// Indicates whether the view is a placeholder
+        let isPlaceholder: Bool
+
         /// Init with image binding
-        init(_ image: Binding<UIImage?>) {
+        init(_ image: Binding<UIImage?>, placeholder: Bool) {
             self._image = image
+            self.isPlaceholder = placeholder
         }
 
         /// Indicate if image picker is shown
@@ -115,7 +127,7 @@ struct ProfileDetail: View {
             HStack(spacing: 0) {
 
                 // Image
-                PersonDetailImage($image, person: person.firebasePerson)
+                PersonDetailImage($image, person: person.firebasePerson, placeholder: isPlaceholder)
                     .padding(.leading, image == nil ? 25 : 0)
 
                 Spacer()
@@ -127,7 +139,10 @@ struct ProfileDetail: View {
                         .font(.system(size: 20, weight: .thin))
                         .lineLimit(1)
                 }.frame(width: 150, height: 35)
-                    .toggleOnTapGesture($showImagePicker)
+                    .onTapGesture {
+                        guard !isPlaceholder else { return }
+                        showImagePicker = true
+                    }
                     .sheet(isPresented: self.$showImagePicker) {
                         ImagePicker($image) { image, _ in
                             async {

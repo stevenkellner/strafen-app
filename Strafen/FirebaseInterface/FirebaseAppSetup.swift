@@ -49,6 +49,17 @@ import FirebaseAuth
     /// Email not verificated in last month
     @Published var emailNotVerificated = false
 
+    /// Random lists
+    var randomLists: AllLists {
+        var personList = [FirebasePerson].randomList(in: 10...15)
+        if let personId = Settings.shared.person?.id {
+            personList.append(FirebasePerson(id: personId, name: PersonName.random(), signInData: nil))
+        }
+        let reasonList = [FirebaseReasonTemplate].randomList(in: 10...15)
+        let fineList = [FirebaseFine].randomList(in: 35...75, personList: personList, reasonList: reasonList)!
+        return AllLists(personList: personList, fineList: fineList, reasonList: reasonList)
+    }
+
     /// Setup app with firebase
     /// - Returns: person, fine and reason template lists
     func setup() async throws -> AllLists {

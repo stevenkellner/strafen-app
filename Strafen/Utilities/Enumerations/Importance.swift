@@ -8,7 +8,7 @@
 import SwiftUI
 
 /// Different importances (high / medium / low)
-enum Importance: Int {
+enum Importance: Int, CaseIterable {
 
     /// High importance
     case high = 2
@@ -63,5 +63,15 @@ extension Importance: FirebaseParameterable {
 
     var primordialParameter: FirebasePrimordialParameterable {
         stringValue
+    }
+}
+
+extension Importance: RandomInstanceProtocol {
+
+    /// Generates random importance
+    /// - Parameter generator: random number generator
+    /// - Returns: random importance
+    static func random<T>(using generator: inout T) -> Importance where T: RandomNumberGenerator {
+        Importance.allCases.randomElement(using: &generator)!
     }
 }

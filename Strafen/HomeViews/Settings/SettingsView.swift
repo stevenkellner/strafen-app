@@ -62,9 +62,8 @@ struct SettingsView: View {
 
                         }.padding(.vertical, 10)
                     }.padding(.top, 10)
-
                     Spacer(minLength: 0)
-                }.padding(.top, 40)
+                }
 
             }.maxFrame
         }

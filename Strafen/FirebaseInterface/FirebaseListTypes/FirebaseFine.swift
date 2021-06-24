@@ -183,3 +183,63 @@ extension FirebaseFine {
         }
     }
 }
+
+extension FirebaseFine {
+
+    /// Generates random fine
+    /// - Parameter generator: random number generator
+    /// - Returns: random fine of nil if a list is empty
+    static func random<T>(using generator: inout T, personList: [FirebasePerson], reasonList: [FirebaseReasonTemplate]) -> FirebaseFine? where T: RandomNumberGenerator {
+        guard !personList.isEmpty, !reasonList.isEmpty else { return nil }
+        let id = ID(rawValue: UUID())
+        let assoiatedPersonId = personList.randomElement(using: &generator)!.id
+        let date = Date(timeIntervalSinceReferenceDate: Double.random(in: 100_000...10_000_000, using: &generator))
+        let payed = Payed.random(using: &generator)
+        let number = (1...10).randomElement(using: &generator)!
+        let fineReason: FineReason
+        if Bool.random(using: &generator) {
+            let templateId = reasonList.randomElement(using: &generator)!.id
+            fineReason = FineReasonTemplate(templateId: templateId)
+        } else {
+            let reasonTemplate = FirebaseReasonTemplate.random(using: &generator)
+            fineReason = FineReasonCustom(reason: reasonTemplate.reason, amount: reasonTemplate.amount, importance: reasonTemplate.importance)
+        }
+        return FirebaseFine(id: id, assoiatedPersonId: assoiatedPersonId, date: date, payed: payed, number: number, fineReason: fineReason)
+    }
+
+    /// Returns a random instace of the type
+    /// - Returns: random instance of the type
+    static func random(personList: [FirebasePerson], reasonList: [FirebaseReasonTemplate]) -> FirebaseFine? {
+        var generator = SystemRandomNumberGenerator()
+        return random(using: &generator, personList: personList, reasonList: reasonList)
+    }
+}
+
+extension Array where Element == FirebaseFine {
+
+    /// Generates a random list of given length
+    /// - Parameter length: length of the list
+    /// - Parameter generator: generator: random number generator
+    /// - Returns: random list
+    static func randomList<T>(of length: UInt, using generator: inout T, personList: [FirebasePerson], reasonList: [FirebaseReasonTemplate]) -> [FirebaseFine]? where T: RandomNumberGenerator {
+        guard !personList.isEmpty, !reasonList.isEmpty else { return nil }
+        return (0..<length).map { _ in FirebaseFine.random(using: &generator, personList: personList, reasonList: reasonList)! }
+    }
+
+    /// Generates a random list of given length
+    /// - Parameter length: length of the list
+    /// - Returns: random list
+    static func randomList(of length: UInt, personList: [FirebasePerson], reasonList: [FirebaseReasonTemplate]) -> [FirebaseFine]? {
+        var generator = SystemRandomNumberGenerator()
+        return randomList(of: length, using: &generator, personList: personList, reasonList: reasonList)
+    }
+
+    /// Generates a random list of given length
+    /// - Parameter lengthRange: length of the list
+    /// - Returns: random list
+    static func randomList(in lengthRange: ClosedRange<UInt>, personList: [FirebasePerson], reasonList: [FirebaseReasonTemplate]) -> [FirebaseFine]? {
+        var generator = SystemRandomNumberGenerator()
+        guard let length = lengthRange.randomElement(using: &generator) else { return [] }
+        return randomList(of: length, using: &generator, personList: personList, reasonList: reasonList)
+    }
+}

@@ -13,6 +13,14 @@ struct PersonRowImage: View {
     /// Image of the person
     @Binding var image: UIImage?
 
+    /// Indicates whether the view is a placeholder
+    let isPlaceholder: Bool
+
+    init(image: Binding<UIImage?>, placeholder: Bool = false) {
+        self._image = image
+        self.isPlaceholder = placeholder
+    }
+
     /// Rotation offset
     @State var offset: Angle = .zero
 
@@ -24,7 +32,7 @@ struct PersonRowImage: View {
 
     var body: some View {
         Group {
-            if let image = image {
+            if !isPlaceholder, let image = image {
                 Image(uiImage: image)
                     .resizable()
                     .scaledToFill()
@@ -36,6 +44,7 @@ struct PersonRowImage: View {
                     .frame(width: 30, height: 30)
                     .padding(6)
                     .foregroundColor(.textColor)
+                    .unredacted()
             }
         }.clipShape(WavyCircleShape(number: number, amplitute: amplitute, offset: offset))
             .overlay(WavyCircleShape(number: number, amplitute: amplitute, offset: offset).stroke(Color.textColor, lineWidth: 1).frame(width: 36, height: 36))

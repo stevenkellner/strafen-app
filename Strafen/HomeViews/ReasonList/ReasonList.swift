@@ -16,6 +16,13 @@ struct ReasonList: View {
     /// Currently logged in person
     @EnvironmentObject var person: Settings.Person
 
+    /// Indicates whether the view is a placeholder
+    let isPlaceholder: Bool
+
+    init(placeholder: Bool = false) {
+        self.isPlaceholder = placeholder
+    }
+
     /// Text to search in person list
     @State var searchText = ""
 
@@ -30,6 +37,7 @@ struct ReasonList: View {
 
                     // Header
                     Header(String(localized: "reason-list-header-text", comment: "Header of reason list view."))
+                        .unredacted()
                         .padding(.top, 50)
 
                     // Empty list text
@@ -65,7 +73,7 @@ struct ReasonList: View {
                                 // Reason list
                                 LazyVStack(spacing: 15) {
                                     ForEach(reasonListEnvironment.list.sortedForList(with: searchText)) { reason in
-                                        ReasonListRow(reason: reason, searchText: $searchText)
+                                        ReasonListRow(reason: reason, searchText: $searchText, isPlaceholder: isPlaceholder)
                                     }
                                 }.padding(.top, 10)
 
@@ -78,11 +86,13 @@ struct ReasonList: View {
                 }
 
                 // Add new reason button
-                AddNewListItemButton(isListEmpty: reasonListEnvironment.list.isEmpty) {
-                    ReasonAddNew()
+                if !isPlaceholder {
+                    AddNewListItemButton(isListEmpty: reasonListEnvironment.list.isEmpty) {
+                        ReasonAddNew()
+                    }
                 }
 
-            }.maxFrame
+            }.maxFrame.redacted(reason: isPlaceholder ? .placeholder : [])
         }
     }
 
@@ -98,46 +108,44 @@ struct ReasonList: View {
         /// Text to search in person list
         @Binding var searchText: String
 
+        /// Indicates whether the view is a placeholder
+        let isPlaceholder: Bool
+
         /// Indicates if navigation link is active
         @State var isNavigationLinkActive = false
 
         var body: some View {
-            ZStack {
+            SplittedOutlinedContent {
 
-                // Navigation link to reason editor
-                EmptyNavigationLink(isActive: $isNavigationLinkActive) {
-                    ReasonEditor(reason)
-                }
-
-                SplittedOutlinedContent {
-
-                    // Left content
-                    HStack(spacing: 0) {
-                        Text(reason.reason)
-                            .foregroundColor(.textColor)
-                            .font(.system(size: 20, weight: .thin))
-                            .lineLimit(1)
-                            .padding(.leading, 10)
-                        Spacer()
-                    }
-
-                } rightContent: {
-
-                    // Right content
-                    Text(describing: reason.amount)
-                        .foregroundColor(reason.importance.color)
+                // Left content
+                HStack(spacing: 0) {
+                    Text(reason.reason)
+                        .foregroundColor(.textColor)
                         .font(.system(size: 20, weight: .thin))
                         .lineLimit(1)
+                        .padding(.leading, 10)
+                    Spacer()
+                }
 
-                }.leftWidthPercentage(0.7)
-                    .frame(width: UIScreen.main.bounds.width * 0.95, height: 50)
-                    .onTapGesture {
-                        guard person.isCashier else { return }
-                        UIApplication.shared.dismissKeyboard()
-                        searchText = ""
-                        isNavigationLinkActive = true
-                    }
-            }
+            } rightContent: {
+
+                // Right content
+                Text(describing: reason.amount)
+                    .foregroundColor(reason.importance.color)
+                    .font(.system(size: 20, weight: .thin))
+                    .lineLimit(1)
+
+            }.leftWidthPercentage(0.7)
+                .frame(width: UIScreen.main.bounds.width * 0.95, height: 50)
+                .onTapGesture {
+                    guard !isPlaceholder, person.isCashier else { return }
+                    UIApplication.shared.dismissKeyboard()
+                    searchText = ""
+                    isNavigationLinkActive = true
+                }
+                .sheet(isPresented: $isNavigationLinkActive) {
+                    ReasonEditor(reason)
+                }
         }
     }
 }

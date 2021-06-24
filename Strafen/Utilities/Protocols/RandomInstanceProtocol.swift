@@ -43,4 +43,13 @@ extension Array where Element: RandomInstanceProtocol {
         var generator = SystemRandomNumberGenerator()
         return randomList(of: length, using: &generator)
     }
+
+    /// Generates a random list of given length
+    /// - Parameter lengthRange: length of the list
+    /// - Returns: random list
+    static func randomList(in lengthRange: ClosedRange<UInt>) -> [Element] {
+        var generator = SystemRandomNumberGenerator()
+        guard let length = lengthRange.randomElement(using: &generator) else { return [] }
+        return randomList(of: length, using: &generator)
+    }
 }
