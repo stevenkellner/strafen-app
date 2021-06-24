@@ -165,8 +165,6 @@ struct PersonList: View {
                     .frame(width: UIScreen.main.bounds.width * 0.95, height: 50)
                     .onTapGesture {
                         guard !isPlaceholder else { return }
-                        UIApplication.shared.dismissKeyboard()
-                        searchText = ""
                         isNavigationLinkActive = true
                     }
                     .onAppear {
