@@ -27,12 +27,7 @@ struct ContentView: View {
             if appSetup.forceSignedOut {
 
                 // Force Sign Out View
-                // ForceSignedOutView() // TODO
-
-            } else if appSetup.emailNotVerificated {
-
-                // Email not verificated view
-                // EmailNotVerificatedView() // TODO
+                ForceSignedOutView()
 
             } else if let person = settings.person, Auth.auth().currentUser != nil {
 

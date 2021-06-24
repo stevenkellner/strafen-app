@@ -621,3 +621,15 @@
 
 /* Text of log out alert text in settings view. */
 "settings-view-log-out-alert-text" = "Möchtest du wirklich abgemldet werden?";
+
+/* Header of force sign out view. */
+"force-sign-out-header" = "Abgemeldet";
+
+/* First message of force sign out view. */
+"force-sign-out-first-message" = "Du wurdest vom Kassier oder Trainer abgemeldet, da du dich wahrscheinlich als falsche Person angemeldet hast.";
+
+/* Second message of force sign out view. */
+"force-sign-out-seconde-message" = "Du kannst dich erneut registrieren und deinem Team beitreten.";
+
+/* Text of button in force sign out view. */
+"force-sign-out-button-text" = "Zurück zur Anmeldung";

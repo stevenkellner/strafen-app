@@ -106,7 +106,8 @@ import FirebaseAuth
         if user.email != nil, !user.isEmailVerified {
             let monthSinceSignIn = Calendar.current.dateComponents([.month], from: signInData.signInDate, to: Date()).month!
             if monthSinceSignIn >= 1 {
-                return emailNotVerificated = true
+                emailNotVerificated = true
+                // return emailNotVerificated = true
             }
         }
 
