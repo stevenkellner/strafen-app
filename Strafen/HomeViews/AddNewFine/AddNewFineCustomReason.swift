@@ -173,12 +173,13 @@ struct AddNewFineCustomReason: View {
                                 // Error message
                                 ErrorMessageView($inputProperties[error: .amount])
 
-                            }.animation(.default)
+                            }.animation(.default, value: inputProperties[error: .amount])
 
                         }.padding(.vertical, 10)
                     }
                 }.padding(.vertical, 10)
-                    .animation(.default)
+                    .animation(.default, value: isAmountEditing)
+                    .animation(.default, value: inputProperties.errorMessages)
 
                 Spacer()
 

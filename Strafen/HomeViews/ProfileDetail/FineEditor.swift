@@ -267,7 +267,7 @@ struct FineEditor: View {
                                 // Error message
                                 ErrorMessageView($inputProperties[error: .amount])
 
-                            }.animation(.default)
+                            }.animation(.default, value: isAmountEditing)
 
                             // Number
                             VStack(spacing: 5) {
@@ -299,7 +299,7 @@ struct FineEditor: View {
                                 // Error Messages
                                 ErrorMessageView($inputProperties.numberErrorMessages)
 
-                            }.animation(.default)
+                            }.animation(.default, value: inputProperties.numberErrorMessages)
 
                             // Date
                             DateChanger(date: $inputProperties.date, errorMessage: $inputProperties.dateErrorMessages)
@@ -307,7 +307,7 @@ struct FineEditor: View {
                         }.padding(.vertical, 10)
                     }
                 }.padding(.vertical, 10)
-                    .animation(.default)
+                    .animation(.default, value: inputProperties.errorMessages)
 
                 Spacer()
 
@@ -324,7 +324,7 @@ struct FineEditor: View {
                         .onRightClick(perform: handleFineUpdate)
 
                 }.padding(.bottom, 35)
-                    .animation(.default)
+                    .animation(.default, value: inputProperties.functionCallErrorMessage)
                     .toast(isPresented: $showDeleteAlert) {
                         DeleteAlert(deleteText: String(localized: "fine-editor-delete-message", comment: "Message of delete fine alert."),
                                     showDeleteAlert: $showDeleteAlert,

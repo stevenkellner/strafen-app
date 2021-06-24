@@ -37,9 +37,6 @@ struct PersonDetailImage: View {
                     .clipShape(Circle())
                     .toggleOnTapGesture($showImageDetail)
                     .overlay(Circle().stroke(Color.textColor, lineWidth: 2).frame(size: imageSize))
-//                    .sheet(isPresented: $showImageDetail) {
-//                        ImageDetail(image: image, person: person) TODO
-//                    }
             } else {
                 Image(systemName: "person")
                     .resizable()

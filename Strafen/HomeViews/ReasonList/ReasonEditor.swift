@@ -186,12 +186,12 @@ struct ReasonEditor: View {
                                 // Error message
                                 ErrorMessageView($inputProperties[error: .amount])
 
-                            }.animation(.default)
+                            }.animation(.default, value: isAmountEditing)
 
                         }.padding(.vertical, 10)
                     }
                 }.padding(.vertical, 10)
-                    .animation(.default)
+                    .animation(.default, value: inputProperties.errorMessages)
 
                 Spacer()
 
@@ -208,7 +208,7 @@ struct ReasonEditor: View {
                         .onRightClick(perform: handleReasonUpdate)
 
                 }.padding(.bottom, 35)
-                    .animation(.default)
+                    .animation(.default, value: inputProperties.functionCallErrorMessage)
                     .toast(isPresented: $showDeleteAlert) {
                         DeleteAlert(deleteText: String(localized: "reason-editor-delete-message", comment: "Message of delete reason alert."),
                                     showDeleteAlert: $showDeleteAlert,

@@ -115,12 +115,12 @@ struct LoginView: View {
 
                         Spacer()
                     }.padding(.top, emailInputActive ? 50 : -50)
-                        .animation(.default)
+                        .animation(.default, value: emailInputActive)
 
                     // Header
                     Header(String(localized: "log-in-header", comment: "Header of log in view."))
                         .padding(.top, emailInputActive ? 10 : 50)
-                        .animation(.default)
+                        .animation(.default, value: emailInputActive)
 
                     Spacer()
 

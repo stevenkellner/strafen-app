@@ -165,7 +165,8 @@ struct PersonEditor: View {
                         }.padding(.vertical, 10)
                     }
                 }.padding(.vertical, 10)
-                    .animation(.default)
+                    .animation(.default, value: inputProperties.imageUploadProgess)
+                    .animation(.default, value: inputProperties.errorMessages)
 
                 Spacer()
 
@@ -182,7 +183,7 @@ struct PersonEditor: View {
                         .onRightClick(perform: handlePersonUpdate)
 
                 }.padding(.bottom, 35)
-                    .animation(.default)
+                    .animation(.default, value: inputProperties.functionCallErrorMessage)
                     .toast(isPresented: $showDeleteAlert) {
                         DeleteAlert(deleteText: String(localized: "person-editor-delete-message", comment: "Message of delete person alert."),
                                     showDeleteAlert: $showDeleteAlert,

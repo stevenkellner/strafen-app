@@ -137,7 +137,8 @@ struct PersonAddNew: View {
                         }.padding(.vertical, 10)
                     }
                 }.padding(.vertical, 10)
-                    .animation(.default)
+                    .animation(.default, value: inputProperties.imageUploadProgess)
+                    .animation(.default, value: inputProperties.errorMessages)
 
                 Spacer()
 
@@ -153,7 +154,7 @@ struct PersonAddNew: View {
                         .onRightClick(perform: handlePersonSave)
 
                 }.padding(.bottom, 35)
-                    .animation(.default)
+                    .animation(.default, value: inputProperties.functionCallErrorMessage)
 
             }
         }.maxFrame

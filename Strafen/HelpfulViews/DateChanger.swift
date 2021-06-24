@@ -59,6 +59,6 @@ struct DateChanger: View {
             // Error Message
             ErrorMessageView($errorMessage)
 
-        }.animation(.default)
+        }.animation(.default, value: errorMessage)
     }
 }
