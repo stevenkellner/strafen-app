@@ -57,7 +57,7 @@ import FirebaseAuth
             guard let person = Settings.shared.person else {
                 throw SetupError.noPersonLoggedIn
             }
-            HomeTab.shared.active = .addNewFine
+            HomeTab.shared.active = .profileDetail
 
             // Fetch lists from database
             let allLists = try await fetchLists(clubId: person.club.id)

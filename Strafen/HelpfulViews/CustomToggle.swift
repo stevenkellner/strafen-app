@@ -44,7 +44,7 @@ struct CustomToggle: View {
                         .padding(.horizontal, 15)
                         .lineLimit(1)
 
-                    Spacer()
+                    Spacer(minLength: 0)
 
                     // Toggle
                     HStack(spacing: 0) {
@@ -67,7 +67,7 @@ struct CustomToggle: View {
                             .leftFillColor(boolToToggle ? nil : .customRed.opacity(0.25))
                             .rightFillColor(boolToToggle ? .customGreen.opacity(0.25) : nil)
 
-                    }.frame(height: fieldSize?.height.map { $0 * 0.75 })
+                    }.frame(width: fieldSize?.width.map { $0 * 0.4 }, height: fieldSize?.height.map { $0 * 0.75 })
                         .toggleOnTapGesture($boolToToggle)
                         .padding(.trailing, 15)
 

@@ -11,10 +11,10 @@ import SwiftUI
 struct Amount {
 
     /// Value of the amount
-    @NonNegative private var value: Int = .zero
+    @NonNegative fileprivate var value: Int = .zero
 
     /// Value of the subunit of this amount
-    @Clamping(0...99) private var subUnitValue: Int = .zero
+    @Clamping(0...99) fileprivate var subUnitValue: Int = .zero
 
     /// Init with euro and cent
     /// - Parameters:
@@ -28,17 +28,6 @@ struct Amount {
     /// Double value
     var doubleValue: Double {
         Double(value) + Double(subUnitValue) / 100
-    }
-
-    /// String value
-    var stringValue: String {
-        if subUnitValue == 0 {
-            return "\(value)"
-        } else if (1..<10).contains(subUnitValue) {
-            return "\(value),0\(subUnitValue)"
-        } else {
-            return "\(value),\(subUnitValue)"
-        }
     }
 }
 
@@ -56,7 +45,7 @@ extension Amount: CustomStringConvertible {
     }
 
     var description: String {
-        guard let currencyCode = Amount.locale.currencyCode else { return stringValue }
+        guard let currencyCode = Amount.locale.currencyCode else { return AmountParser.toString(self) }
         return doubleValue.formatted(.currency(code: currencyCode))
     }
 }
@@ -183,7 +172,6 @@ extension Amount: Decodable {
 }
 
 extension Amount: FirebaseParameterable {
-
     var primordialParameter: FirebasePrimordialParameterable {
         doubleValue
     }
@@ -262,5 +250,18 @@ struct AmountParser {
             return Amount(value, subUnit: decimal + 1)
         }
         return Amount(value, subUnit: decimal)
+    }
+
+    /// Parses amount rate to string
+    /// - Parameter amount: amount to parse
+    /// - Returns: parsed string
+    static func toString(_ amount: Amount) -> String {
+        if amount.subUnitValue == 0 {
+            return "\(amount.value)"
+        } else if (1..<10).contains(amount.subUnitValue) {
+            return "\(amount.value),0\(amount.subUnitValue)"
+        } else {
+            return "\(amount.value),\(amount.subUnitValue)"
+        }
     }
 }

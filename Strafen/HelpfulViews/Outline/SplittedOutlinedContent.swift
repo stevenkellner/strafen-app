@@ -65,7 +65,7 @@ struct SplittedOutlinedContent<LeftContent, RightContent>: View where LeftConten
 
     var body: some View {
         GeometryReader { geometry in
-            HStack(spacing: 0) {
+            HStack(spacing: ((leftLineWidth ?? 0) + (rightLineWidth ?? 0)) * 0.5) {
 
                 // Left outlined content
                 ZStack {

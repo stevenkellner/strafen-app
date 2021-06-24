@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SupportDocs
 
 extension UISceneConfiguration {
 
@@ -386,4 +387,43 @@ extension View {
     func optionalTapGesture(perform tapHandler: (() -> Void)?) -> some View {
         ModifiedContent(content: self, modifier: OptionalTapGesture(tapHandler: tapHandler))
     }
+}
+
+extension URL {
+
+    /// Url to support docs data source
+    static let supportCenterDataSource = URL(string: String(localized: "support-center-data-source-url", comment: "Url of data source of support center."))
+}
+
+extension SupportOptions {
+
+    /// Custom Options for support docs
+    static var custom: SupportOptions {
+        var options = SupportOptions()
+        options.categories = [.general, .logInSignIn, .settings, .person, .fine, .reason]
+        options.navigationBar.title = String(localized: "settings-view-support-center-title", comment: "Title of support center in settings view.")
+        options.navigationBar.dismissButtonView = AnyView(Text("done-button-text", comment: "Text of done button."))
+        options.navigationBar.buttonTintColor = .label
+        options.navigationBar.backgroundColor = .tertiarySystemBackground
+        options.searchBar?.placeholder = String(localized: "search-bar-text", comment: "Placeholder text of a search text field.")
+        options.searchBar?.tintColor = .systemBlue
+        if let error404Url = URL(string: String(localized: "support-center-404-url", comment: "Url of 404 page of support center.")) {
+            options.other.error404 = error404Url
+        }
+        return options
+    }
+}
+
+extension SupportOptions.Category {
+    static let general = SupportOptions.Category(tag: "general", displayName: String(localized: "support-center-general-title", comment: "Title of general tab in support center."))
+
+    static let logInSignIn = SupportOptions.Category(tag: "logInSignIn", displayName: String(localized: "support-center-logInSignIn-title", comment: "Title of log in, sign in tab in support center."))
+
+    static let settings = SupportOptions.Category(tags: ["settingsGeneral", "settingsLatePaymentInterest", "settingsShareFines", "settingsForceSignOut"], displayName: String(localized: "support-center-settings-title", comment: "Title of settings tab in support center."))
+
+    static let reason = SupportOptions.Category(tags: ["reasonAdd", "reasonUpdate", "reasonDelete"], displayName: String(localized: "support-center-reason-title", comment: "Title of reason tab in support center."))
+
+    static let person = SupportOptions.Category(tags: ["personAdd", "personUpdate", "personDelete"], displayName: String(localized: "support-center-person-title", comment: "Title of person tab in support center."))
+
+    static let fine = SupportOptions.Category(tags: ["fineAdd", "fineUpdate", "fineDelete"], displayName: String(localized: "support-center-fine-title", comment: "Title of fine tab in support center."))
 }

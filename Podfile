@@ -22,6 +22,9 @@ target 'Strafen' do
   
   # ToastUI
   pod 'ToastUI'
+  
+  # Support Docs
+  pod 'SupportDocs'
 
   target 'StrafenTests' do
     inherit! :search_paths

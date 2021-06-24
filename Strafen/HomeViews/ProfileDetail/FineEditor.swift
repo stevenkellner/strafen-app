@@ -61,7 +61,7 @@ struct FineEditor: View {
             importance = fine.importance(with: reasonList)
             self[.reason] = fine.reason(with: reasonList)
             amount = fine.amount(with: reasonList)
-            self[.amount] = amount.stringValue
+            self[.amount] = AmountParser.toString(amount)
             number = fine.number
             date = fine.date
         }
@@ -138,11 +138,11 @@ struct FineEditor: View {
                 errorMessage = .amountZero
             } else {
                 if setErrorMessage { self[error: .amount] = nil }
-                self[.amount] = amount.stringValue
+                self[.amount] = AmountParser.toString(amount)
                 return .valid
             }
             if setErrorMessage { self[error: .amount] = errorMessage }
-            self[.amount] = amount.stringValue
+            self[.amount] = AmountParser.toString(amount)
             return .invalid
         }
 

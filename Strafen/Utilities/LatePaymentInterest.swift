@@ -11,7 +11,7 @@ import Foundation
 struct LatePaymentInterest: Codable, Equatable {
 
     /// Components of date (day / month / year)
-    enum DateComponent: String, Codable, Equatable {
+    enum DateComponent: String, Codable, Equatable, CaseIterable, Identifiable {
 
         /// Day component
         case day
@@ -21,6 +21,8 @@ struct LatePaymentInterest: Codable, Equatable {
 
         /// Year component
         case year
+
+        var id: String { rawValue }
 
         /// Same componets of Calender.Components
         var dateComponentFlag: Calendar.Component {
@@ -37,6 +39,15 @@ struct LatePaymentInterest: Codable, Equatable {
             case .day: return \.day
             case .month: return \.month
             case .year: return \.year
+            }
+        }
+
+        /// String value
+        var string: String {
+            switch self {
+            case .day: return String(localized: "plain-day-text", comment: "Plain text of day.")
+            case .month: return String(localized: "plain-month-text", comment: "Plain text of month.")
+            case .year: return String(localized: "plain-year-text", comment: "Plain text of year.")
             }
         }
 
@@ -71,6 +82,11 @@ struct LatePaymentInterest: Codable, Equatable {
 
     /// Indicates whether compound interest is active
     var compoundInterest: Bool
+
+    /// Description
+    var description: String {
+        "\(interestRate.formatted())% / ^[\(interestPeriod.value) \(interestPeriod.unit.string)](inflect: true)"
+    }
 }
 
 extension LatePaymentInterest.DateComponent: FirebaseParameterable {
@@ -89,5 +105,61 @@ extension LatePaymentInterest {
             parameters["interestUnit"] = interestPeriod.unit
             parameters["compoundInterest"] = compoundInterest
         }
+    }
+}
+
+/// Used to parse string to late payment interest rate
+struct LatePaymentInterestRateParser {
+
+    /// Parses string to late payment interest rate
+    /// - Parameter string: string to parse
+    /// - Returns: parsed late payment interest rate
+    static func fromString(_ string: String) -> Double {
+        var commaPassed = false
+        var newString = ""
+
+        // Filter all invalid characters out
+        let validCharacters = (0..<10).map { Character(String($0)) }.appending(",")
+        for char in string where validCharacters.contains(char) {
+            if char == "," {
+                if !commaPassed {
+                    commaPassed = true
+                    newString.append(".")
+                }
+                continue
+            }
+            newString.append(char)
+        }
+
+        return min(Double(newString) ?? .zero, 100)
+    }
+
+    /// Parses late payment interest rate to string
+    /// - Parameter interest: interest rate to parse
+    /// - Returns: parsed string
+    static func toString(_ interest: Double) -> String {
+        if Double(Int(interest)) == interest {
+            return String(Int(interest))
+        }
+        return String(interest).replacingOccurrences(of: ".", with: ",")
+    }
+}
+
+/// Used to parse string to late payment interest period value
+struct LatePaymentInterestPeriodValueParser {
+
+    /// Parses string to late payment interest period value
+    /// - Parameter string: string to parse
+    /// - Returns: parsed late payment interest period value
+    static func fromString(_ string: String) -> Int {
+        var newString = ""
+
+        // Filter all invalid characters out
+        let validCharacters = (0..<10).map { Character(String($0)) }.appending(",")
+        for char in string where validCharacters.contains(char) {
+            if char == "," { break }
+            newString.append(char)
+        }
+        return Int(newString) ?? .zero
     }
 }

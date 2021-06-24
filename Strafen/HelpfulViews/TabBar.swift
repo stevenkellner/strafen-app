@@ -13,9 +13,6 @@ struct TabBar: View {
     /// Logged in person
     @EnvironmentObject var person: Settings.Person
 
-    /// Handler to dimiss from a subview to the previous view.
-    @EnvironmentObject var dismissHandler: DismissHandler
-
     var body: some View {
         ZStack {
 
@@ -35,14 +32,10 @@ struct TabBar: View {
                     HStack(spacing: 0) {
 
                         // Profile detail tab
-                        ButtonContent(.profileDetail, size: geometry.size) {
-                            dismissHandler.dismissCurrentView()
-                        }
+                        ButtonContent(.profileDetail, size: geometry.size)
 
                         // Person list tab
-                        ButtonContent(.personList, size: geometry.size) {
-                            dismissHandler.dismissCurrentView()
-                        }
+                        ButtonContent(.personList, size: geometry.size)
 
                         // Reason list tab
                         ButtonContent(.reasonList, size: geometry.size)
@@ -72,24 +65,23 @@ struct TabBar: View {
         /// Active home tab
         @EnvironmentObject var homeTab: HomeTab
 
+        /// Handler to dimiss from a subview to the previous view.
+        @EnvironmentObject var dismissHandler: DismissHandler
+
         /// Tab type of this Button
         let tab: HomeTab.Tab
 
         /// Button size
         let size: CGSize
 
-        /// Handles the tap
-        let tapHandler: (() -> Void)?
-
-        init(_ tab: HomeTab.Tab, size: CGSize, handler tapHandler: (() -> Void)? = nil) {
+        init(_ tab: HomeTab.Tab, size: CGSize) {
             self.tab = tab
             self.size = size
-            self.tapHandler = tapHandler
         }
 
         var body: some View {
             Button {
-                tapHandler?()
+                dismissHandler.dismissCurrentView()
                 homeTab.active = tab
             } label: {
                 VStack(spacing: 0) {

@@ -72,7 +72,9 @@
 		B0726AF62664F62500ABFEAD /* PersonList.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0726AF52664F62500ABFEAD /* PersonList.swift */; };
 		B0726AFA2664FB0200ABFEAD /* SearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0726AF92664FB0200ABFEAD /* SearchBar.swift */; };
 		B0726AFC266526A100ABFEAD /* AddNewListItemButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0726AFB266526A100ABFEAD /* AddNewListItemButton.swift */; };
+		B082AE5826849051006F9683 /* SettingsForceSignOut.swift in Sources */ = {isa = PBXBuildFile; fileRef = B082AE5726849051006F9683 /* SettingsForceSignOut.swift */; };
 		B0879188265ECE3C0065C5E7 /* DismissHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0879187265ECE3C0065C5E7 /* DismissHandler.swift */; };
+		B08897162680E71800B7221A /* SettingsLatePaymentInterestChanger.swift in Sources */ = {isa = PBXBuildFile; fileRef = B08897152680E71800B7221A /* SettingsLatePaymentInterestChanger.swift */; };
 		B08DA658265405DA00FE0C52 /* SignInEmailViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B08DA657265405DA00FE0C52 /* SignInEmailViewTests.swift */; };
 		B08FC117265D31C600F63975 /* DecodableDefault.swift in Sources */ = {isa = PBXBuildFile; fileRef = B08FC116265D31C600F63975 /* DecodableDefault.swift */; };
 		B08FC119265D38C400F63975 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = B08FC118265D38C400F63975 /* Settings.swift */; };
@@ -94,6 +96,7 @@
 		B09A30A5267F3DE60096B84B /* AddNewFineReason.swift in Sources */ = {isa = PBXBuildFile; fileRef = B09A30A4267F3DE60096B84B /* AddNewFineReason.swift */; };
 		B09A30A7267F620F0096B84B /* AddNewFineCustomReason.swift in Sources */ = {isa = PBXBuildFile; fileRef = B09A30A6267F620F0096B84B /* AddNewFineCustomReason.swift */; };
 		B09A30A92680895B0096B84B /* AddNewFineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B09A30A82680895B0096B84B /* AddNewFineTests.swift */; };
+		B09A30AC2680967E0096B84B /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B09A30AB2680967E0096B84B /* SettingsView.swift */; };
 		B09CCE1826593E4C008C545A /* SignInAppleController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B09CCE1726593E4C008C545A /* SignInAppleController.swift */; };
 		B09CCE1A26593E5C008C545A /* SignInGoogleController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B09CCE1926593E5C008C545A /* SignInGoogleController.swift */; };
 		B0A462912649412C0045D2BE /* Header.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0A462902649412B0045D2BE /* Header.swift */; };
@@ -131,10 +134,14 @@
 		B0C2A4B02642918800250A8D /* Extensions+Array.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0C2A4AF2642918800250A8D /* Extensions+Array.swift */; };
 		B0C58D3B266CCB9200FA19B1 /* PersonAddNew.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0C58D3A266CCB9200FA19B1 /* PersonAddNew.swift */; };
 		B0C58D3D266E3F6500FA19B1 /* ImageSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0C58D3C266E3F6500FA19B1 /* ImageSelector.swift */; };
+		B0CE0CBD2683494E00DA8415 /* SettingsFinesFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0CE0CBC2683494E00DA8415 /* SettingsFinesFormatter.swift */; };
+		B0CE0CBF26835BF300DA8415 /* OverlayViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0CE0CBE26835BF300DA8415 /* OverlayViews.swift */; };
+		B0CE0CC126835C3800DA8415 /* ActivityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0CE0CC026835C3800DA8415 /* ActivityView.swift */; };
 		B0D4B62D2642CD19003A720C /* FirebaseFunctionCaller.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0D4B62C2642CD19003A720C /* FirebaseFunctionCaller.swift */; };
 		B0D7CA60267B6A3300424A08 /* ReasonList.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0D7CA5F267B6A3300424A08 /* ReasonList.swift */; };
 		B0D7CA62267B886900424A08 /* ReasonAddNew.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0D7CA61267B886900424A08 /* ReasonAddNew.swift */; };
 		B0D7CA64267B8D8C00424A08 /* ReasonAddNewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0D7CA63267B8D8C00424A08 /* ReasonAddNewTests.swift */; };
+		B0DC0A5D268207D2000765F1 /* SettingsLatePaymentInterestChangerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0DC0A5C268207D2000765F1 /* SettingsLatePaymentInterestChangerTests.swift */; };
 		B0E29C8E264C052400E4BA3B /* TextFieldFirstResponders.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E29C8D264C052400E4BA3B /* TextFieldFirstResponders.swift */; };
 		B0E9C86826447AF100FB484E /* ListEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E9C86726447AF100FB484E /* ListEnvironment.swift */; };
 		B0EE4C94265FDD09001177E3 /* ProfileDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0EE4C93265FDD09001177E3 /* ProfileDetail.swift */; };
@@ -227,7 +234,9 @@
 		B0726AF52664F62500ABFEAD /* PersonList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonList.swift; sourceTree = "<group>"; };
 		B0726AF92664FB0200ABFEAD /* SearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBar.swift; sourceTree = "<group>"; };
 		B0726AFB266526A100ABFEAD /* AddNewListItemButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewListItemButton.swift; sourceTree = "<group>"; };
+		B082AE5726849051006F9683 /* SettingsForceSignOut.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsForceSignOut.swift; sourceTree = "<group>"; };
 		B0879187265ECE3C0065C5E7 /* DismissHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DismissHandler.swift; sourceTree = "<group>"; };
+		B08897152680E71800B7221A /* SettingsLatePaymentInterestChanger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsLatePaymentInterestChanger.swift; sourceTree = "<group>"; };
 		B08DA657265405DA00FE0C52 /* SignInEmailViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInEmailViewTests.swift; sourceTree = "<group>"; };
 		B08FC116265D31C600F63975 /* DecodableDefault.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DecodableDefault.swift; sourceTree = "<group>"; };
 		B08FC118265D38C400F63975 /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
@@ -249,6 +258,7 @@
 		B09A30A4267F3DE60096B84B /* AddNewFineReason.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewFineReason.swift; sourceTree = "<group>"; };
 		B09A30A6267F620F0096B84B /* AddNewFineCustomReason.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewFineCustomReason.swift; sourceTree = "<group>"; };
 		B09A30A82680895B0096B84B /* AddNewFineTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewFineTests.swift; sourceTree = "<group>"; };
+		B09A30AB2680967E0096B84B /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		B09CCE1726593E4C008C545A /* SignInAppleController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInAppleController.swift; sourceTree = "<group>"; };
 		B09CCE1926593E5C008C545A /* SignInGoogleController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInGoogleController.swift; sourceTree = "<group>"; };
 		B0A462902649412B0045D2BE /* Header.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Header.swift; sourceTree = "<group>"; };
@@ -291,11 +301,15 @@
 		B0C2A4AF2642918800250A8D /* Extensions+Array.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extensions+Array.swift"; sourceTree = "<group>"; };
 		B0C58D3A266CCB9200FA19B1 /* PersonAddNew.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonAddNew.swift; sourceTree = "<group>"; };
 		B0C58D3C266E3F6500FA19B1 /* ImageSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageSelector.swift; sourceTree = "<group>"; };
+		B0CE0CBC2683494E00DA8415 /* SettingsFinesFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsFinesFormatter.swift; sourceTree = "<group>"; };
+		B0CE0CBE26835BF300DA8415 /* OverlayViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverlayViews.swift; sourceTree = "<group>"; };
+		B0CE0CC026835C3800DA8415 /* ActivityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityView.swift; sourceTree = "<group>"; };
 		B0D4B62C2642CD19003A720C /* FirebaseFunctionCaller.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseFunctionCaller.swift; sourceTree = "<group>"; };
 		B0D7CA5F267B6A3300424A08 /* ReasonList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReasonList.swift; sourceTree = "<group>"; };
 		B0D7CA61267B886900424A08 /* ReasonAddNew.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReasonAddNew.swift; sourceTree = "<group>"; };
 		B0D7CA63267B8D8C00424A08 /* ReasonAddNewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReasonAddNewTests.swift; sourceTree = "<group>"; };
 		B0DBFF10266FA62D0095B833 /* Strafen.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = Strafen.xctestplan; sourceTree = "<group>"; };
+		B0DC0A5C268207D2000765F1 /* SettingsLatePaymentInterestChangerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsLatePaymentInterestChangerTests.swift; sourceTree = "<group>"; };
 		B0E29C8D264C052400E4BA3B /* TextFieldFirstResponders.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldFirstResponders.swift; sourceTree = "<group>"; };
 		B0E9C86726447AF100FB484E /* ListEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListEnvironment.swift; sourceTree = "<group>"; };
 		B0EE4C93265FDD09001177E3 /* ProfileDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileDetail.swift; sourceTree = "<group>"; };
@@ -395,6 +409,7 @@
 		B021DF3D264918D300FD418F /* HelpfulViews */ = {
 			isa = PBXGroup;
 			children = (
+				B0CE0CC026835C3800DA8415 /* ActivityView.swift */,
 				B04A40DE267A315500C50C72 /* AmountDisplay.swift */,
 				B021DF3E264918E400FD418F /* BackgroundWave.swift */,
 				B0A4629E2649A7070045D2BE /* CustomTextField.swift */,
@@ -408,6 +423,7 @@
 				B0C58D3C266E3F6500FA19B1 /* ImageSelector.swift */,
 				B090FDE92663C79F005700A8 /* ImportanceChanger.swift */,
 				B0726AEE2664191600ABFEAD /* LottieAnimation.swift */,
+				B0CE0CBE26835BF300DA8415 /* OverlayViews.swift */,
 				B05CCFD32662990E00F13786 /* PersonDetailImage.swift */,
 				B04AD2A926567464001A760F /* PersonRowImage.swift */,
 				B0726AF92664FB0200ABFEAD /* SearchBar.swift */,
@@ -428,6 +444,7 @@
 				B0726AF42664F60D00ABFEAD /* PersonList */,
 				B0D7CA5E267B6A1800424A08 /* ReasonList */,
 				B091FFA9267E089D007931AD /* AddNewFine */,
+				B09A30AA2680966F0096B84B /* Settings */,
 			);
 			path = HomeViews;
 			sourceTree = "<group>";
@@ -620,6 +637,17 @@
 			path = AddNewFine;
 			sourceTree = "<group>";
 		};
+		B09A30AA2680966F0096B84B /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				B09A30AB2680967E0096B84B /* SettingsView.swift */,
+				B08897152680E71800B7221A /* SettingsLatePaymentInterestChanger.swift */,
+				B0CE0CBC2683494E00DA8415 /* SettingsFinesFormatter.swift */,
+				B082AE5726849051006F9683 /* SettingsForceSignOut.swift */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
 		B0A7619D2642DB86003B170F /* FFCallables */ = {
 			isa = PBXGroup;
 			children = (
@@ -648,6 +676,7 @@
 				B0D7CA63267B8D8C00424A08 /* ReasonAddNewTests.swift */,
 				B091FFA7267CF788007931AD /* ReasonEditorTests.swift */,
 				B09A30A82680895B0096B84B /* AddNewFineTests.swift */,
+				B0DC0A5C268207D2000765F1 /* SettingsLatePaymentInterestChangerTests.swift */,
 				B08DA6562654057D00FE0C52 /* FirebaseTests */,
 				B08DA6552654057400FE0C52 /* LoginViewTests */,
 				B0AF0A8826430AF300DF4DC9 /* FFCallables */,
@@ -934,6 +963,7 @@
 				B050AC97265FBA01000B3E84 /* FirebaseAppSetup.swift in Sources */,
 				B0AF0A9E2643CE2500DF4DC9 /* FirebaseTransaction.swift in Sources */,
 				B0726AFC266526A100ABFEAD /* AddNewListItemButton.swift in Sources */,
+				B08897162680E71800B7221A /* SettingsLatePaymentInterestChanger.swift in Sources */,
 				B0C58D3D266E3F6500FA19B1 /* ImageSelector.swift in Sources */,
 				B0A46299264989E90045D2BE /* SignInEmailView.swift in Sources */,
 				B02FC7C0265446A700A99207 /* SignInPersonSelectionView.swift in Sources */,
@@ -941,7 +971,9 @@
 				B0A4629B2649A1B90045D2BE /* BackButton.swift in Sources */,
 				B0ACBAA22677B4A50030E0F5 /* HomeTab.swift in Sources */,
 				B0AF0A9426432C9500DF4DC9 /* Amount.swift in Sources */,
+				B0CE0CC126835C3800DA8415 /* ActivityView.swift in Sources */,
 				B0A4629F2649A7070045D2BE /* CustomTextField.swift in Sources */,
+				B082AE5826849051006F9683 /* SettingsForceSignOut.swift in Sources */,
 				B0879188265ECE3C0065C5E7 /* DismissHandler.swift in Sources */,
 				B0225D24265119D300D75CDA /* CustomToggle.swift in Sources */,
 				B0A46295264953270045D2BE /* Outline.swift in Sources */,
@@ -971,8 +1003,10 @@
 				B05CCFD42662990E00F13786 /* PersonDetailImage.swift in Sources */,
 				B050AC95265FA152000B3E84 /* TabBar.swift in Sources */,
 				B09CCE1826593E4C008C545A /* SignInAppleController.swift in Sources */,
+				B0CE0CBF26835BF300DA8415 /* OverlayViews.swift in Sources */,
 				B0D7CA60267B6A3300424A08 /* ReasonList.swift in Sources */,
 				B0225D312652619B00D75CDA /* FFChangeFinePayed.swift in Sources */,
+				B0CE0CBD2683494E00DA8415 /* SettingsFinesFormatter.swift in Sources */,
 				B07148D5264DB45000C5F7EF /* SignInClubSelectionView.swift in Sources */,
 				B0A761A32642E6C7003B170F /* FirebaseDatabaseLevel.swift in Sources */,
 				B0720819264D8D580084FDE6 /* OperationResult.swift in Sources */,
@@ -1010,6 +1044,7 @@
 				B072080E264C56FB0084FDE6 /* ErrorMessages.swift in Sources */,
 				B0D7CA62267B886900424A08 /* ReasonAddNew.swift in Sources */,
 				B090FDE82663A5EB005700A8 /* FineEditor.swift in Sources */,
+				B09A30AC2680967E0096B84B /* SettingsView.swift in Sources */,
 				B08FC117265D31C600F63975 /* DecodableDefault.swift in Sources */,
 				B090FDF126640B3D005700A8 /* SheetBar.swift in Sources */,
 				B091FFAB267E08B8007931AD /* AddNewFine.swift in Sources */,
@@ -1030,6 +1065,7 @@
 				B02FC7BE265423B700A99207 /* SignInClubInputViewTests.swift in Sources */,
 				B0726AF32664C5CC00ABFEAD /* FineEditorTests.swift in Sources */,
 				B02FC7BC2654156D00A99207 /* SignInClubSelectionTests.swift in Sources */,
+				B0DC0A5D268207D2000765F1 /* SettingsLatePaymentInterestChangerTests.swift in Sources */,
 				B04A40E3267A60CF00C50C72 /* PersonEditorTests.swift in Sources */,
 				B08DA658265405DA00FE0C52 /* SignInEmailViewTests.swift in Sources */,
 				B0AF0AA42644125400DF4DC9 /* TestClub.swift in Sources */,

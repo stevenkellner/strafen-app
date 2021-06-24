@@ -66,11 +66,11 @@ struct ReasonEditor: View {
                 errorMessage = .amountZero
             } else {
                 if setErrorMessage { self[error: .amount] = nil }
-                self[.amount] = amount.stringValue
+                self[.amount] = AmountParser.toString(amount)
                 return .valid
             }
             if setErrorMessage { self[error: .amount] = errorMessage }
-            self[.amount] = amount.stringValue
+            self[.amount] = AmountParser.toString(amount)
             return .invalid
         }
 
@@ -88,7 +88,7 @@ struct ReasonEditor: View {
 
         mutating func setReason(to reason: FirebaseReasonTemplate) {
             self.amount = reason.amount
-            self[.amount] = amount.stringValue
+            self[.amount] = AmountParser.toString(amount)
             self[.reason] = reason.reason
         }
     }

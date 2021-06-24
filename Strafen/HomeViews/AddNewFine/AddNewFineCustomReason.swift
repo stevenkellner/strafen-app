@@ -57,11 +57,11 @@ struct AddNewFineCustomReason: View {
                 errorMessage = .amountZero
             } else {
                 if setErrorMessage { self[error: .amount] = nil }
-                self[.amount] = amount.stringValue
+                self[.amount] = AmountParser.toString(amount)
                 return .valid
             }
             if setErrorMessage { self[error: .amount] = errorMessage }
-            self[.amount] = amount.stringValue
+            self[.amount] = AmountParser.toString(amount)
             return .invalid
         }
 
@@ -77,7 +77,7 @@ struct AddNewFineCustomReason: View {
             guard let fineReason = fineReason else { return }
             self[.reason] = fineReason.reason(with: reasonList)
             self.amount = fineReason.amount(with: reasonList)
-            self[.amount] = amount.stringValue
+            self[.amount] = AmountParser.toString(amount)
             self.importance = fineReason.importance(with: reasonList)
         }
     }

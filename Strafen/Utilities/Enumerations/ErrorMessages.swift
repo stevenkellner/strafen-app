@@ -91,6 +91,12 @@ enum ErrorMessages: Int {
     /// No reason is given for fine add new
     case noReasonGiven
 
+    /// Interest period value is zero
+    case periodIsZero
+
+    /// Interest rate is zero
+    case rateIsZero
+
     /// Raw message of the error
     var rawMessage: String {
         switch self {
@@ -121,6 +127,8 @@ enum ErrorMessages: Int {
         case .reasonUndeletable: return String(localized: "error-message-reasonUndeletable", comment: "An error message displayed, when reason is undeletable cause a fine uses this reason.")
         case .noPersonSelected: return String(localized: "error-message-noPersonSelected", comment: "An error message displayed, when no person is selected for fine add new.")
         case .noReasonGiven: return String(localized: "error-message-noReasonGiven", comment: "An error message displayed, when no reason is given for fine add new.")
+        case .periodIsZero: return String(localized: "error-message-periodIsZero", comment: "An error message displayed, when interest period value is zero.")
+        case .rateIsZero: return String(localized: "error-message-rateIsZero", comment: "An error message displayed, when interest rate is zero.")
         }
     }
 

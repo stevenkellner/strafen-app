@@ -513,3 +513,111 @@
 
 /* Text of select custom reason button. */
 "add-new-fine-reason-select-text" = "Auswählen";
+
+/* Title of club identifier in settings view. */
+"settings-view-club-identifier-title" = "Deine Vereinskennung";
+
+/* Title of support center in settings view. */
+"settings-view-support-center-title" = "Support Center";
+
+/* Title of general tab in support center. */
+"support-center-general-title" = "Allgemeines";
+
+/* Title of log in, sign in tab in support center. */
+"support-center-logInSignIn-title" = "Anmelden / Registrieren";
+
+/* Title of settings tab in support center. */
+"support-center-settings-title" = "Einstellungen";
+
+/* Title of reason tab in support center. */
+"support-center-reason-title" = "Vorlagen Änderungen";
+
+/* Title of person tab in support center. */
+"support-center-person-title" = "Personen Änderungen";
+
+/* Title of fine tab in support center. */
+"support-center-fine-title" = "Strafen Änderungen";
+
+/* Url of data source of support center. */
+"support-center-data-source-url" = "https://raw.githubusercontent.com/stevenkellner/StrafenSupportDocs/main/_data/de_supportDocs_dataSource.json";
+
+/* Url of 404 page of support center. */
+"support-center-404-url" = "https://stevenkellner.github.io/StrafenSupportDocs/de/404";
+
+/* Title of late payment interest in settings view. */
+"settings-view-late-payment-interest-title" = "Verzugszinsen";
+
+/* Plain text of day. */
+"plain-day-text" = "Tag";
+
+/* Plain text of month. */
+"plain-month-text" = "Monat";
+
+/* Plain text of year. */
+"plain-year-text" = "Jahr";
+
+/* An error message displayed, when interest period value is zero. */
+"error-message-periodIsZero" = "Zeitraum darf nicht null sein!";
+
+/* An error message displayed, when interest rate is zero. */
+"error-message-rateIsZero" = "Zinssatz darf nicht null sein!";
+
+/* Header of settings view. */
+"settings-header-text" = "Einstellungen";
+
+/* Header of settings late payment interest view. */
+"settings-late-payment-interest-header-text" = "Verzugszinsen";
+
+/* Title of compound interest in settings late payment interest view. */
+"settings-late-payment-interest-compound-interest-title" = "Zinseszins";
+
+/* Title of interest free period in settings late payment interest view. */
+"settings-late-payment-interest-interest-free-period-title" = "Zinsfreie Zeit";
+
+/* Title of interest period in settings late payment interest view. */
+"settings-late-payment-interest-interest-period-title" = "Zins Zeitraum";
+
+/* Title of interest rate in settings late payment interest view. */
+"settings-late-payment-interest-interest-rate-title" = "Zinssatz";
+
+/* Title of fines formatter in settings view. */
+"settings-view-fines-formatter-title" = "Strafen Teilen";
+
+/* Header of settings fine formatter view. */
+"settings-fine-formatter-header" = "Strafen Teilen";
+
+/* Title of show header text in fine formatter view. */
+"settings-fine-formatter-show-header-text-title" = "Zusatz Text";
+
+/* Title of show additional header text in fine formatter view. */
+"settings-fine-formatter-show-additional-header-text-title" = "Erweiterte Informationen";
+
+/* Title of preview in fine formatter view. */
+"settings-fine-formatter-preview-title" = "Vorschau";
+
+/* Text of header in fine formatter view. */
+"settings-fine-formatter-header-text" = "Das sind noch die offene Strafen, bitte bis nächste Woche alles zahlen.";
+
+/* Text of additional header in fine formatter view. */
+"settings-fine-formatter-additional-header-text" = "Wer wissen möchte für was er die Strafe bekommen hat, soll mir direkt schreiben.";
+
+/* Text of share button in settings fine formatter view. */
+"settings-fine-formatter-share-button-text" = "Teilen";
+
+/* Text of copy button in settings fine formatter view. */
+"settings-fine-formatter-copy-button-text" = "Kopieren";
+
+/* Title of force sign out in settings view. */
+"settings-view-force-sign-out-title" = "Abmelden Anderer Erzwingen";
+
+/* Header of settings force sign out view. */
+"settings-force-sign-out-header" = "Abmelden Erzwingen";
+
+/* Text of empty person list in settings force sign out view. */
+"settings-force-sign-out-empty-list-text" = "Es sind keine weiteren Personen registriert.";
+
+/* Text of log out button in settings view. */
+"settings-view-log-out-button-text" = "Abmelden";
+
+/* Text of log out alert text in settings view. */
+"settings-view-log-out-alert-text" = "Möchtest du wirklich abgemldet werden?";

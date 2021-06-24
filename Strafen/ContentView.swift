@@ -39,8 +39,8 @@ struct ContentView: View {
                 VStack(spacing: 0) {
 
                     VStack {
-                        if homeTab.active == .settings {
-                            Text(verbatim: "SettingsView") // SettingsView() TODO
+                        if homeTab.active == .settings && allLists == nil {
+                            SettingsView(hasLists: false)
                         } else if appSetup.connectionState == .loading || appSetup.connectionState == .notStarted {
                             ZStack {
                                 Color.backgroundGray
@@ -77,7 +77,7 @@ struct ContentView: View {
                                 case .personList: PersonList()
                                 case .reasonList: ReasonList()
                                 case .addNewFine: AddNewFine(isSheet: false)
-                                case .settings: EmptyView()
+                                case .settings: SettingsView(hasLists: true)
                                 }
                             }.environmentObject(ListEnvironment(allLists.personList, clubId: person.club.id))
                                 .environmentObject(ListEnvironment(allLists.fineList, clubId: person.club.id))
@@ -108,6 +108,9 @@ struct ContentView: View {
                 LoginView()
 
             }
+
+            // Overlay views
+            OverlayViews()
 
         }.onAppear {
             UIApplication.shared.windows.first?.overrideUserInterfaceStyle = .dark

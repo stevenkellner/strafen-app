@@ -36,19 +36,13 @@ struct FFChangeLatePaymentInterestCall: FFCallable {
     /// Type of the change
     let changeType: ChangeType
 
-    /// Used to remove late pament interest
-    /// - Parameter clubId: Club id
-    init(clubId: Club.ID) {
-        self.clubId = clubId
-        self.changeType = .remove
-    }
-
-    /// Used to update late payment interest
+    /// Used to update or remove late payment interest
     /// - Parameters:
     ///   - clubId: Club id
     ///   - interest: late payment interest
-    init(clubId: Club.ID, interest: LatePaymentInterest) {
+    init(clubId: Club.ID, interest: LatePaymentInterest? = nil) {
         self.clubId = clubId
+        guard let interest = interest else { self.changeType = .remove; return }
         self.changeType = .update(interest: interest)
     }
 
