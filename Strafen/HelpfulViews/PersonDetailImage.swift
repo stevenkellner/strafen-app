@@ -19,7 +19,7 @@ struct PersonDetailImage: View {
     /// Indicates whether the view is a placeholder
     let isPlaceholder: Bool
 
-    init(_ image: Binding<UIImage?>, person: FirebasePerson, placeholder: Bool) {
+    init(_ image: Binding<UIImage?>, person: FirebasePerson, placeholder: Bool = false) {
         self._image = image
         self.person = person
         self.isPlaceholder = placeholder
