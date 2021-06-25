@@ -165,7 +165,11 @@ struct PersonList: View {
                     .frame(width: UIScreen.main.bounds.width * 0.95, height: 50)
                     .onTapGesture {
                         guard !isPlaceholder else { return }
-                        isNavigationLinkActive = true
+                        let timeout: Double = KeyboardObserver.shared.keyboardOnScreen ? 0.15 : 0
+                        UIApplication.shared.dismissKeyboard()
+                        DispatchQueue.main.asyncAfter(deadline: .now() + timeout) {
+                            isNavigationLinkActive = true
+                        }
                     }
                     .onAppear {
                         async {

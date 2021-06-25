@@ -93,6 +93,7 @@ struct PersonDetail: View {
             AddNewListItemButton(isListEmpty: fineListEnvironment.list.filter({ $0.assoiatedPersonId == person.id }).isEmpty) {
                 AddNewFine(with: person.id, isSheet: true)
             }
+
         }.maxFrame.dismissHandler
             .task {
                 do {

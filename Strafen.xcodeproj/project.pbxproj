@@ -131,6 +131,7 @@
 		B0AF0AA02643FFDB00DF4DC9 /* FFDeleteTestClubPropertyCall.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0AF0A9F2643FFDB00DF4DC9 /* FFDeleteTestClubPropertyCall.swift */; };
 		B0AF0AA22644013400DF4DC9 /* FFNewTestClubPropertyCall.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0AF0AA12644013400DF4DC9 /* FFNewTestClubPropertyCall.swift */; };
 		B0AF0AA42644125400DF4DC9 /* TestClub.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0AF0AA32644125400DF4DC9 /* TestClub.swift */; };
+		B0B492BB2686348700A4C95E /* KeyboardObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0B492BA2686348700A4C95E /* KeyboardObserver.swift */; };
 		B0B7B6AF26629192004044CB /* SingleAmountDisplay.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0B7B6AE26629192004044CB /* SingleAmountDisplay.swift */; };
 		B0C2A4B02642918800250A8D /* Extensions+Array.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0C2A4AF2642918800250A8D /* Extensions+Array.swift */; };
 		B0C58D3B266CCB9200FA19B1 /* PersonAddNew.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0C58D3A266CCB9200FA19B1 /* PersonAddNew.swift */; };
@@ -299,6 +300,7 @@
 		B0AF0A9F2643FFDB00DF4DC9 /* FFDeleteTestClubPropertyCall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FFDeleteTestClubPropertyCall.swift; sourceTree = "<group>"; };
 		B0AF0AA12644013400DF4DC9 /* FFNewTestClubPropertyCall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FFNewTestClubPropertyCall.swift; sourceTree = "<group>"; };
 		B0AF0AA32644125400DF4DC9 /* TestClub.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestClub.swift; sourceTree = "<group>"; };
+		B0B492BA2686348700A4C95E /* KeyboardObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardObserver.swift; sourceTree = "<group>"; };
 		B0B7B6AE26629192004044CB /* SingleAmountDisplay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleAmountDisplay.swift; sourceTree = "<group>"; };
 		B0C2A4AF2642918800250A8D /* Extensions+Array.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extensions+Array.swift"; sourceTree = "<group>"; };
 		B0C58D3A266CCB9200FA19B1 /* PersonAddNew.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonAddNew.swift; sourceTree = "<group>"; };
@@ -524,6 +526,7 @@
 				B0879187265ECE3C0065C5E7 /* DismissHandler.swift */,
 				B0AF0A992643303500DF4DC9 /* FineReason.swift */,
 				B0ACBAA12677B4A50030E0F5 /* HomeTab.swift */,
+				B0B492BA2686348700A4C95E /* KeyboardObserver.swift */,
 				B0225D2C26525D8900D75CDA /* LatePaymentInterest.swift */,
 				B0E9C86726447AF100FB484E /* ListEnvironment.swift */,
 				B02221AD2641D6850005295B /* PersonName.swift */,
@@ -980,6 +983,7 @@
 				B082AE5826849051006F9683 /* SettingsForceSignOut.swift in Sources */,
 				B0879188265ECE3C0065C5E7 /* DismissHandler.swift in Sources */,
 				B0225D24265119D300D75CDA /* CustomToggle.swift in Sources */,
+				B0B492BB2686348700A4C95E /* KeyboardObserver.swift in Sources */,
 				B0A46295264953270045D2BE /* Outline.swift in Sources */,
 				B090FDF326640B48005700A8 /* SingleOutlinedContent.swift in Sources */,
 				B0720817264D89200084FDE6 /* ConnectionState.swift in Sources */,
@@ -1243,7 +1247,7 @@
 				CLANG_USE_OPTIMIZATION_PROFILE = YES;
 				CODE_SIGN_ENTITLEMENTS = Strafen/Controller/Strafen.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 7;
+				CURRENT_PROJECT_VERSION = 8;
 				DEVELOPMENT_ASSET_PATHS = "\"Strafen/Controller/Preview Content\"";
 				DEVELOPMENT_TEAM = K7NTJ83ZF8;
 				ENABLE_PREVIEWS = YES;
@@ -1273,7 +1277,7 @@
 				CLANG_USE_OPTIMIZATION_PROFILE = YES;
 				CODE_SIGN_ENTITLEMENTS = Strafen/Controller/Strafen.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 7;
+				CURRENT_PROJECT_VERSION = 8;
 				DEVELOPMENT_ASSET_PATHS = "\"Strafen/Controller/Preview Content\"";
 				DEVELOPMENT_TEAM = K7NTJ83ZF8;
 				ENABLE_PREVIEWS = YES;
