@@ -191,3 +191,38 @@ extension Array where Element: Equatable {
         }
     }
 }
+
+extension Array where Element: Identifiable {
+
+    /// Append given element to list if list doesn't contain an element with same id as given element
+    /// - Parameter newElement: new element to append
+    mutating func appendIfNew(_ newElement: Element) {
+        guard !contains(where: { $0.id == newElement.id }) else { return }
+        append(newElement)
+    }
+
+    /// Updates all elements with same element id in the list to given element
+    /// - Parameter element: updated element
+    mutating func update(_ element: Element) {
+        mapped { $0.id == element.id ? element : $0 }
+    }
+
+    /// Updates all elements with same id in the list to given element
+    /// - Parameters:
+    ///   - id: id of elements to update
+    ///   - changeHandler: handles element update
+    mutating func update(with id: Element.ID, change changeHandler: (inout Element) -> Void) { // swiftlint:disable:this identifier_name
+        mapped { (item: Element) -> Element in
+            guard item.id == id else { return item }
+            var updatedItem = item
+            changeHandler(&updatedItem)
+            return updatedItem
+        }
+    }
+
+    /// Removes all elements with given element id
+    /// - Parameter id: id of element to remove
+    mutating func removeAll(with id: Element.ID) { // swiftlint:disable:this identifier_name
+        removeAll { $0.id == id }
+    }
+}

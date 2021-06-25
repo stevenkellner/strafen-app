@@ -73,24 +73,17 @@ struct FirebaseObserver {
 
         // Observes if a child was added
         let removeAddObserver = observeList(type, event: .childAdded, clubId: clubId) { newChild in
-            changeListHandler {
-                guard !$0.contains(where: { $0.id == newChild.id }) else { return }
-                $0.append(newChild)
-            }
+            changeListHandler { $0.appendIfNew(newChild) }
         }
 
         // Observes if a child was changed
         let removeChangeObserver = observeList(type, event: .childChanged, clubId: clubId) { changedChild in
-            changeListHandler {
-                $0.mapped { $0.id == changedChild.id ? changedChild : $0 }
-            }
+            changeListHandler { $0.update(changedChild) }
         }
 
         // Observes if a child was removed
         let removeRemoveObserver = observeList(type, event: .childRemoved, clubId: clubId) { removedChild in
-            changeListHandler {
-                $0.filtered { $0.id != removedChild.id }
-            }
+            changeListHandler { $0.removeAll(with: removedChild.id) }
         }
 
         return {

@@ -38,37 +38,6 @@ import SwiftUI
 }
 
 extension ListEnvironment {
-
-    /// Changes item with given id to new value
-    /// - Parameters:
-    ///   - id: id of item to change
-    ///   - newValue: new value of the item
-    func changeListItem(_ id: ListType.ID, to newValue: ListType) { // swiftlint:disable:this identifier_name
-        list.mapped { $0.id == id ? newValue : $0 }
-    }
-
-    /// Changes item with given id with change handler
-    /// - Parameters:
-    ///   - id: id of item to change
-    ///   - changeHandler: handles item change
-    func changeListItem(_ id: ListType.ID, change changeHandler: (ListType) -> ListType) { // swiftlint:disable:this identifier_name
-        list.mapped { $0.id == id ? changeHandler($0) : $0 }
-    }
-
-    /// Changes item with given id with change handler
-    /// - Parameters:
-    ///   - id: id of item to change
-    ///   - changeHandler: handles item change
-    func changeListItemInout(_ id: ListType.ID, change changeHandler: (inout ListType) -> Void) { // swiftlint:disable:this identifier_name
-        changeListItem(id) {
-            var item = $0
-            changeHandler(&item)
-            return item
-        }
-    }
-}
-
-extension ListEnvironment {
     subscript<T>(dynamicMember keyPath: WritableKeyPath<[ListType], T>) -> T {
         get { list[keyPath: keyPath] }
         set { list[keyPath: keyPath] = newValue }
@@ -105,3 +74,5 @@ extension ListEnvironment: Equatable where ListType: Equatable {
         lhs.list == rhs.list
     }
 }
+
+typealias ListEnvironmentObject<ListType> = EnvironmentObject<ListEnvironment<ListType>>.Wrapper where ListType: FirebaseListType

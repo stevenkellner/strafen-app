@@ -87,6 +87,9 @@ struct PersonEditor: View {
     /// Environment of the fine list
     @EnvironmentObject var fineListEnvironment: ListEnvironment<FirebaseFine>
 
+    /// Environment of the person list
+    @EnvironmentObject var personListEnvironment: ListEnvironment<FirebasePerson>
+
     /// Presentation mode
     @Environment(\.presentationMode) private var presentationMode
 
@@ -211,6 +214,8 @@ struct PersonEditor: View {
                                           loggedInPerson: loggedInPerson,
                                           fineList: fineListEnvironment.list,
                                           inputProperties: $inputProperties,
+                                          personListEnvironment: $personListEnvironment,
+                                          fineListEnvironment: $fineListEnvironment,
                                           presentationMode: presentationMode)
         }
     }
@@ -220,6 +225,7 @@ struct PersonEditor: View {
         await Self.handlePersonUpdate(id: oldPerson.id,
                                       loggedInPerson: loggedInPerson,
                                       inputProperties: $inputProperties,
+                                      personListEnvironment: $personListEnvironment,
                                       presentationMode: presentationMode)
     }
 
@@ -228,6 +234,8 @@ struct PersonEditor: View {
                                    loggedInPerson: Settings.Person,
                                    fineList: [FirebaseFine],
                                    inputProperties: Binding<InputProperties>,
+                                   personListEnvironment: ListEnvironmentObject<FirebasePerson>? = nil,
+                                   fineListEnvironment: ListEnvironmentObject<FirebaseFine>? = nil,
                                    presentationMode: Binding<PresentationMode>? = nil) async {
         guard loggedInPerson.isCashier else { return }
         guard inputProperties.wrappedValue.connectionStateUpdate != .loading,
@@ -268,10 +276,12 @@ struct PersonEditor: View {
                 group.async {
                     let callItem = FFChangeListCall<FirebaseFine>(clubId: loggedInPerson.club.id, id: fine.id)
                     _ = try? await FirebaseFunctionCaller.shared.call(callItem)
+                    fineListEnvironment?.list.wrappedValue.removeAll(with: fine.id)
                 }
             }
         }
 
+        personListEnvironment?.list.wrappedValue.removeAll(with: personId)
         presentationMode?.wrappedValue.dismiss()
         inputProperties.wrappedValue.connectionStateDelete.passed()
     }
@@ -280,6 +290,7 @@ struct PersonEditor: View {
     static func handlePersonUpdate(id personId: FirebasePerson.ID,
                                    loggedInPerson: Settings.Person,
                                    inputProperties: Binding<InputProperties>,
+                                   personListEnvironment: ListEnvironmentObject<FirebasePerson>? = nil,
                                    presentationMode: Binding<PresentationMode>? = nil) async {
         guard loggedInPerson.isCashier else { return }
         guard inputProperties.wrappedValue.connectionStateDelete != .loading,
@@ -309,6 +320,7 @@ struct PersonEditor: View {
                 inputProperties.wrappedValue.imageUploadProgess = nil
             }
 
+            personListEnvironment?.list.wrappedValue.update(person)
             presentationMode?.wrappedValue.dismiss()
             inputProperties.wrappedValue.connectionStateDelete.passed()
         } catch {

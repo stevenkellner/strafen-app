@@ -99,6 +99,9 @@ struct ReasonEditor: View {
     /// Environment of the fine list
     @EnvironmentObject var fineListEnvironment: ListEnvironment<FirebaseFine>
 
+    /// Environment of the reason list
+    @EnvironmentObject var reasonListEnvironment: ListEnvironment<FirebaseReasonTemplate>
+
     /// Presentation mode
     @Environment(\.presentationMode) private var presentationMode
 
@@ -227,6 +230,7 @@ struct ReasonEditor: View {
         await ReasonEditor.handleReasonUpdate(clubId: person.club.id,
                                               reasonId: oldReason.id,
                                               inputProperties: $inputProperties,
+                                              reasonListEnvironment: $reasonListEnvironment,
                                               presentationMode: presentationMode)
     }
 
@@ -237,6 +241,7 @@ struct ReasonEditor: View {
                                                   reasonId: oldReason.id,
                                                   fineList: fineListEnvironment.list,
                                                   inputProperties: $inputProperties,
+                                                  reasonListEnvironment: $reasonListEnvironment,
                                                   presentationMode: presentationMode)
         }
     }
@@ -245,6 +250,7 @@ struct ReasonEditor: View {
     static func handleReasonUpdate(clubId: Club.ID,
                                    reasonId: FirebaseReasonTemplate.ID,
                                    inputProperties: Binding<InputProperties>,
+                                   reasonListEnvironment: ListEnvironmentObject<FirebaseReasonTemplate>? = nil,
                                    presentationMode: Binding<PresentationMode>? = nil) async {
         guard inputProperties.wrappedValue.connectionStateDelete != .loading,
               inputProperties.wrappedValue.connectionStateUpdate.restart() == .passed else { return }
@@ -252,8 +258,10 @@ struct ReasonEditor: View {
             return inputProperties.wrappedValue.connectionStateUpdate.failed()
         }
         do {
-            let callItem = FFChangeListCall(clubId: clubId, item: inputProperties.wrappedValue.reasonTemplate(with: reasonId))
+            let reason = inputProperties.wrappedValue.reasonTemplate(with: reasonId)
+            let callItem = FFChangeListCall(clubId: clubId, item: reason)
             try await FirebaseFunctionCaller.shared.call(callItem)
+            reasonListEnvironment?.list.wrappedValue.update(reason)
             presentationMode?.wrappedValue.dismiss()
             inputProperties.wrappedValue.connectionStateUpdate.passed()
         } catch {
@@ -267,6 +275,7 @@ struct ReasonEditor: View {
                                    reasonId: FirebaseReasonTemplate.ID,
                                    fineList: [FirebaseFine],
                                    inputProperties: Binding<InputProperties>,
+                                   reasonListEnvironment: ListEnvironmentObject<FirebaseReasonTemplate>? = nil,
                                    presentationMode: Binding<PresentationMode>? = nil) async {
         guard inputProperties.wrappedValue.connectionStateUpdate != .loading,
               inputProperties.wrappedValue.connectionStateDelete.restart() == .passed else { return }
@@ -280,6 +289,7 @@ struct ReasonEditor: View {
         do {
             let callItem = FFChangeListCall<FirebaseReasonTemplate>(clubId: clubId, id: reasonId)
             try await FirebaseFunctionCaller.shared.call(callItem)
+            reasonListEnvironment?.list.wrappedValue.removeAll(with: reasonId)
             presentationMode?.wrappedValue.dismiss()
             inputProperties.wrappedValue.connectionStateDelete.passed()
         } catch {

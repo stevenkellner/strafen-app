@@ -176,6 +176,9 @@ struct FineEditor: View {
     /// Environment of the reason list
     @EnvironmentObject var reasonListEnvironment: ListEnvironment<FirebaseReasonTemplate>
 
+    /// Environment of the fine list
+    @EnvironmentObject var fineListEnvironment: ListEnvironment<FirebaseFine>
+
     /// Currently logged in person
     @EnvironmentObject var person: Settings.Person
 
@@ -344,6 +347,7 @@ struct FineEditor: View {
             await Self.handleFineDelete(fine: fine,
                                         person: person,
                                         inputProperties: $inputProperties,
+                                        fineListEnvironment: $fineListEnvironment,
                                         presentationMode: presentationMode)
         }
     }
@@ -351,15 +355,17 @@ struct FineEditor: View {
     /// Handles fine update
     func handleFineUpdate() async {
         await Self.handleFineUpdate(person: person,
-                              inputProperties: $inputProperties,
-                              reasonList: reasonListEnvironment.list,
-                              presentationMode: presentationMode)
+                                    inputProperties: $inputProperties,
+                                    reasonList: reasonListEnvironment.list,
+                                    fineListEnvironment: $fineListEnvironment,
+                                    presentationMode: presentationMode)
     }
 
     /// Handles fine delete
     static func handleFineDelete(fine: FirebaseFine,
                                  person: Settings.Person,
                                  inputProperties: Binding<InputProperties>,
+                                 fineListEnvironment: ListEnvironmentObject<FirebaseFine>? = nil,
                                  presentationMode: Binding<PresentationMode>? = nil) async {
         guard person.isCashier else { return }
         guard inputProperties.wrappedValue.connectionStateUpdate != .loading,
@@ -368,6 +374,7 @@ struct FineEditor: View {
         do {
             let callItem = FFChangeListCall<FirebaseFine>(clubId: person.club.id, id: fine.id)
             try await FirebaseFunctionCaller.shared.call(callItem)
+            fineListEnvironment?.list.wrappedValue.removeAll(with: fine.id)
             presentationMode?.wrappedValue.dismiss()
             inputProperties.wrappedValue.connectionStateDelete.passed()
         } catch {
@@ -380,6 +387,7 @@ struct FineEditor: View {
     static func handleFineUpdate(person: Settings.Person,
                                  inputProperties: Binding<InputProperties>,
                                  reasonList: [FirebaseReasonTemplate],
+                                 fineListEnvironment: ListEnvironmentObject<FirebaseFine>? = nil,
                                  presentationMode: Binding<PresentationMode>? = nil) async {
         guard person.isCashier else { return }
         guard inputProperties.wrappedValue.connectionStateDelete != .loading,
@@ -397,6 +405,7 @@ struct FineEditor: View {
         do {
             let callItem = FFChangeListCall(clubId: person.club.id, item: updatedFine)
             try await FirebaseFunctionCaller.shared.call(callItem)
+            fineListEnvironment?.list.wrappedValue.update(updatedFine)
             presentationMode?.wrappedValue.dismiss()
             inputProperties.wrappedValue.connectionStateUpdate.passed()
         } catch {

@@ -124,6 +124,9 @@ struct AddNewFine: View {
     /// Presentation mode
     @Environment(\.presentationMode) private var presentationMode
 
+    /// Environment of the fine list
+    @EnvironmentObject var fineListEnvironment: ListEnvironment<FirebaseFine>
+
     /// Currently logged in person
     @EnvironmentObject var person: Settings.Person
 
@@ -216,15 +219,17 @@ struct AddNewFine: View {
     /// Handles fine save
     func handleFinesSave() async {
         await AddNewFine.handleFinesSave(clubId: person.club.id,
-                                        inputProperties: $inputProperties,
-                                        homeTab: $homeTab,
-                                        presentationMode: presentationMode)
+                                         inputProperties: $inputProperties,
+                                         homeTab: $homeTab,
+                                         fineListEnvironment: $fineListEnvironment,
+                                         presentationMode: presentationMode)
     }
 
     /// Handles fine save
     @discardableResult static func handleFinesSave(clubId: Club.ID,
                                                    inputProperties: Binding<InputProperties>,
                                                    homeTab: EnvironmentObject<HomeTab>.Wrapper? = nil,
+                                                   fineListEnvironment: ListEnvironmentObject<FirebaseFine>? = nil,
                                                    presentationMode: Binding<PresentationMode>? = nil) async -> [FirebaseFine.ID]? {
         guard inputProperties.wrappedValue.connectionState.restart() == .passed else { return nil }
         inputProperties.wrappedValue.functionCallErrorMessage = nil
@@ -241,6 +246,7 @@ struct AddNewFine: View {
                         guard let fine = inputProperties.wrappedValue.fine(with: fineId, personId: personId) else { return nil }
                         let callItem = FFChangeListCall(clubId: clubId, item: fine)
                         try await FirebaseFunctionCaller.shared.call(callItem)
+                        fineListEnvironment?.list.wrappedValue.appendIfNew(fine)
                         inputProperties.wrappedValue.personIds.removeAll { $0 == personId }
                         return fineId
                     } catch { return nil }

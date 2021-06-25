@@ -210,14 +210,14 @@ struct FineDetail: View {
         /// Handles save to unpayed
         func handleSaveToUnpayed() async {
             guard person.isCashier else { return }
+            guard fine.isPayed && !fine.isSettled && !fine.payed.payedInApp else { return }
             guard connectionStateToPayed != .loading,
                   connectionStateToUnpayed.restart() == .passed else { return }
-            guard fine.isPayed && !fine.isSettled && !fine.payed.payedInApp else { return }
             errorMessages = nil
             do {
                 let callItem = FFChangeFinePayed(clubId: person.club.id, fineId: fine.id, newState: .unpayed)
                 try await FirebaseFunctionCaller.shared.call(callItem)
-                fineListEnvironment.changeListItemInout(fine.id) { $0.payed = .unpayed }
+                fineListEnvironment.list.update(with: fine.id) { $0.payed = .unpayed }
                 connectionStateToUnpayed.passed()
             } catch {
                 errorMessages = .internalErrorSave
@@ -228,15 +228,15 @@ struct FineDetail: View {
         /// Handles save to payed
         func handleSaveToPayed() async {
             guard person.isCashier else { return }
+            guard !fine.isPayed && !fine.isSettled && !fine.payed.payedInApp else { return }
             guard connectionStateToUnpayed != .loading,
                   connectionStateToPayed.restart() == .passed else { return }
-            guard !fine.isPayed && !fine.isSettled && !fine.payed.payedInApp else { return }
             errorMessages = nil
             do {
                 let payedState: Payed = .payed(date: Date(), inApp: false)
                 let callItem = FFChangeFinePayed(clubId: person.club.id, fineId: fine.id, newState: payedState)
                 try await FirebaseFunctionCaller.shared.call(callItem)
-                fineListEnvironment.changeListItemInout(fine.id) { $0.payed = payedState }
+                fineListEnvironment.list.update(with: fine.id) { $0.payed = payedState }
                 connectionStateToPayed.passed()
             } catch {
                 errorMessages = .internalErrorSave
