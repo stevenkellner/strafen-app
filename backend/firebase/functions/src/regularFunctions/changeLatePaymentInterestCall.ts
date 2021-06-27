@@ -1,9 +1,32 @@
 import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
-import {ParameterContainer, checkPrerequirements, getClubComponent, existsData} from "../utils";
+import {ParameterContainer, checkPrerequirements, getClubComponent, existsData, saveStatistic} from "../utils";
 
 /**
- * Changes the late payment interest of club with given club id
+ * @summary
+ * Changes the late payment interest of club with given club id.
+ *
+ * Saved statistik:
+ *  - name: changeLatePaymentInterest
+ *  - properties:
+ *      - changeType (string): type of the change (`update`, `remove`)
+ *      - latePaymentInterest (`LatePaymentInterest` | null): Changed late payment interest or null if change type is `remove`
+ *
+ * Type of `LatePaymentInterest` is:
+ * ```
+ *  {
+ *      interestFreePeriod: {
+ *          value: number;
+ *          unit: string;
+ *      };
+ *      interestPeriod: {
+ *          value: number;
+ *          unit: string;
+ *      };
+ *      interestRate: number;
+ *      compoundInterest: boolean;
+ *  }
+ * ```
  * @params
  *  - privateKey (string): private key to check whether the caller is authenticated to use this function
  *  - clubLevel (string): level of the club (`regular`, `debug`, `testing`)
@@ -29,10 +52,12 @@ export const changeLatePaymentInterestCall = functions.region("europe-west1").ht
     // Check prerequirements and get a reference to interest
     const parameterContainer = new ParameterContainer(data);
     await checkPrerequirements(parameterContainer, context.auth);
-    const path = getClubComponent(parameterContainer) + "/" + parameterContainer.getParameter<string>("clubId", "string").toUpperCase() + "/latePaymentInterest";
+    const clubPath = getClubComponent(parameterContainer) + "/" + parameterContainer.getParameter<string>("clubId", "string").toUpperCase();
+    const path = clubPath + "/latePaymentInterest";
     const ref = admin.database().ref(path);
 
     const changeType = parameterContainer.getParameter<string>("changeType", "string");
+    let latePaymentInterest = null;
     switch (changeType) {
     // Remove late payment interest if change type is `remove`
     case "remove":
@@ -45,7 +70,7 @@ export const changeLatePaymentInterestCall = functions.region("europe-west1").ht
     case "update":
         checkInterestUnit(parameterContainer.getParameter<string>("interestFreeUnit", "string"));
         checkInterestUnit(parameterContainer.getParameter<string>("interestUnit", "string"));
-        const latePaymentInterest = {
+        latePaymentInterest = {
             interestFreePeriod: {
                 value: parameterContainer.getParameter<number>("interestFreeValue", "number"),
                 unit: parameterContainer.getParameter<string>("interestFreeUnit", "string"),
@@ -64,6 +89,15 @@ export const changeLatePaymentInterestCall = functions.region("europe-west1").ht
     default:
         throw new functions.https.HttpsError("invalid-argument", "Argument changeType is invalid \"" + changeType + "\"");
     }
+
+    // Save statistic
+    await saveStatistic(clubPath, {
+        name: "changeLatePaymentInterest",
+        properties: {
+            changeType: changeType,
+            latePaymentInterest: latePaymentInterest,
+        },
+    });
 });
 
 function checkInterestUnit(interestUnit: string) {

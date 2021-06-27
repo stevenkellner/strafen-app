@@ -1,11 +1,16 @@
 import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
-import {ParameterContainer, checkPrerequirements, getClubComponent, existsData} from "../utils";
+import {ParameterContainer, checkPrerequirements, getClubComponent, existsData, saveStatistic} from "../utils";
 
 /**
+ * @summary
  * Creates a new club with given properties.
  *
  * Doesn't update club, if already a club with same club id exists.
+ *
+ * Saved statistik:
+ *  - name: newClub
+ *  - properties: none
  * @params
  *  - privateKey (string): private key to check whether the caller is authenticated to use this function
  *  - clubLevel (string): level of the club (`regular`, `debug`, `testing`)
@@ -97,4 +102,10 @@ export const newClubCall = functions.region("europe-west1").https.onCall(async (
     if (errorOccured) {
         throw new functions.https.HttpsError("internal", "Couldn't add new club to database.");
     }
+
+    // Save statistic
+    await saveStatistic(path, {
+        name: "newClub",
+        properties: {},
+    });
 });

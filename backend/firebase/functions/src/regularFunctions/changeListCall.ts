@@ -1,10 +1,74 @@
 /* eslint-disable @typescript-eslint/ban-types */
 import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
-import {ParameterContainer, checkPrerequirements, getClubComponent, existsData} from "../utils";
+import {ParameterContainer, checkPrerequirements, getClubComponent, existsData, saveStatistic} from "../utils";
 
 /**
- * Changes a element of person, fine or reason list
+ * @summary
+ * Changes a element of person, fine or reason list.
+ *
+ * Saved statistik:
+ *  - name: changeList
+ *  - properties:
+ *      - changeType (string): type of the change `update`, `delete`)
+ *      - listType (string): type of the list to change (`person`, `fine`, `reason`, `transaction`)
+ *      - item (`Person` | `Fine`| `ReasonTemplate` | `Transaction` | {key: string;}): Changed item according to list type of null if change type is `delete`
+ *
+ * Type of `Person` is:
+ * ```
+ *  {
+ *      key: string; // Referred as id of the person
+ *      name: {
+ *          first: string;
+ *          last: string;
+ *      };
+ *  }
+ * ```
+ *
+ * Type of `Fine` is:
+ * ```
+ *  {
+ *      key: string; // Referred as id of the fine
+ *      personId: string;
+ *      payed: {
+ *          state: string;
+ *          payDate: number;
+ *          inApp: boolean;
+ *      };
+ *      number: number;
+ *      date: number;
+ *      reason: {
+ *          templateId: templateId;
+ *      } | {
+ *          reason: string;
+ *          amount: string;
+ *          importance: number;
+ *      };
+ * }
+ * ```
+ *
+ * Type of `ReasonTemplate` is:
+ * ```
+ *  {
+ *      key: string; // Referred as id of the reason
+ *      reason: string;
+ *      amount: string;
+ *      importance: number;
+ *  }
+ * ```
+ *
+ * Type of `Transaction` is:
+ * ```
+ *  {
+ *      key: string; // Referred as id of the transaction
+ *      approved: boolean;
+ *      fineids: string[];
+ *      name: PersonName;
+ *      payDate: number;
+ *      personId: string;
+ *      payoutId: string;
+ *  }
+ * ```
  * @params
  *  - privateKey (string): private key to check whether the caller is authenticated to use this function
  *  - clubLevel (string): level of the club (`regular`, `debug`, `testing`)
@@ -55,18 +119,20 @@ export const changeListCall = functions.region("europe-west1").https.onCall(asyn
     // Check prerequirements and get a reference to the item to change
     const parameterContainer = new ParameterContainer(data);
     await checkPrerequirements(parameterContainer, context.auth);
-    let path = getClubComponent(parameterContainer) + "/" + parameterContainer.getParameter<string>("clubId", "string").toUpperCase() + "/" + parameterContainer.getParameter<string>("listType", "string") + "s/" + parameterContainer.getParameter<string>("itemId", "string").toUpperCase();
+    const clubPath = getClubComponent(parameterContainer) + "/" + parameterContainer.getParameter<string>("clubId", "string").toUpperCase();
+    let path = clubPath + "/" + parameterContainer.getParameter<string>("listType", "string") + "s/" + parameterContainer.getParameter<string>("itemId", "string").toUpperCase();
     if (parameterContainer.getParameter<string>("changeType", "string") == "update" && parameterContainer.getParameter<string>("listType", "string") == "person") {
         path = path + "/name";
     }
     const ref = admin.database().ref(path);
 
     const changeType = parameterContainer.getParameter<string>("changeType", "string");
+    const listType = parameterContainer.getParameter<string>("listType", "string");
     let errorOccured = false;
+    let item = null;
     switch (changeType) {
     // Delete list item
     case "delete":
-        const listType = parameterContainer.getParameter<string>("listType", "string");
         if (listType != "person" && listType != "fine" && listType != "reason" && listType != "transaction") {
             throw new functions.https.HttpsError("invalid-argument", "Argument listType is invalid \"" + listType + "\"");
         }
@@ -88,7 +154,7 @@ export const changeListCall = functions.region("europe-west1").https.onCall(asyn
 
     // Set / update list item
     case "update":
-        const item = getItem(parameterContainer);
+        item = getItem(parameterContainer);
         errorOccured = false;
         await ref.set(item, (error) => {
             errorOccured = error != null;
@@ -102,10 +168,26 @@ export const changeListCall = functions.region("europe-west1").https.onCall(asyn
     default:
         throw new functions.https.HttpsError("invalid-argument", "Argument changeType is invalid \"" + changeType + "\"");
     }
+
+    // Save statistic
+    if (listType == "person") {
+        item = {name: item};
+    }
+    item = {
+        ...(item ?? {}),
+        key: parameterContainer.getParameter<string>("itemId", "string").toUpperCase(),
+    };
+    await saveStatistic(clubPath, {
+        name: "changeList",
+        properties: {
+            changeType: changeType,
+            listType: parameterContainer.getParameter<string>("listType", "string"),
+            item: item,
+        },
+    });
 });
 
-
-function getItem(parameterContainer: ParameterContainer): object {
+function getItem(parameterContainer: ParameterContainer): { [key: string]: any; } {
     const listType = parameterContainer.getParameter<string>("listType", "string");
     let importance = null;
     switch (listType) {

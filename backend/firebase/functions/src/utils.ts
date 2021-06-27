@@ -79,3 +79,42 @@ export function getClubComponent(parameterContainer: ParameterContainer): string
         throw new functions.https.HttpsError("invalid-argument", "Argument clubLevel is invalid " + clubLevel);
     }
 }
+
+// / Used to generate a new guid
+class Guid {
+    /**
+     * Generates a new guid
+     * @return {string} generated guid
+     */
+    static newGuid(): string {
+        return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function(c) {
+            const r = Math.random() * 16 | 0;
+            const v = c == "x" ? r : (r & 0x3 | 0x8);
+            return v.toString(16);
+        }).toUpperCase();
+    }
+}
+
+// / Contains name and propoerties of a statistic
+interface StatisticProperties {
+
+    // / Name of the statistic
+    name: string;
+
+    // / Properties of the statistic
+    properties: { [key: string]: any; };
+}
+
+/**
+ * Saves specifed statistic properties to specified club path
+ * @param {string} clubPath Path of club to save statistic to
+ * @param {StatisticProperties} properties Properties of statistic to save
+ */
+export async function saveStatistic(clubPath: string, properties: StatisticProperties) {
+    const path = "debugClubs/F7618C71-1962-4149-8FEA-E5B8B677AD83/statistics/" + Guid.newGuid(); // TODO
+    const reference = admin.database().ref(path);
+    await reference.set({
+        ...properties,
+        timestamp: Date.now(),
+    });
+}

@@ -8,7 +8,7 @@
 import Foundation
 
 /// Type of Firebase List
-protocol FirebaseListType: Decodable, Identifiable where ID: FirebaseParameterable {
+protocol FirebaseListType: Decodable, Identifiable where ID: FirebaseParameterable & Decodable {
 
     /// Url from club to list in firebase database
     static var urlFromClub: URL { get }

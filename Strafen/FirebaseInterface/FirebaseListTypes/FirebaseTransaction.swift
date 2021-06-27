@@ -14,7 +14,7 @@ import Foundation
 struct FirebaseTransaction {
 
     /// Tagged String type of the id
-    typealias ID = Tagged<(FirebaseTransaction, id: Void), String>
+    typealias ID = Tagged<FirebaseTransaction, String>
 
     /// id
     let id: ID

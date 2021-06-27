@@ -1,9 +1,15 @@
 import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
-import {ParameterContainer, checkPrerequirements, getClubComponent} from "../utils";
+import {ParameterContainer, checkPrerequirements, getClubComponent, saveStatistic} from "../utils";
 
 /**
- * Register person to club with given club id
+ * @summary
+ * Register person to club with given club id.
+ *
+ * Saved statistik:
+ *  - name: registerPerson
+ *  - properties:
+ *      - personId (string): id of the person to be registered
  * @params
  *  - privateKey (string): private key to check whether the caller is authenticated to use this function
  *  - clubLevel (string): level of the club (`regular`, `debug`, `testing`)
@@ -84,6 +90,14 @@ export const registerPersonCall = functions.region("europe-west1").https.onCall(
     if (clubIdentifier == null || clubName == null || regionCode == null) {
         throw new functions.https.HttpsError("internal", "Couldn't get club properties to return.");
     }
+
+    // Save statistic
+    await saveStatistic(clubPath, {
+        name: "registerPerson",
+        properties: {
+            personId: parameterContainer.getParameter<string>("id", "string").toUpperCase(),
+        },
+    });
 
     // Return club properties
     return {

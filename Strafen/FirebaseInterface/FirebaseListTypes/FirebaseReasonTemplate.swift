@@ -14,7 +14,7 @@ import Foundation
 struct FirebaseReasonTemplate {
 
     /// Tagged UUID type of the id
-    typealias ID = Tagged<(FirebaseReasonTemplate, id: Void), UUID>
+    typealias ID = Tagged<FirebaseReasonTemplate, UUID>
 
     /// Id
     let id: ID

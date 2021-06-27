@@ -14,7 +14,7 @@ import SwiftUI
 struct FirebaseFine {
 
     /// Tagged UUID type of the id
-    typealias ID = Tagged<(FirebaseFine, id: Void), UUID>
+    typealias ID = Tagged<FirebaseFine, UUID>
 
     /// Id
     let id: ID
