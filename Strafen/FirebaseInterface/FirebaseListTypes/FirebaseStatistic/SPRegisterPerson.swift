@@ -1,5 +1,5 @@
 //
-//  ForceSignOutStatistic.swift
+//  SPRegisterPerson.swift
 //  Strafen
 //
 //  Created by Steven on 27.06.21.
@@ -7,19 +7,19 @@
 
 import Foundation
 
-/// Statistic of `forceSignOut` call
-struct ForceSignOutStatistic: FirebaseStatisticProperty {
+/// Statistic of `registerPerson` call
+struct SPRegisterPerson: StatisticProperty {
 
-    /// Id of person to be force signed out
+    /// Id of the person to be registered
     let personId: FirebasePerson.ID
 }
 
-extension ForceSignOutStatistic: Decodable {
+extension SPRegisterPerson: Decodable {
 
     /// Coding Keys for Decodable
     enum CodingKeys: String, CodingKey {
 
-        /// Id of person to be force signed out
+        /// Id of the person to be registered
         case personId
     }
 

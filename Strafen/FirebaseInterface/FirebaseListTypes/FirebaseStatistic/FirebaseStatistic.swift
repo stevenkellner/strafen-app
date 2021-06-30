@@ -7,9 +7,54 @@
 
 import Foundation
 
-protocol FirebaseStatisticProperty: Decodable {}
+protocol StatisticProperty {}
 
 struct FirebaseStatistic {
+
+    /// Property of firebase statistic
+    enum Property {
+
+        /// For `changeFinePayed` call
+        case changeFinePayed(property: SPChangeFinePayed)
+
+        /// For `changeLatePaymentInterest` call
+        case changeLatePaymentInterest(property: SPChangeLatePaymentInterest)
+
+        /// For `changeList` person call
+        case changeListPerson(property: SPChangeList<FirebasePerson>)
+
+        /// For `changeList` fine call
+        case changeListFine(property: SPChangeList<FirebaseFine>)
+
+        /// For `changeList` reason call
+        case changeListReason(property: SPChangeList<FirebaseReasonTemplate>)
+
+        /// For `changeList` transaction call
+        case changeListTransaction(property: SPChangeList<FirebaseTransaction>)
+
+        /// For `newClub` call
+        case newClub
+
+        /// For `forceSignOut` call
+        case forceSignOut(property: SPForceSignOut)
+
+        /// For `registerPerson` call
+        case registerPerson(property: SPRegisterPerson)
+
+        var rawProperty: StatisticProperty? {
+            switch self {
+            case .changeFinePayed(let property): return property
+            case .changeLatePaymentInterest(let property): return property
+            case .changeListPerson(let property): return property
+            case .changeListFine(let property): return property
+            case .changeListReason(let property): return property
+            case .changeListTransaction(let property): return property
+            case .newClub: return nil
+            case .forceSignOut(let property): return property
+            case .registerPerson(let property): return property
+            }
+        }
+    }
 
     /// Tagged UUID type of the id
     typealias ID = Tagged<FirebaseStatistic, UUID> // swiftlint:disable:this type_name
@@ -21,7 +66,7 @@ struct FirebaseStatistic {
     let timestamp: Date
 
     /// Properties of the statistic
-    let properties: FirebaseStatisticProperty
+    let property: Property
 }
 
 extension FirebaseStatistic: FirebaseListType {
@@ -32,10 +77,10 @@ extension FirebaseStatistic: FirebaseListType {
 
     /// Coding Keys for Decodable
     enum CodingKeys: String, CodingKey {
-        case id = "key" // swiftlint:disable:this identifier_name
+        case id // swiftlint:disable:this identifier_name
         case name
         case timestamp
-        case properties
+        case property = "properties"
     }
 
     private enum ListType: Decodable {
@@ -70,23 +115,23 @@ extension FirebaseStatistic: FirebaseListType {
         let statisticName = try container.decode(String.self, forKey: .name)
         switch statisticName {
         case "changeFinePayed":
-            self.properties = try container.decode(ChangeFinePayedStatistic.self, forKey: .properties)
+            self.property = .changeFinePayed(property: try container.decode(SPChangeFinePayed.self, forKey: .property))
         case "changeLatePaymentInterest":
-            self.properties = try container.decode(ChangeLatePaymentInterestStatistic.self, forKey: .properties)
+            self.property = .changeLatePaymentInterest(property: try container.decode(SPChangeLatePaymentInterest.self, forKey: .property))
         case "changeList":
-            let listType = try container.decode(ListType.self, forKey: .properties)
+            let listType = try container.decode(ListType.self, forKey: .property)
             switch listType {
-            case .person: self.properties = try container.decode(ChangeListStatistic<FirebasePerson>.self, forKey: .properties)
-            case .fine: self.properties = try container.decode(ChangeListStatistic<FirebaseFine>.self, forKey: .properties)
-            case .reason: self.properties = try container.decode(ChangeListStatistic<FirebaseReasonTemplate>.self, forKey: .properties)
-            case .transaction: self.properties = try container.decode(ChangeListStatistic<FirebaseTransaction>.self, forKey: .properties)
+            case .person: self.property = .changeListPerson(property: try container.decode(SPChangeList<FirebasePerson>.self, forKey: .property))
+            case .fine: self.property = .changeListFine(property: try container.decode(SPChangeList<FirebaseFine>.self, forKey: .property))
+            case .reason: self.property = .changeListReason(property: try container.decode(SPChangeList<FirebaseReasonTemplate>.self, forKey: .property))
+            case .transaction: self.property = .changeListTransaction(property: try container.decode(SPChangeList<FirebaseTransaction>.self, forKey: .property))
             }
         case "forceSignOut":
-            self.properties = try container.decode(ForceSignOutStatistic.self, forKey: .properties)
+            self.property = .forceSignOut(property: try container.decode(SPForceSignOut.self, forKey: .property))
         case "newClub":
-            self.properties = NewClubStatistic()
+            self.property = .newClub
         case "registerPerson":
-            self.properties = try container.decode(RegisterPersonStatistic.self, forKey: .properties)
+            self.property = .registerPerson(property: try container.decode(SPRegisterPerson.self, forKey: .property))
         default:
             throw DecodingError.dataCorruptedError(forKey: .name, in: container, debugDescription: "Invalid statistic name: \(statisticName)")
         }

@@ -83,4 +83,31 @@ import FirebaseDatabase
             return try FirebaseDecoder.shared.decodeListOrThrow(type, data)
         } catch FetchError.noData { return [] }
     }
+
+    /// Fetches a list of statistic with max specified number from firebase database
+    /// - Parameters:
+    ///   - clubId: id of the club to fetch from
+    ///   - beforeStartValue: fetches only statistics with timestamp older than specified value
+    ///   - numberQuery: maximum number of element in fetched list
+    /// - Returns: Retrieved statistics list
+    func fetchStatistics(clubId: Club.ID, before beforeStartValue: FirebaseStatistic?, number numberQuery: UInt) async throws -> [FirebaseStatistic] {
+        let url = URL(string: level.clubComponent)!
+            .appendingPathComponent(clubId.uuidString)
+            .appendingUrl(FirebaseStatistic.urlFromClub)
+        return try await withCheckedThrowingContinuation { continuation in
+            Database.database().reference(withPath: url.path)
+                .queryOrdered(byChild: "timestamp")
+                .queryEnding(beforeValue: (beforeStartValue?.timestamp ?? Date()).timeIntervalSince1970 * 1000 - 1, childKey: "timestamp")
+                .queryLimited(toLast: numberQuery)
+                .observeSingleEvent(of: .value) { snapshot in
+                    guard snapshot.exists(), let data = snapshot.value else { return continuation.resume(returning: []) }
+                    do {
+                        let list = try FirebaseDecoder.shared.decodeListOrThrow(FirebaseStatistic.self, data).sorted(order: .descanding, by: \.timestamp)
+                        continuation.resume(returning: list)
+                    } catch {
+                        continuation.resume(throwing: error)
+                    }
+                }
+        }
+    }
 }

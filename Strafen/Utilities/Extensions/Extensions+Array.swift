@@ -201,6 +201,15 @@ extension Array where Element: Identifiable {
         append(newElement)
     }
 
+    /// Append given elements to list if list doesn't contain an element with same id
+    /// - Parameter newElements: new elements to append
+    mutating func appendIfNew(contentOf newElements: [Element]) {
+        for element in newElements {
+            guard !contains(where: { $0.id == element.id }) else { return }
+            append(element)
+        }
+    }
+
     /// Updates all elements with same element id in the list to given element
     /// - Parameter element: updated element
     mutating func update(_ element: Element) {

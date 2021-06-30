@@ -42,19 +42,22 @@ struct SettingsView: View {
                                 SupportDocsRow(dataSourceUrl: dataSourceUrl)
                             }
 
-                            // Late payment interest changer
                             if person.isCashier {
+
+                                // Late payment interest changer
                                 LatePaymentInterestChangerRow()
-                            }
 
-                            if person.isCashier && hasLists {
+                                // Statistics row
+                                StatisticsRow()
 
-                                // Fines Formatter
-                                FinesFormatterRow()
+                                if hasLists {
 
-                                // Force Sign out button
-                                ForceSignOutButton()
+                                    // Fines Formatter
+                                    FinesFormatterRow()
 
+                                    // Force Sign out button
+                                    ForceSignOutButton()
+                                }
                             }
 
                             // Log out button
@@ -143,6 +146,32 @@ struct SettingsView: View {
                     } rightContent: {}
                         .leftWidthPercentage(0.775)
                         .rightFillColor(settings.latePaymentInterest == nil ? .customRed : .customGreen)
+                        .frame(width: UIScreen.main.bounds.width * 0.95, height: 50)
+                }
+            }
+        }
+    }
+
+    /// Statisticts row
+    struct StatisticsRow: View {
+        var body: some View {
+            TitledContent(String(localized: "settings-view-statistics-title", comment: "Title of statistics in settings view.")) {
+                NavigationLink {
+                    SettingsStatistics()
+                } label: {
+                    SplittedOutlinedContent {
+                        Text("settings-view-statistics-title", comment: "Title of statistics in settings view.")
+                            .foregroundColor(.textColor)
+                            .font(.system(size: 20, weight: .thin))
+                            .lineLimit(1)
+                            .padding(.leading, 10)
+                    } rightContent: {
+                        Image(systemName: "chart.bar")
+                            .font(.system(size: 25, weight: .light))
+                            .foregroundColor(.textColor)
+                            .padding(.leading, 15)
+                            .padding(.trailing, 10)
+                    }.leftWidthPercentage(0.775)
                         .frame(width: UIScreen.main.bounds.width * 0.95, height: 50)
                 }
             }

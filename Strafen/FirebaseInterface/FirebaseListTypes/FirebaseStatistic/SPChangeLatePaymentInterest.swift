@@ -1,5 +1,5 @@
 //
-//  ChangeLatePaymentInterestStatistic.swift
+//  SPChangeLatePaymentInterest.swift
 //  Strafen
 //
 //  Created by Steven on 26.06.21.
@@ -8,13 +8,13 @@
 import Foundation
 
 /// Statistic of `changeLatePaymentInterest` call
-struct ChangeLatePaymentInterestStatistic: FirebaseStatisticProperty {
+struct SPChangeLatePaymentInterest: StatisticProperty {
 
     /// Type of the changed late payment interest
     let changeType: FFChangeLatePaymentInterestCall.ChangeType
 }
 
-extension ChangeLatePaymentInterestStatistic: Decodable {
+extension SPChangeLatePaymentInterest: Decodable {
 
     /// Coding Keys for Decodable
     enum CodingKeys: String, CodingKey {

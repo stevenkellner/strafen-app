@@ -37,7 +37,7 @@ extension FirebaseReasonTemplate: FirebaseListType {
 
     /// Coding Keys for Decodable
     enum CodingKeys: String, CodingKey {
-        case id = "key"
+        case id
         case reason
         case importance
         case amount

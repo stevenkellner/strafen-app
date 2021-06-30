@@ -99,13 +99,6 @@ struct ContentView: View {
                     .environmentObject(DismissHandler())
                     .ignoresSafeArea(.keyboard)
                     .task {
-                        do {
-                            let list: [FirebaseStatistic] = try await FirebaseFetcher.shared.fetchList(clubId: Settings.shared.person!.club.id)
-                            print(list.map { $0.timestamp })
-                        } catch {
-                            print(error)
-                        }
-
                         guard let allLists = try? await appSetup.setup() else { return }
                         self.allLists = allLists
                     }

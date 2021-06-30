@@ -633,3 +633,12 @@
 
 /* Text of button in force sign out view. */
 "force-sign-out-button-text" = "Zurück zur Anmeldung";
+
+/* Title of statistics in settings view. */
+"settings-view-statistics-title" = "Statistiken";
+
+/* Header of settings statistics view. */
+"settings-statistics-header" = "Statistiken";
+
+/* Text of could not load more statistics message in settings statistings view. */
+"settings-statistics-could-not-load-more" = "Es konnte keine weiteren Statistiken geladen werden.";

@@ -163,6 +163,40 @@ struct TestProperty {
         }
     }
 
+    /// Properties for test fine
+    struct TestFine2 {
+
+        /// Id of the test fine
+        let id = FirebaseFine.ID(rawValue: UUID(uuidString: "137d6187-68d2-4000-9cb8-7dfc3877d5ba")!)
+
+        /// Assoiated person id
+        let assoiatedPersonId = FirebasePerson.ID(rawValue: UUID(uuidString: "5bf1ffda-4f69-11eb-ae93-0242ac130002")!)
+
+        /// Date
+        let date = Date(timeIntervalSinceReferenceDate: 9284765)
+
+        /// Fine reason template
+        let reasonTemplate = FineReasonTemplate(templateId: FirebaseReasonTemplate.ID(rawValue: UUID(uuidString: "9d0681f0-2045-4a1d-abbc-6bb289934ff9")!))
+
+        /// Fine reason custom
+        let reasonCustom = FineReasonCustom(reason: "Reason", amount: Amount(1, subUnit: 50), importance: .high)
+
+        /// Fine with reason template
+        var withReasonTemplate: FirebaseFine {
+                .init(id: id, assoiatedPersonId: assoiatedPersonId, date: date, payed: .unpayed, number: 2, fineReason: reasonTemplate)
+        }
+
+        /// Fine with reason custom
+        var withReasonCustom: FirebaseFine {
+                .init(id: id, assoiatedPersonId: assoiatedPersonId, date: date, payed: .payed(date: Date(timeIntervalSinceReferenceDate: 234689), inApp: false), number: 10, fineReason: reasonCustom)
+        }
+
+        /// Fine with reason custom
+        func withReasonCustom(_ payedTimeInterval: TimeInterval) -> FirebaseFine {
+                .init(id: id, assoiatedPersonId: assoiatedPersonId, date: date, payed: .payed(date: Date(timeIntervalSinceReferenceDate: payedTimeInterval), inApp: false), number: 10, fineReason: reasonCustom)
+        }
+    }
+
     /// Propertries for the first test late payment interest
     struct TestLatePaymentInterestFirst {
 
@@ -222,6 +256,9 @@ struct TestProperty {
 
     /// Properties for test fine
     let testFine = TestFine()
+
+    /// Properties for test fine
+    let testFine2 = TestFine2()
 
     /// Propertries for the first test late payment interest
     let testLatePaymentInterestFirst = TestLatePaymentInterestFirst()

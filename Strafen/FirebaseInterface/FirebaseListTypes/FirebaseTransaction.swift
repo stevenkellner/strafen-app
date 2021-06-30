@@ -56,7 +56,7 @@ extension FirebaseTransaction: FirebaseListType {
 
     /// Coding Keys for Decodable
     enum CodingKeys: String, CodingKey {
-        case id = "key"
+        case id
         case approved
         case fineIds
         case name

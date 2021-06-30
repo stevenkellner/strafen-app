@@ -47,7 +47,7 @@ extension FirebasePerson: FirebaseListType {
 
     /// Coding Keys for Decodable
     enum CodingKeys: String, CodingKey {
-        case id = "key"
+        case id
         case name
         case signInData
     }

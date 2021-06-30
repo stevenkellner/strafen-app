@@ -53,7 +53,7 @@ struct FirebaseDecoder {
     /// - Returns: Decoded data of given type
     func decodeOrThrow<T>(_ type: T.Type, _ data: Any, key: String) throws -> T where T: Decodable {
         guard var dict = data as? [String: Any] else { throw DecodingError.noKeyedData }
-        dict["key"] = key
+        dict["id"] = key
         let decoder = CodableFirebase.FirebaseDecoder()
         return try decoder.decode(type, from: dict)
     }

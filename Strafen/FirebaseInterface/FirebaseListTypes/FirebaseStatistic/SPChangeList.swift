@@ -1,5 +1,5 @@
 //
-//  ChangeListStatistic.swift
+//  SPChangeList.swift
 //  Strafen
 //
 //  Created by Steven on 26.06.21.
@@ -8,13 +8,13 @@
 import Foundation
 
 /// Statistic of `changeList` call
-struct ChangeListStatistic<T>: FirebaseStatisticProperty where T: FirebaseListType {
+struct SPChangeList<T>: StatisticProperty where T: FirebaseListType {
 
     /// Type of the changed item
     let changeType: FFChangeListCall<T>.ChangeType<T>
 }
 
-extension ChangeListStatistic: Decodable {
+extension SPChangeList: Decodable {
 
     /// Coding Keys for Decodable
     enum CodingKeys: String, CodingKey {
@@ -34,7 +34,7 @@ extension ChangeListStatistic: Decodable {
             let item = try container.decode(T.self, forKey: .item)
             self.changeType = .update(item: item)
         case "delete":
-            guard let itemId = try container.decode([String: T.ID].self, forKey: .item)["key"] else {
+            guard let itemId = try container.decode([String: T.ID].self, forKey: .item)["id"] else {
                 throw DecodingError.dataCorruptedError(forKey: .item, in: container, debugDescription: "Item has no vaild key")
             }
             self.changeType = .delete(itemId: itemId)

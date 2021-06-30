@@ -112,9 +112,52 @@ interface StatisticProperties {
  */
 export async function saveStatistic(clubPath: string, properties: StatisticProperties) {
     const path = "debugClubs/F7618C71-1962-4149-8FEA-E5B8B677AD83/statistics/" + Guid.newGuid(); // TODO
+    // const path = `${clubPath}/statistics/${Guid.newGuid()}`;
     const reference = admin.database().ref(path);
     await reference.set({
         ...properties,
         timestamp: Date.now(),
     });
 }
+
+export class SuccessResult<T> {
+    value: T;
+
+    constructor(val: T) {
+        this.value = val;
+    }
+
+    get(): T {
+        return this.value;
+    }
+
+    map<T2>(mapper: (val: T) => T2): Result<T2, never> {
+        return new SuccessResult(mapper(this.value));
+    }
+
+    mapError<E2>(mapper: (val: never) => E2): Result<T, E2> {
+        return this;
+    }
+}
+
+export class FailureResult<E> {
+    error: E;
+
+    constructor(err: E) {
+        this.error = err;
+    }
+
+    get(): never {
+        throw this.error;
+    }
+
+    map<T2>(mapper: (val: never) => T2): Result<T2, E> {
+        return this;
+    }
+
+    mapError<E2>(mapper: (val: E) => E2): Result<never, E2> {
+        return new FailureResult(mapper(this.error));
+    }
+}
+
+export type Result<T, E> = SuccessResult<T> | FailureResult<E>;

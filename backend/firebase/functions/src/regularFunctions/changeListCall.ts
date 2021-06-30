@@ -12,12 +12,12 @@ import {ParameterContainer, checkPrerequirements, getClubComponent, existsData, 
  *  - properties:
  *      - changeType (string): type of the change `update`, `delete`)
  *      - listType (string): type of the list to change (`person`, `fine`, `reason`, `transaction`)
- *      - item (`Person` | `Fine`| `ReasonTemplate` | `Transaction` | {key: string;}): Changed item according to list type of null if change type is `delete`
+ *      - item (`Person` | `Fine`| `ReasonTemplate` | `Transaction` | {id: string;}): Changed item according to list type of null if change type is `delete`
  *
  * Type of `Person` is:
  * ```
  *  {
- *      key: string; // Referred as id of the person
+ *      id: string;
  *      name: {
  *          first: string;
  *          last: string;
@@ -28,7 +28,7 @@ import {ParameterContainer, checkPrerequirements, getClubComponent, existsData, 
  * Type of `Fine` is:
  * ```
  *  {
- *      key: string; // Referred as id of the fine
+ *      id: string;
  *      personId: string;
  *      payed: {
  *          state: string;
@@ -50,7 +50,7 @@ import {ParameterContainer, checkPrerequirements, getClubComponent, existsData, 
  * Type of `ReasonTemplate` is:
  * ```
  *  {
- *      key: string; // Referred as id of the reason
+ *      id: string;
  *      reason: string;
  *      amount: string;
  *      importance: number;
@@ -60,7 +60,7 @@ import {ParameterContainer, checkPrerequirements, getClubComponent, existsData, 
  * Type of `Transaction` is:
  * ```
  *  {
- *      key: string; // Referred as id of the transaction
+ *      id: string;
  *      approved: boolean;
  *      fineids: string[];
  *      name: PersonName;
@@ -175,7 +175,7 @@ export const changeListCall = functions.region("europe-west1").https.onCall(asyn
     }
     item = {
         ...(item ?? {}),
-        key: parameterContainer.getParameter<string>("itemId", "string").toUpperCase(),
+        id: parameterContainer.getParameter<string>("itemId", "string").toUpperCase(),
     };
     await saveStatistic(clubPath, {
         name: "changeList",
@@ -187,7 +187,7 @@ export const changeListCall = functions.region("europe-west1").https.onCall(asyn
     });
 });
 
-function getItem(parameterContainer: ParameterContainer): { [key: string]: any; } {
+function getItem(parameterContainer: ParameterContainer): { [id: string]: any; } {
     const listType = parameterContainer.getParameter<string>("listType", "string");
     let importance = null;
     switch (listType) {

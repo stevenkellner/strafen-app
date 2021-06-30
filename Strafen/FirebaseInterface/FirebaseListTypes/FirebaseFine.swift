@@ -72,7 +72,7 @@ extension FirebaseFine: FirebaseListType {
 
     /// Coding Keys for Decodable
     enum CodingKeys: String, CodingKey {
-        case id = "key"
+        case id
         case assoiatedPersonId = "personId"
         case date
         case payed

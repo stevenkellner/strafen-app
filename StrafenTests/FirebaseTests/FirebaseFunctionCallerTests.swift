@@ -693,8 +693,8 @@ extension FirebaseFunctionCallerTests {
         // Change payed of not existing fine
         try await _testChangeFinePayedNoFine()
 
-        // Add fine with unpayed
-        try await _testChangeListFineSet()
+        // Add fines and reason
+        try await _testChangeFinePayedAddFinesAndReason()
 
         // Change to payed
         try await _testChangeFinePayed(.payed(date: Date(timeIntervalSinceReferenceDate: 12345), inApp: false))
@@ -707,6 +707,9 @@ extension FirebaseFunctionCallerTests {
 
         // Change to settled
         try await _testChangeFinePayed(.settled)
+
+        // Checks statistics
+        try await _testChangeFinePayedCheckStatistics()
     }
 
     /// Change payed of not existing fine
@@ -719,7 +722,45 @@ extension FirebaseFunctionCallerTests {
         let callItem = FFChangeFinePayed(clubId: clubId, fineId: fineId, newState: payed)
 
         // Call function
-        try await FirebaseFunctionCaller.shared.call(callItem)
+        do {
+            try await FirebaseFunctionCaller.shared.call(callItem)
+            XCTFail() // swiftlint:disable:this xctfail_message
+        } catch {
+            XCTAssertEqual((error as NSError).domain, FunctionsErrorDomain)
+            XCTAssertEqual(FunctionsErrorCode(rawValue: (error as NSError).code), .failedPrecondition)
+        }
+    }
+
+    /// Add fines and reason for test change fine payed
+    func _testChangeFinePayedAddFinesAndReason() async throws {
+
+        // Add fine with reason template
+        let clubId = TestProperty.shared.testClub.id
+        let fine1 = TestProperty.shared.testFine.withReasonTemplate
+        let callItem1 = FFChangeListCall(clubId: clubId, item: fine1)
+        try await FirebaseFunctionCaller.shared.call(callItem1)
+
+        // Add fine with custom reason
+        let fine2 = TestProperty.shared.testFine2.withReasonCustom
+        let callItem2 = FFChangeListCall(clubId: clubId, item: fine2)
+        try await FirebaseFunctionCaller.shared.call(callItem2)
+
+        // Add reason
+        let reason = FirebaseReasonTemplate(id: (fine1.fineReason as! FineReasonTemplate).templateId, // swiftlint:disable:this force_cast
+                                            reason: "asldkfj", importance: .low, amount: Amount(12, subUnit: 98))
+        let callItem3 = FFChangeListCall(clubId: clubId, item: reason)
+        try await FirebaseFunctionCaller.shared.call(callItem3)
+
+        // Check fines and reason
+        let fineList: [FirebaseFine] = try await FirebaseFetcher.shared.fetchList(clubId: clubId)
+        let fetchedFine1 = fineList.first { $0.id == fine1.id }
+        let fetchedFine2 = fineList.first { $0.id == fine2.id }
+        XCTAssertEqual(fetchedFine1, fine1)
+        XCTAssertEqual(fetchedFine2, fine2)
+
+        let reasonList: [FirebaseReasonTemplate] = try await FirebaseFetcher.shared.fetchList(clubId: clubId)
+        let fetchedReason = reasonList.first { $0.id == reason.id }
+        XCTAssertEqual(fetchedReason, reason)
     }
 
     /// Change to unpayed
@@ -727,7 +768,7 @@ extension FirebaseFunctionCallerTests {
 
         // Call item
         let clubId = TestProperty.shared.testClub.id
-        let fineId = TestProperty.shared.testFine.withReasonTemplate.id
+        let fineId = state.state == "payed" ? TestProperty.shared.testFine.withReasonTemplate.id : TestProperty.shared.testFine2.withReasonCustom.id
         let callItem = FFChangeFinePayed(clubId: clubId, fineId: fineId, newState: state)
 
         // Call function
@@ -737,6 +778,65 @@ extension FirebaseFunctionCallerTests {
         let fineList = try await FirebaseFetcher.shared.fetchList(FirebaseFine.self, clubId: clubId)
         let fetchedFine = fineList.first { $0.id == fineId }
         XCTAssertEqual(fetchedFine?.payed, state)
+    }
+
+    /// Checks statistics of change fine payed
+    func _testChangeFinePayedCheckStatistics() async throws { // swiftlint:disable:this function_body_length
+        let statisticList = try await FirebaseFetcher.shared.fetchStatistics(clubId: TestProperty.shared.testClub.id, before: nil, number: 1_000)
+        let propertyList = statisticList.lazy
+            .sorted { $0.timestamp < $1.timestamp }
+            .compactMap { $0.property.rawProperty as? SPChangeFinePayed }
+        XCTAssertEqual(propertyList.count, 4)
+
+        // Check first statistic
+        XCTAssertEqual(propertyList[0].changedState.state, "payed")
+        XCTAssertEqual(propertyList[0].changedState.payedInApp, false)
+        XCTAssertEqual(propertyList[0].previousFine.id, FirebaseFine.ID(rawValue: UUID(uuidString: "637D6187-68D2-4000-9CB8-7DFC3877D5BA")!))
+        XCTAssertEqual(propertyList[0].previousFine.person.id, FirebasePerson.ID(rawValue: UUID(uuidString: "5BF1FFDA-4F69-11EB-AE93-0242AC130002")!))
+        XCTAssertEqual(propertyList[0].previousFine.person.name, PersonName(firstName: "First Person First Name", lastName: "First Person Last Name"))
+        XCTAssertEqual(propertyList[0].previousFine.payed, .unpayed)
+        XCTAssertEqual(propertyList[0].previousFine.number, 2)
+        XCTAssertEqual(propertyList[0].previousFine.reason.id, FirebaseReasonTemplate.ID(rawValue: UUID(uuidString: "9d0681f0-2045-4a1d-abbc-6bb289934ff9")!))
+        XCTAssertEqual(propertyList[0].previousFine.reason.reason, "asldkfj")
+        XCTAssertEqual(propertyList[0].previousFine.reason.amount, Amount(12, subUnit: 98))
+        XCTAssertEqual(propertyList[0].previousFine.reason.importance, .low)
+
+        // Check second statistic
+        XCTAssertEqual(propertyList[1].changedState.state, "payed")
+        XCTAssertEqual(propertyList[1].changedState.payedInApp, true)
+        XCTAssertEqual(propertyList[1].previousFine.id, FirebaseFine.ID(rawValue: UUID(uuidString: "637D6187-68D2-4000-9CB8-7DFC3877D5BA")!))
+        XCTAssertEqual(propertyList[1].previousFine.person.id, FirebasePerson.ID(rawValue: UUID(uuidString: "5BF1FFDA-4F69-11EB-AE93-0242AC130002")!))
+        XCTAssertEqual(propertyList[1].previousFine.person.name, PersonName(firstName: "First Person First Name", lastName: "First Person Last Name"))
+        XCTAssertEqual(propertyList[1].previousFine.payed.state, "payed")
+        XCTAssertEqual(propertyList[1].previousFine.payed.payedInApp, false)
+        XCTAssertEqual(propertyList[1].previousFine.number, 2)
+        XCTAssertEqual(propertyList[1].previousFine.reason.id, FirebaseReasonTemplate.ID(rawValue: UUID(uuidString: "9d0681f0-2045-4a1d-abbc-6bb289934ff9")!))
+        XCTAssertEqual(propertyList[1].previousFine.reason.reason, "asldkfj")
+        XCTAssertEqual(propertyList[1].previousFine.reason.amount, Amount(12, subUnit: 98))
+        XCTAssertEqual(propertyList[1].previousFine.reason.importance, .low)
+
+        // Check third statistic
+        XCTAssertEqual(propertyList[2].changedState, .unpayed)
+        XCTAssertEqual(propertyList[2].previousFine.id, FirebaseFine.ID(rawValue: UUID(uuidString: "137D6187-68D2-4000-9CB8-7DFC3877D5BA")!))
+        XCTAssertEqual(propertyList[2].previousFine.person.id, FirebasePerson.ID(rawValue: UUID(uuidString: "5BF1FFDA-4F69-11EB-AE93-0242AC130002")!))
+        XCTAssertEqual(propertyList[2].previousFine.person.name, PersonName(firstName: "First Person First Name", lastName: "First Person Last Name"))
+        XCTAssertEqual(propertyList[2].previousFine.payed.state, "payed")
+        XCTAssertEqual(propertyList[2].previousFine.payed.payedInApp, false)
+        XCTAssertEqual(propertyList[2].previousFine.number, 10)
+        XCTAssertEqual(propertyList[2].previousFine.reason.reason, "Reason")
+        XCTAssertEqual(propertyList[2].previousFine.reason.amount, Amount(1, subUnit: 50))
+        XCTAssertEqual(propertyList[2].previousFine.reason.importance, .high)
+
+        // Check fourth statistic
+        XCTAssertEqual(propertyList[3].changedState, .settled)
+        XCTAssertEqual(propertyList[3].previousFine.id, FirebaseFine.ID(rawValue: UUID(uuidString: "137D6187-68D2-4000-9CB8-7DFC3877D5BA")!))
+        XCTAssertEqual(propertyList[3].previousFine.person.id, FirebasePerson.ID(rawValue: UUID(uuidString: "5BF1FFDA-4F69-11EB-AE93-0242AC130002")!))
+        XCTAssertEqual(propertyList[3].previousFine.person.name, PersonName(firstName: "First Person First Name", lastName: "First Person Last Name"))
+        XCTAssertEqual(propertyList[3].previousFine.payed, .unpayed)
+        XCTAssertEqual(propertyList[3].previousFine.number, 10)
+        XCTAssertEqual(propertyList[3].previousFine.reason.reason, "Reason")
+        XCTAssertEqual(propertyList[3].previousFine.reason.amount, Amount(1, subUnit: 50))
+        XCTAssertEqual(propertyList[3].previousFine.reason.importance, .high)
     }
 }
 
