@@ -1,8 +1,8 @@
 // State of fine payment
 export interface PayedState {
 
-    // State of the payment of the fine (`payed`, `settled`, `unpayed`)
-    state: string;
+    // State of the payment of the fine
+    state: "payed" | "settled" | "unpayed";
 
     // Pay date of the fine (provided if state is `payed`)
     payDate?: number;
@@ -27,8 +27,8 @@ export interface FineReasonCustom {
     // Amount of the fine
     amount: number;
 
-    // Importance of the fine (`low`, `medium`, `high`)
-    importance: string;
+    // Importance of the fine
+    importance: "low" | "medium" | "high";
 }
 
 // First and last name of a person
@@ -108,5 +108,31 @@ export interface StatisticsFineReason {
     amount: number;
 
     // Importance of the fine (`low`, `medium`, `high`)
-    importance: string;
+    importance: "low" | "medium" | "high";
+}
+
+// Period of a time
+export interface TimePeriod {
+
+    // Value of the time period
+    value: number;
+
+    // Unit of the time period
+    unit: "day" | "month" | "year";
+}
+
+// Late payement interest
+export interface LatePaymentInterest {
+
+    // Interest free timeinterval
+    interestFreePeriod: TimePeriod;
+
+    // Interest timeinterval
+    interestPeriod: TimePeriod;
+
+    // Rate of the interest
+    interestRate: number;
+
+    // Indicates whether compound interest is active
+    compoundInterest: boolean;
 }

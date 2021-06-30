@@ -117,6 +117,10 @@ extension FirebaseStatistic: FirebaseListType {
         case "changeFinePayed":
             self.property = .changeFinePayed(property: try container.decode(SPChangeFinePayed.self, forKey: .property))
         case "changeLatePaymentInterest":
+            guard container.contains(.property) else {
+                self.property = .changeLatePaymentInterest(property: SPChangeLatePaymentInterest())
+                return
+            }
             self.property = .changeLatePaymentInterest(property: try container.decode(SPChangeLatePaymentInterest.self, forKey: .property))
         case "changeList":
             let listType = try container.decode(ListType.self, forKey: .property)

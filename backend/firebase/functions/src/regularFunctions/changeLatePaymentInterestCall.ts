@@ -1,6 +1,7 @@
 import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
 import {ParameterContainer, checkPrerequirements, getClubComponent, existsData, saveStatistic} from "../utils";
+import {LatePaymentInterest} from "../typeDefinitions";
 
 /**
  * @summary
@@ -9,24 +10,9 @@ import {ParameterContainer, checkPrerequirements, getClubComponent, existsData, 
  * Saved statistik:
  *  - name: changeLatePaymentInterest
  *  - properties:
- *      - changeType (string): type of the change (`update`, `remove`)
- *      - latePaymentInterest (`LatePaymentInterest` | null): Changed late payment interest or null if change type is `remove`
+ *      - previousInterest ({@link LatePaymentInterest} | null): Previous late payment interest
+ *      - changedInterest ({@link LatePaymentInterest} | null): Changed late payment interest or null if change type is `remove`
  *
- * Type of `LatePaymentInterest` is:
- * ```
- *  {
- *      interestFreePeriod: {
- *          value: number;
- *          unit: string;
- *      };
- *      interestPeriod: {
- *          value: number;
- *          unit: string;
- *      };
- *      interestRate: number;
- *      compoundInterest: boolean;
- *  }
- * ```
  * @params
  *  - privateKey (string): private key to check whether the caller is authenticated to use this function
  *  - clubLevel (string): level of the club (`regular`, `debug`, `testing`)
@@ -38,70 +24,76 @@ import {ParameterContainer, checkPrerequirements, getClubComponent, existsData, 
  *  - interestValue: (number | null): value of interest timeinterval (has to be provided if changeType is `update`)
  *  - interestUnit: (string | null): unit of interest timeinterval (`day`, `month`, `year`) (has to be provided if changeType is `update`)
  *  - compoundInterest: (boolean | null): indicates whether compound interest is active (has to be provided if changeType is `update`)
+ *
  * @throws
  *  - functions.https.HttpsError:
  *    - permission-denied: if private key isn't valid
  *    - invalid-argument: if a required parameter isn't give over
- *                        or if a parameter hasn't the right type
- *                        or if clubLevel isn't `regular`, `debug` or `testing`
- *                        or if changeType isn't `update` or `remove`
- *                        or if interest(Free)Unit isn't `day`, `month` or `year`
+ *      or if a parameter hasn't the right type
+ *      or if clubLevel isn't `regular`, `debug` or `testing`
+ *      or if changeType isn't `update` or `remove`
+ *      or if interest(Free)Unit isn't `day`, `month` or `year`
  *    - failed-precondition: if function is called while no person is sign in or the person doesn't belong to the club
  */
 export const changeLatePaymentInterestCall = functions.region("europe-west1").https.onCall(async (data, context) => {
     // Check prerequirements and get a reference to interest
     const parameterContainer = new ParameterContainer(data);
     await checkPrerequirements(parameterContainer, context.auth);
-    const clubPath = getClubComponent(parameterContainer) + "/" + parameterContainer.getParameter<string>("clubId", "string").toUpperCase();
-    const path = clubPath + "/latePaymentInterest";
-    const ref = admin.database().ref(path);
+    const clubPath = `${getClubComponent(parameterContainer)}/${parameterContainer.getParameter<string>("clubId", "string").toUpperCase()}`;
+    const interestRef = admin.database().ref(`${clubPath}/latePaymentInterest`);
+
+    // Get previous interest
+    let previousInterest: LatePaymentInterest | null = null;
+    const interestSnapshot = await interestRef.once("value");
+    if (interestSnapshot.exists()) {
+        previousInterest = interestSnapshot.val();
+    }
 
     const changeType = parameterContainer.getParameter<string>("changeType", "string");
-    let latePaymentInterest = null;
+    let latePaymentInterest: LatePaymentInterest | null = null;
     switch (changeType) {
     // Remove late payment interest if change type is `remove`
     case "remove":
-        if (await existsData(ref)) {
-            await ref.remove();
+        if (await existsData(interestRef)) {
+            await interestRef.remove();
         }
         break;
 
     // Update late payment interest if change type is `update`
     case "update":
-        checkInterestUnit(parameterContainer.getParameter<string>("interestFreeUnit", "string"));
-        checkInterestUnit(parameterContainer.getParameter<string>("interestUnit", "string"));
+        const interestFreeUnit = parameterContainer.getParameter<string>("interestFreeUnit", "string");
+        const interestUnit = parameterContainer.getParameter<string>("interestUnit", "string");
+        if (interestFreeUnit != "day" && interestFreeUnit != "month" && interestFreeUnit != "year") {
+            throw new functions.https.HttpsError("invalid-argument", `Argument interestFreeUnit is invalid "${interestFreeUnit}"`);
+        } else if (interestUnit != "day" && interestUnit != "month" && interestUnit != "year") {
+            throw new functions.https.HttpsError("invalid-argument", `Argument interestUnit is invalid "${interestUnit}"`);
+        }
         latePaymentInterest = {
             interestFreePeriod: {
                 value: parameterContainer.getParameter<number>("interestFreeValue", "number"),
-                unit: parameterContainer.getParameter<string>("interestFreeUnit", "string"),
+                unit: interestFreeUnit,
             },
             interestPeriod: {
                 value: parameterContainer.getParameter<number>("interestValue", "number"),
-                unit: parameterContainer.getParameter<string>("interestUnit", "string"),
+                unit: interestUnit,
             },
             interestRate: parameterContainer.getParameter<number>("interestRate", "number"),
             compoundInterest: parameterContainer.getParameter<boolean>("compoundInterest", "boolean"),
         };
-        await ref.set(latePaymentInterest);
+        await interestRef.set(latePaymentInterest);
         break;
 
     // Throw error if change type is invalid
     default:
-        throw new functions.https.HttpsError("invalid-argument", "Argument changeType is invalid \"" + changeType + "\"");
+        throw new functions.https.HttpsError("invalid-argument", `Argument changeType is invalid "${changeType}"`);
     }
 
     // Save statistic
     await saveStatistic(clubPath, {
         name: "changeLatePaymentInterest",
         properties: {
-            changeType: changeType,
-            latePaymentInterest: latePaymentInterest,
+            previousInterest: previousInterest,
+            changedInterest: latePaymentInterest,
         },
     });
 });
-
-function checkInterestUnit(interestUnit: string) {
-    if (interestUnit != "day" && interestUnit != "month" && interestUnit != "year") {
-        throw new functions.https.HttpsError("invalid-argument", "Argument interest(Free)Unit is invalid \"" + interestUnit + "\"");
-    }
-}

@@ -270,6 +270,8 @@ extension FirebaseFunctionCallerTests {
         // Remove late payment interest again
         try await _testLatePaymentInterestRemove()
 
+        // Check statistics
+        try await _testChangeLatePaymentInterestCheckStatistics()
     }
 
     /// Set late payment interest and check it
@@ -311,6 +313,31 @@ extension FirebaseFunctionCallerTests {
         } catch {
             XCTAssertEqual(error as? FirebaseFetcher.FetchError, .noData)
         }
+    }
+
+    /// Checks statistics of change late payment interest
+    func _testChangeLatePaymentInterestCheckStatistics() async throws {
+        let statisticList = try await FirebaseFetcher.shared.fetchStatistics(clubId: TestProperty.shared.testClub.id, before: nil, number: 1_000)
+        let propertyList = statisticList.lazy
+            .sorted { $0.timestamp < $1.timestamp }
+            .compactMap { $0.property.rawProperty as? SPChangeLatePaymentInterest }
+        XCTAssertEqual(propertyList.count, 4)
+
+        // Check first interest
+        XCTAssertNil(propertyList[0].previousInterest)
+        XCTAssertEqual(propertyList[0].changedInterest, TestProperty.shared.testLatePaymentInterestFirst.latePaymentInterest)
+
+        // Check second interest
+        XCTAssertEqual(propertyList[1].previousInterest, TestProperty.shared.testLatePaymentInterestFirst.latePaymentInterest)
+        XCTAssertEqual(propertyList[1].changedInterest, TestProperty.shared.testLatePaymentInterestSecond.latePaymentInterest)
+
+        // Check third interest
+        XCTAssertEqual(propertyList[2].previousInterest, TestProperty.shared.testLatePaymentInterestSecond.latePaymentInterest)
+        XCTAssertNil(propertyList[2].changedInterest)
+
+        // Check fourth interest
+        XCTAssertNil(propertyList[3].previousInterest)
+        XCTAssertNil(propertyList[3].changedInterest)
     }
 }
 

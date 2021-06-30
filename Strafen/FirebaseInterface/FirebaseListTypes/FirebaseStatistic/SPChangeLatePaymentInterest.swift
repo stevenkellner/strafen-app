@@ -10,8 +10,16 @@ import Foundation
 /// Statistic of `changeLatePaymentInterest` call
 struct SPChangeLatePaymentInterest: StatisticProperty {
 
-    /// Type of the changed late payment interest
-    let changeType: FFChangeLatePaymentInterestCall.ChangeType
+    /// Previous late payment interest
+    let previousInterest: LatePaymentInterest?
+
+    /// Changed late payment interest or null if change type is `remove`
+    let changedInterest: LatePaymentInterest?
+
+    init() {
+        self.previousInterest = nil
+        self.changedInterest = nil
+    }
 }
 
 extension SPChangeLatePaymentInterest: Decodable {
@@ -19,24 +27,16 @@ extension SPChangeLatePaymentInterest: Decodable {
     /// Coding Keys for Decodable
     enum CodingKeys: String, CodingKey {
 
-        /// Type of the change
-        case changeType
+        /// Previous late payment interest
+        case previousInterest
 
         /// Changed late payment interest
-        case latePaymentInterest
+        case changedInterest
     }
 
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        let changeType = try container.decode(String.self, forKey: .changeType)
-        switch changeType {
-        case "update":
-            let latePaymentInterest = try container.decode(LatePaymentInterest.self, forKey: .latePaymentInterest)
-            self.changeType = .update(interest: latePaymentInterest)
-        case "remove":
-            self.changeType = .remove
-        default:
-            throw DecodingError.dataCorruptedError(forKey: .changeType, in: container, debugDescription: "Invalid change type: \(changeType)")
-        }
+        self.previousInterest = try container.decodeIfPresent(LatePaymentInterest.self, forKey: .previousInterest)
+        self.changedInterest = try container.decodeIfPresent(LatePaymentInterest.self, forKey: .changedInterest)
     }
 }

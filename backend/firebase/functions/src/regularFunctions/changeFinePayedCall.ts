@@ -44,14 +44,16 @@ export const changeFinePayedCall = functions.region("europe-west1").https.onCall
 
     // Get payed state
     const state = parameterContainer.getParameter<string>("state", "string");
-    let payed: PayedState = {state: state};
+    let payed: PayedState;
     if (state == "payed") {
         payed = {
-            ...payed,
+            state: "payed",
             payDate: parameterContainer.getParameter<number>("payDate", "number"),
             inApp: parameterContainer.getParameter<boolean>("inApp", "boolean"),
         };
-    } else if (state != "settled" && state != "unpayed") {
+    } else if (state == "settled" || state == "unpayed") {
+        payed = {state: state};
+    } else {
         throw new functions.https.HttpsError("invalid-argument", `Argument state is invalid "${state}"`);
     }
 

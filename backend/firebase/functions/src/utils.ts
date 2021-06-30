@@ -111,8 +111,8 @@ interface StatisticProperties {
  * @param {StatisticProperties} properties Properties of statistic to save
  */
 export async function saveStatistic(clubPath: string, properties: StatisticProperties) {
-    const path = "debugClubs/F7618C71-1962-4149-8FEA-E5B8B677AD83/statistics/" + Guid.newGuid(); // TODO
-    // const path = `${clubPath}/statistics/${Guid.newGuid()}`;
+    // const path = "debugClubs/F7618C71-1962-4149-8FEA-E5B8B677AD83/statistics/" + Guid.newGuid(); // TODO
+    const path = `${clubPath}/statistics/${Guid.newGuid()}`;
     const reference = admin.database().ref(path);
     await reference.set({
         ...properties,
