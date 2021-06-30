@@ -1,6 +1,7 @@
 import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
 import {ParameterContainer, checkPrerequirements, getClubComponent, existsData, saveStatistic} from "../utils";
+import {ClubProperties, Person} from "../typeDefinitions";
 
 /**
  * @summary
@@ -10,7 +11,13 @@ import {ParameterContainer, checkPrerequirements, getClubComponent, existsData, 
  *
  * Saved statistik:
  *  - name: newClub
- *  - properties: none
+ *  - properties:
+ *      - identifier (string): identifier of created club
+ *      - name (string): name of created club
+ *      - regionCode (string): region code of created club
+ *      - inAppPaymentActive (boolean): indicates wheather in app payment is active in created club
+ *      - person ({@link Person}): person created the new club
+ *
  * @params
  *  - privateKey (string): private key to check whether the caller is authenticated to use this function
  *  - clubLevel (string): level of the club (`regular`, `debug`, `testing`)
@@ -24,12 +31,13 @@ import {ParameterContainer, checkPrerequirements, getClubComponent, existsData, 
  *  - signInDate (number): date of sign in of the person who creates the club
  *  - regionCode (string): region code of the club to be created
  *  - inAppPayment (boolean): indicates whether in app payment is active for the club to be created
+ *
  * @throws
  *  - functions.https.HttpsError:
  *    - permission-denied: if private key isn't valid
  *    - invalid-argument: if a required parameter isn't give over
- *                        or if a parameter hasn't the right type
- *                        or if clubLevel isn't `regular`, `debug` or `testing`
+ *      or if a parameter hasn't the right type
+ *      or if clubLevel isn't `regular`, `debug` or `testing`
  *    - failed-precondition: if function is called while no person is sign in
  *    - already-exists: if already a club with given identifier exists
  *    - internal: if an error occurs while setting club properties in database
@@ -38,8 +46,7 @@ export const newClubCall = functions.region("europe-west1").https.onCall(async (
     // Check prerequirements and get a reference to all clubs
     const parameterContainer = new ParameterContainer(data);
     await checkPrerequirements(parameterContainer, context.auth, false);
-    const allClubsPath = getClubComponent(parameterContainer);
-    const allclubsRef = admin.database().ref(allClubsPath);
+    const allclubsRef = admin.database().ref(getClubComponent(parameterContainer));
 
     // Check if identifier already exists
     let clubExists = false;
@@ -57,44 +64,45 @@ export const newClubCall = functions.region("europe-west1").https.onCall(async (
     }
 
     // Get a reference to the club to be created
-    const path = getClubComponent(parameterContainer) + "/" + parameterContainer.getParameter<string>("clubId", "string");
-    const ref = admin.database().ref(path);
+    const clubPath = `${getClubComponent(parameterContainer)}/${parameterContainer.getParameter<string>("clubId", "string")}`;
+    const clubRef = admin.database().ref(clubPath);
 
     // Check if club already exists with given id
-    if (await existsData(ref)) {
+    if (await existsData(clubRef)) {
         return;
     }
 
     // Properties of club to be created
-    const personList: { [key: string]: any } = {};
-    personList[parameterContainer.getParameter<string>("personId", "string").toUpperCase()] = {
-        name: {
-            first: parameterContainer.getParameter<string>("personFirstName", "string"),
-            last: parameterContainer.getOptionalParameter<string>("personLastName", "string"),
-        },
-        signInData: {
-            cashier: true,
-            userId: parameterContainer.getParameter<string>("userId", "string"),
-            signInDate: parameterContainer.getParameter<number>("signInDate", "number"),
-        },
-    };
-    const personUserIds: { [key: string]: any } = {};
-    personUserIds[parameterContainer.getParameter<string>("userId", "string")] = parameterContainer.getParameter<string>("personId", "string").toUpperCase();
-    const clubProperties = {
+    const personId = parameterContainer.getParameter<string>("personId", "string").toUpperCase();
+    const clubProperties: ClubProperties = {
         identifier: parameterContainer.getParameter<string>("clubIdentifier", "string"),
         name: parameterContainer.getParameter<string>("clubName", "string"),
         regionCode: parameterContainer.getParameter<string>("regionCode", "string"),
         inAppPaymentActive: parameterContainer.getParameter<boolean>("inAppPayment", "boolean"),
-        persons: personList,
-        personUserIds: personUserIds,
+        persons: {
+            [personId]: {
+                name: {
+                    first: parameterContainer.getParameter<string>("personFirstName", "string"),
+                    last: parameterContainer.getOptionalParameter<string>("personLastName", "string"),
+                },
+                signInData: {
+                    cashier: true,
+                    userId: parameterContainer.getParameter<string>("userId", "string"),
+                    signInDate: parameterContainer.getParameter<number>("signInDate", "number"),
+                },
+            },
+        },
+        personUserIds: {
+            [parameterContainer.getParameter<string>("userId", "string")]: personId,
+        },
     };
 
     // Set club properties
     let errorOccured = false;
-    await ref.set(clubProperties, async (error) => {
+    await clubRef.set(clubProperties, async (error) => {
         if (error != null) {
-            if (await existsData(ref)) {
-                ref.remove();
+            if (await existsData(clubRef)) {
+                clubRef.remove();
             }
             errorOccured = true;
         }
@@ -104,8 +112,17 @@ export const newClubCall = functions.region("europe-west1").https.onCall(async (
     }
 
     // Save statistic
-    await saveStatistic(path, {
+    await saveStatistic(clubPath, {
         name: "newClub",
-        properties: {},
+        properties: {
+            identifier: clubProperties.identifier,
+            name: clubProperties.name,
+            regionCode: clubProperties.regionCode,
+            inAppPaymentActive: clubProperties.inAppPaymentActive,
+            person: {
+                id: personId,
+                name: clubProperties.persons[personId].name,
+            } as Person,
+        },
     });
 });

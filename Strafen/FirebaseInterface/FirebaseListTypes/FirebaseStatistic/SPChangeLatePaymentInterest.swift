@@ -21,22 +21,3 @@ struct SPChangeLatePaymentInterest: StatisticProperty {
         self.changedInterest = nil
     }
 }
-
-extension SPChangeLatePaymentInterest: Decodable {
-
-    /// Coding Keys for Decodable
-    enum CodingKeys: String, CodingKey {
-
-        /// Previous late payment interest
-        case previousInterest
-
-        /// Changed late payment interest
-        case changedInterest
-    }
-
-    init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        self.previousInterest = try container.decodeIfPresent(LatePaymentInterest.self, forKey: .previousInterest)
-        self.changedInterest = try container.decodeIfPresent(LatePaymentInterest.self, forKey: .changedInterest)
-    }
-}

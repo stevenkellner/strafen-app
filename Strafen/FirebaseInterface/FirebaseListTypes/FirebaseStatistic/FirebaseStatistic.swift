@@ -7,7 +7,7 @@
 
 import Foundation
 
-protocol StatisticProperty {}
+protocol StatisticProperty: Decodable {}
 
 struct FirebaseStatistic {
 
@@ -33,10 +33,7 @@ struct FirebaseStatistic {
         case changeListTransaction(property: SPChangeList<FirebaseTransaction>)
 
         /// For `newClub` call
-        case newClub
-
-        /// For `forceSignOut` call
-        case forceSignOut(property: SPForceSignOut)
+        case newClub(property: SPNewClub)
 
         /// For `registerPerson` call
         case registerPerson(property: SPRegisterPerson)
@@ -49,8 +46,7 @@ struct FirebaseStatistic {
             case .changeListFine(let property): return property
             case .changeListReason(let property): return property
             case .changeListTransaction(let property): return property
-            case .newClub: return nil
-            case .forceSignOut(let property): return property
+            case .newClub(let property): return property
             case .registerPerson(let property): return property
             }
         }
@@ -130,10 +126,8 @@ extension FirebaseStatistic: FirebaseListType {
             case .reason: self.property = .changeListReason(property: try container.decode(SPChangeList<FirebaseReasonTemplate>.self, forKey: .property))
             case .transaction: self.property = .changeListTransaction(property: try container.decode(SPChangeList<FirebaseTransaction>.self, forKey: .property))
             }
-        case "forceSignOut":
-            self.property = .forceSignOut(property: try container.decode(SPForceSignOut.self, forKey: .property))
         case "newClub":
-            self.property = .newClub
+            self.property = .newClub(property: try container.decode(SPNewClub.self, forKey: .property))
         case "registerPerson":
             self.property = .registerPerson(property: try container.decode(SPRegisterPerson.self, forKey: .property))
         default:

@@ -147,6 +147,9 @@ extension FirebaseFunctionCallerTests {
 
         // Create club with person with only first name
         try await _testNewClubCallPersonName()
+
+        // Check statistics
+        try await _testNewClubCheckStatistics()
     }
 
     /// Check identifier, name and region code of test club
@@ -248,6 +251,20 @@ extension FirebaseFunctionCallerTests {
         XCTAssertEqual(personList.first!.name, TestProperty.shared.testPersonSecond.name)
         XCTAssertEqual(personList.first!.signInData?.isCashier, true)
         XCTAssertEqual(personList.first!.signInData?.userId, TestProperty.shared.testPersonSecond.userId)
+    }
+
+    private func _testNewClubCheckStatistics() async throws {
+        let statisticList = try await FirebaseFetcher.shared.fetchStatistics(clubId: TestProperty.shared.testClub.id, before: nil, number: 1_000)
+        let property = statisticList.lazy
+            .sorted { $0.timestamp < $1.timestamp }
+            .compactMap { $0.property.rawProperty as? SPNewClub }
+            .first
+        XCTAssertNotNil(property)
+        XCTAssertEqual(property?.identifier, "test-club")
+        XCTAssertEqual(property?.inAppPaymentActive, true)
+        XCTAssertEqual(property?.name, "Test Club")
+        XCTAssertEqual(property?.regionCode, "DE")
+        XCTAssertEqual(property?.person.name, TestProperty.shared.testPersonSecond.name)
     }
 }
 

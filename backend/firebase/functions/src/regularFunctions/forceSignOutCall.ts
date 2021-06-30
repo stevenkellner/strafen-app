@@ -1,6 +1,6 @@
 import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
-import {ParameterContainer, checkPrerequirements, getClubComponent, existsData, saveStatistic} from "../utils";
+import {ParameterContainer, checkPrerequirements, getClubComponent, existsData} from "../utils";
 
 /**
  * @summary
@@ -55,12 +55,4 @@ export const forceSignOutCall = functions.region("europe-west1").https.onCall(as
             throw new functions.https.HttpsError("internal", "Couldn't force sign out person in database.");
         }
     }
-
-    // Save statistic
-    await saveStatistic(clubPath, {
-        name: "forceSignOut",
-        properties: {
-            personId: parameterContainer.getParameter<string>("personId", "string").toUpperCase(),
-        },
-    });
 });

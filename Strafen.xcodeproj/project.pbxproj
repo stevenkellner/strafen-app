@@ -56,6 +56,7 @@
 		B05CCFD42662990E00F13786 /* PersonDetailImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B05CCFD32662990E00F13786 /* PersonDetailImage.swift */; };
 		B05CCFD626629E4A00F13786 /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = B05CCFD526629E4A00F13786 /* ImagePicker.swift */; };
 		B05CCFD82662A23300F13786 /* FineListRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = B05CCFD72662A23300F13786 /* FineListRow.swift */; };
+		B05F64A3268CBFF2003D80F4 /* SPNewClub.swift in Sources */ = {isa = PBXBuildFile; fileRef = B05F64A2268CBFF2003D80F4 /* SPNewClub.swift */; };
 		B066A2BF26492E2700AB2715 /* SignInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B066A2BE26492E2700AB2715 /* SignInView.swift */; };
 		B07148D5264DB45000C5F7EF /* SignInClubSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B07148D4264DB45000C5F7EF /* SignInClubSelectionView.swift */; };
 		B07148D9264E938800C5F7EF /* Importance.swift in Sources */ = {isa = PBXBuildFile; fileRef = B07148D8264E938800C5F7EF /* Importance.swift */; };
@@ -135,7 +136,6 @@
 		B0B492C02687BC2A00A4C95E /* SPChangeFinePayed.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0B492BF2687BC2A00A4C95E /* SPChangeFinePayed.swift */; };
 		B0B492C22687C34900A4C95E /* SPChangeLatePaymentInterest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0B492C12687C34800A4C95E /* SPChangeLatePaymentInterest.swift */; };
 		B0B492C42687C78E00A4C95E /* SPChangeList.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0B492C32687C78E00A4C95E /* SPChangeList.swift */; };
-		B0B492C62688724800A4C95E /* SPForceSignOut.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0B492C52688724800A4C95E /* SPForceSignOut.swift */; };
 		B0B492CA2688736000A4C95E /* SPRegisterPerson.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0B492C92688736000A4C95E /* SPRegisterPerson.swift */; };
 		B0B492CC268873CE00A4C95E /* FirebaseStatistic.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0B492CB268873CE00A4C95E /* FirebaseStatistic.swift */; };
 		B0B492CE2689F9DB00A4C95E /* SettingsStatistics.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0B492CD2689F9DB00A4C95E /* SettingsStatistics.swift */; };
@@ -227,6 +227,7 @@
 		B05CCFD32662990E00F13786 /* PersonDetailImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonDetailImage.swift; sourceTree = "<group>"; };
 		B05CCFD526629E4A00F13786 /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
 		B05CCFD72662A23300F13786 /* FineListRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FineListRow.swift; sourceTree = "<group>"; };
+		B05F64A2268CBFF2003D80F4 /* SPNewClub.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SPNewClub.swift; sourceTree = "<group>"; };
 		B066A2BE26492E2700AB2715 /* SignInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInView.swift; sourceTree = "<group>"; };
 		B07148D4264DB45000C5F7EF /* SignInClubSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInClubSelectionView.swift; sourceTree = "<group>"; };
 		B07148D8264E938800C5F7EF /* Importance.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Importance.swift; sourceTree = "<group>"; };
@@ -311,7 +312,6 @@
 		B0B492BF2687BC2A00A4C95E /* SPChangeFinePayed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SPChangeFinePayed.swift; sourceTree = "<group>"; };
 		B0B492C12687C34800A4C95E /* SPChangeLatePaymentInterest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SPChangeLatePaymentInterest.swift; sourceTree = "<group>"; };
 		B0B492C32687C78E00A4C95E /* SPChangeList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SPChangeList.swift; sourceTree = "<group>"; };
-		B0B492C52688724800A4C95E /* SPForceSignOut.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SPForceSignOut.swift; sourceTree = "<group>"; };
 		B0B492C92688736000A4C95E /* SPRegisterPerson.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SPRegisterPerson.swift; sourceTree = "<group>"; };
 		B0B492CB268873CE00A4C95E /* FirebaseStatistic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseStatistic.swift; sourceTree = "<group>"; };
 		B0B492CD2689F9DB00A4C95E /* SettingsStatistics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsStatistics.swift; sourceTree = "<group>"; };
@@ -724,8 +724,8 @@
 				B0B492CB268873CE00A4C95E /* FirebaseStatistic.swift */,
 				B0B492BF2687BC2A00A4C95E /* SPChangeFinePayed.swift */,
 				B0B492C12687C34800A4C95E /* SPChangeLatePaymentInterest.swift */,
+				B05F64A2268CBFF2003D80F4 /* SPNewClub.swift */,
 				B0B492C32687C78E00A4C95E /* SPChangeList.swift */,
-				B0B492C52688724800A4C95E /* SPForceSignOut.swift */,
 				B0B492C92688736000A4C95E /* SPRegisterPerson.swift */,
 			);
 			path = FirebaseStatistic;
@@ -978,6 +978,7 @@
 				B0225D2826513C8800D75CDA /* FFNewClubCall.swift in Sources */,
 				B02221AE2641D6850005295B /* PersonName.swift in Sources */,
 				B03986512652776F00C97DF2 /* Club.swift in Sources */,
+				B05F64A3268CBFF2003D80F4 /* SPNewClub.swift in Sources */,
 				B0A7619C2642D366003B170F /* FirebaseCallParameters.swift in Sources */,
 				B091FFAD267E3CB5007931AD /* AddNewFinePerson.swift in Sources */,
 				B090FDEF26640B33005700A8 /* Indicator.swift in Sources */,
@@ -1051,7 +1052,6 @@
 				B07148D5264DB45000C5F7EF /* SignInClubSelectionView.swift in Sources */,
 				B0B492C42687C78E00A4C95E /* SPChangeList.swift in Sources */,
 				B0A761A32642E6C7003B170F /* FirebaseDatabaseLevel.swift in Sources */,
-				B0B492C62688724800A4C95E /* SPForceSignOut.swift in Sources */,
 				B0720819264D8D580084FDE6 /* OperationResult.swift in Sources */,
 				B01E96B12641AEF60034E3D1 /* ContentView.swift in Sources */,
 				B0447C202641BAFE00148430 /* FirebaseFetcher.swift in Sources */,

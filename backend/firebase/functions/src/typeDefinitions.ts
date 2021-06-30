@@ -38,7 +38,7 @@ export interface PersonName {
     first: string;
 
     // Last name (can be null)
-    last?: string;
+    last: string | null;
 }
 
 // Contains all properties of a person
@@ -49,6 +49,18 @@ export interface Person {
 
     // Name of the person
     name: PersonName;
+}
+
+export interface PersonProperties {
+
+    // Name of the person
+    name: PersonName;
+
+    signInData?: {
+        cashier: boolean;
+        userId: string;
+        signInDate: number;
+    }
 }
 
 // Contains all porperties of a fine in statistics
@@ -135,4 +147,17 @@ export interface LatePaymentInterest {
 
     // Indicates whether compound interest is active
     compoundInterest: boolean;
+}
+
+export interface ClubProperties {
+    identifier: string;
+    name: string;
+    regionCode: string;
+    inAppPaymentActive: boolean;
+    persons: {
+        [key: string]: PersonProperties;
+    };
+    personUserIds: {
+        [key: string]: string;
+    };
 }

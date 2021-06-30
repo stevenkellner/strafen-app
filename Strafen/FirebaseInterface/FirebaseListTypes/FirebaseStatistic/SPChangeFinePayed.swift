@@ -17,25 +17,6 @@ struct SPChangeFinePayed: StatisticProperty {
     let changedState: Payed
 }
 
-extension SPChangeFinePayed: Decodable {
-
-    /// Coding Keys for Decodable
-    enum CodingKeys: String, CodingKey {
-
-        /// Fine before the change
-        case previousFine
-
-        /// Changed state of the payment of the fine
-        case changedState
-    }
-
-    init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        self.previousFine = try container.decode(StatisticsFine.self, forKey: .previousFine)
-        self.changedState = try container.decode(Payed.self, forKey: .changedState)
-    }
-}
-
 /// Contains all properties of a fine in statistics
 struct StatisticsFine: Decodable {
 
