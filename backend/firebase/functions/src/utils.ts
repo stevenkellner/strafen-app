@@ -27,7 +27,7 @@ export class ParameterContainer {
           return null;
       }
       if (typeof(parameter) !== expectedType) {
-          throw new functions.https.HttpsError("invalid-argument", "Argument \"" + parameterName + "\" couldn't be converted to expected type \"" + expectedType + "\"");
+          throw new functions.https.HttpsError("invalid-argument", `Argument "${parameterName}" couldn't be converted to expected type "${expectedType}"`);
       }
       return <T>parameter;
   }
@@ -50,7 +50,7 @@ export async function checkPrerequirements(parameterContainer: ParameterContaine
         if (clubId == null) {
             throw new functions.https.HttpsError("invalid-argument", "Argument \"clubId\" not found");
         }
-        const path = getClubComponent(parameterContainer) + "/" + clubId.toUpperCase() + "/personUserIds/" + auth.uid;
+        const path = `${getClubComponent(parameterContainer)}/${clubId.toUpperCase()}/personUserIds/${auth.uid}`;
         const ref = admin.database().ref(path);
         if (!await existsData(ref)) {
             throw new functions.https.HttpsError("failed-precondition", "The function must be called while authenticated.");
@@ -59,24 +59,17 @@ export async function checkPrerequirements(parameterContainer: ParameterContaine
 }
 
 export async function existsData(reference: admin.database.Reference): Promise<boolean> {
-    let exists = false;
-    await reference.once("value", (snapshot) => {
-        exists = snapshot.val() != null;
-    });
-    return exists;
+    return (await reference.once("value")).exists();
 }
 
 export function getClubComponent(parameterContainer: ParameterContainer): string {
     const clubLevel = parameterContainer.getParameter<string>("clubLevel", "string");
     switch (clubLevel) {
-    case "regular":
-        return "clubs";
-    case "debug":
-        return "debugClubs";
-    case "testing":
-        return "testableClubs";
+    case "regular": return "clubs";
+    case "debug": return "debugClubs";
+    case "testing": return "testableClubs";
     default:
-        throw new functions.https.HttpsError("invalid-argument", "Argument clubLevel is invalid " + clubLevel);
+        throw new functions.https.HttpsError("invalid-argument", `Argument clubLevel is invalid ${clubLevel}`);
     }
 }
 
@@ -111,8 +104,8 @@ interface StatisticProperties {
  * @param {StatisticProperties} properties Properties of statistic to save
  */
 export async function saveStatistic(clubPath: string, properties: StatisticProperties) {
-    // const path = "debugClubs/F7618C71-1962-4149-8FEA-E5B8B677AD83/statistics/" + Guid.newGuid(); // TODO
-    const path = `${clubPath}/statistics/${Guid.newGuid()}`;
+    const path = "debugClubs/F7618C71-1962-4149-8FEA-E5B8B677AD83/statistics/" + Guid.newGuid(); // TODO
+    // const path = `${clubPath}/statistics/${Guid.newGuid()}`;
     const reference = admin.database().ref(path);
     await reference.set({
         ...properties,
@@ -128,6 +121,10 @@ export class SuccessResult<T> {
     }
 
     get(): T {
+        return this.value;
+    }
+
+    getValue(): T {
         return this.value;
     }
 
@@ -149,6 +146,10 @@ export class FailureResult<E> {
 
     get(): never {
         throw this.error;
+    }
+
+    getValue(): null {
+        return null;
     }
 
     map<T2>(mapper: (val: never) => T2): Result<T2, E> {

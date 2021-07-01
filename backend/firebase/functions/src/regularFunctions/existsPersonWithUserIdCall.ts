@@ -5,14 +5,14 @@ import {ParameterContainer, checkPrerequirements, getClubComponent} from "../uti
 /**
  * @summary
  * Checks if a person with given user id exists.
- * 
+ *
  * @params
  *  - privateKey (string): private key to check whether the caller is authenticated to use this function
  *  - clubLevel (string): level of the club (`regular`, `debug`, `testing`)
  *  - userId (string): user id to search in database
- * 
+ *
  * @returns (boolean): `true`if a person with given user id exists
- * 
+ *
  * @throws
  *  - functions.https.HttpsError:
  *    - permission-denied: if private key isn't valid

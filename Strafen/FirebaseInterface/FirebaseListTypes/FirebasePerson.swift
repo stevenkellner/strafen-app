@@ -41,6 +41,8 @@ struct FirebasePerson {
 
 extension FirebasePerson: FirebaseListType {
 
+    typealias Statistic = FirebasePerson
+
     static let urlFromClub = URL(string: "persons")!
 
     static let listType: String = "person"

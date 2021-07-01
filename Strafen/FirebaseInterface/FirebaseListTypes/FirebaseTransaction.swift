@@ -50,6 +50,8 @@ struct FirebaseTransaction {
 
 extension FirebaseTransaction: FirebaseListType {
 
+    typealias Statistic = StatisticsTransaction
+
     static let urlFromClub = URL(string: "transactions")!
 
     static let listType: String = "transaction"
@@ -79,3 +81,25 @@ extension FirebaseTransaction: FirebaseListType {
 }
 
 extension FirebaseTransaction: Equatable {}
+
+/// Contains all properties of a transaction of statistics
+struct StatisticsTransaction: Decodable {
+
+    /// id
+    let id: FirebaseTransaction.ID
+
+    /// Indicates whether transaction is approved
+    let approved: Bool
+
+    /// Ids of fines payed with this transaction
+    let fines: [StatisticsFine]
+
+    /// Name of person that payed this transaction
+    let name: OptionalPersonName?
+
+    /// Date
+    let payDate: Date
+
+    /// Person that payed this transaction
+    let person: FirebasePerson
+}

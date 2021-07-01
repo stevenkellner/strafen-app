@@ -31,6 +31,8 @@ struct FirebaseReasonTemplate {
 
 extension FirebaseReasonTemplate: FirebaseListType {
 
+    typealias Statistic = FirebaseReasonTemplate
+
     static let urlFromClub = URL(string: "reasons")!
 
     static let listType: String = "reason"

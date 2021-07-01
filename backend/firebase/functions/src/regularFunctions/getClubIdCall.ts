@@ -5,14 +5,14 @@ import {ParameterContainer, checkPrerequirements, getClubComponent} from "../uti
 /**
  * @summary
  * Get club id with given club identifier
- * 
+ *
  * @params
  *  - privateKey (string): private key to check whether the caller is authenticated to use this function
  *  - clubLevel (string): level of the club (`regular`, `debug`, `testing`)
  *  - identifier (string): identifer of the club to search
- * 
+ *
  * @returns (string): club id of club with given identifer
- * 
+ *
  * @throws
  *  - functions.https.HttpsError:
  *    - permission-denied: if private key isn't valid

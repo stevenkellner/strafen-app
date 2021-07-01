@@ -66,6 +66,8 @@ struct FirebaseFine {
 
 extension FirebaseFine: FirebaseListType {
 
+    typealias Statistic = StatisticsFine
+
     static let urlFromClub = URL(string: "fines")!
 
     static let listType: String = "fine"
@@ -242,4 +244,42 @@ extension Array where Element == FirebaseFine {
         guard let length = lengthRange.randomElement(using: &generator) else { return [] }
         return randomList(of: length, using: &generator, personList: personList, reasonList: reasonList)
     }
+}
+
+/// Contains all properties of a fine in statistics
+struct StatisticsFine: Decodable {
+
+    /// Id of the fine
+    let id: FirebaseFine.ID // swiftlint:disable:this identifier_name
+
+    /// Associated person of the fine
+    let person: FirebasePerson
+
+    /// State of payement
+    let payed: Payed
+
+    /// Number of fines
+    let number: Int
+
+    /// Date when fine was created
+    let date: Date
+
+    /// Reason of fine
+    let reason: StatisticsFineReason
+}
+
+/// Contains all properties of a fine reason in staistics
+struct StatisticsFineReason: Decodable {
+
+    /// Id of template reason, nil if fine reason is custom
+    let id: FirebaseReasonTemplate.ID? // swiftlint:disable:this identifier_name
+
+    /// Reason message of the fine
+    let reason: String
+
+    /// Amount of the fine
+    let amount: Amount
+
+    /// Importance of the fine
+    let importance: Importance
 }

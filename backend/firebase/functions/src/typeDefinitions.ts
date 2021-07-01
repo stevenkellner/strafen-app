@@ -41,6 +41,16 @@ export interface PersonName {
     last: string | null;
 }
 
+// First and last name of a person
+export interface OptionalPersonName {
+
+    // First name
+    first: string | null;
+
+    // Last name (can be null)
+    last: string | null;
+}
+
 // Contains all properties of a person
 export interface Person {
 
@@ -56,11 +66,11 @@ export interface PersonProperties {
     // Name of the person
     name: PersonName;
 
-    signInData?: {
+    signInData: {
         cashier: boolean;
         userId: string;
         signInDate: number;
-    }
+    } | null;
 }
 
 // Contains all porperties of a fine in statistics
@@ -68,6 +78,25 @@ export interface Fine {
 
     // Id of the fine
     id: string;
+
+    // Id of associated person of the fine
+    personId: string;
+
+    // State of payement
+    payed: PayedState;
+
+    // Number of fines
+    number: number;
+
+    // Date when fine was created
+    date: number;
+
+    // Reason of fine
+    reason: FineReasonTemplate | FineReasonCustom;
+}
+
+// Contains all porperties of a fine in statistics
+export interface FineProperties {
 
     // Id of associated person of the fine
     personId: string;
@@ -119,7 +148,7 @@ export interface StatisticsFineReason {
     // Amount of the fine
     amount: number;
 
-    // Importance of the fine (`low`, `medium`, `high`)
+    // Importance of the fine
     importance: "low" | "medium" | "high";
 }
 
@@ -160,4 +189,78 @@ export interface ClubProperties {
     personUserIds: {
         [key: string]: string;
     };
+}
+
+// Contains all properties of a reason template
+export interface ReasonTemplate {
+
+    // Id of reason template
+    id: string;
+
+    // Reason message of the reason template
+    reason: string;
+
+    // Amount of the reason template
+    amount: number;
+
+    // Importance of the reason template
+    importance: "low" | "medium" | "high";
+}
+
+// Contains all properties of a reason template
+export interface ReasonTemplateProperties {
+
+    // Reason message of the reason template
+    reason: string;
+
+    // Amount of the reason template
+    amount: number;
+
+    // Importance of the reason template
+    importance: "low" | "medium" | "high";
+}
+
+// Contains all properties of a transaction
+export interface TransactionProperties {
+
+    // Indicates wheather the transaction is approved
+    approved: boolean;
+
+    // Ids of fines payed by the transaction
+    fineIds: string[];
+
+    // Name of the person payed the transaction
+    name?: OptionalPersonName;
+
+    // Date of the payment
+    payDate: number;
+
+    // Id of the person payed the transaction
+    personId: string;
+
+    // Id of the payout associated to the transaction
+    payoutId: string | null;
+
+}
+
+// Contains all properties of a transaction in statistics
+export interface StatisticsTransaction {
+
+    // Id of the transaction
+    id: string;
+
+    // Indicates wheather the transaction is approved
+    approved: boolean;
+
+    // Ids of fines payed by the transaction
+    fines: StatisticsFine[];
+
+    // Name of the person payed the transaction
+    name?: OptionalPersonName;
+
+    // Date of the payment
+    payDate: number;
+
+    // Person payed the transaction
+    person: Person;
 }

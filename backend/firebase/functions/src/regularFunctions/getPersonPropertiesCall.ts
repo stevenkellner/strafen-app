@@ -5,12 +5,12 @@ import {ParameterContainer, checkPrerequirements, getClubComponent} from "../uti
 /**
  * @summary
  * Returns club and person properties of user id
- * 
+ *
  * @params
  *  - privateKey (string): private key to check whether the caller is authenticated to use this function
  *  - clubLevel (string): level of the club (`regular`, `debug`, `testing`)
  *  - userId (string): user id to search in database
- * 
+ *
  * @returns:
  *  - clubProperties:
  *    - id (string): id of the club the person is in
@@ -24,7 +24,7 @@ import {ParameterContainer, checkPrerequirements, getClubComponent} from "../uti
  *  - name:
  *    - first (string): first name of the person
  *    - last (string | null): last name of the person
- * 
+ *
  * @throws
  *  - functions.https.HttpsError:
  *    - permission-denied: if private key isn't valid
