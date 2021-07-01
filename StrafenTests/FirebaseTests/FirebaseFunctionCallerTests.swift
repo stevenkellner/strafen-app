@@ -370,6 +370,9 @@ extension FirebaseFunctionCallerTests {
 
         // Register person with same id, but only first name
         try await _testRegisterPerson(TestProperty.shared.testPersonSecond.name)
+
+        // Check statistics
+        try await _testRegisterPersonCheckStatistics()
     }
 
     /// Register person and check it
@@ -400,6 +403,17 @@ extension FirebaseFunctionCallerTests {
         let url = URL(string: "personUserIds/\(TestProperty.shared.testPersonSecond.userId)")!
         let userId2 = try await FirebaseFetcher.shared.fetch(String.self, url: url, clubId: clubId)
         XCTAssertEqual(userId2, TestProperty.shared.testPersonSecond.id.uuidString)
+    }
+
+    /// Checks statistics of change late payment interest
+    func _testRegisterPersonCheckStatistics() async throws {
+        let statisticList = try await FirebaseFetcher.shared.fetchStatistics(clubId: TestProperty.shared.testClub.id, before: nil, number: 1_000)
+        let propertyList = statisticList.lazy
+            .sorted { $0.timestamp < $1.timestamp }
+            .compactMap { $0.property.rawProperty as? SPRegisterPerson }
+        XCTAssertEqual(propertyList.count, 2)
+        XCTAssertEqual(propertyList[0].person.name, TestProperty.shared.testPersonFirst.name)
+        XCTAssertEqual(propertyList[1].person.name, TestProperty.shared.testPersonSecond.name)
     }
 }
 

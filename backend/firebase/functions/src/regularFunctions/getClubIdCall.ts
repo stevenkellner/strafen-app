@@ -3,18 +3,22 @@ import * as admin from "firebase-admin";
 import {ParameterContainer, checkPrerequirements, getClubComponent} from "../utils";
 
 /**
+ * @summary
  * Get club id with given club identifier
+ * 
  * @params
  *  - privateKey (string): private key to check whether the caller is authenticated to use this function
  *  - clubLevel (string): level of the club (`regular`, `debug`, `testing`)
  *  - identifier (string): identifer of the club to search
+ * 
  * @returns (string): club id of club with given identifer
+ * 
  * @throws
  *  - functions.https.HttpsError:
  *    - permission-denied: if private key isn't valid
  *    - invalid-argument: if a required parameter isn't give over
- *                        or if a parameter hasn't the right type
- *                        or if clubLevel isn't `regular`, `debug` or `testing`
+ *      or if a parameter hasn't the right type
+ *      or if clubLevel isn't `regular`, `debug` or `testing`
  *    - failed-precondition: if function is called while no person is sign in
  *    - not-found: if no club with given identifier exists
  */

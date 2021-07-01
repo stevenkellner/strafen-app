@@ -1,6 +1,7 @@
 import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
 import {ParameterContainer, checkPrerequirements, getClubComponent, saveStatistic} from "../utils";
+import {Person} from "../typeDefinitions";
 
 /**
  * @summary
@@ -9,7 +10,8 @@ import {ParameterContainer, checkPrerequirements, getClubComponent, saveStatisti
  * Saved statistik:
  *  - name: registerPerson
  *  - properties:
- *      - personId (string): id of the person to be registered
+ *      - person ({@link Person}): person to be registered
+ *
  * @params
  *  - privateKey (string): private key to check whether the caller is authenticated to use this function
  *  - clubLevel (string): level of the club (`regular`, `debug`, `testing`)
@@ -19,20 +21,22 @@ import {ParameterContainer, checkPrerequirements, getClubComponent, saveStatisti
  *  - lastName (string | null): last name of the person to be registered
  *  - userId (string): user id of the person to be registered
  *  - signInDate (number): date of sign in of the person to be registered
+ *
  * @returns
  *  - clubIdentifier: (string): identifier of the club the person is registered to
  *  - clubName (string): name of the club the person is registered to
  *  - regionCode (string): region code of the club the person is registered to
  *  - inAppPayment: (boolean): indicates whether in app payment is active for the club the person is registered to
+ *
  * @throws
  *  - functions.https.HttpsError:
  *    - permission-denied: if private key isn't valid
  *    - invalid-argument: if a required parameter isn't give over
- *                        or if a parameter hasn't the right type
- *                        or if clubLevel isn't `regular`, `debug` or `testing`
+ *      or if a parameter hasn't the right type
+ *      or if clubLevel isn't `regular`, `debug` or `testing`
  *    - failed-precondition: if function is called while no person is sign in or the person doesn't belong to the club
  *    - internal: if an error occurs while register person in database
- *                or if couldn't get club properties to return
+ *      or if couldn't get club properties to return
  */
 export const registerPersonCall = functions.region("europe-west1").https.onCall(async (data, context) => {
     // Check prerequirements and get a reference to the club and the person and person user id
@@ -95,7 +99,10 @@ export const registerPersonCall = functions.region("europe-west1").https.onCall(
     await saveStatistic(clubPath, {
         name: "registerPerson",
         properties: {
-            personId: parameterContainer.getParameter<string>("id", "string").toUpperCase(),
+            person: {
+                id: parameterContainer.getParameter<string>("id", "string").toUpperCase(),
+                name: person.name,
+            } as Person,
         },
     });
 
