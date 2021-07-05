@@ -427,3 +427,12 @@ extension SupportOptions.Category {
 
     static let fine = SupportOptions.Category(tags: ["fineAdd", "fineUpdate", "fineDelete"], displayName: String(localized: "support-center-fine-title", comment: "Title of fine tab in support center."))
 }
+
+extension Dictionary {
+
+    /// Adds a new key-value pair if the key does not exist.
+    public mutating func setValue(_ value: Value, forKey key: Key) {
+        guard !contains(where: { $0.key == key }) else { return }
+        updateValue(value, forKey: key)
+    }
+}

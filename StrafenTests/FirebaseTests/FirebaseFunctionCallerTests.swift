@@ -20,25 +20,30 @@ class FirebaseFunctionCallerTests: XCTestCase {
         FirebaseFunctionCaller.shared.level = .testing
         FirebaseFetcher.shared.level = .testing
 
-        waitExpectation { handler in
+        let error: Error? = try waitExpectation { handler in
             async {
+                do {
+                    // Sign test user in
+                    try await Auth.auth().signIn(withEmail: "app.demo@web.de", password: "Demopw12")
 
-                // Sign test user in
-                try await Auth.auth().signIn(withEmail: "app.demo@web.de", password: "Demopw12")
+                    // Create test club
+                    try await _setUpCreateClub()
 
-                // Create test club
-                try await _setUpCreateClub()
+                    // Check if club is created
+                    try await _setUpCheckClubPropertries()
+                    try await _setUpCheckPersonList()
+                    try await _setUpCheckReasonList()
+                    try await _setUpCheckFineList()
 
-                // Check if club is created
-                try await _setUpCheckClubPropertries()
-                try await _setUpCheckPersonList()
-                try await _setUpCheckReasonList()
-                try await _setUpCheckFineList()
-
-                handler()
+                    handler(nil)
+                } catch {
+                    handler(error)
+                }
             }
         }
-        try Task.checkCancellation()
+        if let error = error {
+            throw error
+        }
     }
 
     /// Create test club
@@ -92,19 +97,25 @@ class FirebaseFunctionCallerTests: XCTestCase {
     // MARK: tear down
     /// Delete test club and all associated data
     override func tearDownWithError() throws {
-        waitExpectation { handler in
+        let error: Error? = try waitExpectation { handler in
             async {
+                do {
 
-                // Delete test club
-                try await _tearDownDeleteClub()
+                    // Delete test club
+                    try await _tearDownDeleteClub()
 
-                // Check if test club is deleted
-                try await _tearDownCheckClub()
+                    // Check if test club is deleted
+                    try await _tearDownCheckClub()
 
-                handler()
+                    handler(nil)
+                } catch {
+                    handler(error)
+                }
             }
         }
-        try Task.checkCancellation()
+        if let error = error {
+            throw error
+        }
     }
 
     /// Delete test club
@@ -123,6 +134,58 @@ class FirebaseFunctionCallerTests: XCTestCase {
         } catch {
             XCTAssertEqual(error as? FirebaseFetcher.FetchError, .noData)
         }
+    }
+}
+
+// MARK: check prerequirements
+/// Test all prerequirered checks for a function call
+extension FirebaseFunctionCallerTests {
+
+    /// Test all prerequirered checks for a function call
+    func testCheckPrerequirements() async throws {
+
+        // Invalid private key
+        try await _testCheckPrerequirementsInvalidPrivateKey()
+
+        // No signed in user
+        try await _testCheckPrerequirementsNoAuth()
+    }
+
+    /// Test function call with invalid private key
+    func _testCheckPrerequirementsInvalidPrivateKey() async throws {
+        struct CallItem: FFCallable {
+            var functionName: String = "changeList"
+
+            var parameters: FirebaseCallParameterSet {
+                FirebaseCallParameterSet { parameters in
+                    parameters["privateKey"] = "invalidKey"
+                }
+            }
+        }
+
+        do {
+            try await FirebaseFunctionCaller.shared.call(CallItem())
+            XCTFail() // swiftlint:disable:this xctfail_message
+        } catch let error as NSError {
+            XCTAssertEqual(error.domain, FunctionsErrorDomain)
+            XCTAssertEqual(FunctionsErrorCode(rawValue: error.code), .permissionDenied)
+            XCTAssertEqual(error.userInfo[NSLocalizedDescriptionKey] as? String, "Private key is invalid.")
+        }
+    }
+
+    /// Test function call with no signed in user
+    func _testCheckPrerequirementsNoAuth() async throws {
+        try Auth.auth().signOut()
+        do {
+            let callItem = FFGetClubIdCall(identifier: "asdf")
+            _ = try await FirebaseFunctionCaller.shared.call(callItem)
+            XCTFail() // swiftlint:disable:this xctfail_message
+        } catch let error as NSError {
+            XCTAssertEqual(error.domain, FunctionsErrorDomain)
+            XCTAssertEqual(FunctionsErrorCode(rawValue: error.code), .failedPrecondition)
+            XCTAssertEqual(error.userInfo[NSLocalizedDescriptionKey] as? String, "The function must be called while authenticated.")
+        }
+        try await Auth.auth().signIn(withEmail: "app.demo@web.de", password: "Demopw12")
     }
 }
 

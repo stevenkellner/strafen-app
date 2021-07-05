@@ -33,8 +33,8 @@ import FirebaseFunctions
     @discardableResult func call<CallType>(_ item: CallType) async throws -> HTTPSCallableResult where CallType: FFCallable {
         guard let privateKey = Bundle.keysPropertyList.privateFirebaseFunctionCallerKey as? String else { throw CallError.noPrivateKey }
         let parameters = FirebaseCallParameterSet(item.parameters) { parameters in
-            parameters["privateKey"] = privateKey
-            parameters["clubLevel"] = level.rawValue
+            parameters.setValue(privateKey, forKey: "privateKey")
+            parameters.setValue(level.rawValue, forKey: "clubLevel")
         }
         return try await Functions.functions(region: "europe-west1").httpsCallable(item.functionName).call(parameters.primordialParameter)
     }

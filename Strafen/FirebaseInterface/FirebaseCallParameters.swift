@@ -19,9 +19,7 @@ struct FirebaseCallParameterSet {
     ///   - adding: closure to add more parameters
     init(_ parameters: FirebaseCallParameterSet? = nil, _ adding: ((inout [String: FirebaseParameterable]) -> Void)? = nil) {
         self.parameters = parameters?.parameters ?? [:]
-        if let adding = adding {
-            adding(&self.parameters)
-        }
+        adding?(&self.parameters)
     }
 
     /// Add a single parameter with given key to the parameter set
