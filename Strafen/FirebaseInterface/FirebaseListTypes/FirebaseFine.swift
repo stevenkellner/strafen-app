@@ -247,7 +247,7 @@ extension Array where Element == FirebaseFine {
 }
 
 /// Contains all properties of a fine in statistics
-struct StatisticsFine: Decodable {
+struct StatisticsFine: Decodable, Equatable {
 
     /// Id of the fine
     let id: FirebaseFine.ID // swiftlint:disable:this identifier_name
@@ -269,7 +269,7 @@ struct StatisticsFine: Decodable {
 }
 
 /// Contains all properties of a fine reason in staistics
-struct StatisticsFineReason: Decodable {
+struct StatisticsFineReason: Decodable, Equatable {
 
     /// Id of template reason, nil if fine reason is custom
     let id: FirebaseReasonTemplate.ID? // swiftlint:disable:this identifier_name

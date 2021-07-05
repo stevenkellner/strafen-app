@@ -127,6 +127,10 @@ struct TestProperty {
         var updatedReasonTemplate: FirebaseReasonTemplate {
             .init(id: id, reason: updatedReason, importance: updatedImportance, amount: updatedAmount)
         }
+
+        var statisticsFineReason: StatisticsFineReason {
+            StatisticsFineReason(id: id, reason: reason, amount: amount, importance: importance)
+        }
     }
 
     /// Properties for test fine
@@ -160,6 +164,14 @@ struct TestProperty {
         /// Fine with reason custom
         func withReasonCustom(_ payedTimeInterval: TimeInterval) -> FirebaseFine {
             .init(id: id, assoiatedPersonId: assoiatedPersonId, date: date, payed: .payed(date: Date(timeIntervalSinceReferenceDate: payedTimeInterval), inApp: false), number: 10, fineReason: reasonCustom)
+        }
+
+        func statisticWithReasonTemplate(person: FirebasePerson, fineReason: StatisticsFineReason) -> StatisticsFine {
+            StatisticsFine(id: id, person: person, payed: .unpayed, number: 2, date: date, reason: fineReason)
+        }
+
+        func statisticWithReasonCustom(person: FirebasePerson) -> StatisticsFine {
+            StatisticsFine(id: id, person: person, payed: .payed(date: Date(timeIntervalSinceReferenceDate: 234689), inApp: false), number: 10, date: date, reason: StatisticsFineReason(id: nil, reason: reasonCustom.reason, amount: reasonCustom.amount, importance: reasonCustom.importance))
         }
     }
 

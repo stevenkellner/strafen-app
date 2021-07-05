@@ -456,7 +456,7 @@ extension FirebaseFunctionCallerTests {
         try await _testChangeListPersonUpdate()
 
         // Delete person
-        try  await _testChangeListPersonDelete()
+        try await _testChangeListPersonDelete()
 
         // Delete person again
         try await _testChangeListPersonDelete()
@@ -469,6 +469,9 @@ extension FirebaseFunctionCallerTests {
 
         // Update not existing person
         try await _testChangeListPersonUpdate()
+
+        // Check staistics
+        try await _testChangeListPersonCheckStatistics()
     }
 
     /// Set person and check it
@@ -569,6 +572,38 @@ extension FirebaseFunctionCallerTests {
         XCTAssertEqual(fetchedPerson?.name, person.name)
         XCTAssertNil(fetchedPerson?.signInData)
     }
+
+    /// Checks statistics of change person
+    func _testChangeListPersonCheckStatistics() async throws {
+        let statisticList = try await FirebaseFetcher.shared.fetchStatistics(clubId: TestProperty.shared.testClub.id, before: nil, number: 1_000)
+        let propertyList = statisticList.lazy
+            .sorted { $0.timestamp < $1.timestamp }
+            .compactMap { $0.property.rawProperty as? SPChangeList<FirebasePerson> }
+        XCTAssertEqual(propertyList.count, 5)
+
+        // Check first statistic
+        XCTAssertNil(propertyList[0].previousItem)
+        XCTAssertEqual(propertyList[0].changedItem, .update(item: TestProperty.shared.testPersonThird.person))
+
+        // Check second statistic
+        XCTAssertEqual(propertyList[1].previousItem, TestProperty.shared.testPersonThird.person)
+        let personId = TestProperty.shared.testPersonThird.id
+        let personName = PersonName(firstName: "abc", lastName: "def")
+        let person = FirebasePerson(id: personId, name: personName, signInData: nil)
+        XCTAssertEqual(propertyList[1].changedItem, .update(item: person))
+
+        // Check third statistic
+        XCTAssertEqual(propertyList[2].previousItem, person)
+        XCTAssertEqual(propertyList[2].changedItem, .delete(id: TestProperty.shared.testPersonThird.id))
+
+        // Check fourth statistic
+        XCTAssertNil(propertyList[3].previousItem)
+        XCTAssertEqual(propertyList[3].changedItem, .update(item: TestProperty.shared.testPersonSecond.person))
+
+        // Check fifth statistic
+        XCTAssertNil(propertyList[4].previousItem)
+        XCTAssertEqual(propertyList[4].changedItem, .update(item: person))
+    }
 }
 
 // MARK: change list call with reason
@@ -592,6 +627,9 @@ extension FirebaseFunctionCallerTests {
 
         // Update not existing reason
         try await _testChangeListReasonUpdate()
+
+        // Check statistics
+        try await _testChangeListReasonCheckStatistics()
     }
 
     /// Set reason and check it
@@ -644,6 +682,31 @@ extension FirebaseFunctionCallerTests {
         let fetchedReason = reasonList.first { $0.id == reason.id }
         XCTAssertNil(fetchedReason)
     }
+
+    /// Checks statistics of change reason
+    func _testChangeListReasonCheckStatistics() async throws {
+        let statisticList = try await FirebaseFetcher.shared.fetchStatistics(clubId: TestProperty.shared.testClub.id, before: nil, number: 1_000)
+        let propertyList = statisticList.lazy
+            .sorted { $0.timestamp < $1.timestamp }
+            .compactMap { $0.property.rawProperty as? SPChangeList<FirebaseReasonTemplate> }
+        XCTAssertEqual(propertyList.count, 4)
+
+        // Check first statistic
+        XCTAssertNil(propertyList[0].previousItem)
+        XCTAssertEqual(propertyList[0].changedItem, .update(item: TestProperty.shared.testReason.reasonTemplate))
+
+        // Check second statistic
+        XCTAssertEqual(propertyList[1].previousItem, TestProperty.shared.testReason.reasonTemplate)
+        XCTAssertEqual(propertyList[1].changedItem, .update(item: TestProperty.shared.testReason.updatedReasonTemplate))
+
+        // Check third statistic
+        XCTAssertEqual(propertyList[2].previousItem, TestProperty.shared.testReason.updatedReasonTemplate)
+        XCTAssertEqual(propertyList[2].changedItem, .delete(id: TestProperty.shared.testReason.id))
+
+        // Check fourth statistic
+        XCTAssertNil(propertyList[3].previousItem)
+        XCTAssertEqual(propertyList[3].changedItem, .update(item: TestProperty.shared.testReason.updatedReasonTemplate))
+    }
 }
 
 // MARK: change list call with fine
@@ -652,6 +715,9 @@ extension FirebaseFunctionCallerTests {
 
     /// Test change list fine
     func testChangeListFine() async throws {
+
+        // Add reason
+        try await _testChangeListFineAddReason()
 
         // Set fine with template id
         try await _testChangeListFineSet()
@@ -670,6 +736,23 @@ extension FirebaseFunctionCallerTests {
 
         // Update fine with template id
         try await _testChangeListFineUpdateTemplateReason()
+
+        // Check statistics
+        try await _testChangeListFineCheckStatistics()
+    }
+
+    /// Add reason for test change fine
+    func _testChangeListFineAddReason() async throws {
+
+        // Add reason
+        let clubId = TestProperty.shared.testClub.id
+        let callItem = FFChangeListCall(clubId: clubId, item: TestProperty.shared.testReason.reasonTemplate)
+        try await FirebaseFunctionCaller.shared.call(callItem)
+
+        // Check reason
+        let reasonList: [FirebaseReasonTemplate] = try await FirebaseFetcher.shared.fetchList(clubId: clubId)
+        let reason = reasonList.first { $0.id == TestProperty.shared.testFine.reasonTemplate.templateId }
+        XCTAssertEqual(reason, TestProperty.shared.testReason.reasonTemplate)
     }
 
     /// Set fine and check it
@@ -739,6 +822,35 @@ extension FirebaseFunctionCallerTests {
         let fetchedFine = fineList.first { $0.id == fine.id }
         XCTAssertEqual(fetchedFine, fine)
     }
+
+    /// Checks statistics of change fine
+    func _testChangeListFineCheckStatistics() async throws {
+        let statisticList = try await FirebaseFetcher.shared.fetchStatistics(clubId: TestProperty.shared.testClub.id, before: nil, number: 1_000)
+        let propertyList = statisticList.lazy
+            .sorted { $0.timestamp < $1.timestamp }
+            .compactMap { $0.property.rawProperty as? SPChangeList<FirebaseFine> }
+        XCTAssertEqual(propertyList.count, 5)
+
+        // Check first statistic
+        XCTAssertNil(propertyList[0].previousItem)
+        XCTAssertEqual(propertyList[0].changedItem.item, TestProperty.shared.testFine.statisticWithReasonTemplate(person: TestProperty.shared.testPersonFirst.person, fineReason: TestProperty.shared.testReason.statisticsFineReason))
+
+        // Check second statistic
+        XCTAssertEqual(propertyList[1].previousItem, TestProperty.shared.testFine.statisticWithReasonTemplate(person: TestProperty.shared.testPersonFirst.person, fineReason: TestProperty.shared.testReason.statisticsFineReason))
+        XCTAssertEqual(propertyList[1].changedItem.item, TestProperty.shared.testFine.statisticWithReasonCustom(person: TestProperty.shared.testPersonFirst.person))
+
+        // Check third statistic
+        XCTAssertEqual(propertyList[2].previousItem, TestProperty.shared.testFine.statisticWithReasonCustom(person: TestProperty.shared.testPersonFirst.person))
+        XCTAssertEqual(propertyList[2].changedItem, .delete(id: TestProperty.shared.testFine.id))
+
+        // Check fourth statistic
+        XCTAssertNil(propertyList[3].previousItem)
+        XCTAssertEqual(propertyList[3].changedItem.item, TestProperty.shared.testFine.statisticWithReasonCustom(person: TestProperty.shared.testPersonFirst.person))
+
+        // Check fifth stattistic
+        XCTAssertEqual(propertyList[4].previousItem, TestProperty.shared.testFine.statisticWithReasonCustom(person: TestProperty.shared.testPersonFirst.person))
+        XCTAssertEqual(propertyList[4].changedItem.item, TestProperty.shared.testFine.statisticWithReasonTemplate(person: TestProperty.shared.testPersonFirst.person, fineReason: TestProperty.shared.testReason.statisticsFineReason))
+    }
 }
 
 // MARK: change fine payed call
@@ -792,9 +904,15 @@ extension FirebaseFunctionCallerTests {
     /// Add fines and reason for test change fine payed
     func _testChangeFinePayedAddFinesAndReason() async throws {
 
-        // Add fine with reason template
+        // Add reason
         let clubId = TestProperty.shared.testClub.id
         let fine1 = TestProperty.shared.testFine.withReasonTemplate
+        let reason = FirebaseReasonTemplate(id: (fine1.fineReason as! FineReasonTemplate).templateId, // swiftlint:disable:this force_cast
+                                            reason: "asldkfj", importance: .low, amount: Amount(12, subUnit: 98))
+        let callItem3 = FFChangeListCall(clubId: clubId, item: reason)
+        try await FirebaseFunctionCaller.shared.call(callItem3)
+
+        // Add fine with reason template
         let callItem1 = FFChangeListCall(clubId: clubId, item: fine1)
         try await FirebaseFunctionCaller.shared.call(callItem1)
 
@@ -802,12 +920,6 @@ extension FirebaseFunctionCallerTests {
         let fine2 = TestProperty.shared.testFine2.withReasonCustom
         let callItem2 = FFChangeListCall(clubId: clubId, item: fine2)
         try await FirebaseFunctionCaller.shared.call(callItem2)
-
-        // Add reason
-        let reason = FirebaseReasonTemplate(id: (fine1.fineReason as! FineReasonTemplate).templateId, // swiftlint:disable:this force_cast
-                                            reason: "asldkfj", importance: .low, amount: Amount(12, subUnit: 98))
-        let callItem3 = FFChangeListCall(clubId: clubId, item: reason)
-        try await FirebaseFunctionCaller.shared.call(callItem3)
 
         // Check fines and reason
         let fineList: [FirebaseFine] = try await FirebaseFetcher.shared.fetchList(clubId: clubId)

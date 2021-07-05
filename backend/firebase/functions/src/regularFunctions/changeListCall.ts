@@ -81,9 +81,12 @@ export const changeListCall = functions.region("europe-west1").https.onCall(asyn
     let changedItem: Person | StatisticsFine | ReasonTemplate | StatisticsTransaction | { id: string; };
     switch (changeType) {
     case "delete": // Delete list item
-        const error = await deleteItem(clubPath, parameterContainer);
-        if (error != null) {
-            throw error;
+        const result = await deleteItem(clubPath, parameterContainer);
+        if (result[0] != null) {
+            throw result[0];
+        }
+        if (!result[1]) {
+            return;
         }
         changedItem = {id: parameterContainer.getParameter<string>("itemId", "string").toUpperCase()};
         break;
@@ -102,25 +105,25 @@ export const changeListCall = functions.region("europe-west1").https.onCall(asyn
     await saveStatistic(clubPath, {
         name: "changeList",
         properties: {
-            changeType: changeType,
+            listType: parameterContainer.getParameter<string>("listType", "string"),
             previousItem: previousItem,
             changedItem: changedItem,
         },
     });
 });
 
-async function deleteItem(clubPath: string, parameterContainer: ParameterContainer): Promise<functions.https.HttpsError | null> {
+async function deleteItem(clubPath: string, parameterContainer: ParameterContainer): Promise<[functions.https.HttpsError | null, boolean]> { // Seconde boolean value indicates if a item was deleted (`true`) or if item didn't already exists (`false`)
     const itemRef = admin.database().ref(`${clubPath}/${parameterContainer.getParameter<string>("listType", "string")}s/${parameterContainer.getParameter<string>("itemId", "string").toUpperCase()}`);
 
     // Check if list type is invalid
     const listType = parameterContainer.getParameter<string>("listType", "string");
     if (listType != "person" && listType != "fine" && listType != "reason" && listType != "transaction") {
-        return new functions.https.HttpsError("invalid-argument", `Argument listType is invalid "${listType}"`);
+        return [new functions.https.HttpsError("invalid-argument", `Argument listType is invalid "${listType}"`), true];
     }
 
     // Check if person to delete is already signed in
     if (listType == "person" && await existsData(itemRef.child("signInData"))) {
-        return new functions.https.HttpsError("unavailable", "Person is already signed in!");
+        return [new functions.https.HttpsError("unavailable", "Person is already signed in!"), true];
     }
 
     // Delete item
@@ -129,11 +132,13 @@ async function deleteItem(clubPath: string, parameterContainer: ParameterContain
         await itemRef.remove((error) => {
             errorOccured = error != null;
         });
+    } else {
+        return [null, false];
     }
     if (errorOccured) {
-        return new functions.https.HttpsError("internal", "Couldn't delete item.");
+        return [new functions.https.HttpsError("internal", "Couldn't delete item."), true];
     }
-    return null;
+    return [null, true];
 }
 
 async function updateItem(clubPath: string, parameterContainer: ParameterContainer): Promise<Result<PersonProperties | FineProperties | ReasonTemplateProperties | TransactionProperties, functions.https.HttpsError>> {
