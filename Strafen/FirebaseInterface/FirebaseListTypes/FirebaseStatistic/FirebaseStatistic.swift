@@ -53,10 +53,10 @@ struct FirebaseStatistic {
     }
 
     /// Tagged UUID type of the id
-    typealias ID = Tagged<FirebaseStatistic, UUID> // swiftlint:disable:this type_name
+    typealias ID = Tagged<FirebaseStatistic, UUID>
 
     /// Id of the statistic
-    let id: ID // swiftlint:disable:this identifier_name
+    let id: ID
 
     /// Timestamp of the statistic
     let timestamp: Date
@@ -69,13 +69,11 @@ extension FirebaseStatistic: FirebaseListType {
 
     typealias Statistic = FirebaseStatistic
 
-    static let urlFromClub = URL(string: "statistics")!
-
-    static let listType: String = "statistic"
+    static let kind: FirebaseListTypeKind = .statistic
 
     /// Coding Keys for Decodable
     enum CodingKeys: String, CodingKey {
-        case id // swiftlint:disable:this identifier_name
+        case id
         case name
         case timestamp
         case property = "properties"

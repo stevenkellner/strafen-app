@@ -48,7 +48,7 @@ struct FFChangeListCall<T>: FFCallable where T: FirebaseListType {
 
     /// Used to delete a list item
     /// - Parameter clubId: Club id
-    init(clubId: Club.ID, id: T.ID) { // swiftlint:disable:this identifier_name
+    init(clubId: Club.ID, id: T.ID) {
         self.clubId = clubId
         self.changeType = .delete(itemId: id)
     }

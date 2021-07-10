@@ -17,6 +17,14 @@ extension Array {
         self = try map(transform)
     }
 
+    /// Map this array containing the non-nil results of mapping the given closure over the sequence’s elements.
+    /// - Parameter transform: A mapping closure.
+    ///   Transform accepts an element of this sequence as its parameter.
+    /// - Throws: Rethrows transform error.
+    mutating func compactMapped(_ transform: (Element) throws -> Element?) rethrows {
+        self = try compactMap(transform)
+    }
+
     /// Map this array containing the results of mapping the given closure over the sequence’s elements.
     /// - Parameter transform: A mapping closure. 
     /// - Throws: Rethrows transform error.
@@ -216,22 +224,58 @@ extension Array where Element: Identifiable {
         mapped { $0.id == element.id ? element : $0 }
     }
 
-    /// Updates all elements with same id in the list to given element
+    /// Updates all elements with same id as specified id in the list.
+    ///
+    /// If there isn't an element with same id as specified id in the list,
+    /// the change handler generates an element from `nil` and
+    /// this generated element will be appended to the list.
+    ///
+    /// If the change handler generates `nil`, all elements with same id
+    /// as specified id will be removed from the list.
+    ///
+    /// Otherwise the element with same id as specified id will be updated
+    /// with the generated element from the change handler.
+    ///
+    /// If there isn't an element with same id as specified id in the list and
+    /// the change handler generates `nil`, nothing happens to the list.
+    ///
     /// - Parameters:
-    ///   - id: id of elements to update
-    ///   - changeHandler: handles element update
-    mutating func update(with id: Element.ID, change changeHandler: (inout Element) -> Void) { // swiftlint:disable:this identifier_name
-        mapped { (item: Element) -> Element in
+    ///   - id: Id of elements to update.
+    ///   - changeHandler: Generates the updated element from
+    ///   the element with same id as specified id.
+    mutating func update(with id: Element.ID, change changeHandler: (inout Element?) -> Void) {
+
+        // Indicates whether an element with same id already exists in the list
+        // or the element is new and should be appended to the list
+        var isNewElement = true
+
+        // Updates all elements with same id as specified id
+        compactMapped { (item: Element) -> Element? in
+
+            // Don't change elements with different id as specified id
             guard item.id == id else { return item }
-            var updatedItem = item
+
+            // Element isn't new since an element with same id as specifed id exists in the list
+            isNewElement = false
+
+            // Return updated element or nil if element should be removed from the list
+            var updatedItem: Element? = item
             changeHandler(&updatedItem)
             return updatedItem
+        }
+
+        // Append element if the isn't an element with same id as specified id to the list
+        if isNewElement {
+            var newElement: Element?
+            changeHandler(&newElement)
+            guard let newElement = newElement else { return }
+            append(newElement)
         }
     }
 
     /// Removes all elements with given element id
     /// - Parameter id: id of element to remove
-    mutating func removeAll(with id: Element.ID) { // swiftlint:disable:this identifier_name
+    mutating func removeAll(with id: Element.ID) {
         removeAll { $0.id == id }
     }
 }

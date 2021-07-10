@@ -73,6 +73,9 @@ struct PersonAddNew: View {
     /// Environment of the person list
     @EnvironmentObject var personListEnvironment: ListEnvironment<FirebasePerson>
 
+    /// Used to update the environment lists
+    @EnvironmentObject var listEnvironmentUpdater: ListEnvironmentUpdater
+
     /// Presentation mode
     @Environment(\.presentationMode) private var presentationMode
 
@@ -167,14 +170,14 @@ struct PersonAddNew: View {
     func handlePersonSave() async {
         await Self.handlePersonSave(person: person,
                                     inputProperties: $inputProperties,
-                                    personListEnvironment: $personListEnvironment,
+                                    listUpdater: listEnvironmentUpdater,
                                     presentationMode: presentationMode)
     }
 
     /// Handles person and image saving
     @discardableResult static func handlePersonSave(person: Settings.Person,
                                                     inputProperties: Binding<InputProperties>,
-                                                    personListEnvironment: ListEnvironmentObject<FirebasePerson>? = nil,
+                                                    listUpdater: ListEnvironmentUpdater? = nil,
                                                     presentationMode: Binding<PresentationMode>? = nil) async -> FirebasePerson.ID? {
         guard inputProperties.wrappedValue.connectionState.restart() == .passed else { return nil }
         inputProperties.wrappedValue.functionCallErrorMessage = nil
@@ -191,7 +194,7 @@ struct PersonAddNew: View {
             try await setPersonImage(of: personId, person: person, inputProperties: inputProperties)
 
             // Create new person in database
-            try await createNewPerson(of: personId, person: person, inputProperties: inputProperties, personListEnvironment: personListEnvironment)
+            try await createNewPerson(of: personId, person: person, inputProperties: inputProperties, listUpdater: listUpdater)
             inputProperties.wrappedValue.connectionState.passed()
             presentationMode?.wrappedValue.dismiss()
 
@@ -221,11 +224,11 @@ struct PersonAddNew: View {
     static func createNewPerson(of personId: FirebasePerson.ID,
                                 person loggedInPerson: Settings.Person,
                                 inputProperties: Binding<InputProperties>,
-                                personListEnvironment: ListEnvironmentObject<FirebasePerson>?) async throws {
+                                listUpdater: ListEnvironmentUpdater?) async throws {
         let name = PersonName(firstName: inputProperties.wrappedValue[.firstName], lastName: inputProperties.wrappedValue[.lastName])
         let person = FirebasePerson(id: personId, name: name, signInData: nil)
         let callItem = FFChangeListCall(clubId: loggedInPerson.club.id, item: person)
         try await FirebaseFunctionCaller.shared.call(callItem)
-        personListEnvironment?.list.wrappedValue.appendIfNew(person)
+        listUpdater?.updatePerson(person)
     }
 }

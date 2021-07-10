@@ -90,6 +90,9 @@ struct ReasonAddNew: View {
     /// Environment of the reason list
     @EnvironmentObject var reasonListEnvironment: ListEnvironment<FirebaseReasonTemplate>
 
+    /// Used to update the environment lists
+    @EnvironmentObject var listEnvironmentUpdater: ListEnvironmentUpdater
+
     /// Presentation mode
     @Environment(\.presentationMode) private var presentationMode
 
@@ -198,14 +201,14 @@ struct ReasonAddNew: View {
     func handleReasonSave() async {
         await ReasonAddNew.handleReasonSave(clubId: person.club.id,
                                             inputProperties: $inputProperties,
-                                            reasonListEnvironment: $reasonListEnvironment,
+                                            listUpdater: listEnvironmentUpdater,
                                             presentationMode: presentationMode)
     }
 
     /// Handles reason saving
     @discardableResult static func handleReasonSave(clubId: Club.ID,
                                                     inputProperties: Binding<InputProperties>,
-                                                    reasonListEnvironment: ListEnvironmentObject<FirebaseReasonTemplate>? = nil,
+                                                    listUpdater: ListEnvironmentUpdater? = nil,
                                                     presentationMode: Binding<PresentationMode>? = nil) async -> FirebaseReasonTemplate.ID? {
         guard inputProperties.wrappedValue.connectionState.restart() == .passed else { return nil }
         inputProperties.wrappedValue.functionCallErrorMessage = nil
@@ -218,7 +221,7 @@ struct ReasonAddNew: View {
             let reason = inputProperties.wrappedValue.reasonTemplate(with: reasonId)
             let callItem = FFChangeListCall(clubId: clubId, item: reason)
             try await FirebaseFunctionCaller.shared.call(callItem)
-            reasonListEnvironment?.list.wrappedValue.appendIfNew(reason)
+            listUpdater?.updateReason(reason)
             presentationMode?.wrappedValue.dismiss()
             inputProperties.wrappedValue.connectionState.passed()
         } catch {

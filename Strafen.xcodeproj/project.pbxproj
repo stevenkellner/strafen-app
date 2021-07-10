@@ -101,6 +101,7 @@
 		B09A30AC2680967E0096B84B /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B09A30AB2680967E0096B84B /* SettingsView.swift */; };
 		B09CCE1826593E4C008C545A /* SignInAppleController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B09CCE1726593E4C008C545A /* SignInAppleController.swift */; };
 		B09CCE1A26593E5C008C545A /* SignInGoogleController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B09CCE1926593E5C008C545A /* SignInGoogleController.swift */; };
+		B0A10079269A2FD500977CB7 /* ListEnvironmentUpdater.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0A10078269A2FD500977CB7 /* ListEnvironmentUpdater.swift */; };
 		B0A462912649412C0045D2BE /* Header.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0A462902649412B0045D2BE /* Header.swift */; };
 		B0A4629326494AB90045D2BE /* RoundedCorners.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0A4629226494AB80045D2BE /* RoundedCorners.swift */; };
 		B0A46295264953270045D2BE /* Outline.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0A46294264953270045D2BE /* Outline.swift */; };
@@ -272,6 +273,7 @@
 		B09A30AB2680967E0096B84B /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		B09CCE1726593E4C008C545A /* SignInAppleController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInAppleController.swift; sourceTree = "<group>"; };
 		B09CCE1926593E5C008C545A /* SignInGoogleController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInGoogleController.swift; sourceTree = "<group>"; };
+		B0A10078269A2FD500977CB7 /* ListEnvironmentUpdater.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListEnvironmentUpdater.swift; sourceTree = "<group>"; };
 		B0A462902649412B0045D2BE /* Header.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Header.swift; sourceTree = "<group>"; };
 		B0A4629226494AB80045D2BE /* RoundedCorners.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedCorners.swift; sourceTree = "<group>"; };
 		B0A46294264953270045D2BE /* Outline.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Outline.swift; sourceTree = "<group>"; };
@@ -544,6 +546,7 @@
 				B0B492BA2686348700A4C95E /* KeyboardObserver.swift */,
 				B0225D2C26525D8900D75CDA /* LatePaymentInterest.swift */,
 				B0E9C86726447AF100FB484E /* ListEnvironment.swift */,
+				B0A10078269A2FD500977CB7 /* ListEnvironmentUpdater.swift */,
 				B02221AD2641D6850005295B /* PersonName.swift */,
 				B0AF0A9526432CE100DF4DC9 /* PropertyWrapper.swift */,
 				B08FC118265D38C400F63975 /* Settings.swift */,
@@ -975,6 +978,7 @@
 			files = (
 				B0225D2226504CD300D75CDA /* SignInClubInputView.swift in Sources */,
 				B04A40E1267A4D0D00C50C72 /* PersonEditor.swift in Sources */,
+				B0A10079269A2FD500977CB7 /* ListEnvironmentUpdater.swift in Sources */,
 				B0225D2826513C8800D75CDA /* FFNewClubCall.swift in Sources */,
 				B02221AE2641D6850005295B /* PersonName.swift in Sources */,
 				B03986512652776F00C97DF2 /* Club.swift in Sources */,
@@ -1283,7 +1287,7 @@
 				CLANG_USE_OPTIMIZATION_PROFILE = YES;
 				CODE_SIGN_ENTITLEMENTS = Strafen/Controller/Strafen.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 8;
+				CURRENT_PROJECT_VERSION = 9;
 				DEVELOPMENT_ASSET_PATHS = "\"Strafen/Controller/Preview Content\"";
 				DEVELOPMENT_TEAM = K7NTJ83ZF8;
 				ENABLE_PREVIEWS = YES;
@@ -1313,7 +1317,7 @@
 				CLANG_USE_OPTIMIZATION_PROFILE = YES;
 				CODE_SIGN_ENTITLEMENTS = Strafen/Controller/Strafen.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 8;
+				CURRENT_PROJECT_VERSION = 9;
 				DEVELOPMENT_ASSET_PATHS = "\"Strafen/Controller/Preview Content\"";
 				DEVELOPMENT_TEAM = K7NTJ83ZF8;
 				ENABLE_PREVIEWS = YES;

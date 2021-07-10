@@ -7,9 +7,6 @@
 
 import SwiftUI
 
-// swiftlint:disable identifier_name
-// swiftlint:disable type_name
-
 /// Contains all properties of a fine in firebase database
 struct FirebaseFine {
 
@@ -68,9 +65,7 @@ extension FirebaseFine: FirebaseListType {
 
     typealias Statistic = StatisticsFine
 
-    static let urlFromClub = URL(string: "fines")!
-
-    static let listType: String = "fine"
+    static let kind: FirebaseListTypeKind = .fine
 
     /// Coding Keys for Decodable
     enum CodingKeys: String, CodingKey {
@@ -250,7 +245,7 @@ extension Array where Element == FirebaseFine {
 struct StatisticsFine: Decodable, Equatable {
 
     /// Id of the fine
-    let id: FirebaseFine.ID // swiftlint:disable:this identifier_name
+    let id: FirebaseFine.ID
 
     /// Associated person of the fine
     let person: FirebasePerson
@@ -272,7 +267,7 @@ struct StatisticsFine: Decodable, Equatable {
 struct StatisticsFineReason: Decodable, Equatable {
 
     /// Id of template reason, nil if fine reason is custom
-    let id: FirebaseReasonTemplate.ID? // swiftlint:disable:this identifier_name
+    let id: FirebaseReasonTemplate.ID?
 
     /// Reason message of the fine
     let reason: String

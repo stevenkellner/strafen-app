@@ -7,9 +7,6 @@
 
 import Foundation
 
-// swiftlint:disable identifier_name
-// swiftlint:disable type_name
-
 struct Club: Codable {
 
     /// Type of Id

@@ -8,10 +8,10 @@
 import SwiftUI
 
 /// Environment object for firebase list type
-@dynamicMemberLookup class ListEnvironment<ListType>: ObservableObject where ListType: FirebaseListType {
+class ListEnvironment<ListType>: ObservableObject where ListType: FirebaseListType {
 
     /// List of a firebase list type
-    @Published var list: [ListType]
+    @Published private(set) var list: [ListType]
 
     /// Init with list of a firebase list type
     /// - Parameter list: list of a firebase list type
@@ -35,44 +35,27 @@ import SwiftUI
             changeList(&self.list)
         }
     }
-}
 
-extension ListEnvironment {
-    subscript<T>(dynamicMember keyPath: WritableKeyPath<[ListType], T>) -> T {
-        get { list[keyPath: keyPath] }
-        set { list[keyPath: keyPath] = newValue }
+    /// Updates all elements with same id as specified id in the list.
+    ///
+    /// If there isn't an element with same id as specified id in the list,
+    /// the change handler generates an element from `nil` and
+    /// this generated element will be appended to the list.
+    ///
+    /// If the change handler generates `nil`, all elements with same id
+    /// as specified id will be removed from the list.
+    ///
+    /// Otherwise the element with same id as specified id will be updated
+    /// with the generated element from the change handler.
+    ///
+    /// If there isn't an element with same id as specified id in the list and
+    /// the change handler generates `nil`, nothing happens to the list.
+    ///
+    /// - Parameters:
+    ///   - id: Id of elements to update.
+    ///   - changeHandler: Generates the updated element from
+    ///   the element with same id as specified id.
+    func update(with id: ListType.ID, change changeHandler: (inout ListType?) -> Void) {
+        list.update(with: id, change: changeHandler)
     }
 }
-
-extension ListEnvironment: RandomAccessCollection {
-    public typealias Element = ListType
-    public typealias Index = Array<ListType>.Index
-
-    public func index(after i: Index) -> Index { // swiftlint:disable:this identifier_name
-        list.index(after: i)
-    }
-
-    public subscript(position: Index) -> Element {
-        list[position]
-    }
-
-    public var startIndex: Index {
-        list.startIndex
-    }
-
-    public var endIndex: Index {
-        list.endIndex
-    }
-
-    public __consuming func makeIterator() -> Array<ListType>.Iterator {
-        list.makeIterator()
-    }
-}
-
-extension ListEnvironment: Equatable where ListType: Equatable {
-    static func == (lhs: ListEnvironment<ListType>, rhs: ListEnvironment<ListType>) -> Bool {
-        lhs.list == rhs.list
-    }
-}
-
-typealias ListEnvironmentObject<ListType> = EnvironmentObject<ListEnvironment<ListType>>.Wrapper where ListType: FirebaseListType

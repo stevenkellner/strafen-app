@@ -48,7 +48,8 @@ struct ContentView: View {
                                     ProgressView(String(localized: "loading-text", comment: "Text of a loading view."))
                                 case .settings: SettingsView(hasLists: false)
                                 }
-                            }.environmentObject(ListEnvironment(randomLists.personList))
+                            }.environmentObject(ListEnvironmentUpdater())
+                                .environmentObject(ListEnvironment(randomLists.personList))
                                 .environmentObject(ListEnvironment(randomLists.fineList))
                                 .environmentObject(ListEnvironment(randomLists.reasonList))
                         } else if appSetup.connectionState == .failed {
@@ -84,7 +85,10 @@ struct ContentView: View {
                                 case .addNewFine: AddNewFine(isSheet: false)
                                 case .settings: SettingsView(hasLists: true)
                                 }
-                            }.environmentObject(ListEnvironment(allLists.personList, clubId: person.club.id))
+                            }
+                                .modifier(ListUpdaterModifier())
+                                .environmentObject(ListEnvironmentUpdater())
+                                .environmentObject(ListEnvironment(allLists.personList, clubId: person.club.id))
                                 .environmentObject(ListEnvironment(allLists.fineList, clubId: person.club.id))
                                 .environmentObject(ListEnvironment(allLists.reasonList, clubId: person.club.id))
                         } else { Color.backgroundGray }

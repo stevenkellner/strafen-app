@@ -10,7 +10,6 @@ import FirebaseFunctions
 import FirebaseAuth
 @testable import Strafen
 
-// swiftlint:disable identifier_name
 class FirebaseObserverTests: XCTestCase {
 
     let clubId = Club.ID(rawValue: UUID(uuidString: "d7b3c296-54cb-4417-8824-ecee22eb5eaf")!)

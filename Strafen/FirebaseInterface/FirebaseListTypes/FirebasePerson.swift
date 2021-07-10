@@ -7,9 +7,6 @@
 
 import Foundation
 
-// swiftlint:disable identifier_name
-// swiftlint:disable type_name
-
 /// Contains all properties of a person in firebase database
 struct FirebasePerson {
 
@@ -43,9 +40,7 @@ extension FirebasePerson: FirebaseListType {
 
     typealias Statistic = FirebasePerson
 
-    static let urlFromClub = URL(string: "persons")!
-
-    static let listType: String = "person"
+    static let kind: FirebaseListTypeKind = .person
 
     /// Coding Keys for Decodable
     enum CodingKeys: String, CodingKey {

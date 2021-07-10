@@ -127,6 +127,9 @@ struct AddNewFine: View {
     /// Environment of the fine list
     @EnvironmentObject var fineListEnvironment: ListEnvironment<FirebaseFine>
 
+    /// Used to update the environment lists
+    @EnvironmentObject var listEnvironmentUpdater: ListEnvironmentUpdater
+
     /// Currently logged in person
     @EnvironmentObject var person: Settings.Person
 
@@ -221,7 +224,7 @@ struct AddNewFine: View {
         await AddNewFine.handleFinesSave(clubId: person.club.id,
                                          inputProperties: $inputProperties,
                                          homeTab: $homeTab,
-                                         fineListEnvironment: $fineListEnvironment,
+                                         listUpdater: listEnvironmentUpdater,
                                          presentationMode: presentationMode)
     }
 
@@ -229,7 +232,7 @@ struct AddNewFine: View {
     @discardableResult static func handleFinesSave(clubId: Club.ID,
                                                    inputProperties: Binding<InputProperties>,
                                                    homeTab: EnvironmentObject<HomeTab>.Wrapper? = nil,
-                                                   fineListEnvironment: ListEnvironmentObject<FirebaseFine>? = nil,
+                                                   listUpdater: ListEnvironmentUpdater? = nil,
                                                    presentationMode: Binding<PresentationMode>? = nil) async -> [FirebaseFine.ID]? {
         guard inputProperties.wrappedValue.connectionState.restart() == .passed else { return nil }
         inputProperties.wrappedValue.functionCallErrorMessage = nil
@@ -246,7 +249,7 @@ struct AddNewFine: View {
                         guard let fine = inputProperties.wrappedValue.fine(with: fineId, personId: personId) else { return nil }
                         let callItem = FFChangeListCall(clubId: clubId, item: fine)
                         try await FirebaseFunctionCaller.shared.call(callItem)
-                        fineListEnvironment?.list.wrappedValue.appendIfNew(fine)
+                        listUpdater?.updateFine(fine)
                         inputProperties.wrappedValue.personIds.removeAll { $0 == personId }
                         return fineId
                     } catch { return nil }

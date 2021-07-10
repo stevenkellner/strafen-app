@@ -7,9 +7,6 @@
 
 import Foundation
 
-// swiftlint:disable identifier_name
-// swiftlint:disable type_name
-
 /// Contains all properties of a reason template in firebase database
 struct FirebaseReasonTemplate {
 
@@ -33,9 +30,7 @@ extension FirebaseReasonTemplate: FirebaseListType {
 
     typealias Statistic = FirebaseReasonTemplate
 
-    static let urlFromClub = URL(string: "reasons")!
-
-    static let listType: String = "reason"
+    static let kind: FirebaseListTypeKind = .reason
 
     /// Coding Keys for Decodable
     enum CodingKeys: String, CodingKey {

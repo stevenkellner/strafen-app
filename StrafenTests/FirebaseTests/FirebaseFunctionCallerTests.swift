@@ -10,7 +10,6 @@ import FirebaseFunctions
 import FirebaseAuth
 @testable import Strafen
 
-// swiftlint:disable identifier_name
 class FirebaseFunctionCallerTests: XCTestCase {
 
     // MARK: set up

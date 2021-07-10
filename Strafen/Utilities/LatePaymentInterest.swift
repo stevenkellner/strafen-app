@@ -22,7 +22,7 @@ struct LatePaymentInterest: Codable, Equatable {
         /// Year component
         case year
 
-        var id: String { rawValue } // swiftlint:disable:this identifier_name
+        var id: String { rawValue }
 
         /// Same componets of Calender.Components
         var dateComponentFlag: Calendar.Component {

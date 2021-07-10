@@ -25,7 +25,7 @@ struct FFGetPersonPropertiesCall: FFCallable, FFCallResult {
         let name: PersonName
 
         /// Id of the person
-        let id: FirebasePerson.ID // swiftlint:disable:this identifier_name
+        let id: FirebasePerson.ID
 
         /// Properties of logged in person
         var settingsPerson: Settings.Person {

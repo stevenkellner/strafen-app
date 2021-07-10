@@ -165,6 +165,9 @@ struct FineDetail: View {
         /// Environment of the fine list
         @EnvironmentObject var fineListEnvironment: ListEnvironment<FirebaseFine>
 
+        /// Used to update the environment lists
+        @EnvironmentObject var listEnvironmentUpdater: ListEnvironmentUpdater
+
         /// Currently logged in person
         @EnvironmentObject var person: Settings.Person
 
@@ -217,7 +220,7 @@ struct FineDetail: View {
             do {
                 let callItem = FFChangeFinePayed(clubId: person.club.id, fineId: fine.id, newState: .unpayed)
                 try await FirebaseFunctionCaller.shared.call(callItem)
-                fineListEnvironment.list.update(with: fine.id) { $0.payed = .unpayed }
+                listEnvironmentUpdater.updateFine(with: fine.id) { $0?.payed = .unpayed }
                 connectionStateToUnpayed.passed()
             } catch {
                 errorMessages = .internalErrorSave
@@ -236,7 +239,7 @@ struct FineDetail: View {
                 let payedState: Payed = .payed(date: Date(), inApp: false)
                 let callItem = FFChangeFinePayed(clubId: person.club.id, fineId: fine.id, newState: payedState)
                 try await FirebaseFunctionCaller.shared.call(callItem)
-                fineListEnvironment.list.update(with: fine.id) { $0.payed = payedState }
+                listEnvironmentUpdater.updateFine(with: fine.id) { $0?.payed = payedState }
                 connectionStateToPayed.passed()
             } catch {
                 errorMessages = .internalErrorSave

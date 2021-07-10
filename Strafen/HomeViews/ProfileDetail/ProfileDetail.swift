@@ -161,7 +161,7 @@ struct ProfileDetail: View {
 extension ListEnvironment where ListType == FirebaseFine {
 
     /// Filtered and sorted for profile detail fine list
-    fileprivate func sortedForList(of personId: FirebasePerson.ID, with reasonList: [FirebaseReasonTemplate]) -> [Element] {
+    fileprivate func sortedForList(of personId: FirebasePerson.ID, with reasonList: [FirebaseReasonTemplate]) -> [FirebaseFine] {
         list.filter {
             $0.assoiatedPersonId == personId
         }.sorted { fine in

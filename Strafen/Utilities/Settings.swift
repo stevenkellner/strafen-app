@@ -82,7 +82,7 @@ extension Settings {
         var club: Club
 
         /// Id of logged in person
-        let id: FirebasePerson.ID // swiftlint:disable:this identifier_name
+        let id: FirebasePerson.ID
 
         /// Name of logged in person
         let name: PersonName
@@ -93,7 +93,7 @@ extension Settings {
         /// Indicates whether logged in person is cashier of the club
         let isCashier: Bool
 
-        init(club: Club, id: FirebasePerson.ID, name: PersonName, signInDate: Date, isCashier: Bool) { // swiftlint:disable:this identifier_name
+        init(club: Club, id: FirebasePerson.ID, name: PersonName, signInDate: Date, isCashier: Bool) {
             self.club = club
             self.id = id
             self.name = name

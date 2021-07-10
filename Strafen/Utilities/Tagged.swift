@@ -45,7 +45,7 @@ extension Tagged: Collection where RawValue: Collection {
   public typealias Element = RawValue.Element
   public typealias Index = RawValue.Index
 
-  public func index(after i: RawValue.Index) -> RawValue.Index { // swiftlint:disable:this identifier_name
+  public func index(after i: RawValue.Index) -> RawValue.Index {
     return rawValue.index(after: i)
   }
 
@@ -163,9 +163,6 @@ extension Tagged: ExpressibleByUnicodeScalarLiteral where RawValue: ExpressibleB
     self.init(rawValue: RawValue(unicodeScalarLiteral: unicodeScalarLiteral))
   }
 }
-
-// swiftlint:disable identifier_name
-// swiftlint:disable type_name
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
 extension Tagged: Identifiable where RawValue: Identifiable {

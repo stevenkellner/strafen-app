@@ -7,9 +7,6 @@
 
 import Foundation
 
-// swiftlint:disable identifier_name
-// swiftlint:disable type_name
-
 /// Contains all properties of a transaction in firebase database
 struct FirebaseTransaction {
 
@@ -52,9 +49,7 @@ extension FirebaseTransaction: FirebaseListType {
 
     typealias Statistic = StatisticsTransaction
 
-    static let urlFromClub = URL(string: "transactions")!
-
-    static let listType: String = "transaction"
+    static let kind: FirebaseListTypeKind = .transaction
 
     /// Coding Keys for Decodable
     enum CodingKeys: String, CodingKey {

@@ -8,8 +8,6 @@
 import FirebaseAuth
 @testable import Strafen
 
-// swiftlint:disable identifier_name
-
 /// Properties for all test data
 struct TestProperty {
 

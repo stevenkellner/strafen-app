@@ -69,7 +69,7 @@ struct LoginView: View {
     enum ResetPassordMessages: Int, Identifiable {
         case invalidEmail, confirm
 
-        var id: Int { rawValue } // swiftlint:disable:this identifier_name
+        var id: Int { rawValue }
     }
 
     /// Indicates whether email input is active

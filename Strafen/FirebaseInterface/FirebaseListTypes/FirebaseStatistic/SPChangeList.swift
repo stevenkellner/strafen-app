@@ -12,10 +12,10 @@ struct SPChangeList<T>: StatisticProperty where T: FirebaseListType {
 
     enum ChangedItem<T>: Decodable where T: FirebaseListType {
         case update(item: T.Statistic)
-        case delete(id: T.ID) // swiftlint:disable:this identifier_name
+        case delete(id: T.ID)
 
         enum IDCodingKeys: CodingKey {
-            case id // swiftlint:disable:this identifier_name
+            case id
         }
 
         init(from decoder: Decoder) throws {
@@ -24,7 +24,7 @@ struct SPChangeList<T>: StatisticProperty where T: FirebaseListType {
                 self = .update(item: item)
             } catch {
                 let container = try decoder.container(keyedBy: IDCodingKeys.self)
-                let id = try container.decode(T.ID.self, forKey: .id) // swiftlint:disable:this identifier_name
+                let id = try container.decode(T.ID.self, forKey: .id)
                 self = .delete(id: id)
             }
         }
